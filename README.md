@@ -1,6 +1,6 @@
 # deepke
 
-##数据准备
+## 数据准备
 
 文件（来源） | 样本 
 ---- | ---- 
@@ -38,20 +38,20 @@ rel_per_com.txt（由前面两个生成）| 非独立董事 刘旭 湖南博云�
 * 远程监督本身的噪音，如在*per_pool* 中有「周建灿」和「周建」，有句子“金盾董事长周建灿”，直接的实体链接会标出「金盾董事，周建，董事长」
 
 
-##训练
+## 训练
 * 运行`preprocess.py`的`train_preprocess()`，生成训练数据
 * 运行`python train.py`，模型存在`../model`下
 * 参数在`config.py`中进行配置，包括*GPU_ID*, *learning_rate*等
 
-##测试
+## 测试
 * 运行`preprocess.py`的`predict_preprocess()`，生成可以输入模型的数据
 * 运行`python test.py`，结果保存在`../result`下
 
-##模型
+## 模型
 考虑到实验效果，目前使用多个二分类模型
 参考：[Lin et al. (2017)](http://www.aclweb.org/anthology/D15-1203).
 输入：句子，两实体及相应的位置信息，用于判断并列语句的辅助信息序列
 输出：是否具有相应关系
 
-##结果
+## 结果
 ![pcnn result](https://github.com/zjunlp/deepke/blob/dev/result/result.png)
