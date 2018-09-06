@@ -1,61 +1,120 @@
-# coding = utf-8
+# coding=utf-8
+import numpy as np
+from config import Config
+
+Flags = Config.config
+
 
 class Vocab(object):
 	"""docstring for Vocab"""
-	def __init__(self, filename=None, initial_tokens=None, lower=False):
-		super(Vocab, self).__init__()
-        self.id2token = {}
-        self.token2id = {}
-        # ner需要再有一个 self.ner2id()
-        # self.id2ner = {} 
-        self.token_cnt = {}
-        self.lower = lower
+	def __init__(self,):
+		self.id2token = {}
+		self.token2id = {}
 
-        self.embed_dim = None
-        self.embeddings = None
+		self.ner2id = {}
+		self.rel2id = {}
 
-        self.pad_token = '<blank>'
-        self.unk_token = '<unk>'
+		self.token_cnt = {}
 
-        self.initial_tokens = initial_tokens if initial_tokens is not None else []
-        self.initial_tokens.extend([self.pad_token, self.unk_token])
-        for token in self.initial_tokens:
-            self.add(token)
+		self.embed_dim = None
+		self.embeddings = None
+		self.pad_token = '<blank>'
+		self.unk_token = '<unk>'
 
-        if filename is not None:
-            self.load_from_file(filename)
+		self.initial_tokens = [self.pad_token, self.unk_token, 'E1', 'E2']
+		for token in self.initial_tokens:
+			self.add(token)
 
-    def get_id(self,token):
-    	pass
+		if filename is not None:
+			self.load_from_file(config.data_path + 'vocab.txt')
 
-    def get_token(self,id):
-    	pass
+		self.init_rel()
+		self.init_ner()
 
-    def load_from_file(self,file_path):
-    	'''
-    	使用分段的file或者直接只是token的file，可能需要确定下
-    	'''
-    	pass
+	def get_id(self, token):
+		try:
+			return self.token2id[token]
+		except KeyError:
+			return self.token2id[self.unk_token]
 
-    def add(self,token):
-    	if token in self.token2id.keys():
-    		return
-    	else:
-    		idx = len(self.id2token)
-    		self.token2id[token] = idx
-    		self.id2token[idx] = token
+	def get_token(self, id):
+		try:
+			return self.id2token[id]
+		except KeyError:
+			return self.unk_token
 
-    def randomly_init_embeddings(self, embed_dim):
-    	# 随机初始化embedding，<ukw> <blank> 设置为0
-    	# 为self.embeddings赋值
-    	pass
-    
-    def load_pretrained_embeddings(self, embedding_path):
-    	# 加载预训练的embedding
-    	# 为self.embeddings赋值
-    	pass
+	def size(self):
+		return len(self.id2token)
 
-    def convert_to_ids(self, tokens):
-    	# 将一句segment_sentence的token转为相应的id
-    	pass
-    
+	def load_from_file(self, file_path):
+		'''
+		使用分段的file或者直接只是token的file，可能需要确定下
+		yzq: file_path: vocab.txt
+		'''
+
+		for line in open(file_path, 'r'):
+			token = line.rstrip('\n')[0]
+			self.add(token)
+
+	def add(self, token):
+		if token in self.token2id.keys():
+			return
+		else:
+			idx = len(self.id2token)
+			self.token2id[token] = idx
+			self.id2token[idx] = token
+
+	def randomly_init_embeddings(self, embed_dim):
+		self.embed_dim = embed_dim
+		self.embeddings = np.random.rand(self.size(), embed_dim)
+		for token in [self.pad_token, self.unk_token,'E1','E2']:
+			self.embeddings[self.get_id(token)] = np.zeros([self.embed_dim])
+
+	def load_pretrained_embeddings(self, embedding_path):
+		# em.txt
+		self.embeddings = np.zeros([self.size(), self.embed_dim])
+		with open(embedding_path, 'r') as fin:
+			for line in fin:
+				contents = line.strip().split()
+				token = contents[0].decode('utf8')
+				self.embeddings[self.get_id(token)] = list(map(float, contents[1:]))
+
+	def init_rel(self):
+		for (i, rel) in enumerate(Flags.relations):
+			self.rel2id[rel] = i+1
+		self.rel2id['0'] = 0
+
+	def init_ner(self):
+		for (i, ner) in enumerate(Flags['ner']):
+			self.ner2id[ner] = i+1
+
+	def get_token_ids(self, tokens, padding=True):
+		if padding:
+			sequences = [self.get_id(self.pad_token)] * config.MAX_LEN
+		else:
+			sequences = np.zeros(len(tokens), dtype=int)
+		for index, token in enumerate(tokens):
+			sequences[i] = self.get_id(token)
+		return sequences
+
+	def get_rel_id(self, rel):
+		if rel in self.rel2id.keys():
+			return self.rel2id[rel]
+		else:
+			return -1
+
+	def get_ner_id(self, ner):
+		if ner in self.ner2id:
+			return self.ner2id[ner]
+		else:
+			return 0
+
+	def get_ner_ids(self, ners, padding=True):
+		if padding:
+			ner_sequences = np.zeros(config.MAX_LEN, dtype=int)
+		else:
+			ner_sequences = np.zeros(len(ners), dtype=int)
+		for index,ner in enumerate(ners):
+			ner_sequences[index] = self.get_ner_id(ner)
+		return ner_sequences
+

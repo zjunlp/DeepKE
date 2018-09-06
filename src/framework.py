@@ -3,11 +3,11 @@ import tensorflow as tf
 from layer.encoder import Encoder
 from config import Config
 config = Config.config
-
+from dataset import Dataset
 
 class Framework(object):
 	"""docstring for Model"""
-	def __init__(self):
+	def __init__(self,data,vocab):
 		self.initializer = tf.truncated_normal_initializer(stddev=0.01)
 		self.bia_initializer = tf.constant_initializer(0)
 		self.setup_placeholders()
@@ -103,10 +103,6 @@ class Framework(object):
 		self.reg_op = tf.no_op()
 
 	def feed_dict(self,data):
-		'''
-
-		:return:
-		'''
 		feed_dict = {}
 		feed_dict['self.in_x'] = data.sent
 		feed_dict['self.in_mask'] = data.mask
@@ -114,10 +110,19 @@ class Framework(object):
 		self.feed_dict = feed_dict
 		pass
 
-	def train(self,data,vocab):
+	def train(self,):
+		dataset_train = Dataset(config.data_path + config.train_file)
+		dataset_test = Dataset(config.data_path + config.test_file)
+		test_seq = dataset_test.get_data()
+		train_iter = dataset_train.one_mini_batch(config.batch_size,shuffle=True)
+		# 如何构建多分类
+		pass
 
 
 	def predict(self,):
+		dataset_predict = Dataset(config.data_path + config.predict_file)
+		predict_data = dataset_predict.get_data()
+
 		pass
 
 	def save(self,):
