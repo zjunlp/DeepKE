@@ -104,7 +104,7 @@ class Vocab(object):
 			return -1
 
 	def get_ner_id(self, ner):
-		if ner in self.ner2id:
+		if ner in self.ner2id.keys():
 			return self.ner2id[ner]
 		else:
 			return 0
