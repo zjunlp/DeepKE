@@ -14,6 +14,7 @@ def cnn(is_training):
 	h = framework.encoder.cnn(new_x, padding=config.padding, filter_sizes=config.filter_sizes,
 							  pooling_way=config.pooling_way, activation=tf.nn.tahn)
 
+	map(h,y)
 	if is_training:
 		loss =
 		out_put =

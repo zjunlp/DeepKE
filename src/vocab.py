@@ -98,15 +98,15 @@ class Vocab(object):
 		return sequences
 
 	def get_rel_id(self, rel):
-		if rel in self.rel2id.keys():
+		try:
 			return self.rel2id[rel]
-		else:
+		except:
 			return -1
 
 	def get_ner_id(self, ner):
-		if ner in self.ner2id:
+		try:
 			return self.ner2id[ner]
-		else:
+		except:
 			return 0
 
 	def get_ner_ids(self, ners, padding=True):

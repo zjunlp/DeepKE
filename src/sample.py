@@ -216,10 +216,10 @@ class Sample():
 		# yzq,写好了之后更新下__gen_train_re里面的sent
 		pass
 
-
 	def __gen_train_re(self,data,binary,train_ratio,need_ner = False):
 		'''
 		为模型的训练生成数据
+		建议在这里替换entity with E1；（注意不分词；）[添加ner].[之后这部分内容不变]
 		:param data: [relations,sent,e1,e2,pos1,pos2]
 		:param binary: 是否是多个二分类模型
 		:return:
@@ -282,7 +282,7 @@ class Sample():
 		test_data.to_csv(config.data_path + config.test_file, sep='\t', index=False, encoding='utf-8')
 
 	# 应该放在 data.py中的，如果是在这里可能需要进行ner
-	def gen_train_sample(self,data,task,binary,train_ratio,need_ner=False):
+	def gen_train_sample(self,data, task,binary,train_ratio,need_ner=False):
 		if task == 're':
 			self.__gen_train_re(data,binary,train_ratio,need_ner)
 

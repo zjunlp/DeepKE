@@ -54,7 +54,7 @@ class Tools(object):
 	def __ner_fudan(self,sentence):
 		pass
 
-	def __ner_zju(self):
+	def __ner_zju(self,sentence):
 		pass
 
 	def ner_one(self,sentence,ner_way):
@@ -66,6 +66,7 @@ class Tools(object):
 			return self.__ner_zju(sentence)
 
 	def ner_all(self,sentences,ner_way):
+
 		pass
 
 	def __segment_jieba(self,sentence,extra_dict_path=None):

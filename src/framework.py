@@ -38,7 +38,7 @@ class Framework(object):
 			self.in_y = tf.placeholder(dtype=tf.int32, shape = [None,config.class_num], name='in_y')
 		else:
 			self.in_rel = tf.placeholder(dtype=tf.int32, shape = [None,], name='in_rel')
-			self.in_y = tf.placeholder(dtype=tf.int32, shape = [None,],name = 'in_y')
+			self.in_y = tf.placeholder(dtype=tf.int32, shape = [None,], name='in_y')
 		pass
 
 	def embedding_lookup(self,embeddings):
