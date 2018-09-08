@@ -4,10 +4,10 @@
 2. 从database中读取kg_data没有写
 3. character_level的几个问题
 4. 多线程终止自动`cat sample* sample` 
-5. __find_entity() 两个循环可能有问题
+
 6. 在sample.py中定义了两种过滤规则，一种是关键字，还有一种是长度，目前将这两个规则写在sample.py中
 7. 考虑到character_level，e1和e2的sent_id比较麻烦，目前不计划输入到模型中，（如果需要，可以在模型中单独为随机初始化embedding，但是没有意义，或者将embedding表示为所有word emb的average）
-8. position 输入到模型中可以是负数吗？
+
 9. 现在是所有的都要ner的，只是如果模型不需要ner，在生成数据时候就直接将ner的输入置为0
 10. sample.py 的gen_train_data中最好生成一个基本版本，不需要每次都重复操作segment,ner,
 11. 多分类是不是多个类别最好不要强相关？
