@@ -217,10 +217,17 @@ class Sample():
 	def __replace_entity(self,sent,e1,e2,pos1,pos2):
 		# 用'E1'和'E2'替换「指定位置」的原实体，sent是没有分词的句子
 		# yzq,写好了之后更新下__gen_train_re里面的sent
-		sent = re.sub('%s'%e1,'E1',sent)
-		sent = re.sub('%s'%e2,'E2',sent)
-		return sent
-
+		ret = []
+		for w in sent:
+			ret.append(w)
+		ret[pos1] = 'E1'
+		for i in range(len(e1)-1):
+			ret[pos1+i+1] = ''
+		ret[pos2] = 'E2'
+		for i in range(len(e2)-1):
+			ret[pos2+i+1] = ''
+		ret = ' '.join(ret)
+		return  ret
 
 	def __gen_train_re(self,data,binary,train_ratio,need_ner = False):
 		'''

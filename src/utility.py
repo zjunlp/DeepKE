@@ -1,7 +1,7 @@
 # coding=utf-8
 import logging
 import sys
-from NER.ner import ner
+from NER.ner import zjuner
 from config import Config
 import re
 import jieba
@@ -52,17 +52,21 @@ class Tools(object):
 
 		ret = []
 		for sent in sentences:
-			if (len(sent) < config.min_charater or len(sent) > config.max_charater):
-				continue
-			sent = re.sub(r'[0-9]+', 'NUM', sent)
-			sent = sent.replace("\t", " ")
-			sent = sent.replace("\"", " ")
-			sent = sent.replace('“', '')
-			sent = sent.replace('”', '')
-			sent = sent.replace(" ", "")
-			sent = sent.replace("|", "")
-			sent = sent.replace(".", "")
-			ret.append(sent)
+			while(len(sent) > config.min_charater):
+				if(len(sent) > config.max_charater):
+					s = sent[0:config.max_charater]
+					sent = sent.replace(s,'',1)
+				else:
+					s = sent
+				s = re.sub(r'[0-9]+', 'NUM', sent)
+				s = sent.replace("\t", " ")
+				s = sent.replace("\"", " ")
+				s = sent.replace('“', '')
+				s = sent.replace('”', '')
+				s = sent.replace(" ", "")
+				s = sent.replace("|", "")
+				s = sent.replace(".", "")
+				ret.append(sent)
 		return ret
 
 	def __ner_self(self,sentence):
@@ -91,11 +95,11 @@ class Tools(object):
 			ret.append(self.ner_one(sentence))
 		return ret
 
-	def __segment_jieba(self,sentence,extra_dict_path=None):
-		if extra_dict_path is None:
+	def __segment_jieba(self,sentence):
+		if config.extra_dict_path is None:
 			return ' '.join()
 		else:
-			jieba.load_userdict(extra_dict_path)
+			jieba.load_userdict(config.extra_dict_path)
 		sent = jieba.cut(sentence)
 		sent = ' '.join(sent)
 		return sent
@@ -109,6 +113,7 @@ class Tools(object):
 			ret = ' '
 		ret = re.sub(r'E\s1','E1',ret)
 		ret = re.sub(r'E\s2','E2',ret)
+		ret = re.sub(r'N\sU\sM', 'NUM', ret)
 		return ret
 
 	def segment_one(self,sentence,seg_way):
