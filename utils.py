@@ -6,16 +6,7 @@ import numpy as np
 from datetime import datetime
 
 
-def set_seed(seed):
-    """
-    Freeze every seed.
-    All about reproducibility
-    """
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
+
 
 
 def random_split(data):
@@ -49,7 +40,7 @@ def pad(sent, max_len):
         return sent[:max_len]
 
 
-def snapshot(model, epoch, save_path='checkpoints'):
+def snapshot(model, epoch, save_path='snapshot'):
     """
     Saving model w/ its params.
         Get rid of the ONNX Protocal.

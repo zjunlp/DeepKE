@@ -1,48 +1,48 @@
 # coding=utf-8
-
-import warnings
-import json
+import random
+import torch
+import numpy as np
 
 class Config(object):
     # reproducibility
-    seed = 1
+    seed = 4
 
-    # path
-    train_data_path = 'data/origin/train.txt'
-    test_data_path = 'data/origin/test.txt'
-    vocab_path = 'data/word_vocab.json'
-    save_path = 'checkpoints'
-    load_path = 'checkpoints/PCNN_ATT.pkl'
+    #data
+    data_path = 'data/origin'
 
     # vocab
-    min_count = 2
+    min_freq = 2
 
     # model hyterparams
-    embedding_size = 200
-    hidden_size = 300
-    output_size = 57
+    embedding_size = 128
+    hidden_size = 150
+    output_size = 6
+    num_layers = 1
 
-    # train epoch
-    epochs = 10
+
+    # train iter
+    epochs = 20
     batch_size = 32
-    lr = 3e-4
+    lr = 5e-4
 
     # gpu
     gpu = 0
 
-    def _parse(self, kwargs):
-        """
-        根据字典 kwargs 更新 config 参数
-        """
-        for k, v in kwargs.items():
-            if not hasattr(self, k):
-                warnings.warn("Warning: opt has not attribut %s" % k)
-            setattr(self, k, v)
-
-        print('user config:')
-        for k, v in self.__class__.__dict__.items():
-            if not k.startswith('_'):
-                print(k, getattr(self, k))
+    # save path
+    save_step = 1
+    save_path = 'snapshot'
 
 
 config = Config()
+
+
+def set_seed(seed):
+    """
+    Freeze every seed.
+    All about reproducibility
+    """
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)

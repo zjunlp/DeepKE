@@ -1,13 +1,7 @@
-# coding=utf-8
-
 import math
 import torch
 import torch.nn as nn
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
-from config import config
-from utils import set_seed
-
-set_seed(config.seed)
 
 
 class LSTM4VarLenSeq(nn.Module):
@@ -36,6 +30,7 @@ class LSTM4VarLenSeq(nn.Module):
                 otherwise 'False'
         """
         super(LSTM4VarLenSeq, self).__init__()
+        self.name = LSTM4VarLenSeq
         self.lstm = nn.LSTM(input_size=input_size,
                             hidden_size=hidden_size,
                             num_layers=num_layers,
