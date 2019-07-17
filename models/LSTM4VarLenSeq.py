@@ -35,6 +35,7 @@ class LSTM4VarLenSeq(nn.Module):
                             hidden_size=hidden_size,
                             num_layers=num_layers,
                             bias=bias,
+                            batch_first=True,
                             bidirectional=bidirectional)
         self.input_size = input_size
         self.hidden_size = hidden_size
@@ -93,7 +94,8 @@ class LSTM4VarLenSeq(nn.Module):
         hn = hn.permute(1, 0, 2)[unsort_x_idx]  # swap the first two dim
         hn = hn.permute(1, 0, 2)  # swap the first two again to recover
         if self.take_last:
-            return hn.squeeze(0)
+            batch_size = hn.size(1)
+            return hn.transpose(1,0).contiguous().view(batch_size,-1)
         else:
             # unpack: out
             # (batch, max_seq_len, num_directions * hidden_size)
