@@ -6,6 +6,8 @@
 __pycache__
 *.pyc
 
+data/*
+!.gitkeep
 
 checkpoints
 
