@@ -1,0 +1,16 @@
+.DS_Store
+
+.idea
+.vscode
+
+__pycache__
+*.pyc
+
+
+checkpoints
+
+demo.py
+predict.py
+
+pytorch_transformers
+bert_parameters
