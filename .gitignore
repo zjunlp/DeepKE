@@ -6,9 +6,6 @@
 __pycache__
 *.pyc
 
-data/*
-!.gitkeep
-
 checkpoints
 
 demo.py
@@ -16,3 +13,4 @@ predict.py
 
 pytorch_transformers
 bert_parameters
+data/origin/statics.py
