@@ -36,6 +36,7 @@ def train(epoch, device, dataloader, model, optimizer, criterion, config):
     # plot
     if config.show_plot:
         plt.plot(total_loss)
+        plt.title('loss')
         plt.show()
 
 

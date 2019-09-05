@@ -66,7 +66,7 @@ class Config(object):
     batch_size = 64
     train_log = True
     log_interval = 10
-    show_plot = False
+    show_plot = True
     f1_norm = ['macro', 'micro']
 
 
