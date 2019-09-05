@@ -1,5 +1,5 @@
-python>=3.6
 torch>=1.0
 jieba>=0.39
 scikit_learn>=0.21
 pytorch_transformers>=1.0
+matplotlib>=3.1
