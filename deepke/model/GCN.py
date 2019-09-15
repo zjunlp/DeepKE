@@ -4,8 +4,8 @@ import torch.nn.functional as F
 from deepke.model import BasicModule, Embedding
 
 
-class CNN(BasicModule):
+class GCN(BasicModule):
     def __init__(self, vocab_size, config):
-        super(CNN, self).__init__()
-        self.model_name = 'CNN'
+        super(GCN, self).__init__()
+        self.model_name = 'GCN'
         # TODO
