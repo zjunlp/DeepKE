@@ -6,7 +6,7 @@
 __pycache__
 *.pyc
 
-checkpoints
+checkpoints/*
 
 bert_pretrained/*
 !bert_pretrained/readme.md
