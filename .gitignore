@@ -11,6 +11,7 @@ checkpoints
 demo.py
 predict.py
 
-pytorch_transformers
-bert_parameters
+bert_pretrained
+!bert_pretrained/readme.md
+
 data/origin/statics.py
