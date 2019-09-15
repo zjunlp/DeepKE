@@ -11,7 +11,7 @@ checkpoints
 demo.py
 predict.py
 
-bert_pretrained
+bert_pretrained/*
 !bert_pretrained/readme.md
 
 data/origin/statics.py
