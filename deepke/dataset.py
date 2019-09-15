@@ -1,35 +1,7 @@
 import torch
 from torch.utils.data import Dataset
 from deepke.utils import load_pkl
-
-
-class CustomLMDataset(Dataset):
-    def __init__(self, fp):
-        self.file = load_pkl(fp)
-
-    def __getitem__(self, item):
-        sample = self.file[item]
-        return sample
-
-    def __len__(self):
-        return len(self.file)
-
-
-def collate_fn_lm(batch):
-    batch.sort(key=lambda data: len(data[0]), reverse=True)
-    lens = [len(data[0]) for data in batch]
-    max_len = max(lens)
-
-    def _padding(x, max_len):
-        return x + [0] * (max_len - len(x))
-
-    sent_arr = []
-    y_arr = []
-    for data in batch:
-        sent, data_y = data
-        sent_arr.append(_padding(sent, max_len))
-        y_arr.append(data_y)
-    return torch.tensor(sent_arr), torch.tensor(y_arr)
+from deepke.config import config
 
 
 class CustomDataset(Dataset):
@@ -45,46 +17,57 @@ class CustomDataset(Dataset):
 
 
 def collate_fn(batch):
-    batch.sort(key=lambda data: len(data[0]), reverse=True)
-    lens = [len(data[0]) for data in batch]
-    max_len = max(lens)
+    batch.sort(key=lambda data: data['seq_len'], reverse=True)
+
+    max_len = 0
+    for data in batch:
+        if data['seq_len'] > max_len:
+            max_len = data['seq_len']
 
     def _padding(x, max_len):
         return x + [0] * (max_len - len(x))
 
-    sent_arr = []
-    head_pos_arr = []
-    tail_pos_arr = []
-    mask_arr = []
-    y_arr = []
-    for data in batch:
-        sent, head_pos, tail_pos, mask, data_y = data
-        sent_arr.append(_padding(sent, max_len))
-        head_pos_arr.append(_padding(head_pos, max_len))
-        tail_pos_arr.append(_padding(tail_pos, max_len))
-        mask_arr.append(_padding(mask, max_len))
-        y_arr.append(data_y)
-    return torch.tensor(sent_arr), torch.tensor(head_pos_arr), torch.tensor(
-        tail_pos_arr), torch.tensor(mask_arr), torch.tensor(y_arr)
+    if config.model_name == 'LM':
+        x, y = [], []
+        for data in batch:
+            x.append(_padding(data['lm_idx'], max_len))
+            y.append(data['target'])
+
+        return torch.tensor(x), torch.tensor(y)
+
+    else:
+        sent, head_pos, tail_pos, mask_pos = [], [], [], []
+        y = []
+        for data in batch:
+            sent.append(_padding(data['word2idx'], max_len))
+            head_pos.append(_padding(data['head_pos'], max_len))
+            tail_pos.append(_padding(data['tail_pos'], max_len))
+            mask_pos.append(_padding(data['mask_pos'], max_len))
+            y.append(data['target'])
+        return torch.Tensor(sent), torch.Tensor(head_pos), torch.Tensor(
+            tail_pos), torch.Tensor(mask_pos), torch.Tensor(y)
 
 
 if __name__ == '__main__':
     from torch.utils.data import DataLoader
-    vocab_path = 'data/out/vocab.pkl'
-    train_data_path = 'data/out/train.pkl'
+    vocab_path = '../data/out/vocab.pkl'
+    train_data_path = '../data/out/train.pkl'
     vocab = load_pkl(vocab_path)
 
     train_dataset = CustomDataset(train_data_path)
     dataloader = DataLoader(train_dataset,
                             batch_size=4,
-                            shuffle=False,
+                            shuffle=True,
                             collate_fn=collate_fn)
-    for idx, (*x, y) in enumerate(dataloader):
-        sent, head_pos, tail_pos, mask = x
 
-        raw_sents = []
-        for i in range(4):
-            raw_sent = [vocab.idx2word[i] for i in sent[i].numpy()]
-            raw_sents.append(''.join(raw_sent))
-        print(raw_sents, head_pos, tail_pos, mask, y, sep='\n\n')
+    for idx, (*x, y) in enumerate(dataloader):
+        print(x)
+        print(y)
         break
+        # sent, head_pos, tail_pos, mask_pos = x
+        # raw_sents = []
+        # for i in range(4):
+        #     raw_sent = [vocab.idx2word[i] for i in sent[i].numpy()]
+        #     raw_sents.append(''.join(raw_sent))
+        # print(raw_sents, head_pos, tail_pos, mask, y, sep='\n\n')
+        # break

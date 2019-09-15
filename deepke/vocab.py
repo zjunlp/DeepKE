@@ -12,13 +12,13 @@ class Vocab(object):
         self.word2count = {}
         self.idx2word = {}
         self.count = 0
-        self.add_init_tokens()
+        self._add_init_tokens()
 
-    def add_init_tokens(self):
+    def _add_init_tokens(self):
         for token in self.init_tokens:
-            self.add_word(token)
+            self._add_word(token)
 
-    def add_word(self, word):
+    def _add_word(self, word: str):
         if word not in self.word2idx:
             self.word2idx[word] = self.count
             self.word2count[word] = 1
@@ -29,12 +29,13 @@ class Vocab(object):
 
     def add_sent(self, sent: str):
         for word in sent:
-            self.add_word(word)
+            self._add_word(word)
 
     def trim(self, min_freq=2, verbose: bool = True):
-        '''
-        当 word 词频低于 min_freq 时，从词库中删除
-        :param min_freq: 最低词频
+        '''当 word 词频低于 min_freq 时，从词库中删除
+
+        Args:
+            param min_freq: 最低词频
         '''
         if self.trimed:
             return
@@ -42,32 +43,34 @@ class Vocab(object):
 
         keep_words = []
         new_words = []
+        keep_words.extend(self.init_tokens)
+        new_words.extend(self.init_tokens)
+
         for k, v in self.word2count.items():
             if v >= min_freq:
                 keep_words.append(k)
                 new_words.extend([k] * v)
         if verbose:
             print('after trim, keep words [{} / {}] = {:.2f}%'.format(
-                len(keep_words + self.init_tokens), len(self.word2idx),
-                len(keep_words + self.init_tokens) / len(self.word2idx) * 100))
+                len(keep_words), len(self.word2idx),
+                len(keep_words) / len(self.word2idx) * 100))
 
         # Reinitialize dictionaries
         self.word2idx = {}
         self.word2count = {}
         self.idx2word = {}
         self.count = 0
-        self.add_init_tokens()
         for word in new_words:
-            self.add_word(word)
+            self._add_word(word)
 
 
 if __name__ == '__main__':
-    from nltk import word_tokenize
-    vocab = Vocab('test')
-    sent = ' 我是中国人，我爱中国。'
     # english
+    # from nltk import word_tokenize
     # sent = "I'm chinese, I love China."
     # words = word_tokenize(sent)
+    vocab = Vocab('test')
+    sent = ' 我是中国人，我   爱中国。'
     print(sent, '\n')
     vocab.add_sent(sent)
     print(vocab.word2idx)

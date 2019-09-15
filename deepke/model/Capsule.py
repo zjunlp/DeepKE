@@ -8,20 +8,20 @@ class Capsule(BasicModule):
     def __init__(self, vocab_size, config):
         super(Capsule, self).__init__()
         self.model_name = 'Capsule'
-        self.word_dim = config.word_dim
-        self.pos_size = config.pos_size
-        self.pos_dim = config.pos_dim
-        self.hidden_dim = config.hidden_dim
-        self.dropout = config.dropout
+        self.vocab_size = vocab_size
+        self.word_dim = config.model.word_dim
+        self.pos_size = config.model.pos_size
+        self.pos_dim = config.model.pos_dim
+        self.hidden_dim = config.model.hidden_dim
 
-        self.num_primary_units = config.num_primary_units
-        self.num_output_units = config.num_output_units
-        self.primary_channels = config.primary_channels
-        self.primary_unit_size = config.primary_unit_size
-        self.output_unit_size = config.output_unit_size
-        self.num_iterations = config.num_iterations
+        self.num_primary_units = config.capsule.num_primary_units
+        self.num_output_units = config.capsule.num_output_units
+        self.primary_channels = config.capsule.primary_channels
+        self.primary_unit_size = config.capsule.primary_unit_size
+        self.output_unit_size = config.capsule.output_unit_size
+        self.num_iterations = config.capsule.num_iterations
 
-        self.embedding = Embedding(vocab_size, self.word_dim, self.pos_size,
+        self.embedding = Embedding(self.vocab_size, self.word_dim, self.pos_size,
                                    self.pos_dim)
         self.input_dim = self.word_dim + self.pos_dim * 2
         self.lstm = VarLenLSTM(

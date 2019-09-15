@@ -5,7 +5,7 @@
 
 文件夹内必须有三个文件：
 
-- bert_config.json `BERT 结构的配置文件`
-- pytorch_model.bin `预训练后保存的模型`
-- vocab.txt `BERT 词表`
+- config.json `BERT 模型结构的配置文件`
+- pytorch_model.bin `预训练模型参数`
+- vocab.txt `BERT 模型词表`
 

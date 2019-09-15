@@ -23,6 +23,7 @@ __all__ = [
     'csv2jsonld',
 ]
 
+Path = str
 
 def to_one_hot(x, length):
     batch_size = x.size(0)
@@ -137,7 +138,7 @@ def load_pkl(fp: str, obj_name: str = 'data', verbose: bool = True) -> Any:
         return data
 
 
-def save_pkl(fp: str, obj, obj_name: str = 'data',
+def save_pkl(fp: Path, obj, obj_name: str = 'data',
              verbose: bool = True) -> None:
     if verbose:
         print(f'save {obj_name} in {fp}')
@@ -160,14 +161,11 @@ def ensure_dir(d: str, verbose: bool = True) -> None:
 
 def load_csv(fp: str) -> List:
     print(f'load {fp}')
-    datas = []
 
     with open(fp, encoding='utf-8') as f:
         reader = csv.DictReader(f)
-        for line in reader:
-            data = list(line.values())
-            datas.append(data)
-    return datas
+        return list(reader)
+
 
 
 def load_jsonld(fp: str) -> List:

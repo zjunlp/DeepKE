@@ -1,7 +1,8 @@
-from .Embedding import Embedding
 from .BasicModule import BasicModule
-from .Transformer import Transformer
-from .BiLSTM import BiLSTM, VarLenLSTM
+from .Embedding import Embedding
 from .CNN import CNN
+from .RNN import VarLenLSTM, BiLSTM
+from .GCN import GCN
+from .Transformer import Transformer
 from .Capsule import Capsule
-from .Bert import Bert
+from .LM import LM

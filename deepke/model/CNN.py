@@ -8,26 +8,27 @@ class CNN(BasicModule):
     def __init__(self, vocab_size, config):
         super(CNN, self).__init__()
         self.model_name = 'CNN'
-        self.out_channels = config.out_channels
-        self.kernel_size = config.kernel_size
-        self.word_dim = config.word_dim
-        self.pos_size = config.pos_size
-        self.pos_dim = config.pos_dim
-        self.use_pcnn = config.use_pcnn
-        self.hidden_dim = config.hidden_dim
+        self.vocab_size = vocab_size
+        self.word_dim = config.model.word_dim
+        self.pos_size = config.model.pos_size
+        self.pos_dim = config.model.pos_dim
+        self.hidden_dim = config.model.hidden_dim
+        self.dropout = config.model.dropout
+        self.use_pcnn = config.cnn.use_pcnn
+        self.out_channels = config.cnn.out_channels
+        self.kernel_size = config.cnn.kernel_size
         self.out_dim = config.relation_type
-        self.dropout = config.dropout
 
         if isinstance(self.kernel_size, int):
             self.kernel_size = [self.kernel_size]
         for k in self.kernel_size:
             assert k % 2 == 1, "kernel size has to be odd numbers."
 
-        self.embedding = Embedding(vocab_size, self.word_dim, self.pos_size,
+        self.embedding = Embedding(self.vocab_size, self.word_dim, self.pos_size,
                                   self.pos_dim)
         # PCNN embedding
         self.mask_embed = nn.Embedding(4, 3)
-        masks = torch.tensor([[0, 0, 0], [100, 0, 0], [0, 100, 0], [0, 0,
+        masks = torch.Tensor([[0, 0, 0], [100, 0, 0], [0, 100, 0], [0, 0,
                                                                     100]])
         self.mask_embed.weight.data.copy_(masks)
         self.mask_embed.weight.requires_grad = False

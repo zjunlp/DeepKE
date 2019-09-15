@@ -3,6 +3,7 @@ import torch.nn as nn
 import time
 from deepke.utils import ensure_dir
 
+
 class BasicModule(nn.Module):
     '''
     封装nn.Module, 提供 save 和 load 方法
@@ -27,7 +28,7 @@ class BasicModule(nn.Module):
             name = prefix + self.model_name + '_' + f'epoch{epoch}_'
             name = time.strftime(name + '%m%d_%H:%M:%S.pth')
         else:
-            name = prefix + name + '_'+ self.model_name + '_' + f'epoch{epoch}_'
+            name = prefix + name + '_' + self.model_name + '_' + f'epoch{epoch}_'
             name = time.strftime(name + '%m%d_%H:%M:%S.pth')
         torch.save(self.state_dict(), name)
         return name

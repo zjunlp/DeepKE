@@ -13,8 +13,8 @@ class Embedding(nn.Module):
     def forward(self, x):
         words, head_pos, tail_pos = x
         word_embed = self.word_embed(words)
-        head_embed = self.head_pos_embed(head_pos)
-        tail_embed = self.tail_pos_embed(tail_pos)
-        feature_embed = torch.cat([word_embed, head_embed, tail_embed], dim=-1)
+        head_pos_embed = self.head_pos_embed(head_pos)
+        tail_pos_embed = self.tail_pos_embed(tail_pos)
+        feature_embed = torch.cat([word_embed, head_pos_embed, tail_pos_embed], dim=-1)
 
         return feature_embed

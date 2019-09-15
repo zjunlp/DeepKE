@@ -82,15 +82,16 @@ class Transformer(BasicModule):
     def __init__(self, vocab_size, config):
         super(Transformer, self).__init__()
         self.model_name = 'Transformer'
-        self.word_dim = config.word_dim
-        self.pos_size = config.pos_size
-        self.pos_dim = config.pos_dim
-        self.hidden_dim = config.hidden_dim
-        self.dropout = config.dropout
+        self.vocab_size = vocab_size
+        self.word_dim = config.model.word_dim
+        self.pos_size = config.model.pos_size
+        self.pos_dim = config.model.pos_dim
+        self.hidden_dim = config.model.hidden_dim
+        self.dropout = config.model.dropout
+        self.layers = config.transformer.transformer_layers
         self.out_dim = config.relation_type
-        self.layers = config.transformer_layers
 
-        self.embedding = Embedding(vocab_size, self.word_dim, self.pos_size,
+        self.embedding = Embedding(self.vocab_size, self.word_dim, self.pos_size,
                                    self.pos_dim)
         self.feature_dim = self.word_dim + self.pos_dim * 2
         self.att = MultiHeadAttention(self.feature_dim, num_head=4)

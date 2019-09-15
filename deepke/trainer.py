@@ -9,13 +9,14 @@ def train(epoch, device, dataloader, model, optimizer, criterion, config):
     model.train()
     total_loss = []
 
-    for batch_idx, batch in enumerate(dataloader, 1):
-        *x, y = [data.to(device) for data in batch]
+    for batch_idx, (*x, y) in enumerate(dataloader, 1):
+        x = [i.to(device) for i in x]
+        y = y.to(device)
         optimizer.zero_grad()
         y_pred = model(x)
 
         if model.model_name == 'Capsule':
-            y = to_one_hot(y,config.relation_type)
+            y = to_one_hot(y, config.relation_type)
             loss = model.loss(y_pred, y)
         else:
             loss = criterion(y_pred, y)
@@ -46,8 +47,9 @@ def validate(dataloader, model, device, config):
     with torch.no_grad():
         total_y_true = np.empty(0)
         total_y_pred = np.empty(0)
-        for batch_idx, batch in enumerate(dataloader, 1):
-            *x, y = [data.to(device) for data in batch]
+        for batch_idx, (*x, y) in enumerate(dataloader, 1):
+            x = [i.to(device) for i in x]
+            y = y.to(device)
             y_pred = model(x)
 
             if model.model_name == 'Capsule':
