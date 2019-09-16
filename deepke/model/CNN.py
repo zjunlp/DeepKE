@@ -28,7 +28,7 @@ class CNN(BasicModule):
                                   self.pos_dim)
         # PCNN embedding
         self.mask_embed = nn.Embedding(4, 3)
-        masks = torch.Tensor([[0, 0, 0], [100, 0, 0], [0, 100, 0], [0, 0,
+        masks = torch.tensor([[0, 0, 0], [100, 0, 0], [0, 100, 0], [0, 0,
                                                                     100]])
         self.mask_embed.weight.data.copy_(masks)
         self.mask_embed.weight.requires_grad = False

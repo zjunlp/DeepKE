@@ -25,11 +25,11 @@ class ModelConfig(object):
 class CNNConfig(object):
     use_pcnn = True
     out_channels = 100
-    kernel_size = [3, 5]
+    kernel_size = [3, 5, 7]
 
 
 class RNNConfig(object):
-    lstm_layers = 2
+    lstm_layers = 3
     last_hn = False
 
 
@@ -39,7 +39,7 @@ class GCNConfig(object):
 
 
 class TransformerConfig(object):
-    transformer_layers = 2
+    transformer_layers = 3
 
 
 class CapsuleConfig(object):
@@ -48,7 +48,7 @@ class CapsuleConfig(object):
     primary_channels = 1
     primary_unit_size = 768
     output_unit_size = 128
-    num_iterations = 5
+    num_iterations = 3
 
 
 class LMConfig(object):
@@ -62,6 +62,8 @@ class Config(object):
     # 预处理后存放文件的位置
     out_path = 'data/out'
 
+    # 是否将句子中实体替换为实体类型
+    replace_entity_by_type = True
     # 是否为中文数据
     is_chinese = True
     # 是否需要分词操作
@@ -77,7 +79,7 @@ class Config(object):
     pos_limit = 50  # [-50, 50]
 
     # (CNN, RNN, GCN, Transformer, Capsule, LM)
-    model_name = 'CNN'
+    model_name = 'Capsule'
 
     training = TrainingConfig()
     model = ModelConfig()
@@ -87,23 +89,6 @@ class Config(object):
     transformer = TransformerConfig()
     capsule = CapsuleConfig()
     lm = LMConfig()
-
-    def parse(self, kwargs, verbose=False):
-        '''
-        user can update the default hyper parameters
-        '''
-        for k, v in kwargs.items():
-            if not hasattr(self, k):
-                raise Exception('opt has No key: {}'.format(k))
-            setattr(self, k, v)
-
-        if verbose:
-            print('*************************************************')
-            print('user config:')
-            for k, v in kwargs.items():
-                if not k.startswith('__'):
-                    print("{} => {}".format(k, getattr(self, k)))
-            print('*************************************************')
 
 
 config = Config()

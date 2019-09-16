@@ -40,29 +40,20 @@ def _pos_feature(sent_len: int, entity_idx: int, entity_len: int,
 
 
 def _build_data(data: List[Dict], vocab: Vocab, relations: Dict) -> List[Dict]:
-
     if vocab.name == 'LM':
         for d in data:
-            d['seq_len'] = len(d['lm_idx'])
             d['target'] = relations[d['relation']]
 
         return data
 
     for d in data:
+        word2idx = [vocab.word2idx.get(w, 1) for w in d['sentence']]
+        seq_len = len(word2idx)
+        head_idx, tail_idx = int(d['head_offset']), int(d['tail_offset'])
         if vocab.name == 'word':
-            word2idx = [vocab.word2idx.get(w, 1) for w in d['words']]
-            seq_len = len(word2idx)
-            head_idx, tail_idx = d['head_idx'], d['tail_idx']
             head_len, tail_len = 1, 1
-
-        elif vocab.name == 'char':
-            word2idx = [
-                vocab.word2idx.get(w, 1) for w in d['sentence'].strip()
-            ]
-            seq_len = len(word2idx)
-            head_idx, tail_idx = int(d['head_offset']), int(d['tail_offset'])
-            head_len, tail_len = len(d['head']), len(d['tail'])
-
+        else:
+            head_len, tail_len = len(d['head_type']), len(d['tail_type'])
         entities_idx = [head_idx, tail_idx
                         ] if tail_idx > head_idx else [tail_idx, head_idx]
         head_pos = _pos_feature(seq_len, head_idx, head_len, config.pos_limit)
@@ -83,12 +74,11 @@ def _build_data(data: List[Dict], vocab: Vocab, relations: Dict) -> List[Dict]:
 def _build_vocab(data: List[Dict], out_path: Path) -> Vocab:
     if config.word_segment:
         vocab = Vocab('word')
-        for d in data:
-            vocab.add_sent(d['words'])
     else:
         vocab = Vocab('char')
-        for d in data:
-            vocab.add_sent(d['sentence'].strip())
+
+    for d in data:
+        vocab.add_sent(d['sentence'])
     vocab.trim(config.min_freq)
 
     ensure_dir(out_path)
@@ -108,29 +98,44 @@ def _split_sent(data: List[Dict], verbose: bool = True) -> List[Dict]:
     jieba.add_word('TAIL')
 
     for d in data:
-        sent = d['sentence'].strip()
-        sent = sent.replace(d['head'], 'HEAD', 1)
-        sent = sent.replace(d['tail'], 'TAIL', 1)
+        sent = d['sentence']
+        sent = sent.replace(d['head_type'], 'HEAD', 1)
+        sent = sent.replace(d['tail_type'], 'TAIL', 1)
         sent = jieba.lcut(sent)
         head_idx, tail_idx = sent.index('HEAD'), sent.index('TAIL')
-        sent[head_idx], sent[tail_idx] = d['head'], d['tail']
-        d['words'] = sent
-        d['head_idx'] = head_idx
-        d['tail_idx'] = tail_idx
+        sent[head_idx], sent[tail_idx] = d['head_type'], d['tail_type']
+        d['sentence'] = sent
+        d['head_offset'] = head_idx
+        d['tail_offset'] = tail_idx
+
     return data
 
 
 def _add_lm_data(data: List[Dict]) -> List[Dict]:
     '使用语言模型的词表，序列化输入的句子'
-    tokenizer = BertTokenizer.from_pretrained('../bert_pretrained')
+    tokenizer = BertTokenizer.from_pretrained(config.lm.lm_file)
 
     for d in data:
+        sent = d['sentence']
+        sent += '[SEP]' + d['head'] + '[SEP]' + d['tail']
+
+        d['lm_idx'] = tokenizer.encode(sent, add_special_tokens=True)
+        d['seq_len'] = len(d['lm_idx'])
+
+    return data
+
+
+def _replace_entity_by_type(data: List[Dict]) -> List[Dict]:
+    for d in data:
         sent = d['sentence'].strip()
-        d['seq_len'] = len(sent)
         sent = sent.replace(d['head'], d['head_type'], 1)
         sent = sent.replace(d['tail'], d['tail_type'], 1)
-        sent += '[SEP]' + d['head'] + '[SEP]' + d['tail']
-        d['lm_idx'] = tokenizer.encode(sent, add_special_tokens=True)
+        head_offset = sent.index(d['head_type'])
+        tail_offset = sent.index(d['tail_type'])
+
+        d['sentence'] = sent
+        d['head_offset'] = head_offset
+        d['tail_offset'] = tail_offset
 
     return data
 
@@ -162,6 +167,12 @@ def process(data_path: Path, out_path: Path) -> None:
     train_raw_data = load_csv(train_fp)
     test_raw_data = load_csv(test_fp)
     relations = _load_relations(relation_fp)
+
+    # 使用 entity type 替换句子中的 entity
+    # 这样训练效果会提升很多
+    if config.replace_entity_by_type:
+        train_raw_data = _replace_entity_by_type(train_raw_data)
+        test_raw_data = _replace_entity_by_type(test_raw_data)
 
     # 使用预训练语言模型时
     if config.model_name == 'LM':

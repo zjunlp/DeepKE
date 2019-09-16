@@ -11,6 +11,7 @@ checkpoints/*.pth
 bert_pretrained/*
 !bert_pretrained/readme.md
 
+data/out
 data/origin/statics.py
 
 demo.py

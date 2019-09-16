@@ -1,5 +1,6 @@
 import os
 import argparse
+import warnings
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -11,6 +12,8 @@ from deepke.trainer import train, validate
 from deepke.preprocess import process
 from deepke.dataset import CustomDataset, collate_fn
 
+warnings.filterwarnings("ignore")
+
 __Models__ = {
     "CNN": model.CNN,
     "RNN": model.BiLSTM,
@@ -21,14 +24,14 @@ __Models__ = {
 }
 
 parser = argparse.ArgumentParser(description='choose your model')
-parser.add_argument('--model_name', type=str, help='model name')
+parser.add_argument('--model', type=str, help='model name')
 args = parser.parse_args()
-model_name = args.model_name if args.model_name else config.model_name
+model_name = args.model if args.model else config.model_name
 
 make_seed(config.training.seed)
 
 if config.training.use_gpu and torch.cuda.is_available():
-    device = torch.device('cuda', config.gpu_id)
+    device = torch.device('cuda', config.training.gpu_id)
 else:
     device = torch.device('cpu')
 
@@ -64,7 +67,10 @@ model.to(device)
 
 optimizer = optim.Adam(model.parameters(), lr=config.training.learning_rate)
 scheduler = optim.lr_scheduler.ReduceLROnPlateau(
-    optimizer, 'max', factor=config.training.decay_rate, patience=config.training.decay_patience)
+    optimizer,
+    'max',
+    factor=config.training.decay_rate,
+    patience=config.training.decay_patience)
 criterion = nn.CrossEntropyLoss()
 
 best_macro_f1, best_macro_epoch = 0, 1

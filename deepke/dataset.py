@@ -44,8 +44,8 @@ def collate_fn(batch):
             tail_pos.append(_padding(data['tail_pos'], max_len))
             mask_pos.append(_padding(data['mask_pos'], max_len))
             y.append(data['target'])
-        return torch.Tensor(sent), torch.Tensor(head_pos), torch.Tensor(
-            tail_pos), torch.Tensor(mask_pos), torch.Tensor(y)
+        return torch.tensor(sent), torch.tensor(head_pos), torch.tensor(
+            tail_pos), torch.tensor(mask_pos), torch.tensor(y)
 
 
 if __name__ == '__main__':
