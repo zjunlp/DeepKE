@@ -75,3 +75,9 @@ sentence|relation|head|head_type|head_offset|tail|tail_type|tail_offset
 ## 具体介绍
 
 见 [wiki](https://github.com/zjunlp/deepke/wiki)
+
+
+## 后续工作
+
+- [ ] 添加经典实体关系联合抽取模型
+- [ ] 添加 web 页面，以供预测输入句子信息可视化
