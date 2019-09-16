@@ -23,26 +23,25 @@ DeepKE 是基于 Pytorch 的深度学习中文关系抽取处理套件。
 ├── checkpoints             # 保存训练后的模型参数
 ├── data                    # 数据目录
 │ ├── origin                # 训练使用的原始数据集
-│   ├── train.csv           # 训练数据集
-│   ├── test.csv            # 测试数据集
-│   ├── relation.txt        # 关系种类
+│ │ ├── train.csv           # 训练数据集
+│ │ ├── test.csv            # 测试数据集
+│ │ ├── relation.txt        # 关系种类
 ├── deepke
-  ├── model                 # 模型目录
-  │ ├── __init__.py
-  │ ├── BasicModule.py      # 模型基本配置
-  │ ├── Embedding.py        # Embeddding 模块
-  │ ├── CNN.py              # CNN & PCNN 模型
-  │ ├── BiLSTM.py           # BiLSTM 模型
-  │ ├── Transformer.py      # Transformer 模型
-  │ ├── Capsule.py          # Capsule 模型
-  │ ├── Bert.py             # 语言预训练 模型
-  ├── __init__.py
-  ├── config.py             # 配置文件
-  ├── vocab.py              # 词汇表构建函数
-  ├── preprocess.py         # 训练前预处理数据
-  ├── dataset.py            # 训练时批处理输入数据
-  ├── trainer.py            # 训练迭代函数
-  ├── utils.py              # 工具函数
+│ ├── model                 # 模型目录
+│ │ ├── BasicModule.py      # 模型基本配置
+│ │ ├── Embedding.py        # Embeddding 模块
+│ │ ├── CNN.py              # CNN & PCNN 模型
+│ │ ├── RNN.py              # BiLSTM 模型
+│ │ ├── GCN.py              # GCN 模型
+│ │ ├── Transformer.py      # Transformer 模型
+│ │ ├── Capsule.py          # Capsule 模型
+│ │ ├── LM.py               # 语言预训练 模型
+│ ├── config.py             # 配置文件
+│ ├── vocab.py              # 词汇表构建函数
+│ ├── preprocess.py         # 训练前预处理数据
+│ ├── dataset.py            # 训练时批处理输入数据
+│ ├── trainer.py            # 训练迭代函数
+│ ├── utils.py              # 工具函数
 ├── main.py                 # 主入口文件
 ├── README.md               # read me 文件
 ```
