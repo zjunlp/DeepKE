@@ -24,9 +24,9 @@ __Models__ = {
 }
 
 parser = argparse.ArgumentParser(description='choose your model')
-parser.add_argument('--model', type=str, help='model name')
+parser.add_argument('--model_name', type=str, help='model name: [CNN, RNN, GCN, Capsule, Transformer, LM]')
 args = parser.parse_args()
-model_name = args.model if args.model else config.model_name
+model_name = args.model_name if args.model_name else config.model_name
 
 make_seed(config.training.seed)
 
