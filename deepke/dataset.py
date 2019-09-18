@@ -44,8 +44,8 @@ def collate_fn(batch):
             tail_pos.append(_padding(data['tail_pos'], max_len))
             mask_pos.append(_padding(data['mask_pos'], max_len))
             y.append(data['target'])
-        return torch.tensor(sent), torch.tensor(head_pos), torch.tensor(
-            tail_pos), torch.tensor(mask_pos), torch.tensor(y)
+        return torch.tensor(sent), torch.tensor(head_pos), torch.tensor(tail_pos), torch.tensor(
+            mask_pos), torch.tensor(y)
 
 
 if __name__ == '__main__':
@@ -55,19 +55,10 @@ if __name__ == '__main__':
     vocab = load_pkl(vocab_path)
 
     train_dataset = CustomDataset(train_data_path)
-    dataloader = DataLoader(train_dataset,
-                            batch_size=4,
-                            shuffle=True,
-                            collate_fn=collate_fn)
+    dataloader = DataLoader(train_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
 
     for idx, (*x, y) in enumerate(dataloader):
         print(x)
         print(y)
         break
-        # sent, head_pos, tail_pos, mask_pos = x
-        # raw_sents = []
-        # for i in range(4):
-        #     raw_sent = [vocab.idx2word[i] for i in sent[i].numpy()]
-        #     raw_sents.append(''.join(raw_sent))
-        # print(raw_sents, head_pos, tail_pos, mask, y, sep='\n\n')
-        # break
+

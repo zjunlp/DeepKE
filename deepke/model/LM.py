@@ -15,6 +15,6 @@ class LM(BasicModule):
 
     def forward(self, x):
         x = x[0]
-        out = self.lm(x)[0][:,0]
+        out = self.lm(x)[0][:, 0]
         out = self.fc(out)
         return out

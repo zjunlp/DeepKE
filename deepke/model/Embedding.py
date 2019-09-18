@@ -3,8 +3,7 @@ import torch.nn as nn
 
 
 class Embedding(nn.Module):
-    def __init__(self, vocab_size: int, word_dim: int, pos_size: int,
-                 pos_dim: int):
+    def __init__(self, vocab_size: int, word_dim: int, pos_size: int, pos_dim: int):
         super(Embedding, self).__init__()
         self.word_embed = nn.Embedding(vocab_size, word_dim, padding_idx=0)
         self.head_pos_embed = nn.Embedding(pos_size, pos_dim, padding_idx=0)

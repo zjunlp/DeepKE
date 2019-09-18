@@ -51,9 +51,8 @@ class Vocab(object):
                 keep_words.append(k)
                 new_words.extend([k] * v)
         if verbose:
-            print('after trim, keep words [{} / {}] = {:.2f}%'.format(
-                len(keep_words), len(self.word2idx),
-                len(keep_words) / len(self.word2idx) * 100))
+            print('after trim, keep words [{} / {}] = {:.2f}%'.format(len(keep_words), len(self.word2idx),
+                                                                      len(keep_words) / len(self.word2idx) * 100))
 
         # Reinitialize dictionaries
         self.word2idx = {}
