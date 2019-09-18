@@ -25,6 +25,7 @@ __all__ = [
 
 Path = str
 
+
 def to_one_hot(x, length):
     batch_size = x.size(0)
     x_one_hot = torch.zeros(batch_size, length).to(x.device)
@@ -97,20 +98,16 @@ def seq_len_to_mask(seq_len, max_len=None):
     :return: np.ndarray, torch.Tensor 。shape将是(B, max_length)， 元素类似为bool或torch.uint8
     """
     if isinstance(seq_len, np.ndarray):
-        assert len(
-            np.shape(seq_len)
-        ) == 1, f"seq_len can only have one dimension, got {len(np.shape(seq_len))}."
+        assert len(np.shape(seq_len)) == 1, f"seq_len can only have one dimension, got {len(np.shape(seq_len))}."
         max_len = int(max_len) if max_len else int(seq_len.max())
         broad_cast_seq_len = np.tile(np.arange(max_len), (len(seq_len), 1))
         mask = broad_cast_seq_len < seq_len.reshape(-1, 1)
 
     elif isinstance(seq_len, torch.Tensor):
-        assert seq_len.dim(
-        ) == 1, f"seq_len can only have one dimension, got {seq_len.dim() == 1}."
+        assert seq_len.dim() == 1, f"seq_len can only have one dimension, got {seq_len.dim() == 1}."
         batch_size = seq_len.size(0)
         max_len = int(max_len) if max_len else seq_len.max().long()
-        broad_cast_seq_len = torch.arange(max_len).expand(batch_size,
-                                                          -1).to(seq_len)
+        broad_cast_seq_len = torch.arange(max_len).expand(batch_size, -1).to(seq_len)
         mask = broad_cast_seq_len.lt(seq_len.unsqueeze(1))
     else:
         raise TypeError("Only support 1-d numpy.ndarray or 1-d torch.Tensor.")
@@ -138,8 +135,7 @@ def load_pkl(fp: str, obj_name: str = 'data', verbose: bool = True) -> Any:
         return data
 
 
-def save_pkl(fp: Path, obj, obj_name: str = 'data',
-             verbose: bool = True) -> None:
+def save_pkl(fp: Path, obj, obj_name: str = 'data', verbose: bool = True) -> None:
     if verbose:
         print(f'save {obj_name} in {fp}')
     with open(fp, 'wb') as f:
@@ -165,7 +161,6 @@ def load_csv(fp: str) -> List:
     with open(fp, encoding='utf-8') as f:
         reader = csv.DictReader(f)
         return list(reader)
-
 
 
 def load_jsonld(fp: str) -> List:
@@ -227,8 +222,7 @@ def csv2jsonld(fp: str, verbose: bool = True) -> str:
     if verbose:
         print('saving...')
     with open(fp_new, 'w', encoding='utf-8') as f:
-        f.write(
-            os.linesep.join([json.dumps(l, ensure_ascii=False) for l in data]))
+        f.write(os.linesep.join([json.dumps(l, ensure_ascii=False) for l in data]))
     if verbose:
         print(f'saved jsonld file in: {fp_new}')
     return fp_new

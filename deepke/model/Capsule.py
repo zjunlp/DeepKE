@@ -21,17 +21,14 @@ class Capsule(BasicModule):
         self.output_unit_size = config.capsule.output_unit_size
         self.num_iterations = config.capsule.num_iterations
 
-        self.embedding = Embedding(self.vocab_size, self.word_dim, self.pos_size,
-                                   self.pos_dim)
+        self.embedding = Embedding(self.vocab_size, self.word_dim, self.pos_size, self.pos_dim)
         self.input_dim = self.word_dim + self.pos_dim * 2
         self.lstm = VarLenLSTM(
             self.input_dim,
             self.hidden_dim,
         )
-        self.capsule = CapsuleNet(self.num_primary_units,
-                                  self.num_output_units, self.primary_channels,
-                                  self.primary_unit_size,
-                                  self.output_unit_size, self.num_iterations)
+        self.capsule = CapsuleNet(self.num_primary_units, self.num_output_units, self.primary_channels,
+                                  self.primary_unit_size, self.output_unit_size, self.num_iterations)
 
     def forward(self, input):
         *x, mask = input
@@ -66,8 +63,8 @@ class Capsule(BasicModule):
 
 
 class CapsuleNet(nn.Module):
-    def __init__(self, num_primary_units, num_output_units, primary_channels,
-                 primary_unit_size, output_unit_size, num_iterations):
+    def __init__(self, num_primary_units, num_output_units, primary_channels, primary_unit_size, output_unit_size,
+                 num_iterations):
         super(CapsuleNet, self).__init__()
         self.primary = CapsuleLayer(in_units=0,
                                     out_units=num_primary_units,
@@ -102,8 +99,7 @@ class ConvUnit(nn.Module):
 
 
 class CapsuleLayer(nn.Module):
-    def __init__(self, in_units, out_units, in_channels, unit_size,
-                 use_routing, num_iterations):
+    def __init__(self, in_units, out_units, in_channels, unit_size, use_routing, num_iterations):
         super(CapsuleLayer, self).__init__()
         self.in_units = in_units
         self.out_units = out_units
@@ -112,8 +108,7 @@ class CapsuleLayer(nn.Module):
         self.use_routing = use_routing
 
         if self.use_routing:
-            self.W = nn.Parameter(
-                torch.randn(1, in_channels, out_units, unit_size, in_units))
+            self.W = nn.Parameter(torch.randn(1, in_channels, out_units, unit_size, in_units))
             self.num_iterations = num_iterations
         else:
 
@@ -190,8 +185,7 @@ class CapsuleLayer(nn.Module):
             v_j1 = torch.cat([v_j] * self.in_channels, dim=1)
 
             # (1, features, out_units, 1)
-            u_vj1 = torch.matmul(u_hat.transpose(3, 4),
-                                 v_j1).squeeze(4).mean(dim=0, keepdim=True)
+            u_vj1 = torch.matmul(u_hat.transpose(3, 4), v_j1).squeeze(4).mean(dim=0, keepdim=True)
 
             # Update b_ij (routing)
             b_ij = u_vj1

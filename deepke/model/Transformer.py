@@ -68,8 +68,7 @@ class MultiHeadAttention(nn.Module):
         v = v.permute(2, 0, 1, 3).contiguous().view(-1, sk, feature)
         if att_mask_out is not None:
             att_mask_out = att_mask_out.repeat(n_head, 1, 1)
-        att = self.attention(q, k, v,
-                             att_mask_out).view(n_head, batch, sq, feature)
+        att = self.attention(q, k, v, att_mask_out).view(n_head, batch, sq, feature)
 
         # concat all heads, do output linear
         # [num_head, batch, seq_len, feature] => [batch, seq_len, num_head*feature]
@@ -91,15 +90,12 @@ class Transformer(BasicModule):
         self.layers = config.transformer.transformer_layers
         self.out_dim = config.relation_type
 
-        self.embedding = Embedding(self.vocab_size, self.word_dim, self.pos_size,
-                                   self.pos_dim)
+        self.embedding = Embedding(self.vocab_size, self.word_dim, self.pos_size, self.pos_dim)
         self.feature_dim = self.word_dim + self.pos_dim * 2
         self.att = MultiHeadAttention(self.feature_dim, num_head=4)
         self.norm1 = nn.LayerNorm(self.feature_dim)
-        self.ffn = nn.Sequential(nn.Linear(self.feature_dim, self.hidden_dim),
-                                 nn.ReLU(),
-                                 nn.Linear(self.hidden_dim, self.feature_dim),
-                                 nn.Dropout(self.dropout))
+        self.ffn = nn.Sequential(nn.Linear(self.feature_dim, self.hidden_dim), nn.ReLU(),
+                                 nn.Linear(self.hidden_dim, self.feature_dim), nn.Dropout(self.dropout))
         self.norm2 = nn.LayerNorm(self.feature_dim)
         self.fc = nn.Linear(self.feature_dim, self.out_dim)
 

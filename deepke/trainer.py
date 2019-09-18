@@ -26,13 +26,12 @@ def train(epoch, device, dataloader, model, optimizer, criterion, config):
         total_loss.append(loss.item())
 
         # logging
-        data_cal = len(dataloader.dataset) if batch_idx == len(
-            dataloader) else batch_idx * len(y)
-        if (config.training.train_log and batch_idx %
-                config.training.log_interval == 0) or batch_idx == len(dataloader):
-            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                epoch, data_cal, len(dataloader.dataset),
-                100. * batch_idx / len(dataloader), loss.item()))
+        data_cal = len(dataloader.dataset) if batch_idx == len(dataloader) else batch_idx * len(y)
+        if (config.training.train_log
+                and batch_idx % config.training.log_interval == 0) or batch_idx == len(dataloader):
+            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(epoch, data_cal, len(dataloader.dataset),
+                                                                           100. * batch_idx / len(dataloader),
+                                                                           loss.item()))
 
     # plot
     if config.training.show_plot:
@@ -66,9 +65,7 @@ def validate(dataloader, model, device, config):
 
         total_f1 = []
         for average in config.training.f1_norm:
-            p, r, f1, _ = precision_recall_fscore_support(total_y_true,
-                                                          total_y_pred,
-                                                          average=average)
+            p, r, f1, _ = precision_recall_fscore_support(total_y_true, total_y_pred, average=average)
             print(f' {average} metrics: [p: {p:.4f}, r:{r:.4f}, f1:{f1:.4f}]')
             total_f1.append(f1)
 

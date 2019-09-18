@@ -24,12 +24,10 @@ class CNN(BasicModule):
         for k in self.kernel_size:
             assert k % 2 == 1, "kernel size has to be odd numbers."
 
-        self.embedding = Embedding(self.vocab_size, self.word_dim, self.pos_size,
-                                  self.pos_dim)
+        self.embedding = Embedding(self.vocab_size, self.word_dim, self.pos_size, self.pos_dim)
         # PCNN embedding
         self.mask_embed = nn.Embedding(4, 3)
-        masks = torch.tensor([[0, 0, 0], [100, 0, 0], [0, 100, 0], [0, 0,
-                                                                    100]])
+        masks = torch.tensor([[0, 0, 0], [100, 0, 0], [0, 100, 0], [0, 0, 100]])
         self.mask_embed.weight.data.copy_(masks)
         self.mask_embed.weight.requires_grad = False
 

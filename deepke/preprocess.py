@@ -21,8 +21,7 @@ def _mask_feature(entities_idx: List, sen_len: int) -> List:
     return left + middle + right
 
 
-def _pos_feature(sent_len: int, entity_idx: int, entity_len: int,
-                 pos_limit: int) -> List:
+def _pos_feature(sent_len: int, entity_idx: int, entity_len: int, pos_limit: int) -> List:
 
     left = list(range(-entity_idx, 0))
     middle = [0] * entity_len
@@ -54,8 +53,7 @@ def _build_data(data: List[Dict], vocab: Vocab, relations: Dict) -> List[Dict]:
             head_len, tail_len = 1, 1
         else:
             head_len, tail_len = len(d['head_type']), len(d['tail_type'])
-        entities_idx = [head_idx, tail_idx
-                        ] if tail_idx > head_idx else [tail_idx, head_idx]
+        entities_idx = [head_idx, tail_idx] if tail_idx > head_idx else [tail_idx, head_idx]
         head_pos = _pos_feature(seq_len, head_idx, head_len, config.pos_limit)
         tail_pos = _pos_feature(seq_len, tail_idx, tail_len, config.pos_limit)
         mask_pos = _mask_feature(entities_idx, seq_len)

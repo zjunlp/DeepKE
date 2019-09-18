@@ -66,11 +66,10 @@ model.to(device)
 # print(model)
 
 optimizer = optim.Adam(model.parameters(), lr=config.training.learning_rate)
-scheduler = optim.lr_scheduler.ReduceLROnPlateau(
-    optimizer,
-    'max',
-    factor=config.training.decay_rate,
-    patience=config.training.decay_patience)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer,
+                                                 'max',
+                                                 factor=config.training.decay_rate,
+                                                 patience=config.training.decay_patience)
 criterion = nn.CrossEntropyLoss()
 
 best_macro_f1, best_macro_epoch = 0, 1
@@ -94,7 +93,5 @@ for epoch in range(1, config.training.epoch + 1):
         best_micro_model = model_name
 
 print('=' * 10, ' End training ', '=' * 10)
-print(f'best macro f1: {best_macro_f1:.4f},',
-      f'in epoch: {best_macro_epoch}, saved in: {best_macro_model}')
-print(f'best micro f1: {best_micro_f1:.4f},',
-      f'in epoch: {best_micro_epoch}, saved in: {best_micro_model}')
+print(f'best macro f1: {best_macro_f1:.4f},', f'in epoch: {best_macro_epoch}, saved in: {best_macro_model}')
+print(f'best micro f1: {best_micro_f1:.4f},', f'in epoch: {best_micro_epoch}, saved in: {best_micro_model}')

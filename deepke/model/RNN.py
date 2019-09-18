@@ -6,12 +6,7 @@ from deepke.model import BasicModule, Embedding
 
 
 class VarLenLSTM(BasicModule):
-    def __init__(self,
-                 input_size,
-                 hidden_size,
-                 lstm_layers=1,
-                 dropout=0,
-                 last_hn=False):
+    def __init__(self, input_size, hidden_size, lstm_layers=1, dropout=0, last_hn=False):
         super(VarLenLSTM, self).__init__()
         self.model_name = 'VarLenLSTM'
         self.lstm_layers = lstm_layers
@@ -36,10 +31,7 @@ class VarLenLSTM(BasicModule):
             out:  [B * seq_len * hidden]   hidden = 2 * hidden_dim
              hn:  [B * layers  * hidden]   hidden = 2 * hidden_dim
         '''
-        x = pack_padded_sequence(x,
-                                 x_len,
-                                 batch_first=True,
-                                 enforce_sorted=True)
+        x = pack_padded_sequence(x, x_len, batch_first=True, enforce_sorted=True)
         out, (hn, _) = self.lstm(x)
         out, _ = pad_packed_sequence(out, batch_first=True, padding_value=0.0)
         hn = hn.transpose(0, 1).contiguous()
@@ -65,8 +57,7 @@ class BiLSTM(BasicModule):
         self.last_hn = config.rnn.last_hn
         self.out_dim = config.relation_type
 
-        self.embedding = Embedding(self.vocab_size, self.word_dim, self.pos_size,
-                                  self.pos_dim)
+        self.embedding = Embedding(self.vocab_size, self.word_dim, self.pos_size, self.pos_dim)
         self.input_dim = self.word_dim + self.pos_dim * 2
         self.lstm = VarLenLSTM(self.input_dim,
                                self.hidden_dim,
@@ -101,10 +92,7 @@ if __name__ == '__main__':
     ])
     x_len = torch.Tensor([6, 3, 3, 2])
     embedding = nn.Embedding(5, 10, padding_idx=0)
-    model = VarLenLSTM(input_size=10,
-                       hidden_size=30,
-                       lstm_layers=5,
-                       last_hn=False)
+    model = VarLenLSTM(input_size=10, hidden_size=30, lstm_layers=5, last_hn=False)
 
     x = embedding(x)  # [4, 6, 5]
     out, hn = model(x, x_len)
