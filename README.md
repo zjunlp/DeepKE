@@ -81,7 +81,7 @@ sentence|relation|head|head_type|head_offset|tail|tail_type|tail_offset
 
 使用语言预训练模型时，要提前下载好预训练好的参数，放到 `pretrained` 文件夹内。
 
-另外数据量很小时，直接使用如12层的bert，效果并不理想，反而层数调低些收敛更快效果更好。可以将 bert `config.json` 文件中下 `num_hidden_layers` 参数调整到如3，6等层数。具体看训练的数据量大小。
+另外数据量较小时，直接使用如12层的bert，效果并不理想，反而层数调低些收敛更快效果更好。如调整到3、6层数，具体看训练的数据量大小。
 
 ## 后续工作
 

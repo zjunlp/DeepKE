@@ -53,8 +53,11 @@ class CapsuleConfig(object):
 
 class LMConfig(object):
     # lm_name = 'bert-base-chinese'  # download usage
-    lm_file = 'bert_pretrained'  # cache file usage
-
+    # cache file usage
+    lm_file = 'bert_pretrained'
+    # transformer 层数，初始 base bert 为12层
+    # 但是数据量较小时调低些反而收敛更快效果更好
+    num_hidden_layers = 2
 
 class Config(object):
     # 原始数据存放位置
