@@ -10,7 +10,7 @@ class LM(BasicModule):
         self.lm_name = config.lm.lm_file
         self.out_dim = config.relation_type
 
-        self.lm = BertModel.from_pretrained(self.lm_name)
+        self.lm = BertModel.from_pretrained(self.lm_name, num_hidden_layers=config.lm.num_hidden_layers)
         self.fc = nn.Linear(768, self.out_dim)
 
     def forward(self, x):
