@@ -83,12 +83,13 @@ sentence|relation|head|head_type|head_offset|tail|tail_type|tail_offset
 
 另外数据量较小时，直接使用如12层的bert，效果并不理想，反而层数调低些收敛更快效果更好。如调整到3、6层数，具体看训练的数据量大小。
 
-## 作者
-
-[余海阳](yuhaiyang@zju.edu.cn)
-[机构](http://openkg.cn/)
 
 ## 后续工作
 
 - [ ] 添加经典实体关系联合抽取模型
 - [ ] 添加 web 页面，以供预测输入句子信息可视化
+
+Author: [余海阳](mailto:yuhaiyang@zju.edu.cn)
+
+organization: [浙江大学知识引擎实验室](http://openkg.cn/)
+
