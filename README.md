@@ -92,5 +92,5 @@ sentence|relation|head|head_type|head_offset|tail|tail_type|tail_offset
 
 > Author: [余海阳](mailto:yuhaiyang@zju.edu.cn)
 
-> organization: [浙江大学知识引擎实验室](http://openkg.cn/)
+> Organization: [浙江大学知识引擎实验室](http://openkg.cn/)
 
