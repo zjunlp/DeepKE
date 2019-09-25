@@ -89,7 +89,8 @@ sentence|relation|head|head_type|head_offset|tail|tail_type|tail_offset
 - [ ] 添加经典实体关系联合抽取模型
 - [ ] 添加 web 页面，以供预测输入句子信息可视化
 
-Author: [余海阳](mailto:yuhaiyang@zju.edu.cn)
 
-organization: [浙江大学知识引擎实验室](http://openkg.cn/)
+> Author: [余海阳](mailto:yuhaiyang@zju.edu.cn)
+
+> organization: [浙江大学知识引擎实验室](http://openkg.cn/)
 
