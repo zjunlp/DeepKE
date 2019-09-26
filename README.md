@@ -86,6 +86,7 @@ sentence|relation|head|head_type|head_offset|tail|tail_type|tail_offset
 
 ## 后续工作
 
+- [ ] 重构代码，将模型可复用部分单独提取出来
 - [ ] 添加经典实体关系联合抽取模型
 - [ ] 添加 web 页面，以供预测输入句子信息可视化
 
