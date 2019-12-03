@@ -30,12 +30,7 @@ class CNN(nn.Module):
         super(CNN, self).__init__()
 
         # self.xxx = config.xxx
-        # self.in_channels = config.in_channels
-        if config.dim_strategy == 'cat':
-            self.in_channels = config.word_dim + 2 * config.pos_dim
-        else:
-            self.in_channels = config.word_dim
-
+        self.in_channels = config.in_channels
         self.out_channels = config.out_channels
         self.kernel_sizes = config.kernel_sizes
         self.activation = config.activation

@@ -11,6 +11,10 @@ class PCNN(BasicModule):
         super(PCNN, self).__init__()
 
         self.use_pcnn = cfg.use_pcnn
+        if cfg.dim_strategy == 'cat':
+            cfg.in_channels = cfg.word_dim + 2 * cfg.pos_dim
+        else:
+            cfg.in_channels = cfg.word_dim
 
         self.embedding = Embedding(cfg)
         self.cnn = CNN(cfg)
