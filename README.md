@@ -43,12 +43,21 @@ DeepKE 是基于 Pytorch 的深度学习中文关系抽取处理套件。
 │  │  ├── relation.csv        # 关系种类
 │  ├── out                    # 预处理数据后的存放目录
 ├── module                    # 可复用模块
-│  ├── CNN.py                 # cnn for nlp
-│  ├── CNN.py                 # cnn for nlp
+│  ├── Embedding.py           # embedding 层
+│  ├── CNN.py                 # cnn
+│  ├── RNN.py                 # rnn
+│  ├── Attention.py           # attention
+│  ├── Transformer.py         # transformer
+│  ├── Capsule.py             # capsule
+│  ├── GCN.py                 # gcn
 ├── models                    # 模型目录
 │  ├── BasicModule.py         # 模型基本配置
 │  ├── PCNN.py                # PCNN / CNN 模型
-│  ├── PCNN.py                # PCNN / CNN 模型
+│  ├── BiLSTM.py              # BiLSTM 模型
+│  ├── Transformer.py         # Transformer 模型
+│  ├── LM.py                  # Language Model 模型
+│  ├── Capsule.py             # Capsule 模型
+│  ├── GCN.py                 # GCN 模型
 ├── test                      # pytest 测试目录
 ├── utils                     # 常用工具函数目录
 ├── metrics.py                # 评测指标文件
@@ -87,7 +96,7 @@ sentence|relation|head|head_offset|tail|tail_offset
 
 - 开始训练：python main.py
 
-- 每次训练的结果会保存在 `checkpoints` 文件夹下，格式为：`{model_name}_{epoch}.pth`。
+- 每次训练的日志保存在 `logs` 文件夹内，模型结果保存在 `checkpoints` 文件夹内。
 
 ## 具体介绍
 
@@ -95,6 +104,14 @@ sentence|relation|head|head_offset|tail|tail_offset
 
 
 ## 备注（常见问题）
+
+1. 使用 `python main.py --help` 可以查看所有可配置参数，并定制修改参数结果。参数为 bool 值的，可以用 `1，0` 代替 `True, False`。
+
+    - 如 `python main.py epoch=100 batch_size=128 use_gpu=False`
+
+1. 使用 `python main.py xxx=xx,xx  -m` 可以多任务处理程序。
+
+    - 如 `python main.py model=cnn,rnn,lm  chinese_split=0,1  -m` 可以生成 3*2=6 个子任务。
 
 1. 中文英文在数据预处理上有很多不同之处，`serializer.py` 用来专门序列化句子为 tokens。中文分词使用的是 jieba 分词。
 
