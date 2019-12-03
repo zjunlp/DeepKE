@@ -137,7 +137,7 @@ sentence|relation|head|head_offset|tail|tail_offset
     
     - 按照 BERT 训练方式，对新任务语料按照语言模型方式预训练。
     
-1. 目前在单句上使用 GCN 时，需要先做句法分析，构建出词语之间的邻接矩阵（句法树相邻的边值设为1，不相邻为0）。目前使用的是 `pyhanlp` 工具构建语法树。这个工具需要按照 java 包，具体使用见 [pyhanlp]https://github.com/hankcs/pyhanlp) 的介绍。
+1. 在单句上使用 GCN 时，需要先做句法分析，构建出词语之间的邻接矩阵（句法树相邻的边值设为1，不相邻为0）。目前使用的是 `pyhanlp` 工具构建语法树。这个工具需要按照 java 包，具体使用见 [pyhanlp](https://github.com/hankcs/pyhanlp) 的介绍。
 
 
 ## 后续工作
