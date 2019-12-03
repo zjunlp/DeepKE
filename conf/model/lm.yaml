@@ -1,0 +1,12 @@
+model_name: lm
+
+# lm_name = 'bert-base-chinese'  # download usage
+# cache file usage
+#lm_file: 'bert_pretrained'
+# 当使用预训练语言模型时，该预训练的模型存放位置
+lm_file: '/Users/leo/transformers/bert-base-chinese'
+
+
+# transformer 层数，初始 base bert 为12层
+# 但是数据量较小时调低些反而收敛更快效果更好
+num_hidden_layers: 2
