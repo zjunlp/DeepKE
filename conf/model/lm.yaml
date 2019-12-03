@@ -2,7 +2,7 @@ model_name: lm
 
 # lm_name = 'bert-base-chinese'  # download usage
 # cache file usage
-#lm_file: 'bert_pretrained'
+#lm_file: 'pretrained'
 # 当使用预训练语言模型时，该预训练的模型存放位置
 lm_file: '/Users/leo/transformers/bert-base-chinese'
 
