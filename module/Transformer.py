@@ -115,8 +115,8 @@ class Transformer(nn.Module):
     def forward(self, hidden_states, key_padding_mask=None, attention_mask=None, head_mask=None):
         """
         :param hidden_states: [B, L, Hs]
-        :param key_padding_mask: [B, S]                 为 1/True 的地方需要 mask
-        :param attn_mask: [S] / [L, S] 指定位置 mask 掉，  为 1/True 的地方需要 mask
+        :param key_padding_mask: [B, S]                   为 1/True 的地方需要 mask
+        :param attn_mask: [S] / [L, S] 指定位置 mask 掉，   为 1/True 的地方需要 mask
         :param head_mask: [N] / [L, N] 指定 head mask 掉， 为 1/True 的地方需要 mask
         """
         if head_mask is not None:
