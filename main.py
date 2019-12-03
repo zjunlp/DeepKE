@@ -27,6 +27,11 @@ def main(cfg):
 
     __Model__ = {
         'cnn': models.PCNN,
+        'rnn': models.BiLSTM,
+        'transformer': models.Transformer,
+        'gcn': models.GCN,
+        'capsule': models.Capsule,
+        'lm': models.LM,
     }
 
     # device

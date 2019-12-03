@@ -24,8 +24,9 @@ def collate_fn(cfg):
             if cfg.model_name != 'lm':
                 head_pos.append(_padding(data['head_pos'], max_len))
                 tail_pos.append(_padding(data['tail_pos'], max_len))
-                if cfg.use_pcnn:
-                    pcnn_mask.append(_padding(data['entities_pos'], max_len))
+                if cfg.model_name == 'cnn':
+                    if cfg.use_pcnn:
+                        pcnn_mask.append(_padding(data['entities_pos'], max_len))
 
         x['word'] = torch.tensor(word)
         x['lens'] = torch.tensor(word_len)

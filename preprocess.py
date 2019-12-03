@@ -30,11 +30,12 @@ def _add_pos_seq(train_data: List[Dict], cfg):
         d['tail_pos'] = list(map(lambda i: i - d['tail_idx'], list(range(d['seq_len']))))
         d['tail_pos'] = _handle_pos_limit(d['tail_pos'], int(cfg.pos_limit))
 
-        if cfg.use_pcnn:
-            # 当句子无法分隔成三段时，无法使用PCNN
-            # 比如： [head, ... tail] or [... head, tail, ...] 无法使用统一方式 mask 分段
-            d['entities_pos'] = [1] * (entities_idx[0] + 1) + [2] * (entities_idx[1] - entities_idx[0] - 1) +\
-                                [3] * (d['seq_len'] - entities_idx[1])
+        if cfg.model_name == 'cnn':
+            if cfg.use_pcnn:
+                # 当句子无法分隔成三段时，无法使用PCNN
+                # 比如： [head, ... tail] or [... head, tail, ...] 无法使用统一方式 mask 分段
+                d['entities_pos'] = [1] * (entities_idx[0] + 1) + [2] * (entities_idx[1] - entities_idx[0] - 1) +\
+                                    [3] * (d['seq_len'] - entities_idx[1])
 
 
 def _convert_tokens_into_index(data: List[Dict], vocab):

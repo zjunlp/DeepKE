@@ -11,6 +11,6 @@ defaults:
   - preprocess
   - train
   - embedding
-  - model: cnn
+  - model: capsule
 
 
