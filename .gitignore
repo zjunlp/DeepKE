@@ -6,13 +6,12 @@
 __pycache__
 *.pyc
 
-checkpoints/*.pth
-
-bert_pretrained/*
-!bert_pretrained/readme.md
+test/.pytest_cache
 
 data/out
-data/origin/statics.py
 
+logs
+checkpoints
+
+otherUtils.py
 demo.py
-predict.py
