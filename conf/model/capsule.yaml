@@ -1,0 +1,6 @@
+num_primary_units: 8
+num_output_units: 10  # relation_type
+primary_channels: 1
+primary_unit_size: 768
+output_unit_size: 128
+num_iterations: 3
