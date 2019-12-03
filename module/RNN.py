@@ -19,7 +19,6 @@ class RNN(nn.Module):
         self.last_layer_hn = config.last_layer_hn
         self.type_rnn = config.type_rnn
 
-        self.h0 = self._init_h0()
         rnn = eval(f'nn.{self.type_rnn}')
         self.rnn = rnn(input_size=self.input_size,
                        hidden_size=self.hidden_size,
@@ -28,11 +27,6 @@ class RNN(nn.Module):
                        bidirectional=self.bidirectional,
                        bias=True,
                        batch_first=True)
-
-    def _init_h0(self):
-        pass
-        # h0 = torch.empty(1,B,H)
-        # h0 = nn.init.orthogonal_(h0)
 
     def forward(self, x, x_len):
         """
@@ -46,8 +40,10 @@ class RNN(nn.Module):
         H, N = self.hidden_size, self.num_layers
 
         h0 = torch.zeros([2 * N, B, H]) if self.bidirectional else torch.zeros([N, B, H])
+        h0 = h0.to(device=x_len.device)
         nn.init.orthogonal_(h0)
         c0 = torch.zeros([2 * N, B, H]) if self.bidirectional else torch.zeros([N, B, H])
+        c0 = c0.to(device=x_len.device)
         nn.init.orthogonal_(c0)
 
         x = pack_padded_sequence(x, x_len, batch_first=True, enforce_sorted=True)
