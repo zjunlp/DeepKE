@@ -12,6 +12,9 @@ SPECIAL_TOKENS_KEYS = [
     "sep_token",
     "bos_token",
     "eos_token",
+    "head_token",
+    "tail_token",
+
 ]
 
 SPECIAL_TOKENS_VALUES = [
@@ -22,6 +25,8 @@ SPECIAL_TOKENS_VALUES = [
     "[SEP]",
     "[BOS]",
     "[EOS]",
+    "HEAD",
+    "TAIL",
 ]
 
 SPECIAL_TOKENS = OrderedDict(zip(SPECIAL_TOKENS_KEYS, SPECIAL_TOKENS_VALUES))
