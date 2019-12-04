@@ -59,6 +59,7 @@ DeepKE 是基于 Pytorch 的深度学习中文关系抽取处理套件。
 │  ├── Capsule.py             # Capsule 模型
 │  ├── GCN.py                 # GCN 模型
 ├── test                      # pytest 测试目录
+├── tutorial-notebooks        # simple jupyter notebook tutorial
 ├── utils                     # 常用工具函数目录
 ├── metrics.py                # 评测指标文件
 ├── serializer.py             # 预处理数据过程序列化字符串文件
