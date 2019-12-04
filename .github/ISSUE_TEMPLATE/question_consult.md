@@ -1,14 +1,14 @@
 ---
-name: Bug report
-about: Create a report to help us improve
+name: Question consult
+about: Other question want to ask
 title: ''
-labels: 'bug'
+labels: 'question'
 assignees: ''
 
 ---
 
-**Describe the bug**
-> A clear and concise description of what the bug is.
+**Describe the question**
+> A clear and concise description of what the question is.
 
 
 
