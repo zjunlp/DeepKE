@@ -15,6 +15,7 @@ class GELU(nn.Module):
 class CNN(nn.Module):
     """
     nlp 里为了保证输出的句长 = 输入的句长，一般使用奇数 kernel_size，如 [3, 5, 7, 9]
+    当然也可以不等长输出，keep_length 设为 False
     此时，padding = k // 2
     stride 一般为 1
     """
@@ -36,6 +37,7 @@ class CNN(nn.Module):
         self.activation = config.activation
         self.pooling_strategy = config.pooling_strategy
         self.dropout = config.dropout
+        self.keep_length = config.keep_length
         for kernel_size in self.kernel_sizes:
             assert kernel_size % 2 == 1, "kernel size has to be odd numbers."
 
@@ -45,7 +47,7 @@ class CNN(nn.Module):
                       out_channels=self.out_channels,
                       kernel_size=k,
                       stride=1,
-                      padding=k // 2,
+                      padding=k // 2 if self.keep_length else 0,
                       dilation=1,
                       groups=1,
                       bias=False) for k in self.kernel_sizes

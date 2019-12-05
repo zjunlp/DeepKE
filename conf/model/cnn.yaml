@@ -5,6 +5,7 @@ out_channels: 100
 kernel_sizes: [3, 5, 7]    # 必须为奇数，为了保证cnn的输出不改变句子长度
 activation: 'gelu'         # [relu, lrelu, prelu, selu, celu, gelu, sigmoid, tanh]
 pooling_strategy: 'max'    # [max, avg, cls]
+keep_length: True
 dropout: 0.3
 
 # pcnn
