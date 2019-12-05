@@ -3,7 +3,7 @@ seed: 1
 use_gpu: True
 gpu_id: 0
 
-epoch: 5
+epoch: 50
 batch_size: 32
 learning_rate: 3e-4
 lr_factor: 0.7 # 学习率的衰减率
