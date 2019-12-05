@@ -28,6 +28,22 @@ class RNN(nn.Module):
                        bias=True,
                        batch_first=True)
 
+        # 有bug
+        # self._init_weights()
+
+    def _init_weights(self):
+        """orthogonal init yields generally good results than uniform init"""
+        gain = 1  # use default value
+        for nth in range(self.num_layers * self.bidirectional):
+            # w_ih, (4 * hidden_size x input_size)
+            nn.init.orthogonal_(self.rnn.all_weights[nth][0], gain=gain)
+            # w_hh, (4 * hidden_size x hidden_size)
+            nn.init.orthogonal_(self.rnn.all_weights[nth][1], gain=gain)
+            # b_ih, (4 * hidden_size)
+            nn.init.zeros_(self.rnn.all_weights[nth][2])
+            # b_hh, (4 * hidden_size)
+            nn.init.zeros_(self.rnn.all_weights[nth][3])
+
     def forward(self, x, x_len):
         """
         :param x: torch.Tensor [batch_size, seq_max_length, input_size], [B, L, H_in] 一般是经过embedding后的值
@@ -39,19 +55,8 @@ class RNN(nn.Module):
         B, L, _ = x.size()
         H, N = self.hidden_size, self.num_layers
 
-        h0 = torch.zeros([2 * N, B, H]) if self.bidirectional else torch.zeros([N, B, H])
-        h0 = h0.to(device=x_len.device)
-        nn.init.orthogonal_(h0)
-        c0 = torch.zeros([2 * N, B, H]) if self.bidirectional else torch.zeros([N, B, H])
-        c0 = c0.to(device=x_len.device)
-        nn.init.orthogonal_(c0)
-
         x = pack_padded_sequence(x, x_len, batch_first=True, enforce_sorted=True)
-        if self.type_rnn == 'LSTM':
-            output, hn = self.rnn(x, (h0, c0))
-        else:
-            output, hn = self.rnn(x, h0)
-
+        output, hn = self.rnn(x)
         output, _ = pad_packed_sequence(output, batch_first=True, total_length=L)
 
         if self.type_rnn == 'LSTM':
