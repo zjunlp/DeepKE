@@ -23,7 +23,6 @@ def main(cfg):
     cwd = utils.get_original_cwd()
     cfg.cwd = cwd
     cfg.pos_size = 2 * cfg.pos_limit + 2
-    logger.info(f'\n{cfg.pretty()}')
 
     __Model__ = {
         'cnn': models.PCNN,
@@ -67,6 +66,8 @@ def main(cfg):
 
     model = __Model__[cfg.model_name](cfg)
     model.to(device)
+
+    logger.info(f'\n{cfg.pretty()}')
     logger.info(f'\n {model}')
 
     optimizer = optim.Adam(model.parameters(), lr=cfg.learning_rate, weight_decay=cfg.weight_decay)
@@ -87,7 +88,7 @@ def main(cfg):
     for epoch in range(1, cfg.epoch + 1):
         manual_seed(cfg.seed + epoch)
         train_loss = train(epoch, model, train_dataloader, optimizer, criterion, device, writer, cfg)
-        valid_f1, valid_loss = validate(epoch, model, valid_dataloader, criterion, device)
+        valid_f1, valid_loss = validate(epoch, model, valid_dataloader, criterion, device, cfg)
         scheduler.step(valid_loss)
         model_path = model.save(epoch, cfg)
         # logger.info(model_path)
@@ -133,7 +134,7 @@ def main(cfg):
     logger.info(f'total {cfg.epoch} epochs, best(valid macro f1) epoch: {best_epoch}, '
                 f'this epoch macro f1: {best_f1:.4f}')
 
-    validate(-1, model, test_dataloader, criterion, device)
+    validate(-1, model, test_dataloader, criterion, device, cfg)
 
 
 if __name__ == '__main__':
