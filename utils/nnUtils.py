@@ -63,4 +63,4 @@ def to_one_hot(x: torch.Tensor, length: int) -> torch.Tensor:
     for i in range(B):
         x_one_hot[i, x[i]] = 1.0
 
-    return x_one_hot
+    return x_one_hot.to(device=x.device)

@@ -19,7 +19,11 @@ def train(epoch, model, dataloader, optimizer, criterion, device, writer, cfg):
 
         optimizer.zero_grad()
         y_pred = model(x)
-        loss = criterion(y_pred, y)
+
+        if cfg.model_name == 'capsule':
+            loss = model.loss(y_pred, y)
+        else:
+            loss = criterion(y_pred, y)
 
         loss.backward()
         optimizer.step()
@@ -50,7 +54,7 @@ def train(epoch, model, dataloader, optimizer, criterion, device, writer, cfg):
     return losses[-1]
 
 
-def validate(epoch, model, dataloader, criterion, device):
+def validate(epoch, model, dataloader, criterion, device, cfg):
     model.eval()
 
     metric = PRMetric()
@@ -63,7 +67,11 @@ def validate(epoch, model, dataloader, criterion, device):
 
         with torch.no_grad():
             y_pred = model(x)
-            loss = criterion(y_pred, y)
+
+            if cfg.model_name == 'capsule':
+                loss = model.loss(y_pred, y)
+            else:
+                loss = criterion(y_pred, y)
 
             metric.update(y_true=y, y_pred=y_pred)
             losses.append(loss.item())
