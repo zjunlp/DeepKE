@@ -12,7 +12,7 @@ DeepKE 是基于 Pytorch 的深度学习中文关系抽取处理套件。
 - matplotlib >= 3.1
 - transformers >= 2.0
 - jieba >= 0.39
-- pyhanlp >= 0.1.57
+- ~~pyhanlp >= 0.1.57~~（中文句法分析使用，但是在多句时效果也不好。。求推荐有比较好的中文句法分析）
 
 
 ## 主要目录
@@ -106,6 +106,12 @@ sentence|relation|head|head_offset|tail|tail_offset
 
 ## 备注（常见问题）
 
+1. 使用 Anaconda 时，建议添加国内镜像，下载速度更快。如[清华镜像](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/)。
+
+1. 使用 pip 时，建议使用国内镜像，下载速度更快，如阿里云镜像。
+
+1. 安装后提示 `ModuleNotFoundError: No module named 'past'`，输入命令 `pip install future` 即可解决。
+
 1. 使用 `python main.py --help` 可以查看所有可配置参数，并定制修改参数结果。参数为 bool 值的，可以用 `1，0` 代替 `True, False`。
 
     - 如 `python main.py epoch=100 batch_size=128 use_gpu=False`
@@ -128,7 +134,7 @@ sentence|relation|head|head_offset|tail|tail_offset
     
 1. PCNN 为什么不比 CNN 好，甚至更差？？
 
-    - 这个确实如此！本人在跑百度的数据集，也发现 PCNN 效果并没有想象中的比 CNN 有提升，甚至大多时候都不如 CNN 那种直接 max pooling的结果。百度的 [ARNOR](https://github.com/PaddlePaddle/models/tree/develop/PaddleNLP/Research/ACL2019-ARNOR) 结果也是 PCNN 并不一定比 CNN 好。
+    - 本人在跑百度的数据集，也发现 PCNN 效果并没有想象中的比 CNN 有提升，甚至大多时候都不如 CNN 那种直接 max pooling的结果。百度的 [ARNOR](https://github.com/PaddlePaddle/models/tree/develop/PaddleNLP/Research/ACL2019-ARNOR) 结果也是 PCNN 并不一定比 CNN 好。
 
 1. 使用语言预训练模型时，在线安装下载模型比较慢，更建议提前下载好，存放到 `pretrained` 文件夹内。具体存放文件要求见文件夹内的 `readme.md`。
 
@@ -138,7 +144,9 @@ sentence|relation|head|head_offset|tail|tail_offset
     
     - 按照 BERT 训练方式，对新任务语料按照语言模型方式预训练。
     
-1. 在单句上使用 GCN 时，需要先做句法分析，构建出词语之间的邻接矩阵（句法树相邻的边值设为1，不相邻为0）。目前使用的是 `pyhanlp` 工具构建语法树。这个工具需要按照 java 包，具体使用见 [pyhanlp](https://github.com/hankcs/pyhanlp) 的介绍。
+1. 在单句上使用 GCN 时，需要先做句法分析，构建出词语之间的邻接矩阵（句法树相邻的边值设为1，不相邻为0）。
+    
+    - ~~目前使用的是 `pyhanlp` 工具构建语法树。这个工具需要按照 java 包，具体使用见 [pyhanlp](https://github.com/hankcs/pyhanlp) 的介绍。~~ pyhanlp 在多句时效果也不理想，很多时候把整个单句当作一个节点。
 
 
 ## 后续工作
