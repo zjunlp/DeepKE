@@ -13,5 +13,7 @@ data/out
 logs
 checkpoints
 
-otherUtils.py
 demo.py
+
+otherUtils.py
+module/Transformer_offical.py
