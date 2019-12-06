@@ -23,11 +23,14 @@ class GCN(nn.Module):
 
 
     def forward(self, x, adj):
+        L = x.size(1)
         AxW = self.fc1(torch.bmm(adj, x)) + self.fc1(x)
+        AxW = AxW / L
         AxW = F.leaky_relu(AxW)
         AxW = self.dropout(AxW)
         for fc in self.fcs:
             AxW = fc(torch.bmm(adj, AxW)) + fc(AxW)
+            AxW = AxW / L
             AxW = F.leaky_relu(AxW)
             AxW = self.dropout(AxW)
 

@@ -37,7 +37,11 @@ def collate_fn(cfg):
             x['tail_pos'] = torch.tensor(tail_pos)
             if cfg.model_name == 'cnn' and cfg.use_pcnn:
                 x['pcnn_mask'] = torch.tensor(pcnn_mask)
-
+            if cfg.model == 'gcn':
+                # 没找到合适的做 parsing tree 的工具，暂时随机初始化
+                B, L = len(batch), max_len
+                adj = torch.empty(B, L, L).random_(2)
+                x['adj'] = adj
         return x, y
 
     return collate_fn_intra

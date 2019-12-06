@@ -20,12 +20,8 @@ class GCN(BasicModule):
         self.fc = nn.Linear(cfg.hidden_size, cfg.num_relations)
 
     def forward(self, x):
-        word, lens, head_pos, tail_pos = x['word'], x['lens'], x['head_pos'], x['tail_pos']
+        word, lens, head_pos, tail_pos, adj = x['word'], x['lens'], x['head_pos'], x['tail_pos'], x['adj']
 
-        # adj = x['adj']
-        # 没找到合适的做 parsing tree 的工具，暂时随机初始化
-        B, L = len(x['lens']), x['lens'][0]
-        adj = torch.empty(B, L, L).random_(2).to(device=x['lens'].device)
 
         inputs = self.embedding(word, head_pos, tail_pos)
         output = self.gcn(inputs, adj)
