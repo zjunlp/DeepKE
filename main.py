@@ -23,6 +23,7 @@ def main(cfg):
     cwd = utils.get_original_cwd()
     cfg.cwd = cwd
     cfg.pos_size = 2 * cfg.pos_limit + 2
+    logger.info(f'\n{cfg.pretty()}')
 
     __Model__ = {
         'cnn': models.PCNN,
@@ -66,8 +67,6 @@ def main(cfg):
 
     model = __Model__[cfg.model_name](cfg)
     model.to(device)
-
-    logger.info(f'\n{cfg.pretty()}')
     logger.info(f'\n {model}')
 
     optimizer = optim.Adam(model.parameters(), lr=cfg.learning_rate, weight_decay=cfg.weight_decay)
