@@ -21,6 +21,8 @@ class Embedding(nn.Module):
         self.wordEmbed = nn.Embedding(self.vocab_size, self.word_dim, padding_idx=0)
         self.headPosEmbed = nn.Embedding(self.pos_size, self.pos_dim, padding_idx=0)
         self.tailPosEmbed = nn.Embedding(self.pos_size, self.pos_dim, padding_idx=0)
+        
+        self.layer_norm = nn.LayerNorm(self.word_dim)
 
     def forward(self, *x):
         word, head, tail = x
@@ -32,6 +34,6 @@ class Embedding(nn.Module):
             return torch.cat((word_embedding, head_embedding, tail_embedding), -1)
         elif self.dim_strategy == 'sum':
             # 此时 pos_dim == word_dim
-            return word_embedding + head_embedding + tail_embedding
+            return self.layer_norm(word_embedding + head_embedding + tail_embedding)
         else:
             raise Exception('dim_strategy must choose from [sum, cat]')
