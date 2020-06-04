@@ -158,5 +158,7 @@ sentence|relation|head|head_offset|tail|tail_offset
 
 > Author: [余海阳](mailto:yuhaiyang@zju.edu.cn)
 
+> Mentor: 陈华钧，张宁豫
+
 > Organization: [浙江大学知识引擎实验室](http://openkg.cn/)
 
