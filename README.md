@@ -2,6 +2,41 @@
 
 DeepKE 是基于 Pytorch 的深度学习中文关系抽取处理套件。
 
+# Contributors
+
+> Organization: [浙江大学知识引擎实验室](http://openkg.cn/)
+
+---
+
+<a class="mr-2" data-hovercard-type="user" data-hovercard-url="https://github.com/users/huajunsir/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/huajunsir">
+<img class="d-block avatar-user" src="https://avatars0.githubusercontent.com/u/1858627?s=64&amp;v=4" width="48" height="48" border-radius="24" alt="@huajunsir">
+</a>
+
+<a class="mr-2" data-hovercard-type="user" data-hovercard-url="https://github.com/users/zxlzr/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/zxlzr">
+<img class="d-block avatar-user" src="https://avatars0.githubusercontent.com/u/1264492?s=64&amp;v=4" width="48" height="48" border-radius="24" alt="@zxlzr">
+</a>
+
+<a class="mr-2" data-hovercard-type="user" data-hovercard-url="https://github.com/users/231sm/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/231sm">
+<img class="d-block avatar-user" src="https://avatars0.githubusercontent.com/u/26428692?s=64&amp;v=4" width="48" height="48" border-radius="24" alt="@231sm">
+</a>
+
+<a class="mr-2" data-hovercard-type="user" data-hovercard-url="https://github.com/users/ruoxuwang/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/ruoxuwang">
+<img class="d-block avatar-user" src="https://avatars0.githubusercontent.com/u/19322627?s=64&amp;v=4" width="48" height="48" border-radius="24" alt="@ruoxuwang">
+</a>
+
+<a class="mr-2" data-hovercard-type="user" data-hovercard-url="https://github.com/users/yezqNLP/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/yezqNLP">
+<img class="d-block avatar-user" src="https://avatars0.githubusercontent.com/u/35182031?s=64&amp;v=4" width="48" height="48" border-radius="24" alt="@yezqNLP">
+</a>
+
+<a class="mr-2" data-hovercard-type="user" data-hovercard-url="https://github.com/users/yuwl798180/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/yuwl798180">
+<img class="d-block avatar-user" src="https://avatars0.githubusercontent.com/u/18118119?s=64&amp;v=4" width="48" height="48" border-radius="24" alt="@yuwl798180">
+</a>
+
+<a class="mr-2" data-hovercard-type="user" data-hovercard-url="https://github.com/users/seventk/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/seventk">
+<img class="d-block avatar-user" src="https://avatars0.githubusercontent.com/u/37468830?s=64&amp;v=4" width="48" height="48" border-radius="24" alt="@seventk">
+</a>
+
+
 ## 环境依赖:
 
 > python >= 3.6
@@ -13,6 +48,7 @@ DeepKE 是基于 Pytorch 的深度学习中文关系抽取处理套件。
 - transformers >= 2.0
 - jieba >= 0.39
 - ~~pyhanlp >= 0.1.57~~（中文句法分析使用，但是在多句时效果也不好。。求推荐有比较好的中文句法分析）
+
 
 
 ## 主要目录
@@ -147,18 +183,3 @@ sentence|relation|head|head_offset|tail|tail_offset
 1. 在单句上使用 GCN 时，需要先做句法分析，构建出词语之间的邻接矩阵（句法树相邻的边值设为1，不相邻为0）。
     
     - ~~目前使用的是 `pyhanlp` 工具构建语法树。这个工具需要按照 java 包，具体使用见 [pyhanlp](https://github.com/hankcs/pyhanlp) 的介绍。~~ pyhanlp 在多句时效果也不理想，很多时候把整个单句当作一个节点。
-
-
-## 后续工作
-
-- [x] 重构代码，将模型可复用部分单独提取出来
-- [ ] 添加经典实体关系联合抽取模型
-- [ ] 添加 web 页面，以供预测输入句子信息可视化
-
-
-> Author: [余海阳](mailto:yuhaiyang@zju.edu.cn)
-
-> Mentor: 陈华钧，张宁豫
-
-> Organization: [浙江大学知识引擎实验室](http://openkg.cn/)
-

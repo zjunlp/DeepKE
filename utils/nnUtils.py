@@ -13,12 +13,16 @@ __all__ = [
 ]
 
 
-def manual_seed(num: int = 1) -> None:
-    random.seed(num)
-    np.random.seed(num)
-    torch.manual_seed(num)
-    torch.cuda.manual_seed(num)
-    torch.cuda.manual_seed_all(num)
+def manual_seed(seed: int = 1) -> None:
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    if torch.cuda.CUDA_ENABLED and use_deterministic_cudnn:
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
+
 
 
 def seq_len_to_mask(seq_len: Union[List, np.ndarray, torch.Tensor], max_len=None, mask_pos_to_true=True):
