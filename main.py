@@ -133,7 +133,11 @@ def main(cfg):
     logger.info(f'total {cfg.epoch} epochs, best(valid macro f1) epoch: {best_epoch}, '
                 f'this epoch macro f1: {best_f1:.4f}')
 
+    logger.info('=====end of training====')
+    logger.info('')
+    logger.info('=====start test performance====')
     validate(-1, model, test_dataloader, criterion, device, cfg)
+    logger.info('=====ending====')
 
 
 if __name__ == '__main__':
