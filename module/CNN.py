@@ -21,12 +21,13 @@ class CNN(nn.Module):
     """
     def __init__(self, config):
         """
-        in_channels      : 一般就是 word embedding 的维度，或者 hidden size 的维度
-        out_channels     : int
-        kernel_sizes     : list 为了保证输出长度=输入长度，必须为奇数: 3, 5, 7...
-        activation       : [relu, lrelu, prelu, selu, celu, gelu, sigmoid, tanh]
-        pooling_strategy : [max, avg, cls]
-        dropout:         : float
+        Args:
+            in_channels: 一般就是 word embedding 的维度，或者 hidden size 的维度
+            out_channels: int
+            kernel_sizes: list 为了保证输出长度=输入长度，必须为奇数: 3, 5, 7...
+            activation: [relu, lrelu, prelu, selu, celu, gelu, sigmoid, tanh]
+            pooling_strategy: [max, avg, cls]
+            dropout: float
         """
         super(CNN, self).__init__()
 
@@ -74,10 +75,13 @@ class CNN(nn.Module):
 
     def forward(self, x, mask=None):
         """
-            :param x: torch.Tensor [batch_size, seq_max_length, input_size], [B, L, H] 一般是经过embedding后的值
-            :param mask: [batch_size, max_len], 句长部分为0，padding部分为1。不影响卷积运算，max-pool一定不会pool到pad为0的位置
-            :return:
-            """
+        Args:
+            x: torch.Tensor [batch_size, seq_max_length, input_size], [B, L, H] 一般是经过embedding后的值
+            mask: [batch_size, max_len], 句长部分为0，padding部分为1。不影响卷积运算，max-pool一定不会pool到pad为0的位置
+        Return:
+            x: torch.Tensor
+            xp: torch.Tensor
+        """
         # [B, L, H] -> [B, H, L] （注释：将 H 维度当作输入 channel 维度)
         x = torch.transpose(x, 1, 2)
 

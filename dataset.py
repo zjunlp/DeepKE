@@ -4,7 +4,15 @@ from utils import load_pkl
 
 
 def collate_fn(cfg):
+    
     def collate_fn_intra(batch):
+        """
+    Arg : 
+        batch () : 数据集
+    Returna : 
+        x (dict) : key为词，value为长度
+        y (List) : 关系对应值的集合
+    """
         batch.sort(key=lambda data: data['seq_len'], reverse=True)
 
         max_len = batch[0]['seq_len']
@@ -48,7 +56,9 @@ def collate_fn(cfg):
 
 
 class CustomDataset(Dataset):
-    """默认使用 List 存储数据"""
+    """
+    默认使用 List 存储数据
+    """
     def __init__(self, fp):
         self.file = load_pkl(fp)
 
@@ -68,7 +78,6 @@ if __name__ == '__main__':
     vocab = load_pkl(vocab_path)
     train_ds = CustomDataset(train_data_path)
     train_dl = DataLoader(train_ds, batch_size=4, shuffle=True, collate_fn=collate_fn, drop_last=False)
-
     for batch_idx, (x, y) in enumerate(train_dl):
         word = x['word']
         for idx in word:

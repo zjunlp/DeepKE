@@ -15,6 +15,14 @@ class Serializer():
         self.do_chinese_split = do_chinese_split
 
     def serialize(self, text, never_split: List = None):
+        """
+        将一段文本按照制定拆分规则，拆分成一个词汇List
+        Args :
+            text (String) : 所需拆分文本
+            never_split (List) : 不拆分的词，默认为空
+        Rerurn : 
+            output_tokens (List): 拆分后的结果 
+        """
         never_split = self.never_split + (never_split if never_split is not None else [])
         text = self._clean_text(text)
 
@@ -36,7 +44,13 @@ class Serializer():
         return output_tokens
 
     def _clean_text(self, text):
-        """Performs invalid character removal and whitespace cleanup on text."""
+        """
+        删除文本中无效字符以及空白字符
+        Arg :
+            text (String) : 所需删除的文本
+        Return :
+            "".join(output) (String) : 删除后的文本
+        """
         output = []
         for char in text:
             cp = ord(char)
@@ -49,6 +63,14 @@ class Serializer():
         return "".join(output)
 
     def _use_jieba_cut(self, text, never_split):
+        """
+        使用jieba分词
+        Args :
+            text (String) : 所需拆分文本
+            never_split (List) : 不拆分的词
+        Return :
+            tokens (List) : 拆分完的结果
+        """
         for word in never_split:
             jieba.suggest_freq(word, True)
         tokens = jieba.lcut(text)
@@ -61,7 +83,13 @@ class Serializer():
             return tokens
 
     def _tokenize_chinese_chars(self, text):
-        """Adds whitespace around any CJK character."""
+        """
+        在CJK字符周围添加空格
+        Arg :
+            text (String) : 所需拆分文本
+        Return :
+            "".join(output) (String) : 添加完后的文本
+        """
         output = []
         for char in text:
             cp = ord(char)
@@ -74,7 +102,13 @@ class Serializer():
         return "".join(output)
 
     def _orig_tokenize(self, text):
-        """Splits text on whitespace and some punctuations like comma or period"""
+        """
+        在空白和一些标点符号（如逗号或句点）上拆分文本
+        Arg :
+            text (String) : 所需拆分文本
+        Return :
+            tokens (List) : 分词完的结果
+        """
         text = text.strip()
         if not text:
             return []
@@ -86,7 +120,13 @@ class Serializer():
         return tokens
 
     def _whitespace_tokenize(self, text):
-        """Runs basic whitespace cleaning and splitting on a piece of text."""
+        """
+        进行基本的空白字符清理和分割
+        Arg :
+            text (String) : 所需拆分文本
+        Return :
+            tokens (List) : 分词完的结果
+        """
         text = text.strip()
         if not text:
             return []
@@ -94,7 +134,14 @@ class Serializer():
         return tokens
 
     def _run_strip_accents(self, text):
-        """Strips accents from a piece of text."""
+        """
+        从文本中去除重音符号
+        Arg :
+            text (String) : 所需拆分文本
+        Return :
+            "".join(output) (String) : 去除后的文本
+
+        """
         text = unicodedata.normalize("NFD", text)
         output = []
         for char in text:
@@ -105,7 +152,15 @@ class Serializer():
         return "".join(output)
 
     def _run_split_on_punc(self, text, never_split=None):
-        """Splits punctuation on a piece of text."""
+        """
+        通过标点符号拆分文本
+        Args :
+            text (String) : 所需拆分文本
+            never_split (List) : 不拆分的词，默认为空
+        Return :
+            ["".join(x) for x in output] (List) : 拆分完的结果
+        """
+        
         if never_split is not None and text in never_split:
             return [text]
         chars = list(text)
@@ -128,7 +183,13 @@ class Serializer():
 
     @staticmethod
     def is_control(char):
-        """Checks whether `chars` is a control character."""
+        """
+        判断字符是否为控制字符
+        Arg :
+            char : 字符
+        Return :
+            bool : 判断结果
+        """
         # These are technically control characters but we count them as whitespace
         # characters.
         if char == "\t" or char == "\n" or char == "\r":
@@ -140,7 +201,13 @@ class Serializer():
 
     @staticmethod
     def is_whitespace(char):
-        """Checks whether `chars` is a whitespace character."""
+        """
+        判断字符是否为空白字符
+        Arg :
+            char : 字符
+        Return :
+            bool : 判断结果
+        """
         # \t, \n, and \r are technically contorl characters but we treat them
         # as whitespace since they are generally considered as such.
         if char == " " or char == "\t" or char == "\n" or char == "\r":
@@ -152,7 +219,15 @@ class Serializer():
 
     @staticmethod
     def is_chinese_char(cp):
-        """Checks whether CP is the codepoint of a CJK character."""
+        """
+        
+        判断字符是否为中文字符
+        Arg :
+            cp (char): 字符
+        Return :
+            bool : 判断结果
+        
+        """
         # This defines a "chinese character" as anything in the CJK Unicode block:
         #   https://en.wikipedia.org/wiki/CJK_Unified_Ideographs_(Unicode_block)
         #
@@ -174,7 +249,13 @@ class Serializer():
 
     @staticmethod
     def is_punctuation(char):
-        """Checks whether `chars` is a punctuation character."""
+        """
+        判断字符是否为标点字符
+        Arg :
+            char : 字符
+        Return :
+            bool : 判断结果
+        """
         cp = ord(char)
         # We treat all non-letter/number ASCII as punctuation.
         # Characters such as "^", "$", and "`" are not in the Unicode
