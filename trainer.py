@@ -7,6 +7,20 @@ logger = logging.getLogger(__name__)
 
 
 def train(epoch, model, dataloader, optimizer, criterion, device, writer, cfg):
+    """
+    训练模型
+        Args:
+            epoch (int): 训练步数
+            model (class): 训练的模型
+            dataloader (dict): 数据集
+            optimizer (Callable): 优化器
+            criterion (Callable): 损失函数
+            device (torch.device): 训练的设备
+            writer (class): 输出
+            cfg: 配置文件
+        Return:
+            losses[-1] : loss值
+    """
     model.train()
 
     metric = PRMetric()
@@ -55,6 +69,20 @@ def train(epoch, model, dataloader, optimizer, criterion, device, writer, cfg):
 
 
 def validate(epoch, model, dataloader, criterion, device, cfg):
+    """
+    验证模型
+        Args:
+            epoch (int): 训练步数
+            model (class): 训练的模型
+            dataloader (dict): 数据集
+            optimizer (Callable): 优化器
+            criterion (Callable): 损失函数
+            device (torch.device): 训练的设备
+            cfg: 配置文件
+        Return:
+            f1 : f1值
+            loss : loss值
+    """
     model.eval()
 
     metric = PRMetric()

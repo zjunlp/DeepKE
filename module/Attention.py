@@ -13,16 +13,17 @@ class DotAttention(nn.Module):
 
     def forward(self, Q, K, V, mask_out=None, head_mask=None):
         """
-        一般输入信息 X 时，假设 K = V = X
-
+        一般输入信息 X 时，假设 K = V = Xs
         att_weight = softmax( score_func(q, k) )
         att = sum( att_weight * v )
-
-        :param Q: [..., L, H]
-        :param K: [..., S, H]
-        :param V: [..., S, H]
-        :param mask_out: [..., 1, S]
-        :return:
+        Args:
+            Q: [..., L, H]
+            K: [..., S, H]
+            V: [..., S, H]
+            mask_out: [..., 1, S]
+        Return:
+            attention_out
+            attention_weight
         """
         H = Q.size(-1)
 
@@ -52,9 +53,10 @@ class DotAttention(nn.Module):
 class MultiHeadAttention(nn.Module):
     def __init__(self, embed_dim, num_heads, dropout=0.0, output_attentions=True):
         """
-        :param embed_dim: 输入的维度，必须能被 num_heads 整除
-        :param num_heads: attention 的个数
-        :param dropout: float。
+        Args:
+            embed_dim: 输入的维度，必须能被 num_heads 整除
+            num_heads: attention 的个数
+            dropout: float。
         """
         super(MultiHeadAttention, self).__init__()
         self.num_heads = num_heads
@@ -72,12 +74,13 @@ class MultiHeadAttention(nn.Module):
 
     def forward(self, Q, K, V, key_padding_mask=None, attention_mask=None, head_mask=None):
         """
-        :param Q: [B, L, Hs]
-        :param K: [B, S, Hs]
-        :param V: [B, S, Hs]
-        :param key_padding_mask: [B, S]                为 1/True 的地方需要 mask
-        :param attention_mask: [S] / [L, S] 指定位置 mask 掉， 为 1/True 的地方需要 mask
-        :param head_mask: [N] 指定 head mask 掉，        为 1/True 的地方需要 mask
+        Args:
+            Q: [B, L, Hs]
+            K: [B, S, Hs]
+            V: [B, S, Hs]
+            key_padding_mask: [B, S]                为 1/True 的地方需要 mask
+            attention_mask: [S] / [L, S] 指定位置 mask 掉， 为 1/True 的地方需要 mask
+            head_mask: [N] 指定 head mask 掉，        为 1/True 的地方需要 mask
         """
         B, L, Hs = Q.shape
         S = V.size(1)

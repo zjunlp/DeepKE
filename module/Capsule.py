@@ -27,7 +27,8 @@ class Capsule(nn.Module):
 
     def forward(self, x):
         """
-        x: [B, L, H]      # 从 CNN / RNN 得到的结果
+        Args:
+            x: [B, L, H]      # 从 CNN / RNN 得到的结果
             L 作为 input_num_capsules, H 作为 input_dim_capsule
         """
         B, I, _ = x.size()  # I 是 input_num_capsules

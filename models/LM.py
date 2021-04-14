@@ -16,7 +16,9 @@ class LM(BasicModule):
     def forward(self, x):
         word, lens = x['word'], x['lens']
         mask = seq_len_to_mask(lens, mask_pos_to_true=False)
-        last_hidden_state, pooler_output = self.bert(word, attention_mask=mask)
+        a = self.bert(word, attention_mask=mask)
+        last_hidden_state = a[0]
+        pooler_output = a[1]
         out, out_pool = self.bilstm(last_hidden_state, lens)
         out_pool = self.dropout(out_pool)
         output = self.fc(out_pool)
