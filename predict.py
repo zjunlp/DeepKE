@@ -70,9 +70,6 @@ def _get_predict_instance(cfg):
     return instance
 
 
-# 自定义模型存储的路径
-fp = 'xxx/checkpoints/2019-12-03_17-35-30/cnn_epoch21.pth'
-
 
 @hydra.main(config_path='conf/config.yaml')
 def main(cfg):
@@ -109,7 +106,7 @@ def main(cfg):
     model = __Model__[cfg.model_name](cfg)
     logger.info(f'model name: {cfg.model_name}')
     logger.info(f'\n {model}')
-    model.load(fp, device=device)
+    model.load(cfg.fp, device=device)
     model.to(device)
     model.eval()
 
