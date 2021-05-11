@@ -270,15 +270,4 @@ class Serializer():
         return False
 
 
-if __name__ == '__main__':
-    text1 = "\t\n你   好呀， I\'m his pupp\'peer,\n\t"
-    text2 = '你孩子的爱情叫 Stam\'s 的打到天啊呢哦'
 
-    serializer = Serializer(do_chinese_split=False)
-    print(serializer.serialize(text1))
-    print(serializer.serialize(text2))
-
-    text3 = "good\'s  head  pupp\'er, "
-    # print: ["good's", 'pupp', "'", 'er', ',']
-    # true:  ["good's", "pupp'er", ","]
-    print(serializer.serialize(text3, never_split=["pupp\'er"]))

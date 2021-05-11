@@ -132,17 +132,3 @@ def pad_adj(adj, max_len):
 
 
 
-if __name__ == '__main__':
-    class Config():
-        num_layers = 3
-        input_size = 50
-        hidden_size = 100
-        dropout = 0.3
-    cfg = Config()
-    x = torch.randn(1, 10, 50)
-    adj = torch.empty(1, 10, 10).random_(2)
-    m = GCN(cfg)
-    print(m)
-    out = m(x, adj)
-    print(out.shape)
-    print(out)

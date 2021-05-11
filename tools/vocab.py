@@ -113,13 +113,3 @@ class Vocab(object):
         self.add_words(new_words)
 
 
-if __name__ == '__main__':
-    vocab = Vocab('test')
-    sent = ' 我是中国人，我爱中国。'
-    sent = list(sent)
-    print(sent)
-
-    vocab.add_words(sent)
-    print(vocab.word2count)
-    vocab.trim(2)
-    print(vocab.word2count)
