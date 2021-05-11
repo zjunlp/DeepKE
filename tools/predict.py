@@ -3,12 +3,14 @@ import sys
 import torch
 import logging
 import hydra
-import models
 from hydra import utils
-from utils import load_pkl, load_csv
 from serializer import Serializer
 from preprocess import _serialize_sentence, _convert_tokens_into_index, _add_pos_seq, _handle_relation_data
 import matplotlib.pyplot as plt
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
+import models
+from utils import load_pkl, load_csv
 
 logger = logging.getLogger(__name__)
 

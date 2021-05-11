@@ -72,27 +72,3 @@ class RNN(nn.Module):
         return output, hn
 
 
-if __name__ == '__main__':
-
-    class Config(object):
-        type_rnn = 'LSTM'
-        input_size = 5
-        hidden_size = 4
-        num_layers = 3
-        dropout = 0.0
-        last_layer_hn = False
-        bidirectional = True
-
-    config = Config()
-    model = RNN(config)
-    print(model)
-
-    torch.manual_seed(1)
-    x = torch.tensor([[4, 3, 2, 1], [5, 6, 7, 0], [8, 10, 0, 0]])
-    x = torch.nn.Embedding(11, 5, padding_idx=0)(x)  # B,L,H = 3,4,5
-    x_len = torch.tensor([4, 3, 2])
-
-    o, h = model(x, x_len)
-
-    print(o.shape, h.shape, sep='\n\n')
-    print(o[-1].data, h[-1].data, sep='\n\n')
