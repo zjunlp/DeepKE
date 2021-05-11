@@ -1,5 +1,8 @@
 import torch
 from torch.utils.data import Dataset
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 from utils import load_pkl
 
 
