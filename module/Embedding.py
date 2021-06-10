@@ -5,10 +5,9 @@ import torch.nn as nn
 class Embedding(nn.Module):
     def __init__(self, config):
         """
-        Args:
-            word embedding: 一般 0 为 padding
-            pos embedding:  一般 0 为 padding
-            dim_strategy: [cat, sum]  多个 embedding 是拼接还是相加
+        word embedding: 一般 0 为 padding
+        pos embedding:  一般 0 为 padding
+        dim_strategy: [cat, sum]  多个 embedding 是拼接还是相加
         """
         super(Embedding, self).__init__()
 

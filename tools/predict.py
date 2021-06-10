@@ -7,10 +7,10 @@ from hydra import utils
 from serializer import Serializer
 from preprocess import _serialize_sentence, _convert_tokens_into_index, _add_pos_seq, _handle_relation_data
 import matplotlib.pyplot as plt
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
-import models
 from utils import load_pkl, load_csv
+import models
+
 
 logger = logging.getLogger(__name__)
 
@@ -73,9 +73,11 @@ def _get_predict_instance(cfg):
 
 
 
-@hydra.main(config_path='conf/config.yaml')
+
+@hydra.main(config_path='../conf/config.yaml')
 def main(cfg):
     cwd = utils.get_original_cwd()
+    cwd = cwd[0:-5]
     cfg.cwd = cwd
     cfg.pos_size = 2 * cfg.pos_limit + 2
     print(cfg.pretty())
@@ -98,7 +100,7 @@ def main(cfg):
     }
 
     # 最好在 cpu 上预测
-    # cfg.use_gpu = False
+    cfg.use_gpu = False
     if cfg.use_gpu and torch.cuda.is_available():
         device = torch.device('cuda', cfg.gpu_id)
     else:
@@ -114,6 +116,7 @@ def main(cfg):
 
     x = dict()
     x['word'], x['lens'] = torch.tensor([data[0]['token2idx']]), torch.tensor([data[0]['seq_len']])
+    
     if cfg.model_name != 'lm':
         x['head_pos'], x['tail_pos'] = torch.tensor([data[0]['head_pos']]), torch.tensor([data[0]['tail_pos']])
         if cfg.model_name == 'cnn':
@@ -123,6 +126,7 @@ def main(cfg):
             # 没找到合适的做 parsing tree 的工具，暂时随机初始化
             adj = torch.empty(1,data[0]['seq_len'],data[0]['seq_len']).random_(2)
             x['adj'] = adj
+
 
     for key in x.keys():
         x[key] = x[key].to(device)

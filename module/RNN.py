@@ -46,11 +46,12 @@ class RNN(nn.Module):
 
     def forward(self, x, x_len):
         """
-        :param x: torch.Tensor [batch_size, seq_max_length, input_size], [B, L, H_in] 一般是经过embedding后的值
-        :param x_len: torch.Tensor [L] 已经排好序的句长值
-        :return:
-        output: torch.Tensor [B, L, H_out] 序列标注的使用结果
-        hn:     torch.Tensor [B, N, H_out] / [B, H_out] 分类的结果，当 last_layer_hn 时只有最后一层结果
+        Args: 
+            torch.Tensor [batch_size, seq_max_length, input_size], [B, L, H_in] 一般是经过embedding后的值
+            x_len: torch.Tensor [L] 已经排好序的句长值
+        Returns:
+            output: torch.Tensor [B, L, H_out] 序列标注的使用结果
+            hn:     torch.Tensor [B, N, H_out] / [B, H_out] 分类的结果，当 last_layer_hn 时只有最后一层结果
         """
         B, L, _ = x.size()
         H, N = self.hidden_size, self.num_layers
@@ -70,5 +71,4 @@ class RNN(nn.Module):
             hn = hn[:, -1, :]
 
         return output, hn
-
 

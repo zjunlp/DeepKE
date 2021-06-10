@@ -5,7 +5,6 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 from utils import load_pkl
 
-
 def collate_fn(cfg):
     
     def collate_fn_intra(batch):
@@ -71,26 +70,3 @@ class CustomDataset(Dataset):
 
     def __len__(self):
         return len(self.file)
-
-
-if __name__ == '__main__':
-    from torch.utils.data import DataLoader
-    train_data_path = 'data/out/train.pkl'
-    vocab_path = 'data/out/vocab.pkl'
-    unk_str = 'UNK'
-    vocab = load_pkl(vocab_path)
-    train_ds = CustomDataset(train_data_path)
-    train_dl = DataLoader(train_ds, batch_size=4, shuffle=True, collate_fn=collate_fn, drop_last=False)
-    for batch_idx, (x, y) in enumerate(train_dl):
-        word = x['word']
-        for idx in word:
-            idx2token = ''.join([vocab.idx2word.get(i, unk_str) for i in idx.numpy()])
-            print(idx2token)
-        print(y)
-        break
-        # x, y = x.to(device), y.to(device)
-        # optimizer.zero_grad()
-        # y_pred = models(y)
-        # loss = criterion(y_pred, y)
-        # loss.backward()
-        # optimizer.step()
