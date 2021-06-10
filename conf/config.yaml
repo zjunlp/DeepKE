@@ -11,6 +11,7 @@ defaults:
   - preprocess
   - train
   - embedding
+  - predict
   - model: cnn   # [cnn, rnn, transformer, capsule, gcn, lm]
 
 

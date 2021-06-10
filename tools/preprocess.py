@@ -5,12 +5,32 @@ from typing import List, Dict
 from transformers import BertTokenizer
 from serializer import Serializer
 from vocab import Vocab
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 from utils import save_pkl, load_csv
 
 logger = logging.getLogger(__name__)
 
-
+__all__ = [
+    "_handle_pos_limit",
+    "_add_pos_seq",
+    "_convert_tokens_into_index",
+    "_serialize_sentence",
+    "_lm_serialize",
+    "_add_relation_data",
+    "_handle_relation_data",
+    "preprocess"
+]
 def _handle_pos_limit(pos: List[int], limit: int) -> List[int]:
+    """
+    处理句子长度，设定句长限制
+    Args :
+        pos (List[int]) : 句子对应的List
+        limit (int) : 限制的数
+    Return :
+        [p + limit + 1 for p in pos] (List[int]) : 处理后的结果
+
+    """
     for i, p in enumerate(pos):
         if p > limit:
             pos[i] = limit
@@ -20,6 +40,12 @@ def _handle_pos_limit(pos: List[int], limit: int) -> List[int]:
 
 
 def _add_pos_seq(train_data: List[Dict], cfg):
+    """
+    增加位置序列
+    Args : 
+        train_data (List[Dict]) : 数据集合
+        cfg : 配置文件
+    """
     for d in train_data:
         entities_idx = [d['head_idx'], d['tail_idx']
                         ] if d['head_idx'] < d['tail_idx'] else [d['tail_idx'], d['head_idx']]
@@ -39,6 +65,12 @@ def _add_pos_seq(train_data: List[Dict], cfg):
 
 
 def _convert_tokens_into_index(data: List[Dict], vocab):
+    """
+    将tokens转换成index值
+    Args : 
+        data (List[Dict]) : 数据集合
+        vocab (Class) : 词汇表
+    """
     unk_str = '[UNK]'
     unk_idx = vocab.word2idx[unk_str]
 
@@ -48,6 +80,13 @@ def _convert_tokens_into_index(data: List[Dict], vocab):
 
 
 def _serialize_sentence(data: List[Dict], serial, cfg):
+    """
+    将句子分词
+    Args : 
+        data (List[Dict]) : 数据集合
+        serial (Class): Serializer类
+        cfg : 配置文件
+    """
     for d in data:
         sent = d['sentence'].strip()
         sent = sent.replace(d['head'], ' head ', 1).replace(d['tail'], ' tail ', 1)
@@ -68,6 +107,12 @@ def _serialize_sentence(data: List[Dict], serial, cfg):
 
 
 def _lm_serialize(data: List[Dict], cfg):
+    """
+    lm模型分词
+    Args : 
+        data (List[Dict]) : 数据集合
+        cfg : 配置文件
+    """
     logger.info('use bert tokenizer...')
     tokenizer = BertTokenizer.from_pretrained(cfg.lm_file)
     for d in data:
@@ -79,6 +124,12 @@ def _lm_serialize(data: List[Dict], cfg):
 
 
 def _add_relation_data(rels: Dict, data: List) -> None:
+    """
+    增加关系数据
+    Args :
+        rels (Dict) : 关系字典集合
+        data (List) : 所需增加的关系数据
+    """
     for d in data:
         d['rel2idx'] = rels[d['relation']]['index']
         d['head_type'] = rels[d['relation']]['head_type']
@@ -86,6 +137,13 @@ def _add_relation_data(rels: Dict, data: List) -> None:
 
 
 def _handle_relation_data(relation_data: List[Dict]) -> Dict:
+    """
+    处理关系数据，每一个关系有index，head_type,tail_type三个属性
+    Arg : 
+        relation_data (List[Dict]) : 所需要处理的关系数据
+    Return :
+        rels (Dict) : 处理之后的结果
+    """
     rels = OrderedDict()
     relation_data = sorted(relation_data, key=lambda i: int(i['index']))
     for d in relation_data:
@@ -97,9 +155,10 @@ def _handle_relation_data(relation_data: List[Dict]) -> Dict:
 
     return rels
 
-
 def preprocess(cfg):
-
+    """
+    数据预处理阶段
+    """
     logger.info('===== start preprocess data =====')
     train_fp = os.path.join(cfg.cwd, cfg.data_path, 'train.csv')
     valid_fp = os.path.join(cfg.cwd, cfg.data_path, 'valid.csv')
@@ -172,5 +231,4 @@ def preprocess(cfg):
     logger.info('===== end preprocess data =====')
 
 
-if __name__ == '__main__':
-    pass
+

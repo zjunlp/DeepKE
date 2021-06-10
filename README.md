@@ -47,6 +47,7 @@ DeepKE 是基于 Pytorch 的深度学习中文关系抽取处理套件。
 - hydra-core >= 0.11
 - tensorboard >= 2.0
 - matplotlib >= 3.1
+- scikit-learn>=0.22
 - transformers >= 2.0
 - jieba >= 0.39
 - ~~pyhanlp >= 0.1.57~~（中文句法分析使用，但是在多句时效果也不好。。求推荐有比较好的中文句法分析）
@@ -96,17 +97,20 @@ DeepKE 是基于 Pytorch 的深度学习中文关系抽取处理套件。
 │  ├── LM.py                  # Language Model 模型
 │  ├── Capsule.py             # Capsule 模型
 │  ├── GCN.py                 # GCN 模型
+├── tools                     # 工具目录
+│  ├── metrics.py             # 评测指标文件
+│  ├── serializer.py          # 预处理数据过程序列化字符串文件
+│  ├── preprocess.py          # 训练前预处理数据文件
+│  ├── vocab.py               # token 词表构建函数文件
+│  ├── dataset.py             # 训练过程中批处理数据文件
+│  ├── trainer.py             # 训练验证迭代函数文件
+│  ├── main.py                # 主入口文件（训练）
+│  ├── predict.py             # 测试入口文件（测试）   
 ├── test                      # pytest 测试目录
 ├── tutorial-notebooks        # simple jupyter notebook tutorial
 ├── utils                     # 常用工具函数目录
-├── metrics.py                # 评测指标文件
-├── serializer.py             # 预处理数据过程序列化字符串文件
-├── preprocess.py             # 训练前预处理数据文件
-├── vocab.py                  # token 词表构建函数文件
-├── dataset.py                # 训练过程中批处理数据文件
-├── trainer.py                # 训练验证迭代函数文件
-├── main.py                   # 主入口文件（训练）
-├── predict.py                # 测试入口文件（测试）            
+│  ├── ioUtils.py             # io工具
+│  ├── nnUtils.py             # 网络工具
 ├── README.md                 # read me 文件
 ```
 
