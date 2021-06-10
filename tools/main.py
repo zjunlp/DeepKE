@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 # self
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 import models
 from preprocess import preprocess
 from dataset import CustomDataset, collate_fn
@@ -17,10 +19,10 @@ from utils import manual_seed, load_pkl
 
 logger = logging.getLogger(__name__)
 
-
-@hydra.main(config_path='conf/config.yaml')
+@hydra.main(config_path='../conf/config.yaml')
 def main(cfg):
     cwd = utils.get_original_cwd()
+    cwd = cwd[0:-5]
     cfg.cwd = cwd
     cfg.pos_size = 2 * cfg.pos_limit + 2
     logger.info(f'\n{cfg.pretty()}')
@@ -142,6 +144,4 @@ def main(cfg):
 
 if __name__ == '__main__':
     main()
-    # python predict.py --help  # 查看参数帮助
-    # python predict.py -c
-    # python predict.py chinese_split=0,1 replace_entity_with_type=0,1 -m
+    

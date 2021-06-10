@@ -77,7 +77,7 @@ class CNN(nn.Module):
             :param x: torch.Tensor [batch_size, seq_max_length, input_size], [B, L, H] 一般是经过embedding后的值
             :param mask: [batch_size, max_len], 句长部分为0，padding部分为1。不影响卷积运算，max-pool一定不会pool到pad为0的位置
             :return:
-            """
+        """
         # [B, L, H] -> [B, H, L] （注释：将 H 维度当作输入 channel 维度)
         x = torch.transpose(x, 1, 2)
 
