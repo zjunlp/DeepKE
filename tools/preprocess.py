@@ -9,10 +9,18 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 from utils import save_pkl, load_csv
 
-
 logger = logging.getLogger(__name__)
 
-
+__all__ = [
+    "_handle_pos_limit",
+    "_add_pos_seq",
+    "_convert_tokens_into_index",
+    "_serialize_sentence",
+    "_lm_serialize",
+    "_add_relation_data",
+    "_handle_relation_data",
+    "preprocess"
+]
 def _handle_pos_limit(pos: List[int], limit: int) -> List[int]:
     """
     处理句子长度，设定句长限制
@@ -146,7 +154,6 @@ def _handle_relation_data(relation_data: List[Dict]) -> Dict:
         }
 
     return rels
-
 
 def preprocess(cfg):
     """

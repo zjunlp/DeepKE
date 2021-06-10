@@ -2,6 +2,7 @@ import torch
 from . import BasicModule
 from module import Embedding, CNN
 from module import Capsule as CapsuleLayer
+
 from utils import seq_len_to_mask, to_one_hot
 
 

@@ -268,6 +268,3 @@ class Serializer():
         if cat.startswith("P"):
             return True
         return False
-
-
-
