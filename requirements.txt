@@ -1,7 +1,0 @@
-torch>=1.2
-hydra-core>=0.11
-tensorboard>=2.0
-matplotlib>=3.1
-scikit-learn>=0.22
-transformers>=2.2
-jieba>=0.39
