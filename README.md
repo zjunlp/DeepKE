@@ -40,7 +40,7 @@ DeepKE 提供了多种知识抽取模型。
 
 2.RE 
 
-    1.**[REGULAR](./example/re/regular/re_regular.md)**
+    1.REGULAR
 
     2.FEW-SHOT
 
@@ -64,7 +64,7 @@ Deepke包含了以下功能：（各子块导航到各模块的readme）
 
 2.RE 其中RE包括了以下三个子功能
 
-    1.REGULAR
+    1.**[REGULAR](https://github.com/tlk1997/deepke/blob/master/example/re/regular/re_regular.md)**
 
     2.FEW-SHOT
 
