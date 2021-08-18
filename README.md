@@ -64,11 +64,11 @@ Deepke包含了以下功能：（各子块导航到各模块的readme）
 
 2.RE 其中RE包括了以下三个子功能
 
-    1.**[REGULAR](https://github.com/tlk1997/deepke/blob/master/example/re/regular/re_regular.md)**
+**[REGULAR](https://github.com/tlk1997/deepke/blob/master/example/re/regular/re_regular.md)**
 
-    2.FEW-SHOT
+FEW-SHOT
 
-    3.DOCUMENT
+DOCUMENT
 
 3.AE
 
