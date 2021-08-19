@@ -1,11 +1,7 @@
 <p align="center">
     <br>
-<<<<<<< HEAD
-    <img src="https://raw.githubusercontent.com/huggingface/transformers/master/docs/source/imgs/transformers_logo_name.png" width="400"/>
-=======
     <!-- <img src="https://raw.githubusercontent.com/huggingface/transformers/master/docs/source/imgs/transformers_logo_name.png" width="400"/> -->
     DeepKE
->>>>>>> 28729e700dfa7f8775f9f0a5c8e8d26af19ffba9
     <br>
 <p>
 <p align="center">
@@ -26,29 +22,25 @@
     </a>
     <a href="https://zenodo.org/badge/latestdoi/155220641"><img src="https://zenodo.org/badge/155220641.svg" alt="DOI"></a>
 </p>
-<<<<<<< HEAD
-
-=======
 <h4 align="center">
     <p>
-        <b>简体中文</b> |
-        <a href="https://github.com/tlk1997/deepke/blob/master/README_ENGLISH.md">English</a> 
+        <a href="https://github.com/tlk1997/deepke/blob/master/README.md">简体中文</a> |
+        <b>English</b> 
     <p>
 </h4>
->>>>>>> 28729e700dfa7f8775f9f0a5c8e8d26af19ffba9
 
 <h3 align="center">
-    <p>基于深度学习的开源中文知识图谱抽取框架</p>
+    <p>Open source Chinese knowledge atlas extraction framework based on deep learning</p>
 </h3>
 
 <h3 align="center">
     <a href="https://hf.co/course"><img src="https://raw.githubusercontent.com/huggingface/transformers/master/docs/source/imgs/course_banner.png"></a>
 </h3>
 
-DeepKE 提供了多种知识抽取模型。
+DeepKE offers some models for knowledge extrations
 
-## 在线演示
-演示的demo地址
+## Online Demo
+demo 's urls
 
 1.NER
 
@@ -63,20 +55,20 @@ DeepKE 提供了多种知识抽取模型。
 3.AE
 
 
-## 快速上手
+## Quick Tour
 
-## 安装
-pip安装
+## Installtion
+pip installtion
 ```
 pip install deepke
 ```
 
-## 模型架构
-Deepke包含了以下功能：（各子块导航到各模块的readme）
+## Model architectures
+Deepke contains these models:
 
 1.NER
 
-2.RE 其中RE包括了以下三个子功能
+2.RE 
 
 **[REGULAR](https://github.com/tlk1997/deepke/blob/master/example/re/regular/re_regular.md)**
 
@@ -86,4 +78,4 @@ DOCUMENT
 
 3.AE
 
-## 引用
+## Citation
