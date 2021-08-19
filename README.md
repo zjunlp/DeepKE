@@ -25,7 +25,7 @@
 <h4 align="center">
     <p>
         <b>简体中文</b> |
-        <a href="https://github.com/tlk1997/deepke/blob/master/README_ENGLISH.md">English</a> |
+        <a href="https://github.com/tlk1997/deepke/blob/master/README_ENGLISH.md">English</a> 
     <p>
 </h4>
 
