@@ -23,7 +23,7 @@
 <h4 align="center">
     <p>
         <b>简体中文</b> |
-        <a href="https://github.com/zjunlp/DeepKE/edit/test_new_deepke/README_ENGLISH.md">English</a> 
+        <a href="https://github.com/zjunlp/DeepKE/blob/test_new_deepke/README_ENGLISH.md">English</a> 
     <p>
 </h4>
 
