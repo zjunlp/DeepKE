@@ -1,11 +1,10 @@
 <p align="center">
     <br>
-<<<<<<< HEAD
-    <img src="https://raw.githubusercontent.com/huggingface/transformers/master/docs/source/imgs/transformers_logo_name.png" width="400"/>
-=======
+
+<!--     <img src="https://raw.githubusercontent.com/huggingface/transformers/master/docs/source/imgs/transformers_logo_name.png" width="400"/> -->
     <!-- <img src="https://raw.githubusercontent.com/huggingface/transformers/master/docs/source/imgs/transformers_logo_name.png" width="400"/> -->
     DeepKE
->>>>>>> 28729e700dfa7f8775f9f0a5c8e8d26af19ffba9
+
     <br>
 <p>
 <p align="center">
