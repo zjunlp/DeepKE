@@ -19,16 +19,13 @@
     </a>
     <a href="https://zenodo.org/badge/latestdoi/155220641"><img src="https://zenodo.org/badge/155220641.svg" alt="DOI"></a>
 </p>
-<<<<<<< HEAD
 
-=======
 <h4 align="center">
     <p>
         <b>简体中文</b> |
-        <a href="https://github.com/tlk1997/deepke/blob/master/README_ENGLISH.md">English</a> 
+        <a href="https://github.com/zjunlp/DeepKE/edit/test_new_deepke/README_ENGLISH.md">English</a> 
     <p>
 </h4>
->>>>>>> 28729e700dfa7f8775f9f0a5c8e8d26af19ffba9
 
 <h3 align="center">
     <p>基于深度学习的开源中文知识图谱抽取框架</p>
