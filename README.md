@@ -68,11 +68,7 @@ Deepke包含了以下功能：（各子块导航到各模块的readme）
 
 2.RE 其中RE包括了以下三个子功能
 
-<<<<<<< HEAD
 **[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/regular/re_regular.md)**
-=======
-**[REGULAR](https://github.com/zjunlp/DeepKE/blob/test_new_deepke/example/re/regular/re_regular.md)**
->>>>>>> 408dc4acf56812d4cc2c03f573644ed821f23bff
 
 FEW-SHOT
 
