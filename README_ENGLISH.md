@@ -70,12 +70,8 @@ Deepke contains these models:
 
 2.RE 
 
-<<<<<<< HEAD
 **[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/regular/re_regular.md)**
 
-=======
-**[REGULAR](https://github.com/zjunlp/DeepKE/blob/test_new_deepke/example/re/regular/re_regular.md)**
->>>>>>> 408dc4acf56812d4cc2c03f573644ed821f23bff
 
 FEW-SHOT
 
