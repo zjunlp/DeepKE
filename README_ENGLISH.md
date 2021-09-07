@@ -70,7 +70,7 @@ Deepke contains these models:
 
 2.RE 
 
-**[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/regular/re_regular.md)**
+**[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/regular/README.md)**
 
 
 FEW-SHOT
