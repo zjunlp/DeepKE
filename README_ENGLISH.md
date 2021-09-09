@@ -44,12 +44,16 @@ demo 's urls
 
 1.NER
 
+```
+REGULAR
+```
+
 2.RE 
 
     1.REGULAR
-
+    
     2.FEW-SHOT
-
+    
     3.DOCUMENT
 
 3.AE
@@ -67,6 +71,8 @@ pip install deepke
 Deepke contains these models:
 
 1.NER
+
+**[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/regular/README.md)**
 
 2.RE 
 

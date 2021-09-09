@@ -42,12 +42,16 @@ DeepKE 提供了多种知识抽取模型。
 
 1.NER
 
+```
+REGULAR
+```
+
 2.RE 
 
     1.REGULAR
-
+    
     2.FEW-SHOT
-
+    
     3.DOCUMENT
 
 3.AE
@@ -65,6 +69,8 @@ pip install deepke
 Deepke包含了以下功能：（各子块导航到各模块的readme）
 
 1.NER
+
+**[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/regular/README.md)**
 
 2.RE 其中RE包括了以下三个子功能
 
