@@ -59,20 +59,17 @@ REGULAR
 
 ## 快速上手
 
-## 安装
-pip安装
-```
-pip install deepke
-```
+1.RE
 
-## 模型架构
-Deepke包含了以下功能：（各子块导航到各模块的readme）
+数据为csv文件，样式范例为：
 
-1.NER
+sentence|relation|head|head_offset|tail|tail_offset
+:---:|:---:|:---:|:---:|:---:|:---:
+《岳父也是爹》是王军执导的电视剧，由马恩然、范明主演。|导演|岳父也是爹|1|王军|8
+《九玄珠》是在纵横中文网连载的一部小说，作者是龙马。|连载网站|九玄珠|1|纵横中文网|7
+提起杭州的美景，西湖总是第一个映入脑海的词语。|所在城市|西湖|8|杭州|2
 
-**[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/regular/README.md)**
-
-2.RE 其中RE包括了以下三个子功能
+具体流程请进入具体的README中，RE包括了以下三个子功能
 
 **[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/regular/README.md)**
 
@@ -80,6 +77,28 @@ FEW-SHOT
 
 DOCUMENT
 
+2.NER
+
+**[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/regular/README.md)**
+
 3.AE
+
+## 模型架构
+Deepke的架构图如下所示
+
+<h3 align="center">
+    <img src="https://github.com/zjunlp/DeepKE/tree/test_new_deepke/pics/deepke.png">
+</h3>
+
+
+## 备注（常见问题）
+1. 使用 Anaconda 时，建议添加国内镜像，下载速度更快。如[清华镜像](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/)。
+
+1. 使用 pip 时，建议使用国内镜像，下载速度更快，如阿里云镜像。
+
+1. 安装后提示 `ModuleNotFoundError: No module named 'past'`，输入命令 `pip install future` 即可解决。
+
+## 致谢
+
 
 ## 引用
