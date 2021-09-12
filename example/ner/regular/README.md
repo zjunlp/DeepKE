@@ -51,3 +51,8 @@ git clone git@github.com:zjunlp/DeepKE.git
     python predict.py --text="It was one o'clock when we left Lauriston Gardens and Sherlock Holmes led me to Metropolitan Police Service.."
     ````
 
+
+
+## 模型内容
+
+BERT
