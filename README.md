@@ -87,7 +87,7 @@ DOCUMENT
 Deepke的架构图如下所示
 
 <h3 align="center">
-    <img src="https://github.com/zjunlp/DeepKE/tree/test_new_deepke/pics/deepke.png">
+    <img src="pics/deepke.png">
 </h3>
 
 
