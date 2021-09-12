@@ -23,7 +23,9 @@ git clone git@github.com:zjunlp/DeepKE.git
 
 - 安装依赖: ```pip install -r requirements.txt```
 
--存放数据：在 `data/origin` 文件夹下存放训练数据。训练文件主要有三个文件。
+### 使用数据进行训练预测
+
+- 存放数据：在 `data/origin` 文件夹下存放训练数据。训练文件主要有三个文件。
 
   - `train.csv`：存放训练数据集
 
