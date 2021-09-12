@@ -70,14 +70,14 @@ DeepKE 提供了多种知识抽取模型。
    | 《岳父也是爹》是王军执导的电视剧，由马恩然、范明主演。 |   导演   | 岳父也是爹 |      1      |    王军    |      8      |
    |  《九玄珠》是在纵横中文网连载的一部小说，作者是龙马。  | 连载网站 |   九玄珠   |      1      | 纵横中文网 |      7      |
    |     提起杭州的美景，西湖总是第一个映入脑海的词语。     | 所在城市 |    西湖    |      8      |    杭州    |      2      |
-
-​		具体流程请进入详细的README中，RE包括了以下三个子功能
-
-​		**[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/regular/README.md)**
-
-​		FEW-SHOT
-
-​		DOCUMENT
+   
+   具体流程请进入详细的README中，RE包括了以下三个子功能
+   
+   **[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/regular/README.md)**
+   
+   FEW-SHORT
+   
+   DOCUMENT
 
 2. NER
 
