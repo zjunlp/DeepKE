@@ -5,3 +5,4 @@ matplotlib == 3.4.1
 scikit-learn == 0.24.1
 transformers == 4.5.0
 jieba == 0.42.1
+deepke
