@@ -19,7 +19,7 @@ git clone git@github.com:zjunlp/DeepKE.git
 ```
 ### 使用pip安装
 
-首先创建python虚拟环境，再进入虚拟环境,然
+首先创建python虚拟环境，再进入虚拟环境
 
 - 安装依赖: ```pip install -r requirements.txt```
 
