@@ -35,7 +35,7 @@ git clone git@github.com:zjunlp/DeepKE.git
   - `valid.txt`：存放验证数据集
   - `test.txt`：存放测试数据集
 
-- 先进行训练，训练后的模型参数保存在out_ner文件夹中
+- 先进行训练，训练后的模型参数保存在`out_ner`文件夹中
 
   ```
   python run.py --data_dir=data/ --bert_model=bert-base-cased --task_name=ner --output_dir=out_ner --max_seq_length=128 --do_train --num_train_epochs 5 --do_eval --warmup_proportion=0.1
