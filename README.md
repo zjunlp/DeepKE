@@ -40,48 +40,60 @@ DeepKE 提供了多种知识抽取模型。
 ## 在线演示
 演示的demo地址
 
-1.NER
+1. RE 
 
-```
-REGULAR
-```
+   ```
+   1.REGULAR
+   
+   2.FEW-SHOT
+   
+   3.DOCUMENT
+   ```
 
-2.RE 
+2. NER
 
-    1.REGULAR
-    
-    2.FEW-SHOT
-    
-    3.DOCUMENT
+   ```
+   REGULAR
+   ```
 
-3.AE
+3. AE
 
 
 ## 快速上手
 
-1.RE
+1. RE
 
-数据为csv文件，样式范例为：
+   数据为csv文件，样式范例为：
 
-sentence|relation|head|head_offset|tail|tail_offset
-:---:|:---:|:---:|:---:|:---:|:---:
-《岳父也是爹》是王军执导的电视剧，由马恩然、范明主演。|导演|岳父也是爹|1|王军|8
-《九玄珠》是在纵横中文网连载的一部小说，作者是龙马。|连载网站|九玄珠|1|纵横中文网|7
-提起杭州的美景，西湖总是第一个映入脑海的词语。|所在城市|西湖|8|杭州|2
+   |                        Sentence                        | Relation |    Head    | Head_offset |    Tail    | Tail_offset |
+   | :----------------------------------------------------: | :------: | :--------: | :---------: | :--------: | :---------: |
+   | 《岳父也是爹》是王军执导的电视剧，由马恩然、范明主演。 |   导演   | 岳父也是爹 |      1      |    王军    |      8      |
+   |  《九玄珠》是在纵横中文网连载的一部小说，作者是龙马。  | 连载网站 |   九玄珠   |      1      | 纵横中文网 |      7      |
+   |     提起杭州的美景，西湖总是第一个映入脑海的词语。     | 所在城市 |    西湖    |      8      |    杭州    |      2      |
 
-具体流程请进入具体的README中，RE包括了以下三个子功能
+​		具体流程请进入详细的README中，RE包括了以下三个子功能
 
-**[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/regular/README.md)**
+​		**[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/regular/README.md)**
 
-FEW-SHOT
+​		FEW-SHOT
 
-DOCUMENT
+​		DOCUMENT
 
-2.NER
+2. NER
 
-**[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/regular/README.md)**
+   数据为txt文件，样式范例为：
 
-3.AE
+   |                           sentence                           |                Person                |     Location      |        Organization         |     Miscellaneous     |
+   | :----------------------------------------------------------: | :----------------------------------: | :---------------: | :-------------------------: | :-------------------: |
+   | Australian Tom Moody took six for 82 but Chris Adams, 123, and Tim O'Gorman, 109, took Derbyshire to 471 and a first innings lead of 233. | Tom Moody, Chris Adams, Tim O'Gorman |         /         |          Derbysire          |      Australian       |
+   | Irene, a master student in Zhejiang University, Hangzhou, is traveling in Warsaw for Chopin Music Festival. |                Irene                 | Hangzhou, Warsaw  |     Zhejiang University     | Chopin Music Festival |
+   | It was one o'clock when we left Lauriston Gardens and Sherlock Holmes led me to Metropolitan Police Service. |           Sherlock Holmes            | Lauriston Gardens | Metropolitan Police Service |           /           |
+
+   具体流程请进入详细的README中：
+
+   **[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/regular/README.md)**
+
+3. AE
 
 ## 模型架构
 Deepke的架构图如下所示
