@@ -83,11 +83,11 @@ DeepKE 提供了多种知识抽取模型。
 
    数据为txt文件，样式范例为：
 
-   |                           sentence                           |                Person                |     Location      |        Organization         |     Miscellaneous     |
-   | :----------------------------------------------------------: | :----------------------------------: | :---------------: | :-------------------------: | :-------------------: |
-   | Australian Tom Moody took six for 82 but Chris Adams, 123, and Tim O'Gorman, 109, took Derbyshire to 471 and a first innings lead of 233. | Tom Moody, Chris Adams, Tim O'Gorman |         /         |          Derbysire          |      Australian       |
-   | Irene, a master student in Zhejiang University, Hangzhou, is traveling in Warsaw for Chopin Music Festival. |                Irene                 | Hangzhou, Warsaw  |     Zhejiang University     | Chopin Music Festival |
-   | It was one o'clock when we left Lauriston Gardens and Sherlock Holmes led me to Metropolitan Police Service. |           Sherlock Holmes            | Lauriston Gardens | Metropolitan Police Service |           /           |
+   |                           sentence                           |                Person                |     Location      |    Organization     |     Miscellaneous     |
+   | :----------------------------------------------------------: | :----------------------------------: | :---------------: | :-----------------: | :-------------------: |
+   | Australian Tom Moody took six for 82 but Chris Adams, 123, and Tim O'Gorman, 109, took Derbyshire to 471 and a first innings lead of 233. | Tom Moody, Chris Adams, Tim O'Gorman |         /         |      Derbysire      |      Australian       |
+   | Irene, a master student in Zhejiang University, Hangzhou, is traveling in Warsaw for Chopin Music Festival. |                Irene                 | Hangzhou, Warsaw  | Zhejiang University | Chopin Music Festival |
+   | It was one o'clock when we left Lauriston Gardens and Sherlock Holmes led me to Metropolitan Police Service. |           Sherlock Holmes            | Lauriston Gardens | Metropolitan Police |           /           |
 
    具体流程请进入详细的README中：
 
