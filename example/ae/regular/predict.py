@@ -5,7 +5,7 @@ import logging
 import hydra
 from hydra import utils
 from serializer import Serializer
-from preprocess import _serialize_sentence, _convert_tokens_into_index, _add_pos_seq, _handle_relation_data
+from preprocess import _serialize_sentence, _convert_tokens_into_index, _add_pos_seq, _handle_attribute_data
 import matplotlib.pyplot as plt
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 from utils import load_pkl, load_csv
@@ -17,8 +17,8 @@ logger = logging.getLogger(__name__)
 
 def _preprocess_data(data, cfg):
     vocab = load_pkl(os.path.join(cfg.cwd, cfg.out_path, 'vocab.pkl'), verbose=False)
-    relation_data = load_csv(os.path.join(cfg.cwd, cfg.data_path, 'relation.csv'), verbose=False)
-    rels = _handle_relation_data(relation_data)
+    attribute_data = load_csv(os.path.join(cfg.cwd, cfg.data_path, 'attribute.csv'), verbose=False)
+    atts = _handle_attribute_data(attribute_data)
     cfg.vocab_size = vocab.count
     serializer = Serializer(do_chinese_split=cfg.chinese_split)
     serial = serializer.serialize
@@ -27,47 +27,39 @@ def _preprocess_data(data, cfg):
     _convert_tokens_into_index(data, vocab)
     _add_pos_seq(data, cfg)
     logger.info('start sentence preprocess...')
-    formats = '\nsentence: {}\nchinese_split: {}\nreplace_entity_with_type:  {}\nreplace_entity_with_scope: {}\n' \
-              'tokens:    {}\ntoken2idx: {}\nlength:    {}\nhead_idx:  {}\ntail_idx:  {}'
+    formats = '\nsentence: {}\nchinese_split: {}\n' \
+              'tokens:    {}\ntoken2idx: {}\nlength:    {}\nentity_index:  {}\nattribute_value_index:  {}'
     logger.info(
-        formats.format(data[0]['sentence'], cfg.chinese_split, cfg.replace_entity_with_type,
-                       cfg.replace_entity_with_scope, data[0]['tokens'], data[0]['token2idx'], data[0]['seq_len'],
-                       data[0]['head_idx'], data[0]['tail_idx']))
-    return data, rels
+        formats.format(data[0]['sentence'], cfg.chinese_split,
+                       data[0]['tokens'], data[0]['token2idx'], data[0]['seq_len'],
+                       data[0]['entity_index'], data[0]['attribute_value_index']))
+    return data, atts
 
 
 def _get_predict_instance(cfg):
     flag = input('是否使用范例[y/n]，退出请输入: exit .... ')
     flag = flag.strip().lower()
     if flag == 'y' or flag == 'yes':
-        sentence = '《乡村爱情》是一部由知名导演赵本山在1985年所拍摄的农村青春偶像剧。'
-        head = '乡村爱情'
-        tail = '赵本山'
-        head_type = '电视剧'
-        tail_type = '人物'
+        sentence = '张冬梅，女，汉族，1968年2月生，河南淇县人，1988年7月加入中国共产党，1989年9月参加工作，中央党校经济管理专业毕业，中央党校研究生学历'
+        entity = '张冬梅'
+        attribute_value = '汉族'
     elif flag == 'n' or flag == 'no':
         sentence = input('请输入句子：')
-        head = input('请输入句中需要预测关系的头实体：')
-        head_type = input('请输入头实体类型（可以为空，按enter跳过）：')
-        tail = input('请输入句中需要预测关系的尾实体：')
-        tail_type = input('请输入尾实体类型（可以为空，按enter跳过）：')
+        entity = input('请输入句中需要预测的实体：')
+        attribute_value = input('请输入句中需要预测的属性值：')
     elif flag == 'exit':
         sys.exit(0)
     else:
         print('please input yes or no, or exit!')
-        _get_predict_instance()
+        _get_predict_instance(cfg)
+        
 
     instance = dict()
     instance['sentence'] = sentence.strip()
-    instance['head'] = head.strip()
-    instance['tail'] = tail.strip()
-    if head_type.strip() == '' or tail_type.strip() == '':
-        cfg.replace_entity_with_type = False
-        instance['head_type'] = 'None'
-        instance['tail_type'] = 'None'
-    else:
-        instance['head_type'] = head_type.strip()
-        instance['tail_type'] = tail_type.strip()
+    instance['entity'] = entity.strip()
+    instance['attribute_value'] = attribute_value.strip()
+    instance['entity_offset'] = sentence.find(entity)
+    instance['attribute_value_offset'] = sentence.find(attribute_value)
 
     return instance
 
@@ -118,7 +110,7 @@ def main(cfg):
     x['word'], x['lens'] = torch.tensor([data[0]['token2idx']]), torch.tensor([data[0]['seq_len']])
     
     if cfg.model_name != 'lm':
-        x['head_pos'], x['tail_pos'] = torch.tensor([data[0]['head_pos']]), torch.tensor([data[0]['tail_pos']])
+        x['entity_pos'], x['attribute_value_pos'] = torch.tensor([data[0]['entity_pos']]), torch.tensor([data[0]['attribute_value_pos']])
         if cfg.model_name == 'cnn':
             if cfg.use_pcnn:
                 x['pcnn_mask'] = torch.tensor([data[0]['entities_pos']])
@@ -135,11 +127,10 @@ def main(cfg):
         y_pred = model(x)
         y_pred = torch.softmax(y_pred, dim=-1)[0]
         prob = y_pred.max().item()
-        prob_rel = list(rels.keys())[y_pred.argmax().item()]
-        logger.info(f"\"{data[0]['head']}\" 和 \"{data[0]['tail']}\" 在句中关系为：\"{prob_rel}\"，置信度为{prob:.2f}。")
+        prob_att = list(rels.keys())[y_pred.argmax().item()]
+        logger.info(f"\"{data[0]['entity']}\" 和 \"{data[0]['attribute_value']}\" 在句中属性为：\"{prob_att}\"，置信度为{prob:.2f}。")
 
     if cfg.predict_plot:
-        # maplot 默认显示不支持中文
         plt.rcParams["font.family"] = 'Arial Unicode MS'
         x = list(rels.keys())
         height = list(y_pred.cpu().numpy())

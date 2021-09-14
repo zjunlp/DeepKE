@@ -15,9 +15,10 @@ import models as models
 from tools import preprocess , CustomDataset, collate_fn ,train, validate
 from utils import manual_seed, load_pkl
 
+
 logger = logging.getLogger(__name__)
 
-@hydra.main(config_path='../conf/config.yaml')
+@hydra.main(config_path="../conf/config.yaml")
 def main(cfg):
     cwd = utils.get_original_cwd()
     cwd = cwd[0:-5]
@@ -44,7 +45,7 @@ def main(cfg):
     # 如果不修改预处理的过程，这一步最好注释掉，不用每次运行都预处理数据一次
     if cfg.preprocess:
         preprocess(cfg)
-
+    
     train_data_path = os.path.join(cfg.cwd, cfg.out_path, 'train.pkl')
     valid_data_path = os.path.join(cfg.cwd, cfg.out_path, 'valid.pkl')
     test_data_path = os.path.join(cfg.cwd, cfg.out_path, 'test.pkl')
@@ -142,4 +143,6 @@ def main(cfg):
 
 if __name__ == '__main__':
     main()
-    
+    # python predict.py --help  # 查看参数帮助
+    # python predict.py -c
+    # python predict.py chinese_split=0,1 replace_entity_with_type=0,1 -m
