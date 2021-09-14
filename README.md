@@ -83,7 +83,7 @@ DeepKE 提供了多种知识抽取模型。
 
    数据为txt文件，样式范例为：
 
-   |                           sentence                           |                Person                |     Location      |        Organization         |     Miscellaneous     |
+   |                           Sentence                           |                Person                |     Location      |        Organization         |     Miscellaneous     |
    | :----------------------------------------------------------: | :----------------------------------: | :---------------: | :-------------------------: | :-------------------: |
    | Australian Tom Moody took six for 82 but Chris Adams, 123, and Tim O'Gorman, 109, took Derbyshire to 471 and a first innings lead of 233. | Tom Moody, Chris Adams, Tim O'Gorman |         /         |          Derbysire          |      Australian       |
    | Irene, a master student in Zhejiang University, Hangzhou, is traveling in Warsaw for Chopin Music Festival. |                Irene                 | Hangzhou, Warsaw  |     Zhejiang University     | Chopin Music Festival |
@@ -94,6 +94,20 @@ DeepKE 提供了多种知识抽取模型。
    **[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/regular/README.md)**
 
 3. AE
+
+    数据为csv文件，样式范例为：
+
+   |                        Sentence                        | Attribute |    Entity    | Entity_offset |    Attribute_value    | Attribute_value_offset |
+   | :----------------------------------------------------: | :------: | :--------: | :---------: | :--------: | :---------: |
+   | 张冬梅，女，汉族，1968年2月生，河南淇县人，1988年7月加入中国共产党，1989年9月参加工作，中央党校经济管理专业毕业，中央党校研究生学历 |   民族   | 张冬梅 |      0      |    汉族    |      6      |
+   |  杨缨，字绵公，号钓溪，松溪县人，祖籍将乐，是北宋理学家杨时的七世孙  | 朝代 |   杨缨   |      0      | 北宋 |      22      |
+   |     2014年10月1日许鞍华执导的电影《黄金时代》上映，冯绍峰饰演与之差别极大的民国东北爷们萧军，演技受到肯定     | 上映时间 |    黄金时代    |      19      |    2014年10月1日    |      0      |
+   
+   具体流程请进入详细的README中，RE包括了以下三个子功能
+   
+   **[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/regular/README.md)**
+
+
 
 ## 模型架构
 Deepke的架构图如下所示
