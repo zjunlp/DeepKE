@@ -27,8 +27,8 @@ class Embedding(nn.Module):
     def forward(self, *x):
         word, entity, attribute_key = x
         word_embedding = self.wordEmbed(word)
-        entity_embedding = self.entityPosEmbed(head)
-        attribute_key_embedding = self.attribute_keyPosEmbed(tail)
+        entity_embedding = self.entityPosEmbed(entity)
+        attribute_key_embedding = self.attribute_keyPosEmbed(attribute_key)
 
         if self.dim_strategy == 'cat':
             return torch.cat((word_embedding, entity_embedding, attribute_key_embedding), -1)
