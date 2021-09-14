@@ -11,9 +11,9 @@ from torch.utils.tensorboard import SummaryWriter
 # self
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
-import deepke.models as models
-from deepke.tools import preprocess , CustomDataset, collate_fn ,train, validate
-from deepke.utils import manual_seed, load_pkl
+import deepke.re_re_models as models
+from deepke.re_re_tools import preprocess , CustomDataset, collate_fn ,train, validate
+from deepke.re_re_utils import manual_seed, load_pkl
 
 
 logger = logging.getLogger(__name__)

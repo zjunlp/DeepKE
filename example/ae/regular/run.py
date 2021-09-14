@@ -11,17 +11,17 @@ from torch.utils.tensorboard import SummaryWriter
 # self
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
-import models as models
-from tools import preprocess , CustomDataset, collate_fn ,train, validate
-from utils import manual_seed, load_pkl
+import deepke.ae_re_models as models
+from deepke.ae_re_tools import preprocess , CustomDataset, collate_fn ,train, validate
+from deepke.ae_re_utils import manual_seed, load_pkl
 
 
 logger = logging.getLogger(__name__)
 
-@hydra.main(config_path="../conf/config.yaml")
+@hydra.main(config_path="conf/config.yaml")
 def main(cfg):
     cwd = utils.get_original_cwd()
-    cwd = cwd[0:-5]
+    # cwd = cwd[0:-5]
     cfg.cwd = cwd
     cfg.pos_size = 2 * cfg.pos_limit + 2
     logger.info(f'\n{cfg.pretty()}')

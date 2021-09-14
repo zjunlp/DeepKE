@@ -4,12 +4,12 @@ import torch
 import logging
 import hydra
 from hydra import utils
-from serializer import Serializer
-from preprocess import _serialize_sentence, _convert_tokens_into_index, _add_pos_seq, _handle_attribute_data
+from deepke.ae_re_tools import Serializer
+from deepke.ae_re_tools import _serialize_sentence, _convert_tokens_into_index, _add_pos_seq, _handle_attribute_data
 import matplotlib.pyplot as plt
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
-from utils import load_pkl, load_csv
-import models as models
+from deepke.ae_re_utils import load_pkl, load_csv
+import deepke.ae_re_models as models
 
 
 logger = logging.getLogger(__name__)
@@ -66,10 +66,10 @@ def _get_predict_instance(cfg):
 
 
 
-@hydra.main(config_path='../conf/config.yaml')
+@hydra.main(config_path='conf/config.yaml')
 def main(cfg):
     cwd = utils.get_original_cwd()
-    cwd = cwd[0:-5]
+    # cwd = cwd[0:-5]
     cfg.cwd = cwd
     cfg.pos_size = 2 * cfg.pos_limit + 2
     print(cfg.pretty())
