@@ -76,7 +76,7 @@ DeepKE 提供了多种知识抽取模型。
    
    具体流程请进入详细的README中，RE包括了以下三个子功能
    
-   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard/README.md)**
+   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard)**
    
    FEW-SHORT
    
@@ -94,7 +94,7 @@ DeepKE 提供了多种知识抽取模型。
 
    具体流程请进入详细的README中：
 
-   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/standard/README.md)**
+   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/standard)**
 
 3. AE
 
@@ -108,7 +108,7 @@ DeepKE 提供了多种知识抽取模型。
    
    具体流程请进入详细的README中:
    
-   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/standard/README.md)**
+   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/standard)**
 
 
 
