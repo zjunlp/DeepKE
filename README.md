@@ -43,7 +43,7 @@ DeepKE 提供了多种知识抽取模型。
 1. RE 
 
    ```
-   1.REGULAR
+   1.STANDARD
    
    2.FEW-SHOT
    
@@ -53,12 +53,12 @@ DeepKE 提供了多种知识抽取模型。
 2. NER
 
    ```
-   REGULAR
+   STANDARD
    ```
 
 3. AE
    ```
-   REGULAR
+   STANDARD
    ```
 
 
@@ -76,7 +76,7 @@ DeepKE 提供了多种知识抽取模型。
    
    具体流程请进入详细的README中，RE包括了以下三个子功能
    
-   **[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/regular/README.md)**
+   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/regular/README.md)**
    
    FEW-SHORT
    
@@ -94,7 +94,7 @@ DeepKE 提供了多种知识抽取模型。
 
    具体流程请进入详细的README中：
 
-   **[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/regular/README.md)**
+   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/regular/README.md)**
 
 3. AE
 
@@ -108,7 +108,7 @@ DeepKE 提供了多种知识抽取模型。
    
    具体流程请进入详细的README中:
    
-   **[REGULAR](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/regular/README.md)**
+   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/regular/README.md)**
 
 
 
@@ -126,6 +126,8 @@ Deepke的架构图如下所示
 1. 使用 pip 时，建议使用国内镜像，下载速度更快，如阿里云镜像。
 
 1. 安装后提示 `ModuleNotFoundError: No module named 'past'`，输入命令 `pip install future` 即可解决。
+
+1. 使用语言预训练模型时，在线安装下载模型比较慢，更建议提前下载好，存放到 pretrained 文件夹内。具体存放文件要求见文件夹内的 readme.md。
 
 ## 致谢
 
