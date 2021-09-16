@@ -11,9 +11,9 @@ from torch.utils.tensorboard import SummaryWriter
 # self
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
-import deepke.re_re_models as models
-from deepke.re_re_tools import preprocess , CustomDataset, collate_fn ,train, validate
-from deepke.re_re_utils import manual_seed, load_pkl
+import deepke.ae_st_models as models
+from deepke.ae_st_tools import preprocess , CustomDataset, collate_fn ,train, validate
+from deepke.ae_st_utils import manual_seed, load_pkl
 
 
 logger = logging.getLogger(__name__)
@@ -61,7 +61,7 @@ def main(cfg):
     train_dataset = CustomDataset(train_data_path)
     valid_dataset = CustomDataset(valid_data_path)
     test_dataset = CustomDataset(test_data_path)
-    
+
     train_dataloader = DataLoader(train_dataset, batch_size=cfg.batch_size, shuffle=True, collate_fn=collate_fn(cfg))
     valid_dataloader = DataLoader(valid_dataset, batch_size=cfg.batch_size, shuffle=True, collate_fn=collate_fn(cfg))
     test_dataloader = DataLoader(test_dataset, batch_size=cfg.batch_size, shuffle=True, collate_fn=collate_fn(cfg))
@@ -143,4 +143,6 @@ def main(cfg):
 
 if __name__ == '__main__':
     main()
-   
+    # python predict.py --help  # 查看参数帮助
+    # python predict.py -c
+    # python predict.py chinese_split=0,1 replace_entity_with_type=0,1 -m
