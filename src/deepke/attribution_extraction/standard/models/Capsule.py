@@ -1,9 +1,9 @@
 import torch
 from . import BasicModule
-from module import Embedding, CNN
-from module import Capsule as CapsuleLayer
+from ..module import Embedding, CNN
+from ..module import Capsule as CapsuleLayer
 
-from utils import seq_len_to_mask, to_one_hot
+from ..utils import seq_len_to_mask, to_one_hot
 
 
 class Capsule(BasicModule):
@@ -17,17 +17,17 @@ class Capsule(BasicModule):
 
         # capsule config
         cfg.input_dim_capsule = cfg.out_channels
-        cfg.num_capsule = cfg.num_relations
+        cfg.num_capsule = cfg.num_attributes
 
-        self.num_relations = cfg.num_relations
+        self.num_attributes = cfg.num_attributes
         self.embedding = Embedding(cfg)
         self.cnn = CNN(cfg)
         self.capsule = CapsuleLayer(cfg)
 
     def forward(self, x):
-        word, lens, head_pos, tail_pos = x['word'], x['lens'], x['head_pos'], x['tail_pos']
+        word, lens, entity_pos, attribute_value_pos = x['word'], x['lens'], x['entity_pos'], x['attribute_value_pos']
         mask = seq_len_to_mask(lens)
-        inputs = self.embedding(word, head_pos, tail_pos)
+        inputs = self.embedding(word, entity_pos, attribute_value_pos)
 
         primary, _ = self.cnn(inputs)  # 由于长度改变，无法定向mask，不mask可可以，毕竟primary capsule 就是粗粒度的信息
         output = self.capsule(primary)
@@ -38,7 +38,7 @@ class Capsule(BasicModule):
     def loss(self, predict, target, reduction='mean'):
         m_plus, m_minus, loss_lambda = 0.9, 0.1, 0.5
 
-        target = to_one_hot(target, self.num_relations)
+        target = to_one_hot(target, self.num_attributes)
         max_l = (torch.relu(m_plus - predict))**2
         max_r = (torch.relu(predict - m_minus))**2
         loss = target * max_l + loss_lambda * (1 - target) * max_r

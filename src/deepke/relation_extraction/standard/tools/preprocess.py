@@ -3,8 +3,8 @@ import logging
 from collections import OrderedDict
 from typing import List, Dict
 from transformers import BertTokenizer
-from serializer import Serializer
-from vocab import Vocab
+from .serializer import Serializer
+from .vocab import Vocab
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 from utils import save_pkl, load_csv
