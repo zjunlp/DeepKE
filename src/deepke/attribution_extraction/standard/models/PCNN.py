@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from . import BasicModule
-from module import Embedding, CNN
+from ..module import Embedding, CNN
 
-from utils import seq_len_to_mask
+from ..utils import seq_len_to_mask
 
 
 class PCNN(BasicModule):

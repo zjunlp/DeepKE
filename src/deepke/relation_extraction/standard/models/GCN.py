@@ -1,10 +1,9 @@
 import torch
 import torch.nn as nn
 from . import BasicModule
-from module import Embedding
-from module import GCN as GCNBlock
-
-from utils import seq_len_to_mask
+from ..module import Embedding
+from ..module import GCN as GCNBlock
+from ..utils import seq_len_to_mask
 
 
 class GCN(BasicModule):
@@ -18,15 +17,15 @@ class GCN(BasicModule):
 
         self.embedding = Embedding(cfg)
         self.gcn = GCNBlock(cfg)
-        self.fc = nn.Linear(cfg.hidden_size, cfg.num_attributes)
+        self.fc = nn.Linear(cfg.hidden_size, cfg.num_relations)
 
     def forward(self, x):
-        word, lens, entity_pos, attribute_value_pos, adj = x['word'], x['lens'], x['entity_pos'], x['attribute_value_pos'], x['adj']
+        word, lens, head_pos, tail_pos, adj = x['word'], x['lens'], x['head_pos'], x['tail_pos'], x['adj']
 
-        inputs = self.embedding(word, entity_pos, attribute_value_pos)
+
+        inputs = self.embedding(word, head_pos, tail_pos)
         output = self.gcn(inputs, adj)
         output = output.max(dim=1)[0]
         output = self.fc(output)
 
         return output
-    
