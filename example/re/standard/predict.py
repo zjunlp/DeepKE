@@ -4,12 +4,12 @@ import torch
 import logging
 import hydra
 from hydra import utils
-from deepke.re_st_tools import Serializer
-from deepke.re_st_tools import _serialize_sentence, _convert_tokens_into_index, _add_pos_seq, _handle_relation_data
+from deepke.relation_extraction.standard.tools import Serializer
+from deepke.relation_extraction.standard.tools import _serialize_sentence, _convert_tokens_into_index, _add_pos_seq, _handle_relation_data
 import matplotlib.pyplot as plt
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
-from deepke.re_st_utils import load_pkl, load_csv
-import deepke.re_st_models as models
+from deepke.relation_extraction.standard.utils import load_pkl, load_csv
+import deepke.relation_extraction.standard.models as models
 
 
 logger = logging.getLogger(__name__)
