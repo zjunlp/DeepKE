@@ -31,10 +31,6 @@
     <p>基于深度学习的开源中文知识图谱抽取框架</p>
 </h3>
 
-<h3 align="center">
-    <a href="https://hf.co/course"><img src="https://raw.githubusercontent.com/huggingface/transformers/master/docs/source/imgs/course_banner.png"></a>
-</h3>
-
 DeepKE 提供了多种知识抽取模型。
 
 ## 在线演示
