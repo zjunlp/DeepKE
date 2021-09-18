@@ -34,25 +34,13 @@ git clone git@github.com:zjunlp/DeepKE.git
   - `train.txt`：存放训练数据集
   - `valid.txt`：存放验证数据集
   - `test.txt`：存放测试数据集
+- 开始训练：```python run.py``` (训练所用到参数都在conf文件夹中，修改即可)
 
-- 先进行训练，训练后的模型参数保存在`out_ner`文件夹中
+- 每次训练的日志保存在 `logs` 文件夹内，模型结果保存在 `checkpoints` 文件夹内。
 
-  ```
-  python run.py --data_dir=data/ --bert_model=bert-base-cased --task_name=ner --output_dir=out_ner --max_seq_length=128 --do_train --num_train_epochs 5 --do_eval --warmup_proportion=0.1
-  ```
-
-- 再进行预测
-
-  - 执行以下命令运行示例`python predict.py`
-
-  - 如果需要指定NER的文本，可以利用--text参数指定，如：
-
-    ````
-    python predict.py --text="It was one o'clock when we left Lauriston Gardens and Sherlock Holmes led me to Metropolitan Police Service.."
-    ````
-
-
+- 进行预测 ```python predict.py```
 
 ## 模型内容
 
 BERT
+
