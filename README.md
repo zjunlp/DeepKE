@@ -6,7 +6,7 @@ DeepKE 是基于 Pytorch 的深度学习中文关系抽取处理套件。
 
 > Organization: [浙江大学知识引擎实验室](http://openkg.cn/)
 
-> Mentor: 陈华钧，张宁豫
+> Mentor: 张宁豫，陈华钧
 
 ---
 
