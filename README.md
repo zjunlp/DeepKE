@@ -44,7 +44,7 @@ DeepKE 是基于 Pytorch 的深度学习中文关系抽取处理套件。
 > python >= 3.6
 
 - torch >= 1.2
-- hydra-core == 0.11
+- hydra-core == 1.0.6
 - tensorboard >= 2.0
 - matplotlib >= 3.1
 - scikit-learn>=0.22
