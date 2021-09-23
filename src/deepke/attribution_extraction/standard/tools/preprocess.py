@@ -96,7 +96,7 @@ def preprocess(cfg):
     test_data = load_csv(test_fp)
     attribute_data = load_csv(attribute_fp)
 
-    logger.info('convert relation into index...')
+    logger.info('convert attribution into index...')
     atts = _handle_attribute_data(attribute_data)
     _add_attribute_data(atts,train_data)
     _add_attribute_data(atts,test_data)
