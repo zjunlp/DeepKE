@@ -1,6 +1,6 @@
 import sys
 sys.path.append("..")
-from models.BERTNER import Ner
+from models.InferBert import Ner
 model = Ner("out_ner/")
 
 text= "Irene, a master student in Zhejiang University, Hangzhou, is traveling in Warsaw for Chopin Music Festival."

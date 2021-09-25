@@ -80,24 +80,14 @@ DeepKE 提供了多种知识抽取模型。
 
 2. NER
 
-   数据为txt文件
-
-   中文样式范例为：
+   数据为txt文件，样式范例为：
 
    |                           Sentence                           |           Person           |   Location   |          Organization          |
-   | :----------------------------------------------------------: | :------------------------: | :----------: | :----------------------------: |
+| :----------------------------------------------------------: | :------------------------: | :----------: | :----------------------------: |
    | 本报北京9月4日讯记者杨涌报道：部分省区人民日报宣传发行工作座谈会9月3日在4日在京举行。 |            杨涌            |   北京，京   |            人民日报            |
    | 《红楼梦》是中央电视台和中国电视剧制作中心根据中国古典文学名著《红楼梦》摄制于1987年的一部古装连续剧，由王扶林导演，周汝昌、王蒙、周岭等多位红学家参与制作。 | 王扶林，周汝昌，王蒙，周岭 |      /       | 中央电视台，中国电视剧制作中心 |
    | 秦始皇兵马俑位于陕西省西安市，1961年被国务院公布为第一批全国重点文物保护单位，是世界八大奇迹之一。 |           秦始皇           | 陕西省西安市 |             国务院             |
-
-   英文样式范例为：
-
-   |                           Sentence                           |                Person                |     Location      |        Organization         |     Miscellaneous     |
-   | :----------------------------------------------------------: | :----------------------------------: | :---------------: | :-------------------------: | :-------------------: |
-   | Australian Tom Moody took six for 82 but Chris Adams, 123, and Tim O'Gorman, 109, took Derbyshire to 471 and a first innings lead of 233. | Tom Moody, Chris Adams, Tim O'Gorman |         /         |          Derbysire          |      Australian       |
-   | Irene, a master student in Zhejiang University, Hangzhou, is traveling in Warsaw for Chopin Music Festival. |                Irene                 | Hangzhou, Warsaw  |     Zhejiang University     | Chopin Music Festival |
-   | It was one o'clock when we left Lauriston Gardens and Sherlock Holmes led me to Metropolitan Police Service. |           Sherlock Holmes            | Lauriston Gardens | Metropolitan Police Service |           /           |
-
+   
    具体流程请进入详细的README中：
 
    **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/standard)**

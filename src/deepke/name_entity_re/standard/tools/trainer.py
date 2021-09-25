@@ -23,7 +23,7 @@ from seqeval.metrics import classification_report
 from dataset import *
 from preprocess import *
 sys.path.append("..")
-from models.NER import Ner
+from tools.BasicNer import Ner
 
 
 def main():
