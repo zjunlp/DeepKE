@@ -1,6 +1,6 @@
-# 快速上手
+## 快速上手
 
-## 环境依赖
+### 环境依赖
 
 > python >= 3.7 
 
@@ -9,10 +9,11 @@
 - seqeval==0.0.5
 - tqdm==4.31.1
 - nltk==3.4.5
+- deepke
 
 
 
-## 克隆代码
+### 克隆代码
 
 ```
 git clone git@github.com:zjunlp/DeepKE.git
@@ -20,7 +21,7 @@ git clone git@github.com:zjunlp/DeepKE.git
 
 
 
-## 使用pip安装
+### 使用pip安装
 
 首先创建python虚拟环境，再进入虚拟环境
 
@@ -28,9 +29,9 @@ git clone git@github.com:zjunlp/DeepKE.git
 
 
 
-## 使用数据进行训练预测
+### 使用数据进行训练预测
 
-- 存放数据：在`data`文件夹下存放数据集。主要有三个文件：
+- 存放数据：在`data`文件夹下存放数据。主要有三个文件：
   - `train.txt`：存放训练数据集
   - `valid.txt`：存放验证数据集
   - `test.txt`：存放测试数据集
@@ -40,7 +41,9 @@ git clone git@github.com:zjunlp/DeepKE.git
 
 - 进行预测 ```python predict.py```
 
-## 模型内容
 
-BERT
+
+### 模型内容
+
+1、BERT
 
