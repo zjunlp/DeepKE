@@ -133,13 +133,13 @@ class Ner:
                     tmp.append(word)
                 else:
                     wordstype = result[i-1][1][2:]
-                    tag[wordstype].append(' '.join(tmp))
+                    tag[wordstype].append(''.join(tmp))
                     tmp.clear()
                     tmp.append(word)
             elif i==len(result)-1:
                 tmp.append(word)
                 wordstype = result[i][1][2:]
-                tag[wordstype].append(' '.join(tmp))
+                tag[wordstype].append(''.join(tmp))
             else:
                 tmp.append(word)
 
