@@ -16,6 +16,9 @@ import argparse
 import nltk
 nltk.data.path.insert(0,'./data/nltk_data')
 
+import hydra
+from hydra import utils
+
 
 class BertNer(BertForTokenClassification):
 
@@ -53,7 +56,8 @@ class Ner:
 
     def tokenize(self, text: str):
         """ tokenize input"""
-        words = word_tokenize(text)
+#         words = word_tokenize(text)
+        words = list(text)
         tokens = []
         valid_positions = []
         for i,word in enumerate(words):
@@ -113,7 +117,7 @@ class Ner:
         logits.pop()
 
         labels = [(self.label_map[label],confidence) for label,confidence in logits]
-        words = word_tokenize(text)
+        words = list(text)
         assert len(labels) == len(words)
 
         result = []
@@ -146,15 +150,10 @@ class Ner:
         return tag
 
 
-if __name__ == "__main__":
-    model = Ner("out_ner/")
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--text",
-                  default="Irene, a master student in Zhejiang University, Hangzhou, is traveling in Warsaw for Chopin Music Festival.",
-                  type=str,
-                  help="The text to be NERed")
-    text = parser.parse_args().text
+@hydra.main(config_path="conf", config_name='config')
+def main(cfg):
+    model = Ner(utils.get_original_cwd()+'/'+"checkpoint/")
+    text = cfg.text
 
     print("The text to be NERed:")
     print(text)
@@ -172,3 +171,9 @@ if __name__ == "__main__":
                 print('Organization')
             elif k=='MISC':
                 print('Miscellaneous')
+
+    
+    
+    
+if __name__ == "__main__":
+    main()
