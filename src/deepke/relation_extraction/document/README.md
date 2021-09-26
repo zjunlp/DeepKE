@@ -1,4 +1,4 @@
-[**中文**](https://github.com/zjunlp/DocRE/blob/master/README_CN.md) | [**English**](https://github.com/zjunlp/DocRE/blob/master/README.md)
+[**中文**](https://github.com/zjunlp/DeepKE/edit/test_new_deepke/src/deepke/relation_extraction/document/README_CN.md) | [**English**](https://github.com/zjunlp/DeepKE/edit/test_new_deepke/src/deepke/relation_extraction/document/README.md)
 
 >
 
