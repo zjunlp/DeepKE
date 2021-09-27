@@ -36,9 +36,9 @@ class BertNer(BertForTokenClassification):
         logits = self.classifier(sequence_output)
         return logits
 
-class Ner:
+class InferNer:
 
-    def __init__(self,model_dir: str):
+    def __init__(self,model_dir:str,language):
         self.model , self.tokenizer, self.model_config = self.load_model(model_dir)
         self.label_map = self.model_config["label_map"]
         self.max_seq_length = self.model_config["max_seq_length"]
@@ -46,6 +46,7 @@ class Ner:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model = self.model.to(self.device)
         self.model.eval()
+        self.language = language
 
     def load_model(self, model_dir: str, model_config: str = "model_config.json"):
         model_config = os.path.join(model_dir,model_config)
@@ -56,7 +57,6 @@ class Ner:
 
     def tokenize(self, text: str):
         """ tokenize input"""
-#         words = word_tokenize(text)
         words = list(text)
         tokens = []
         valid_positions = []
@@ -117,7 +117,11 @@ class Ner:
         logits.pop()
 
         labels = [(self.label_map[label],confidence) for label,confidence in logits]
-        words = list(text)
+        if self.language == 'bert-base-chinese':
+            words = list(text)
+        else:
+            nltk.download('punkt')
+            words = word_tokenize(text)
         assert len(labels) == len(words)
 
         result = []
@@ -137,27 +141,34 @@ class Ner:
                     tmp.append(word)
                 else:
                     wordstype = result[i-1][1][2:]
-                    tag[wordstype].append(''.join(tmp))
+                    if self.language=='bert-base-chinese':
+                        tag[wordstype].append(''.join(tmp))
+                    else:
+                        tag[wordstype].append(' '.join(tmp))
                     tmp.clear()
                     tmp.append(word)
             elif i==len(result)-1:
                 tmp.append(word)
                 wordstype = result[i][1][2:]
-                tag[wordstype].append(''.join(tmp))
+                if self.language=='bert-base-chinese':
+                    tag[wordstype].append(''.join(tmp))
+                else:
+                    tag[wordstype].append(' '.join(tmp))
             else:
                 tmp.append(word)
 
         return tag
 
 
+
 @hydra.main(config_path="conf", config_name='config')
 def main(cfg):
-    model = Ner(utils.get_original_cwd()+'/'+"checkpoint/")
+    model = InferNer(utils.get_original_cwd()+'/'+"checkpoint/", cfg.bert_model)
     text = cfg.text
 
-    print("The text to be NERed:")
+    print("NER句子:")
     print(text)
-    print('Results of NER:')
+    print('NER结果:')
 
     result = model.predict(text)
     for k,v in result.items():
@@ -171,8 +182,6 @@ def main(cfg):
                 print('Organization')
             elif k=='MISC':
                 print('Miscellaneous')
-
-    
     
     
 if __name__ == "__main__":

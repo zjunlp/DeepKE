@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 import hydra
 from hydra import utils
 
-class Ner(BertForTokenClassification):
+class TrainNer(BertForTokenClassification):
 
     def forward(self, input_ids, token_type_ids=None, attention_mask=None, labels=None,valid_ids=None,attention_mask_label=None):
         sequence_output = self.bert(input_ids, token_type_ids, attention_mask,head_mask=None)[0]
@@ -303,7 +303,7 @@ def main(cfg):
 
     # Prepare model
     config = BertConfig.from_pretrained(cfg.bert_model, num_labels=num_labels, finetuning_task=cfg.task_name)
-    model = Ner.from_pretrained(cfg.bert_model,
+    model = TrainNer.from_pretrained(cfg.bert_model,
               from_tf = False,
               config = config)
 
