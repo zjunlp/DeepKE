@@ -1,0 +1,4 @@
+cwd: ???
+
+defaults:
+  - train/conll
