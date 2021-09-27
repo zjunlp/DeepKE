@@ -1,23 +1,10 @@
 <p align="center">
-   <br>DeepKE</br>
+    <a href="https://github.com/zjunlp/deepke"> <img src="pics/logo.png" width="400"/></a>
 <p>
-<p align="center">
-    <a href="https://circleci.com/gh/huggingface/transformers">
-        <img alt="Build" src="https://img.shields.io/circleci/build/github/huggingface/transformers/master">
+<p align="center">  
+    <a href="http://121.36.172.141">
+        <img alt="Documentation" src="https://img.shields.io/badge/DeepKE-website-green">
     </a>
-    <a href="https://github.com/huggingface/transformers/blob/master/LICENSE">
-        <img alt="GitHub" src="https://img.shields.io/github/license/huggingface/transformers.svg?color=blue">
-    </a>
-    <a href="https://huggingface.co/transformers/index.html">
-        <img alt="Documentation" src="https://img.shields.io/website/http/huggingface.co/transformers/index.html.svg?down_color=red&down_message=offline&up_message=online">
-    </a>
-    <a href="https://github.com/huggingface/transformers/releases">
-        <img alt="GitHub release" src="https://img.shields.io/github/release/huggingface/transformers.svg">
-    </a>
-    <a href="https://github.com/huggingface/transformers/blob/master/CODE_OF_CONDUCT.md">
-        <img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg">
-    </a>
-    <a href="https://zenodo.org/badge/latestdoi/155220641"><img src="https://zenodo.org/badge/155220641.svg" alt="DOI"></a>
 </p>
 
 <h4 align="center">
@@ -31,31 +18,27 @@
     <p>基于深度学习的开源中文知识图谱抽取框架</p>
 </h3>
 
+<p align="center">  
+    <a href="pics/logo_zju_klab.png">
+        <img src="pics/logo_zju_klab.png">
+    </a>
+</p>
+
+
 DeepKE 提供了多种知识抽取模型。
 
 ## 在线演示
-演示的demo地址
+在线演示 [demo](http://121.36.172.141/)
 
-1. RE 
 
-   ```
-   1.STANDARD
-   
-   2.FEW-SHOT
-   
-   3.DOCUMENT
-   ```
+## 模型架构
+Deepke的架构图如下所示
 
-2. NER
+<h3 align="center">
+    <img src="pics/deepke.png">
+</h3>
 
-   ```
-   STANDARD
-   ```
-
-3. AE
-   ```
-   STANDARD
-   ```
+DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以及属性抽取的任务，在各个模块下包括各自的子模块。其中关系抽取模块就有常规模块、文档级抽取模块以及低资源少样本模块。在每一个子模块中，分为分词、预处理等的一个工具集合，以及编码和训练预测部分。
 
 
 ## 快速上手
@@ -68,7 +51,7 @@ DeepKE 提供了多种知识抽取模型。
    | :----------------------------------------------------: | :------: | :--------: | :---------: | :--------: | :---------: |
    | 《岳父也是爹》是王军执导的电视剧，由马恩然、范明主演。 |   导演   | 岳父也是爹 |      1      |    王军    |      8      |
    |  《九玄珠》是在纵横中文网连载的一部小说，作者是龙马。  | 连载网站 |   九玄珠   |      1      | 纵横中文网 |      7      |
-   |     提起杭州的美景，西湖总是第一个映入脑海的词语。     | 所在城市 |    西湖    |      8      |    杭州    |      2      |
+   |  提起杭州的美景，西湖总是第一个映入脑海的词语。     | 所在城市 |    西湖    |      8      |    杭州    |      2      |
    
    具体流程请进入详细的README中，RE包括了以下三个子功能
    
@@ -106,14 +89,6 @@ DeepKE 提供了多种知识抽取模型。
 
    **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/standard)**
 
-
-
-## 模型架构
-Deepke的架构图如下所示
-
-<h3 align="center">
-    <img src="pics/deepke.png">
-</h3>
 
 
 ## 备注（常见问题）
