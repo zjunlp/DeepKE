@@ -7,12 +7,14 @@ import os
 
 import torch
 import torch.nn.functional as F
+import nltk
 from nltk import word_tokenize
 from pytorch_transformers import (BertConfig, BertForTokenClassification,
                                   BertTokenizer)
 from collections import OrderedDict
-import nltk
-nltk.data.path.insert(0,os.path.dirname(os.getcwd())+'/module/data/nltk_data')
+
+import hydra
+from hydra import utils
 
 
 class BertNer(BertForTokenClassification):
@@ -31,9 +33,9 @@ class BertNer(BertForTokenClassification):
         logits = self.classifier(sequence_output)
         return logits
 
-class Ner:
+class InferNer:
 
-    def __init__(self,model_dir: str):
+    def __init__(self,model_dir:str,language):
         self.model , self.tokenizer, self.model_config = self.load_model(model_dir)
         self.label_map = self.model_config["label_map"]
         self.max_seq_length = self.model_config["max_seq_length"]
@@ -41,6 +43,7 @@ class Ner:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model = self.model.to(self.device)
         self.model.eval()
+        self.language = language
 
     def load_model(self, model_dir: str, model_config: str = "model_config.json"):
         model_config = os.path.join(model_dir,model_config)
@@ -51,7 +54,7 @@ class Ner:
 
     def tokenize(self, text: str):
         """ tokenize input"""
-        words = word_tokenize(text)
+        words = list(text)
         tokens = []
         valid_positions = []
         for i,word in enumerate(words):
@@ -111,7 +114,11 @@ class Ner:
         logits.pop()
 
         labels = [(self.label_map[label],confidence) for label,confidence in logits]
-        words = word_tokenize(text)
+        if self.language == 'bert-base-chinese':
+            words = list(text)
+        else:
+            nltk.download('punkt')
+            words = word_tokenize(text)
         assert len(labels) == len(words)
 
         result = []
@@ -131,14 +138,21 @@ class Ner:
                     tmp.append(word)
                 else:
                     wordstype = result[i-1][1][2:]
-                    tag[wordstype].append(' '.join(tmp))
+                    if self.language=='bert-base-chinese':
+                        tag[wordstype].append(''.join(tmp))
+                    else:
+                        tag[wordstype].append(' '.join(tmp))
                     tmp.clear()
                     tmp.append(word)
             elif i==len(result)-1:
                 tmp.append(word)
                 wordstype = result[i][1][2:]
-                tag[wordstype].append(' '.join(tmp))
+                if self.language=='bert-base-chinese':
+                    tag[wordstype].append(''.join(tmp))
+                else:
+                    tag[wordstype].append(' '.join(tmp))
             else:
                 tmp.append(word)
 
         return tag
+

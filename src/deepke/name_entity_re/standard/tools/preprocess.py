@@ -1,4 +1,4 @@
-from dataset import *
+from .dataset import *
 
 import argparse
 import csv
@@ -10,7 +10,7 @@ import sys
 import numpy as np
 
 class NerProcessor(DataProcessor):
-    """Processor for the CoNLL-2003 data set."""
+    """Processor for the dataset."""
 
     def get_train_examples(self, data_dir):
         """See base class."""

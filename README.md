@@ -18,13 +18,6 @@
     <p>基于深度学习的开源中文知识图谱抽取框架</p>
 </h3>
 
-<p align="center">  
-    <a href="pics/logo_zju_klab.png">
-        <img src="pics/logo_zju_klab.png">
-    </a>
-</p>
-
-
 DeepKE 提供了多种知识抽取模型。
 
 ## 在线演示

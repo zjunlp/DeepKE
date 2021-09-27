@@ -20,7 +20,7 @@ from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
 from seqeval.metrics import classification_report
 
-class Ner(BertForTokenClassification):
+class TrainNer(BertForTokenClassification):
 
     def forward(self, input_ids, token_type_ids=None, attention_mask=None, labels=None,valid_ids=None,attention_mask_label=None):
         sequence_output = self.bert(input_ids, token_type_ids, attention_mask,head_mask=None)[0]
