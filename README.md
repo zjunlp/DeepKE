@@ -78,7 +78,8 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
     常规模块为预训练模型，可进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，```python predict.py```即可预测。
 
 
-   **[FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/test_new_deepke/example/ner/few-shot)**
+   **[FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/test_new_deepke/example/ner/few-shot)** ：
+   少样本模块使用了LightNER模型，可进入其目录，模型加载和保存位置以及配置可以在shell脚本中修改```bash run_conll2003.sh```训练conll2003,```bash run_fewshot.sh "mit-movie" False```不加载模型，直接进行few-shot训练,```bash run_fewshot.sh "mit-movie" True```加载模型，进行few-shot训练,```bash run_predict.sh```进行预测。
 
 
 3. AE
