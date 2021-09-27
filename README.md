@@ -45,7 +45,7 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
 
 1. RE
 
-   数据为csv文件，样式范例为：
+   关系抽取是从非结构化的文本中抽取出实体之间的关系，以下为几个样式范例，数据为csv文件：
 
    |                        Sentence                        | Relation |    Head    | Head_offset |    Tail    | Tail_offset |
    | :----------------------------------------------------: | :------: | :--------: | :---------: | :--------: | :---------: |
@@ -55,7 +55,8 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
    
    具体流程请进入详细的README中，RE包括了以下三个子功能
    
-   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard)**
+   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard)** ： 
+   常规模块为常用的深度学习模型，有CNN、RNN、Capsule、GCN、Transforemer以及预训练模型，可进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，```python predict.py```即可预测。
    
    FEW-SHORT
    
@@ -73,7 +74,12 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
 
    具体流程请进入详细的README中：
 
-   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/standard)**
+   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/standard)** ：
+    常规模块为预训练模型，可进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，```python predict.py```即可预测。
+
+
+   **[FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/test_new_deepke/example/ner/few-shot)**
+
 
 3. AE
 
@@ -87,7 +93,8 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
 
    具体流程请进入详细的README中:
 
-   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/standard)**
+   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/standard)** ：
+    常规模块为常用的深度学习模型，有CNN、RNN、Capsule、GCN、Transforemer以及预训练模型，可进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，```python predict.py```即可预测。
 
 
 
