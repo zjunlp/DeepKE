@@ -1,7 +1,7 @@
 import torch
 from torch import optim
 from tqdm import tqdm
-from ..utils.utils import convert_preds_to_outputs, write_predictions
+from ..utils import convert_preds_to_outputs, write_predictions
 import random
 
 class Trainer(object):

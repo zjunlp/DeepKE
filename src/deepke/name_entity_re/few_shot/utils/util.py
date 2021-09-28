@@ -63,7 +63,7 @@ def get_loss(tgt_tokens, tgt_seq_len, pred):
     loss = F.cross_entropy(target=tgt_tokens, input=pred.transpose(1, 2))
     return loss
 
-def _get_model_device(model):
+def get_model_device(model):
     assert isinstance(model, nn.Module)
 
     parameters = list(model.parameters())
