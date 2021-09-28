@@ -1,5 +1,0 @@
-head_type,tail_type,relation,index
-None,None,None,0
-影视作品,人物,导演,1
-景点,城市,所在城市,2
-歌曲,音乐专辑,所属专辑,3
