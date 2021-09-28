@@ -407,7 +407,7 @@ def _no_beam_search_generate(decoder: PromptBartDecoder, state, tokens=None, max
                              eos_token_id=None,
                              repetition_penalty=1.0, length_penalty=1.0, pad_token_id=0,
                              restricter=None):
-    device = _get_model_device(decoder)
+    device = get_model_device(decoder)
     if tokens is None:
         if bos_token_id is None:
             raise RuntimeError("You have to specify either `tokens` or `bos_token_id`.")
@@ -492,7 +492,7 @@ def _beam_search_generate(decoder: PromptBartDecoder, tokens=None, state=None, m
                           restricter=None) -> torch.LongTensor:
     assert do_sample is False
     # beam search
-    device = _get_model_device(decoder)
+    device = get_model_device(decoder)
     if tokens is None:
         if bos_token_id is None:
             raise RuntimeError("You have to specify either `tokens` or `bos_token_id`.")
