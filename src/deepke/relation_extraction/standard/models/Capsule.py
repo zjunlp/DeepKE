@@ -1,9 +1,12 @@
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 import torch
 from . import BasicModule
-from ..module import Embedding, CNN
-from ..module import Capsule as CapsuleLayer
+from module import Embedding, CNN
+from module import Capsule as CapsuleLayer
 
-from ..utils import seq_len_to_mask, to_one_hot
+from utils import seq_len_to_mask, to_one_hot
 
 
 class Capsule(BasicModule):

@@ -1,9 +1,12 @@
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 import torch.nn as nn
 from . import BasicModule
-from ..module import Embedding
-from ..module import Transformer as TransformerBlock
+from module import Embedding
+from module import Transformer as TransformerBlock
 
-from ..utils import seq_len_to_mask
+from utils import seq_len_to_mask
 
 
 class Transformer(BasicModule):
