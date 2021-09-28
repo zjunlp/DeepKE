@@ -1,3 +1,3 @@
 from .dataset import *
 from .preprocess import *
-from .trainer import train
+from .trainer import *

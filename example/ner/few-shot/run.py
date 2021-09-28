@@ -13,7 +13,7 @@ from deepke.name_entity_re.few_shot.models.model import PromptBartModel, PromptG
 from deepke.name_entity_re.few_shot.module.datasets import ConllNERProcessor, ConllNERDataset
 from deepke.name_entity_re.few_shot.module.train import Trainer
 from deepke.name_entity_re.few_shot.module.metrics import Seq2SeqSpanMetric
-from deepke.name_entity_re.few_shot.utils.utils import get_loss, set_seed
+from deepke.name_entity_re.few_shot.utils.util import get_loss, set_seed
 from deepke.name_entity_re.few_shot.module.mapping_type import mit_movie_mapping, mit_restaurant_mapping, atis_mapping
 
 import warnings

@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader
 from deepke.name_entity_re.few_shot.models.model import PromptBartModel, PromptGeneratorModel
 from deepke.name_entity_re.few_shot.module.datasets import ConllNERProcessor, ConllNERDataset
 from deepke.name_entity_re.few_shot.module.train import Trainer
-from deepke.name_entity_re.few_shot.utils.utils import set_seed
+from deepke.name_entity_re.few_shot.utils.util import set_seed
 from deepke.name_entity_re.few_shot.module.mapping_type import mit_movie_mapping, mit_restaurant_mapping, atis_mapping
 
 import warnings

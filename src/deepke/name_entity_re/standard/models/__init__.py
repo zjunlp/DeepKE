@@ -1,2 +1,2 @@
-from .BasicNer import TrainNer
-from .InferBert import InferNer
+from .BasicNer import *
+from .InferBert import *

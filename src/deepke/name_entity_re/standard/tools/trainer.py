@@ -32,7 +32,7 @@ from hydra import utils
 from .dataset import *
 from .preprocess import *
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
-from models.BasicNer import TrainNer
+from ..models import TrainNer
 
 logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt = '%m/%d/%Y %H:%M:%S',
