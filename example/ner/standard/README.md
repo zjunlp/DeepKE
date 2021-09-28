@@ -2,13 +2,14 @@
 
 ### 环境依赖
 
-> python >= 3.7 
+> python == 3.8 
 
-- pytorch-transformers==1.2.0
-- torch==1.2.0
-- seqeval==0.0.5
-- tqdm==4.31.1
-- nltk==3.4.5
+- pytorch-transformers == 1.2.0
+- torch == 1.2.0
+- hydra-core == 1.0.6
+- seqeval == 0.0.5
+- tqdm == 4.31.1
+- nltk == 3.4.5
 - deepke
 
 
@@ -45,5 +46,5 @@ git clone git@github.com:zjunlp/DeepKE.git
 
 ### 模型内容
 
-1、BERT
+BERT
 
