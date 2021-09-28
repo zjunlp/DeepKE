@@ -47,4 +47,3 @@ git clone git@github.com:zjunlp/DeepKE.git
 ### 模型内容
 
 BERT
-
