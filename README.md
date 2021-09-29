@@ -23,7 +23,7 @@ DeepKE 是一个支持低资源、长篇章的知识抽取工具，可以基于p
 
 ### 进行预测
 下面使用一个demo展示预测过程
-![demo](pics/demo.gif)
+<img src="pics/demo.gif" width="636" height="494" align=center>
 
 <br>
 
