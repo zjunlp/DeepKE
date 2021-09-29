@@ -2,3 +2,4 @@ cwd: ???
 
 defaults:
   - train/conll
+  - predict
