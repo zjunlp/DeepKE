@@ -21,6 +21,10 @@ DeepKE 是一个支持低资源、长篇章的知识抽取工具，可以基于p
 
 在线演示 [demo](http://121.36.172.141/)
 
+### 进行预测
+下面使用一个demo展示预测过程
+![demo](pics/demo.gif)
+
 <br>
 
 ## 模型架构
@@ -45,7 +49,7 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
 - hydra-core == 1.0.6
 - tensorboard >= 2.0
 - matplotlib >= 3.1
-- transformers >= 2/0
+- transformers >= 2.0
 - jieba >= 0.39
 - scikit-learn >= 0.22
 - pytorch-transformers >= 1.2.0
