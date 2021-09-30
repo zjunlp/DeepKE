@@ -34,7 +34,7 @@ class TrainNer(BertForTokenClassification):
     def forward(self, input_ids, token_type_ids=None, attention_mask=None, labels=None,valid_ids=None,attention_mask_label=None):
         sequence_output = self.bert(input_ids, token_type_ids, attention_mask,head_mask=None)[0]
         batch_size,max_len,feat_dim = sequence_output.shape
-        valid_output = torch.zeros(batch_size,max_len,feat_dim,dtype=torch.float32,device='cuda')
+        valid_output = torch.zeros(batch_size,max_len,feat_dim,dtype=torch.float32,device=1) #device 如用gpu需要修改为cfg.gpu_id的值 不用则为cpu
         for i in range(batch_size):
             jj = -1
             for j in range(max_len):
@@ -65,7 +65,6 @@ class InputExample(object):
 
     def __init__(self, guid, text_a, text_b=None, label=None):
         """Constructs a InputExample.
-
         Args:
             guid: Unique id for the example.
             text_a: string. The untokenized text of the first sequence. For single
@@ -244,21 +243,15 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
                               label_mask=label_mask))
     return features
 
+
 @hydra.main(config_path="conf", config_name='config')
 def main(cfg):
     processors = {"ner":NerProcessor}
 
-    if cfg.local_rank == -1 or cfg.no_cuda:
-        device = torch.device("cuda" if torch.cuda.is_available() and not cfg.no_cuda else "cpu")
-        n_gpu = torch.cuda.device_count()
+    if cfg.use_gpu and torch.cuda.is_available():
+        device = torch.device('cuda', cfg.gpu_id)
     else:
-        torch.cuda.set_device(cfg.local_rank)
-        device = torch.device("cuda", cfg.local_rank)
-        n_gpu = 1
-        # Initializes the distributed backend which will take care of sychronizing nodes/GPUs
-        torch.distributed.init_process_group(backend='nccl')
-    logger.info("device: {} n_gpu: {}, distributed training: {}, 16-bits training: {}".format(
-        device, n_gpu, bool(cfg.local_rank != -1), cfg.fp16))
+        device = torch.device('cpu')
 
     if cfg.gradient_accumulation_steps < 1:
         raise ValueError("Invalid gradient_accumulation_steps parameter: {}, should be >= 1".format(
@@ -295,21 +288,9 @@ def main(cfg):
         train_examples = processor.get_train_examples(utils.get_original_cwd()+'/'+cfg.data_dir)
         num_train_optimization_steps = int(
             len(train_examples) / cfg.train_batch_size / cfg.gradient_accumulation_steps) * cfg.num_train_epochs
-        if cfg.local_rank != -1:
-            num_train_optimization_steps = num_train_optimization_steps // torch.distributed.get_world_size()
 
-    if cfg.local_rank not in [-1, 0]:
-        torch.distributed.barrier()  # Make sure only the first process in distributed training will download model & vocab
-
-    # Prepare model
     config = BertConfig.from_pretrained(cfg.bert_model, num_labels=num_labels, finetuning_task=cfg.task_name)
-    model = TrainNer.from_pretrained(cfg.bert_model,
-              from_tf = False,
-              config = config)
-
-    if cfg.local_rank == 0:
-        torch.distributed.barrier()  # Make sure only the first process in distributed training will download model & vocab
-
+    model = TrainNer.from_pretrained(cfg.bert_model,from_tf = False,config = config)
     model.to(device)
 
     param_optimizer = list(model.named_parameters())
@@ -321,29 +302,12 @@ def main(cfg):
     warmup_steps = int(cfg.warmup_proportion * num_train_optimization_steps)
     optimizer = AdamW(optimizer_grouped_parameters, lr=cfg.learning_rate, eps=cfg.adam_epsilon)
     scheduler = WarmupLinearSchedule(optimizer, warmup_steps=warmup_steps, t_total=num_train_optimization_steps)
-    if cfg.fp16:
-        try:
-            from apex import amp
-        except ImportError:
-            raise ImportError("Please install apex from https://www.github.com/nvidia/apex to use fp16 training.")
-        model, optimizer = amp.initialize(model, optimizer, opt_level=cfg.fp16_opt_level)
-
-    # multi-gpu training (should be after apex fp16 initialization)
-    if n_gpu > 1:
-        model = torch.nn.DataParallel(model)
-
-    if cfg.local_rank != -1:
-        model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[cfg.local_rank],
-                                                          output_device=cfg.local_rank,
-                                                          find_unused_parameters=True)
-
     global_step = 0
     nb_tr_steps = 0
     tr_loss = 0
     label_map = {i : label for i, label in enumerate(label_list,1)}
     if cfg.do_train:
-        train_features = convert_examples_to_features(
-            train_examples, label_list, cfg.max_seq_length, tokenizer)
+        train_features = convert_examples_to_features(train_examples, label_list, cfg.max_seq_length, tokenizer)
         all_input_ids = torch.tensor([f.input_ids for f in train_features], dtype=torch.long)
         all_input_mask = torch.tensor([f.input_mask for f in train_features], dtype=torch.long)
         all_segment_ids = torch.tensor([f.segment_ids for f in train_features], dtype=torch.long)
@@ -351,13 +315,12 @@ def main(cfg):
         all_valid_ids = torch.tensor([f.valid_ids for f in train_features], dtype=torch.long)
         all_lmask_ids = torch.tensor([f.label_mask for f in train_features], dtype=torch.long)
         train_data = TensorDataset(all_input_ids, all_input_mask, all_segment_ids, all_label_ids,all_valid_ids,all_lmask_ids)
-        if cfg.local_rank == -1:
-            train_sampler = RandomSampler(train_data)
-        else:
-            train_sampler = DistributedSampler(train_data)
+        train_sampler = RandomSampler(train_data)
+        
         train_dataloader = DataLoader(train_data, sampler=train_sampler, batch_size=cfg.train_batch_size)
 
         model.train()
+
         for _ in trange(int(cfg.num_train_epochs), desc="Epoch"):
             tr_loss = 0
             nb_tr_examples, nb_tr_steps = 0, 0
@@ -365,18 +328,11 @@ def main(cfg):
                 batch = tuple(t.to(device) for t in batch)
                 input_ids, input_mask, segment_ids, label_ids, valid_ids,l_mask = batch
                 loss = model(input_ids, segment_ids, input_mask, label_ids,valid_ids,l_mask)
-                if n_gpu > 1:
-                    loss = loss.mean() # mean() to average on multi-gpu.
                 if cfg.gradient_accumulation_steps > 1:
                     loss = loss / cfg.gradient_accumulation_steps
-
-                if cfg.fp16:
-                    with amp.scale_loss(loss, optimizer) as scaled_loss:
-                        scaled_loss.backward()
-                    torch.nn.utils.clip_grad_norm_(amp.master_params(optimizer), cfg.max_grad_norm)
-                else:
-                    loss.backward()
-                    torch.nn.utils.clip_grad_norm_(model.parameters(), cfg.max_grad_norm)
+    
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(model.parameters(), cfg.max_grad_norm)
 
                 tr_loss += loss.item()
                 nb_tr_examples += input_ids.size(0)
@@ -402,7 +358,7 @@ def main(cfg):
 
     model.to(device)
 
-    if cfg.do_eval and (cfg.local_rank == -1 or torch.distributed.get_rank() == 0):
+    if cfg.do_eval:
         if cfg.eval_on == "dev":
             eval_examples = processor.get_dev_examples(utils.get_original_cwd()+'/'+cfg.data_dir)
         elif cfg.eval_on == "test":
@@ -464,6 +420,5 @@ def main(cfg):
             logger.info("\n%s", report)
             writer.write(report)
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
