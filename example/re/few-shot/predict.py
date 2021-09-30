@@ -10,7 +10,7 @@ from transformers import AutoConfig, AutoModel
 from transformers.optimization import get_linear_schedule_with_warmup
 import os
 from tqdm import tqdm
-from deepke.src.relation_extraction.few_shot import *
+from deepkerefew import *
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
