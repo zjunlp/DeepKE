@@ -1,5 +1,3 @@
-"""BERT NER Inference."""
-
 from __future__ import absolute_import, division, print_function
 
 import json
@@ -35,7 +33,7 @@ class BertNer(BertForTokenClassification):
 
 class InferNer:
 
-    def __init__(self,model_dir:str,language):
+    def __init__(self,model_dir:str):
         self.model , self.tokenizer, self.model_config = self.load_model(model_dir)
         self.label_map = self.model_config["label_map"]
         self.max_seq_length = self.model_config["max_seq_length"]
@@ -43,7 +41,6 @@ class InferNer:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model = self.model.to(self.device)
         self.model.eval()
-        self.language = language
 
     def load_model(self, model_dir: str, model_config: str = "model_config.json"):
         model_config = os.path.join(model_dir,model_config)
@@ -114,11 +111,7 @@ class InferNer:
         logits.pop()
 
         labels = [(self.label_map[label],confidence) for label,confidence in logits]
-        if self.language == 'bert-base-chinese':
-            words = list(text)
-        else:
-            nltk.download('punkt')
-            words = word_tokenize(text)
+        words = list(text)
         assert len(labels) == len(words)
 
         result = []
@@ -130,18 +123,14 @@ class InferNer:
         tag['PER'] = []
         tag['LOC'] = []
         tag['ORG'] = []
-        tag['MISC'] = []
         
         for i, (word, label) in enumerate(result):
-            if label=='B-PER' or label=='B-LOC' or label=='B-ORG' or label=='B-MISC':
+            if label=='B-PER' or label=='B-LOC' or label=='B-ORG':
                 if i==0:
                     tmp.append(word)
                 else:
                     wordstype = result[i-1][1][2:]
-                    if self.language=='bert-base-chinese':
-                        tag[wordstype].append(''.join(tmp))
-                    else:
-                        tag[wordstype].append(' '.join(tmp))
+                    tag[wordstype].append(''.join(tmp))
                     tmp.clear()
                     tmp.append(word)
             elif i==len(result)-1:
