@@ -33,7 +33,7 @@ class BertNer(BertForTokenClassification):
 
 class InferNer:
 
-    def __init__(self,model_dir:str):
+    def __init__(self,model_dir: str):
         self.model , self.tokenizer, self.model_config = self.load_model(model_dir)
         self.label_map = self.model_config["label_map"]
         self.max_seq_length = self.model_config["max_seq_length"]
@@ -136,12 +136,8 @@ class InferNer:
             elif i==len(result)-1:
                 tmp.append(word)
                 wordstype = result[i][1][2:]
-                if self.language=='bert-base-chinese':
-                    tag[wordstype].append(''.join(tmp))
-                else:
-                    tag[wordstype].append(' '.join(tmp))
+                tag[wordstype].append(''.join(tmp))
             else:
                 tmp.append(word)
 
         return tag
-
