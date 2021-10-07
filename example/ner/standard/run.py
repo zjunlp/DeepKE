@@ -6,35 +6,31 @@ import logging
 import os
 import random
 import sys
-
 import numpy as np
 import torch
 import torch.nn.functional as F
-from pytorch_transformers import (WEIGHTS_NAME, AdamW, BertConfig,
-                                  BertForTokenClassification, BertTokenizer,
-                                  WarmupLinearSchedule)
+from pytorch_transformers import (WEIGHTS_NAME, AdamW, BertConfig, BertForTokenClassification, BertTokenizer, WarmupLinearSchedule)
 from torch import nn
-from torch.utils.data import (DataLoader, RandomSampler, SequentialSampler,
-                              TensorDataset)
+from torch.utils.data import (DataLoader, RandomSampler, SequentialSampler, TensorDataset)
 from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
-
 from seqeval.metrics import classification_report
+import hydra
+from hydra import utils
+from deepke.name_entity_re.standard import *
 
 logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt = '%m/%d/%Y %H:%M:%S',
                     level = logging.INFO)
 logger = logging.getLogger(__name__)
 
-import hydra
-from hydra import utils
 
 class TrainNer(BertForTokenClassification):
 
     def forward(self, input_ids, token_type_ids=None, attention_mask=None, labels=None,valid_ids=None,attention_mask_label=None):
         sequence_output = self.bert(input_ids, token_type_ids, attention_mask,head_mask=None)[0]
         batch_size,max_len,feat_dim = sequence_output.shape
-        valid_output = torch.zeros(batch_size,max_len,feat_dim,dtype=torch.float32,device=1) #device 如用gpu需要修改为cfg.gpu_id的值 不用则为cpu
+        valid_output = torch.zeros(batch_size,max_len,feat_dim,dtype=torch.float32,device=1) #device=cfg.gpu_id if use_gpu else 'cpu'
         for i in range(batch_size):
             jj = -1
             for j in range(max_len):
@@ -46,8 +42,6 @@ class TrainNer(BertForTokenClassification):
 
         if labels is not None:
             loss_fct = nn.CrossEntropyLoss(ignore_index=0)
-            # Only keep active parts of the loss
-            #attention_mask_label = None
             if attention_mask_label is not None:
                 active_loss = attention_mask_label.view(-1) == 1
                 active_logits = logits.view(-1, self.num_labels)[active_loss]
@@ -60,202 +54,17 @@ class TrainNer(BertForTokenClassification):
             return logits
 
 
-class InputExample(object):
-    """A single training/test example for simple sequence classification."""
-
-    def __init__(self, guid, text_a, text_b=None, label=None):
-        """Constructs a InputExample.
-        Args:
-            guid: Unique id for the example.
-            text_a: string. The untokenized text of the first sequence. For single
-            sequence tasks, only this sequence must be specified.
-            text_b: (Optional) string. The untokenized text of the second sequence.
-            Only must be specified for sequence pair tasks.
-            label: (Optional) string. The label of the example. This should be
-            specified for train and dev examples, but not for test examples.
-        """
-        self.guid = guid
-        self.text_a = text_a
-        self.text_b = text_b
-        self.label = label
-
-class InputFeatures(object):
-    """A single set of features of data."""
-
-    def __init__(self, input_ids, input_mask, segment_ids, label_id, valid_ids=None, label_mask=None):
-        self.input_ids = input_ids
-        self.input_mask = input_mask
-        self.segment_ids = segment_ids
-        self.label_id = label_id
-        self.valid_ids = valid_ids
-        self.label_mask = label_mask
-
-def readfile(filename):
-    '''
-    read file
-    '''
-    f = open(filename)
-    data = []
-    sentence = []
-    label= []
-    for line in f:
-        if len(line)==0 or line.startswith('-DOCSTART') or line[0]=="\n":
-            if len(sentence) > 0:
-                data.append((sentence,label))
-                sentence = []
-                label = []
-            continue
-        splits = line.split(' ')
-        sentence.append(splits[0])
-        label.append(splits[-1][:-1])
-
-    if len(sentence) >0:
-        data.append((sentence,label))
-        sentence = []
-        label = []
-    return data
-
-class DataProcessor(object):
-    """Base class for data converters for sequence classification data sets."""
-
-    def get_train_examples(self, data_dir):
-        """Gets a collection of `InputExample`s for the train set."""
-        raise NotImplementedError()
-
-    def get_dev_examples(self, data_dir):
-        """Gets a collection of `InputExample`s for the dev set."""
-        raise NotImplementedError()
-
-    def get_labels(self):
-        """Gets the list of labels for this data set."""
-        raise NotImplementedError()
-
-    @classmethod
-    def _read_tsv(cls, input_file, quotechar=None):
-        """Reads a tab separated value file."""
-        return readfile(input_file)
-
-
-class NerProcessor(DataProcessor):
-    """Processor for the dataset."""
-
-    def get_train_examples(self, data_dir):
-        """See base class."""
-        return self._create_examples(
-            self._read_tsv(os.path.join(data_dir, "train.txt")), "train")
-
-    def get_dev_examples(self, data_dir):
-        """See base class."""
-        return self._create_examples(
-            self._read_tsv(os.path.join(data_dir, "valid.txt")), "dev")
-
-    def get_test_examples(self, data_dir):
-        """See base class."""
-        return self._create_examples(
-            self._read_tsv(os.path.join(data_dir, "test.txt")), "test")
-
-    def get_labels(self):
-        return ["O", "B-MISC", "I-MISC",  "B-PER", "I-PER", "B-ORG", "I-ORG", "B-LOC", "I-LOC", "[CLS]", "[SEP]"]
-
-    def _create_examples(self,lines,set_type):
-        examples = []
-        for i,(sentence,label) in enumerate(lines):
-            guid = "%s-%s" % (set_type, i)
-            text_a = ' '.join(sentence)
-            text_b = None
-            label = label
-            examples.append(InputExample(guid=guid,text_a=text_a,text_b=text_b,label=label))
-        return examples
-
-def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer):
-    """Loads a data file into a list of `InputBatch`s."""
-
-    label_map = {label : i for i, label in enumerate(label_list,1)}
-
-    features = []
-    for (ex_index,example) in enumerate(examples):
-        textlist = example.text_a.split(' ')
-        labellist = example.label
-        tokens = []
-        labels = []
-        valid = []
-        label_mask = []
-        for i, word in enumerate(textlist):
-            token = tokenizer.tokenize(word)
-            tokens.extend(token)
-            label_1 = labellist[i]
-            for m in range(len(token)):
-                if m == 0:
-                    labels.append(label_1)
-                    valid.append(1)
-                    label_mask.append(1)
-                else:
-                    valid.append(0)
-        if len(tokens) >= max_seq_length - 1:
-            tokens = tokens[0:(max_seq_length - 2)]
-            labels = labels[0:(max_seq_length - 2)]
-            valid = valid[0:(max_seq_length - 2)]
-            label_mask = label_mask[0:(max_seq_length - 2)]
-        ntokens = []
-        segment_ids = []
-        label_ids = []
-        ntokens.append("[CLS]")
-        segment_ids.append(0)
-        valid.insert(0,1)
-        label_mask.insert(0,1)
-        label_ids.append(label_map["[CLS]"])
-        for i, token in enumerate(tokens):
-            ntokens.append(token)
-            segment_ids.append(0)
-            if len(labels) > i:
-                label_ids.append(label_map[labels[i]])
-        ntokens.append("[SEP]")
-        segment_ids.append(0)
-        valid.append(1)
-        label_mask.append(1)
-        label_ids.append(label_map["[SEP]"])
-        input_ids = tokenizer.convert_tokens_to_ids(ntokens)
-        input_mask = [1] * len(input_ids)
-        label_mask = [1] * len(label_ids)
-        while len(input_ids) < max_seq_length:
-            input_ids.append(0)
-            input_mask.append(0)
-            segment_ids.append(0)
-            label_ids.append(0)
-            valid.append(1)
-            label_mask.append(0)
-        while len(label_ids) < max_seq_length:
-            label_ids.append(0)
-            label_mask.append(0)
-        assert len(input_ids) == max_seq_length
-        assert len(input_mask) == max_seq_length
-        assert len(segment_ids) == max_seq_length
-        assert len(label_ids) == max_seq_length
-        assert len(valid) == max_seq_length
-        assert len(label_mask) == max_seq_length
-
-        features.append(
-                InputFeatures(input_ids=input_ids,
-                              input_mask=input_mask,
-                              segment_ids=segment_ids,
-                              label_id=label_ids,
-                              valid_ids=valid,
-                              label_mask=label_mask))
-    return features
-
-
 @hydra.main(config_path="conf", config_name='config')
 def main(cfg):
-    processors = {"ner":NerProcessor}
-
+    
+    # Use gpu or not
     if cfg.use_gpu and torch.cuda.is_available():
         device = torch.device('cuda', cfg.gpu_id)
     else:
         device = torch.device('cpu')
 
     if cfg.gradient_accumulation_steps < 1:
-        raise ValueError("Invalid gradient_accumulation_steps parameter: {}, should be >= 1".format(
-                            cfg.gradient_accumulation_steps))
+        raise ValueError("Invalid gradient_accumulation_steps parameter: {}, should be >= 1".format(cfg.gradient_accumulation_steps))
 
     cfg.train_batch_size = cfg.train_batch_size // cfg.gradient_accumulation_steps
 
@@ -266,28 +75,25 @@ def main(cfg):
     if not cfg.do_train and not cfg.do_eval:
         raise ValueError("At least one of `do_train` or `do_eval` must be True.")
 
+    # Checkpoints
     if os.path.exists(utils.get_original_cwd()+'/'+cfg.output_dir) and os.listdir(utils.get_original_cwd()+'/'+cfg.output_dir) and cfg.do_train:
         raise ValueError("Output directory ({}) already exists and is not empty.".format(utils.get_original_cwd()+'/'+cfg.output_dir))
     if not os.path.exists(utils.get_original_cwd()+'/'+cfg.output_dir):
         os.makedirs(utils.get_original_cwd()+'/'+cfg.output_dir)
 
-    task_name = cfg.task_name.lower()
-
-    if task_name not in processors:
-        raise ValueError("Task not found: %s" % (task_name))
-
-    processor = processors[task_name]()
+    # Preprocess the input dataset
+    processor = NerProcessor()
     label_list = processor.get_labels()
     num_labels = len(label_list) + 1
-
+    
+    # Prepare the model
     tokenizer = BertTokenizer.from_pretrained(cfg.bert_model, do_lower_case=cfg.do_lower_case)
 
     train_examples = None
     num_train_optimization_steps = 0
     if cfg.do_train:
         train_examples = processor.get_train_examples(utils.get_original_cwd()+'/'+cfg.data_dir)
-        num_train_optimization_steps = int(
-            len(train_examples) / cfg.train_batch_size / cfg.gradient_accumulation_steps) * cfg.num_train_epochs
+        num_train_optimization_steps = int(len(train_examples) / cfg.train_batch_size / cfg.gradient_accumulation_steps) * cfg.num_train_epochs
 
     config = BertConfig.from_pretrained(cfg.bert_model, num_labels=num_labels, finetuning_task=cfg.task_name)
     model = TrainNer.from_pretrained(cfg.bert_model,from_tf = False,config = config)
