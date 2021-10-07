@@ -57,8 +57,6 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
 - tqdm >= 4.31.1
 - nltk >= 3.4.5
 
-<br>
-
 1. **命名实体识别NER**
 
    数据为txt文件，样式范例为：
@@ -75,8 +73,6 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
 
     **[FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/test_new_deepke/example/ner/few-shot)** ：
       少样本模块使用了LightNER模型，可进入其目录，模型加载和保存位置以及配置可以在shell脚本中修改```bash run_conll2003.sh```训练conll2003,```bash run_fewshot.sh "mit-movie" False```不加载模型，直接进行few-shot训练,```bash run_fewshot.sh "mit-movie" True```加载模型，进行few-shot训练,```bash run_predict.sh```进行预测。
-
-<br>
 
 2. **关系抽取RE**
 
@@ -96,8 +92,6 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
    FEW-SHORT
 
    DOCUMENT
-
-<br>
 
 3. **属性抽取AE**
 
