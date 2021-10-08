@@ -55,7 +55,6 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
 - pytorch-transformers >= 1.2.0
 - seqeval >= 0.0.5
 - tqdm >= 4.31.1
-- nltk >= 3.4.5
 
 1. **命名实体识别NER**
 
