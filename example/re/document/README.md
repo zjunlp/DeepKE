@@ -2,19 +2,15 @@
 
 ### 环境依赖
 
-> python == 3.8
+> python == 3.7
 
-- numpy == 1.20.3
-- tokenizers == 0.10.3
-- torch == 1.8.0
-- regex == 2021.4.4
-- transformers == 4.7.0
-- tqdm == 4.49.0
-- activations == 0.1.0
-- dataclasses == 0.6
-- file_utils == 0.0.1
-- flax == 0.3.4
-- utils == 1.0.1
+- cuda == 10.2
+- torch == 1.5.0
+- transformers == 3.0.4
+- opt-einsum == 3.3.0
+- ujson
+- tqdm
+- allennlp
 - deepke 
 
 ### 克隆代码
@@ -29,7 +25,7 @@ git clone git@github.com:zjunlp/DeepKE.git
 
 ### 使用数据进行训练预测
 
-- 存放数据：在 `data` 文件夹下存放训练数据。模型采用的数据集是[DocRED](https://github.com/thunlp/DocRED/tree/master/)，DocRED数据集来自于2010年的国际语义评测大会中Task 8："Multi-Way Classification of Semantic Relations Between Pairs of Nominals"。
+- 存放数据：在 `data` 文件夹下存放训练数据。模型采用的数据集是[DocRED](https://github.com/thunlp/DocRED/tree/master/)。
 
 - DocRED包含以下数据：
 
