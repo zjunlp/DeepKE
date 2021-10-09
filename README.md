@@ -2,10 +2,18 @@
     <a href="https://github.com/zjunlp/deepke"> <img src="pics/logo.png" width="400"/></a>
 <p>
 <p align="center">  
-    <a href="http://121.36.172.141">
+    <a href="https://deepke.openkg.cn">
         <img alt="Documentation" src="https://img.shields.io/badge/DeepKE-website-green">
     </a>
-    <b>简体中文 | <a href="https://github.com/zjunlp/DeepKE/blob/test_new_deepke/README_ENGLISH.md">English</a> </b>
+    <a href="https://pypi.org/project/deepke/#files">
+        <img alt="PyPI" src="https://img.shields.io/pypi/v/deepke">
+    </a>
+    <a href="https://github.com/zjunlp/DeepKE/blob/master/LICENSE">
+        <img alt="GitHub" src="https://img.shields.io/github/license/zjunlp/deepke">
+    </a>
+</p>
+<p align="center">
+    <b>简体中文 | <a href="https://github.com/zjunlp/DeepKE/blob/test_new_deepke/README_ENGLISH.md">English</a></b>
 </p>
 
 <h1 align="center">
@@ -45,16 +53,18 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
 
 > python == 3.8
 
-- torch >= 1.5
+- torch == 1.5
 - hydra-core == 1.0.6
-- tensorboard >= 2.0
-- matplotlib >= 3.1
-- transformers >= 2.0
-- jieba >= 0.39
-- scikit-learn >= 0.22
-- pytorch-transformers >= 1.2.0
-- seqeval >= 0.0.5
-- tqdm >= 4.31.1
+- tensorboard == 2.4.1
+- matplotlib == 3.4.1
+- transformers == 3.4.0
+- jieba == 0.42.1
+- scikit-learn == 0.24.1
+- pytorch-transformers == 1.2.0
+- seqeval == 1.2.2
+- tqdm == 4.60.0
+- nltk == 3.6.3
+
 
 1. **命名实体识别NER**
 
@@ -71,7 +81,7 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
     常规模块为预训练模型，可进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，```python predict.py```即可预测。
 
     **[FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/test_new_deepke/example/ner/few-shot)** ：
-      少样本模块使用了LightNER模型，可进入其目录，模型加载和保存位置以及配置可以在shell脚本中修改```bash run_conll2003.sh```训练conll2003,```bash run_fewshot.sh "mit-movie" False```不加载模型，直接进行few-shot训练,```bash run_fewshot.sh "mit-movie" True```加载模型，进行few-shot训练,```bash run_predict.sh```进行预测。
+      少样本模块使用了LightNER模型，可进入其目录，模型加载和保存位置以及配置可以在shell脚本中修改```python run.py```训练conll2003,```python run.py +train=few_shot```直接进行few-shot训练,若要加载模型，修改few_shot.yaml中的load_path,```python predict.py```即可预测。
 
 2. **关系抽取RE**
 
