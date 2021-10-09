@@ -45,7 +45,7 @@ git clone git@github.com:zjunlp/DeepKE.git
 
 - 开始训练：模型加载和保存位置以及配置可以在conf的`.yaml`文件中修改
   
-  - 对数据集SEMEVAL进行few-shot训练：`python run.py` 
+  - 在数据集SEMEVAL进行few-shot训练：`python run.py` 
 
 - 每次训练的日志保存路径可以通过`.yaml`中的log_dir来配置。
 
