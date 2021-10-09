@@ -4,6 +4,7 @@
 
 > python == 3.8
 
+- numpy == 1.20.3
 - tokenizers == 0.10.3
 - torch == 1.8.0
 - regex == 2021.4.4
