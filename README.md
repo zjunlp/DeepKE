@@ -64,6 +64,8 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
 - seqeval == 1.2.2
 - tqdm == 4.60.0
 - nltk == 3.6.3
+- opt-einsum==3.3.0
+- ujson
 
 
 1. **命名实体识别NER**
