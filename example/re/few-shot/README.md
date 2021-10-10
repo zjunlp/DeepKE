@@ -7,7 +7,7 @@
 - torch == 1.5
 - transformers == 3.4.0
 - hydra-core == 1.0.6
-- deepke 
+ 
 
 ### 克隆代码
 ```
