@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 from transformers import AutoConfig, AutoModel, AutoTokenizer
 from transformers.optimization import AdamW, get_linear_schedule_with_warmup
 
-from deepkeredoc import *
+from deepke.relation_extraction.document import *
 
 
 def report(args, model, features):
