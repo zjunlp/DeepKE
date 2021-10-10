@@ -41,7 +41,7 @@ max_time: None
 min_epochs: None
 min_steps: None
 model_class: 'BertForMaskedLM'
-model_name_or_path: 'bert-large-uncased'
+model_name_or_path: 'bert-base-uncased'
 move_metrics_to_cpu: False
 multiple_trainloader_mode: 'max_size_cycle'
 num_nodes: 1
