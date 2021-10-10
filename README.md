@@ -100,9 +100,11 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
    **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard)** ： 
    常规模块为常用的深度学习模型，有CNN、RNN、Capsule、GCN、Transforemer以及预训练模型，可进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，```python predict.py```即可预测。
 
-   FEW-SHORT
+   **[FEW-SHORT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/few-shot)** :
+   进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，如需从上次训练的模型开始训练：设置.yaml中的train_from_saved_model为上次保存模型的路径，每次训练的日志保存路径默认保存在根目录，可以通过.yaml中的log_dir来配置```python predict.py```即可预测。
 
-   DOCUMENT
+   **[DOCUMENT]((https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard)** "
+   ```train_distant.json```由于文件太大，请自行从Google Drive上下载到data/目录下.进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，如需从上次训练的模型开始训练：设置.yaml中的train_from_saved_model为上次保存模型的路径，每次训练的日志保存路径默认保存在根目录，可以通过.yaml中的log_dir来配置```python predict.py```即可预测。
 
 3. **属性抽取AE**
 
