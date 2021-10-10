@@ -1,6 +1,6 @@
 seed: 1
 
-bart_name: "/data/lilei/project/BARTNER-AMAX/facebook/bart-large"
+bart_name: "facebook/bart-large"
 dataset_name: conll2003
 device: cuda
 
