@@ -49,6 +49,22 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
 
 ## 快速上手
 
+DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
+
+1、下载代码 ```git clone https://github.com/zjunlp/DeepKE.git```
+
+2、创建虚拟环境 ```conda create -n deepke python=3.8```
+
+3、进入虚拟环境 ```conda activate deepke```
+
+4、pip安装需要的依赖包```pip install deepke```
+
+5、进入使用位置 ```cd DeepKE/example/re/standard```
+
+6、进行训练 ```python run.py```,训练用到的参数可在conf文件夹内修改
+
+7、进行预测```python predict.py```,预测用到的参数可在conf文件夹内修改
+
 ### 环境依赖
 
 > python == 3.8
@@ -78,10 +94,10 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
 
    具体流程请进入详细的README中：
 
-   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/standard)** ：
+   **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/standard)** ：
     常规模块为预训练模型，可进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，```python predict.py```即可预测。
 
-    **[FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/test_new_deepke/example/ner/few-shot)** ：
+    **[少样本FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/test_new_deepke/example/ner/few-shot)** ：
       少样本模块使用了LightNER模型，可进入其目录，模型加载和保存位置以及配置可以在shell脚本中修改```python run.py```训练conll2003,```python run.py +train=few_shot```直接进行few-shot训练,若要加载模型，修改few_shot.yaml中的load_path,```python predict.py```即可预测。
 
 2. **关系抽取RE**
@@ -96,13 +112,13 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
 
    具体流程请进入详细的README中，RE包括了以下三个子功能
 
-   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard)** ： 
+   **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard)** ： 
    常规模块为常用的深度学习模型，有CNN、RNN、Capsule、GCN、Transforemer以及预训练模型，可进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，```python predict.py```即可预测。
 
-   **[FEW-SHOT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/few-shot)** :
+   **[少样本FEW-SHOT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/few-shot)** :
    进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，如需从上次训练的模型开始训练：设置.yaml中的train_from_saved_model为上次保存模型的路径，每次训练的日志保存路径默认保存在根目录，可以通过.yaml中的log_dir来配置```python predict.py```即可预测。
 
-   **[DOCUMENT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/document)** :
+   **[文档级DOCUMENT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/document)** :
    ```train_distant.json```由于文件太大，请自行从Google Drive上下载到data/目录下.进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，如需从上次训练的模型开始训练：设置.yaml中的train_from_saved_model为上次保存模型的路径，每次训练的日志保存路径默认保存在根目录，可以通过.yaml中的log_dir来配置```python predict.py```即可预测。
 
 3. **属性抽取AE**
@@ -117,7 +133,7 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
 
    具体流程请进入详细的README中:
 
-   **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/standard)** ：
+   **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/standard)** ：
     常规模块为常用的深度学习模型，有CNN、RNN、Capsule、GCN、Transforemer以及预训练模型，可进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，```python predict.py```即可预测。
 
 <br>
