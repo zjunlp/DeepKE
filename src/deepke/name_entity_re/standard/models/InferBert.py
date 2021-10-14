@@ -5,8 +5,6 @@ import os
 
 import torch
 import torch.nn.functional as F
-import nltk
-from nltk import word_tokenize
 from pytorch_transformers import (BertConfig, BertForTokenClassification,
                                   BertTokenizer)
 from collections import OrderedDict
