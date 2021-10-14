@@ -52,5 +52,4 @@ git clone git@github.com:zjunlp/DeepKE.git
 - 进行预测：在config.yaml中加入 - predict ， 再在predict.yaml中修改load_path为模型路径以及write_path为预测结果保存路径，再` python predict.py `
 
 
-## 模型内容
-LightNER
+

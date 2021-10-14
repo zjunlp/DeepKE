@@ -51,7 +51,7 @@ DeepKE包括了三个模块，可以进行关系抽取、实体命名识别以�
 
 DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
 
-1、下载代码 ```git clone https://github.com/zjunlp/DeepKE.git```
+1、下载代码 ```git clone https://github.com/zjunlp/DeepKE.git```（别忘记star和fork哈！！！）
 
 2、创建虚拟环境 ```conda create -n deepke python=3.8```
 
@@ -62,6 +62,8 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
 5、进入使用位置 ```cd DeepKE/example/re/standard```
 
 6、进行训练 ```python run.py```,训练用到的参数可在conf文件夹内修改
+
+如果需要修改使用的代码，修改之后运行```python setup.py develop```即可
 
 7、进行预测```python predict.py```,预测用到的参数可在conf文件夹内修改
 
@@ -98,7 +100,7 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
     常规模块为预训练模型，可进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，```python predict.py```即可预测。
 
     **[少样本FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/test_new_deepke/example/ner/few-shot)** ：
-      少样本模块使用了LightNER模型，可进入其目录，模型加载和保存位置以及配置可以在shell脚本中修改```python run.py```训练conll2003,```python run.py +train=few_shot```直接进行few-shot训练,若要加载模型，修改few_shot.yaml中的load_path,```python predict.py```即可预测。
+      少样本模块，可进入其目录，模型加载和保存位置以及配置可以在shell脚本中修改```python run.py```训练conll2003,```python run.py +train=few_shot```直接进行few-shot训练,若要加载模型，修改few_shot.yaml中的load_path,```python predict.py```即可预测。
 
 2. **关系抽取RE**
 
