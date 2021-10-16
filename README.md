@@ -63,8 +63,6 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
 
 6、进行训练 ```python run.py```,训练用到的参数可在conf文件夹内修改
 
-如果需要修改使用的代码，修改之后运行```python setup.py develop```即可
-
 7、进行预测```python predict.py```,预测用到的参数可在conf文件夹内修改
 
 ### 环境依赖
