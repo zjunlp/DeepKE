@@ -57,7 +57,7 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
 
 3、进入虚拟环境 ```conda activate deepke```
 
-4、pip安装需要的依赖包```pip install deepke```
+4、pip安装需要的依赖包，如果直接使用，```pip install deepke```；如需修改源码使用，首先```python setup.py install```,修改完后，```python setup.py develop```
 
 5、进入使用位置 ```cd DeepKE/example/re/standard```
 
@@ -83,7 +83,6 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
 - tqdm == 4.60.0
 - opt-einsum==3.3.0
 - ujson
-
 
 1. **命名实体识别NER**
 
