@@ -135,7 +135,8 @@ class InferNer:
                 tmp.append(word)
                 
             if i==len(result)-1:
-                tmp.append(word)
+                if label=='B-PER' or label=='B-LOC' or label=='B-ORG':
+                    tmp.append(word)
                 wordstype = result[i][1][2:]
                 tag[wordstype].append(''.join(tmp))
 
