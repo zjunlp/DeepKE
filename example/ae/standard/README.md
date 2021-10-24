@@ -35,7 +35,7 @@ git clone git@github.com:zjunlp/DeepKE.git
 
   - `attribute.csv`：存放属性种类
 
-- 开始训练：```python run.py``` (训练所用到参数都在conf文件夹中，修改即可)
+- 开始训练：```python run.py``` (训练所用到参数都在conf文件夹中，修改即可使用lm时，可修改'lm_file'使用下载至本地的模型)
 
 - 每次训练的日志保存在 `logs` 文件夹内，模型结果保存在 `checkpoints` 文件夹内。
 
