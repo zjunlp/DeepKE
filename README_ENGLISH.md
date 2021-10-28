@@ -33,7 +33,7 @@ DeepKE is a knowledge extraction toolkit supporting **low-resource** and **docum
 ### Prediction
 
 There is a demonstration of prediction.<br>
-<img src="README_ENGLISH.assets/demo.gif" width="636" height="494" align=center>
+<img src="pics/demo.gif" width="636" height="494" align=center>
 
 <br>
 
