@@ -97,7 +97,7 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
     常规模块为预训练模型，可进入其目录，修改数据集以及conf文件夹下的参数，```python run.py```即可训练，```python predict.py```即可预测。
 
     **[少样本FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/test_new_deepke/example/ner/few-shot)** ：
-      少样本模块，可进入其目录，模型加载和保存位置以及配置可以在shell脚本中修改```python run.py```训练conll2003,```python run.py +train=few_shot```直接进行few-shot训练,若要加载模型，修改few_shot.yaml中的load_path,```python predict.py```即可预测。
+      少样本模块，可进入其目录，模型加载和保存位置以及配置可以在conf文件夹中修改```python run.py```训练conll2003,```python run.py +train=few_shot```直接进行few-shot训练,若要加载模型，修改few_shot.yaml中的load_path,```python predict.py```即可预测。
 
 2. **关系抽取RE**
 
@@ -112,7 +112,7 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
    具体流程请进入详细的README中，RE包括了以下三个子功能
 
    **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard)** ： 
-   常规模块为常用的深度学习模型，有CNN、RNN、Capsule、GCN、Transforemer以及预训练模型，可进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，```python predict.py```即可预测。
+   常规模块为常用的深度学习模型，有CNN、RNN、Capsule、GCN、Transforemer以及预训练模型，可进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练。在config.yaml中加入 - predict ，再在predict.yaml中修改load_path为模型路径以及write_path为预测结果保存路径，再``` python predict.py ```可进行预测。
 
    **[少样本FEW-SHOT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/few-shot)** :
    进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，如需从上次训练的模型开始训练：设置.yaml中的train_from_saved_model为上次保存模型的路径，每次训练的日志保存路径默认保存在根目录，可以通过.yaml中的log_dir来配置```python predict.py```即可预测。
