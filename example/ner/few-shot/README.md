@@ -40,7 +40,7 @@ git clone git@github.com:zjunlp/DeepKE.git
   - `test.txt`：存放测试数据集
 
 
-- 开始训练：模型加载和保存位置以及配置可以在shell脚本中修改
+- 开始训练：模型加载和保存位置以及配置可以在conf文件夹中修改
   
   - 训练conll2003：` python run.py ` (训练所用到参数都在conf文件夹中，修改即可)
 
