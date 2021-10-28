@@ -13,7 +13,7 @@
     </a>
 </p>
 <p align="center">
-    <b>简体中文 | <a href="https://github.com/zjunlp/DeepKE/blob/test_new_deepke/README_ENGLISH.md">English</a></b>
+    <b>简体中文 | <a href="https://github.com/zjunlp/DeepKE/blob/main/README_ENGLISH.md">English</a></b>
 </p>
 
 <h1 align="center">
@@ -88,15 +88,15 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
   | 秦始皇兵马俑位于陕西省西安市，1961年被国务院公布为第一批全国重点文物保护单位，是世界八大奇迹之一。 |           秦始皇           | 陕西省，西安市 |             国务院             |
 
 - 具体流程请进入详细的README中
-  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/standard)** 
-     常规模块使用预训练模型BERT；
-     进入`DeepKE/example/ner/standard`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；
+  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/standard)** <br>
+     常规模块使用预训练模型BERT；<br>
+     进入`DeepKE/example/ner/standard`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
      ```python run.py```即可训练，```python predict.py```即可预测。
-  - **[少样本FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/test_new_deepke/example/ner/few-shot)** 
-    低资源少样本模块；
-    进入`DeepKE/example/ner/few-shot`，模型加载和保存位置以及配置可以在`conf`文件夹中修改；
-    使用`CoNLL-2003`进行训练：`python run.py`；
-    进行few-shot训练：`python run.py +train=few_shot`，若要加载模型，修改`few_shot.yaml`中的`load_path`；
+  - **[少样本FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/test_new_deepke/example/ner/few-shot)** <br>
+    低资源少样本模块；<br>
+    进入`DeepKE/example/ner/few-shot`，模型加载和保存位置以及配置可以在`conf`文件夹中修改；<br>
+    使用`CoNLL-2003`进行训练：`python run.py`；<br>
+    进行few-shot训练：`python run.py +train=few_shot`，若要加载模型，修改`few_shot.yaml`中的`load_path`；<br>
     若要进行预测，在`config.yaml`中追加`- predict`，`predict.yaml`中修改`load_path`为模型路径以及`write_path`为预测结果的保存路径，完成修改后使用`python predict.py`即可预测。
 
 #### 2. 关系抽取RE
@@ -110,17 +110,17 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
   |     提起杭州的美景，西湖总是第一个映入脑海的词语。     | 所在城市 |    西湖    |      8      |    杭州    |      2      |
 
 - 具体流程请进入详细的README中，RE包括了以下三个子功能
-  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard)** 
-    常规模块为常用的深度学习模型，包括CNN、RNN、Capsule、GCN、Transforemer以及预训练模型；
-    进入`DeepKE/example/re/standard`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；
+  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard)** <br>
+    常规模块为常用的深度学习模型，包括CNN、RNN、Capsule、GCN、Transforemer以及预训练模型；<br>
+    进入`DeepKE/example/re/standard`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
     ```python run.py```即可训练，```python predict.py```即可预测。
-  - **[少样本FEW-SHOT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/few-shot)** 
-    进入`DeepKE/example/re/few-shot`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；
-    ```python run.py```即可训练；如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`train_from_saved_model`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置；
+  - **[少样本FEW-SHOT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/few-shot)** <br>
+    进入`DeepKE/example/re/few-shot`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
+    ```python run.py```即可训练；如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`train_from_saved_model`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置；<br>
     ```python predict.py```即可预测。
-  - **[文档级DOCUMENT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/document)** 
-    ```train_distant.json```由于文件太大，请自行从Google Drive上下载到data/目录下；
-    进入`DeepKE/example/re/document`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；
+  - **[文档级DOCUMENT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/document)** <br>
+    ```train_distant.json```由于文件太大，请自行从Google Drive上下载到data/目录下；<br>
+    进入`DeepKE/example/re/document`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
     ```python run.py```即可训练；如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`train_from_saved_model`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置；
 
 #### 3. 属性抽取AE
@@ -134,18 +134,18 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
   |        2014年10月1日许鞍华执导的电影《黄金时代》上映         | 上映时间 | 黄金时代 |     19     | 2014年10月1日 |     0      |
 
 - 具体流程请进入详细的README中
-  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/standard)** 
-    常规模块为常用的深度学习模型，包括CNN、RNN、Capsule、GCN、Transforemer以及预训练模型；
-    进入`DeepKE/example/re/standard`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；
+  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/standard)** <br>
+    常规模块为常用的深度学习模型，包括CNN、RNN、Capsule、GCN、Transforemer以及预训练模型；<br>
+    进入`DeepKE/example/re/standard`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
     ```python run.py```即可训练，```python predict.py```即可预测。
 
+<br>
+
 ## 备注（常见问题）
+
 1. 使用 Anaconda 时，建议添加国内镜像，下载速度更快。如[清华镜像](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/)。
-
 1. 使用 pip 时，建议使用国内镜像，下载速度更快，如阿里云镜像。
-
 1. 安装后提示 `ModuleNotFoundError: No module named 'past'`，输入命令 `pip install future` 即可解决。
-
 1. 使用语言预训练模型时，在线安装下载模型比较慢，更建议提前下载好，存放到 pretrained 文件夹内。具体存放文件要求见文件夹内的 `README.md`。
 
 <br>
