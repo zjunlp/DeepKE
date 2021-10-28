@@ -94,7 +94,7 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
    具体流程请进入详细的README中：
 
    **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/standard)** ：
-    常规模块为预训练模型，可进入其目录，修改数据集以及conf文件夹下的目录，```python run.py```即可训练，```python predict.py```即可预测。
+    常规模块为预训练模型，可进入其目录，修改数据集以及conf文件夹下的参数，```python run.py```即可训练，```python predict.py```即可预测。
 
     **[少样本FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/test_new_deepke/example/ner/few-shot)** ：
       少样本模块，可进入其目录，模型加载和保存位置以及配置可以在shell脚本中修改```python run.py```训练conll2003,```python run.py +train=few_shot```直接进行few-shot训练,若要加载模型，修改few_shot.yaml中的load_path,```python predict.py```即可预测。
