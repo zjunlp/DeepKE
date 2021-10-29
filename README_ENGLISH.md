@@ -13,7 +13,7 @@
     </a>
 </p>
 <p align="center">
-    <b><a href="https://github.com/zjunlp/DeepKE/blob/test_new_deepke/README.md">简体中文</a> | English</b>
+    <b><a href="https://github.com/zjunlp/DeepKE/blob/main/README.md">简体中文</a> | English</b>
 </p>
 
 <br>
