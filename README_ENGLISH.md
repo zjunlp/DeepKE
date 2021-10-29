@@ -129,7 +129,7 @@ Take the fully supervised attribute extraction for example.
 
 - Read the detailed process in specific README
 
-  - **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard)** 
+  - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard)** 
     - The standard module is implemented by common deep learning models, including CNN, RNN, Capsule, GCN, Transformer and the pretrained model.
     - Enter the `DeepKE/example/re/standard` folder. 
     - The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.
@@ -165,7 +165,7 @@ Take the fully supervised attribute extraction for example.
   |        2014年10月1日许鞍华执导的电影《黄金时代》上映         | 上映时间 | 黄金时代 |     19     | 2014年10月1日 |     0      |
 
 - Read the detailed process in specific README
-  - **[STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/standard)**
+  - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/standard)**
     - The standard module is implemented by common deep learning models, including CNN, RNN, Capsule, GCN, Transformer and the pretrained model.
     - Enter the `DeepKE/example/ae/standard` folder. 
     - The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.
