@@ -29,7 +29,7 @@ DeepKE 是一个支持<b>低资源、长篇章</b>的知识抽取工具，可以
 在线演示 [demo](https://deepke.openkg.cn)
 
 ### 进行预测
-下面使用一个demo展示预测过程
+下面使用一个demo展示预测过程<br>
 <img src="pics/demo.gif" width="636" height="494" align=center>
 
 <br>
