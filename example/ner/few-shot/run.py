@@ -99,7 +99,8 @@ def main(cfg):
     metrics = Seq2SeqSpanMetric(eos_token_id=1, num_labels=len(label_ids), target_type='word')
     loss = get_loss
 
-    trainer = Trainer(train_data=train_dataloader, dev_data=dev_dataloader, test_data=None, model=model, args=cfg, logger=logger, loss=loss, metrics=metrics, writer=writer)
+    trainer = Trainer(train_data=train_dataloader, dev_data=dev_dataloader, test_data=None, model=model, args=cfg, logger=logger, loss=loss,
+                      metrics=metrics, writer=writer)
     trainer.train()
 
     writer.close()
