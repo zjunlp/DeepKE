@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>deepke.relation_extraction.few_shot.lit_models.util &mdash; DeepKE 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> DeepKE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../start.html">Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../deepke.html">DeepKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">DeepKE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      <li>deepke.relation_extraction.few_shot.lit_models.util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for deepke.relation_extraction.few_shot.lit_models.util</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+
+
+<div class="viewcode-block" id="dialog_f1_eval"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.lit_models.html#deepke.relation_extraction.few_shot.lit_models.util.dialog_f1_eval">[docs]</a><span class="k">def</span> <span class="nf">dialog_f1_eval</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">getpred</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">T1</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="mf">0.4</span><span class="p">):</span>
+        <span class="c1"># 使用阈值得到preds, result = logits</span>
+        <span class="c1"># T2 表示如果都低于T2 那么就是 no relation, 否则选取一个最大的</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)):</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">maxl</span><span class="p">,</span> <span class="n">maxj</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
+                <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">T1</span><span class="p">:</span>
+                    <span class="n">r</span> <span class="o">+=</span> <span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">maxl</span><span class="p">:</span>
+                    <span class="n">maxl</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                    <span class="n">maxj</span> <span class="o">=</span> <span class="n">j</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">maxl</span> <span class="o">&lt;=</span> <span class="n">T2</span><span class="p">:</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="p">[</span><span class="mi">36</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">r</span> <span class="o">+=</span> <span class="p">[</span><span class="n">maxj</span><span class="p">]</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">def</span> <span class="nf">geteval</span><span class="p">(</span><span class="n">devp</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">correct_sys</span><span class="p">,</span> <span class="n">all_sys</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="n">correct_gt</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+            <span class="c1"># 每一个样本 都是[1,4,...,20] 表示有1,4,20 是1， 如果没有就是[36]</span>
+            <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">id</span> <span class="o">!=</span> <span class="mi">36</span><span class="p">:</span>
+                    <span class="c1"># 标签中 1 的个数</span>
+                    <span class="n">correct_gt</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">devp</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                        <span class="c1"># 预测正确</span>
+                        <span class="n">correct_sys</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">devp</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">id</span> <span class="o">!=</span> <span class="mi">36</span><span class="p">:</span>
+                    <span class="n">all_sys</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">precision</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">all_sys</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">correct_sys</span> <span class="o">/</span> <span class="n">all_sys</span>
+        <span class="n">recall</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">correct_gt</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">correct_sys</span> <span class="o">/</span> <span class="n">correct_gt</span>
+        <span class="n">f_1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">precision</span> <span class="o">*</span> <span class="n">recall</span> <span class="o">/</span> <span class="p">(</span><span class="n">precision</span> <span class="o">+</span> <span class="n">recall</span><span class="p">)</span> <span class="k">if</span> <span class="n">precision</span> <span class="o">+</span> <span class="n">recall</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">f_1</span>
+
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">logits</span><span class="p">)))</span>
+
+    <span class="n">temp_labels</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">36</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">t</span> <span class="o">+=</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="mi">36</span><span class="p">]</span>
+        <span class="n">temp_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">logits</span><span class="p">))</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">temp_labels</span>
+
+    <span class="n">bestT2</span> <span class="o">=</span> <span class="n">bestf_1</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">T2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">51</span><span class="p">):</span>
+        <span class="n">devp</span> <span class="o">=</span> <span class="n">getpred</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2</span> <span class="o">/</span> <span class="mf">100.</span><span class="p">)</span>
+        <span class="n">f_1</span> <span class="o">=</span> <span class="n">geteval</span><span class="p">(</span><span class="n">devp</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">f_1</span> <span class="o">&gt;</span> <span class="n">bestf_1</span><span class="p">:</span>
+            <span class="n">bestf_1</span> <span class="o">=</span> <span class="n">f_1</span>
+            <span class="n">bestT2</span> <span class="o">=</span> <span class="n">T2</span> <span class="o">/</span> <span class="mf">100.</span>
+
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">f1</span><span class="o">=</span><span class="n">bestf_1</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">bestT2</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="f1_eval"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.lit_models.html#deepke.relation_extraction.few_shot.lit_models.util.f1_eval">[docs]</a><span class="k">def</span> <span class="nf">f1_eval</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">getpred</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">T1</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">T2</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">)</span> <span class="p">:</span>
+        <span class="c1"># 使用阈值得到preds, result = logits</span>
+        <span class="c1"># T2 表示如果都低于T2 那么就是 no relation, 否则选取一个最大的</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)):</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">maxl</span><span class="p">,</span> <span class="n">maxj</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
+                <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">T1</span><span class="p">:</span>
+                    <span class="n">r</span> <span class="o">+=</span> <span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">maxl</span><span class="p">:</span>
+                    <span class="n">maxl</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                    <span class="n">maxj</span> <span class="o">=</span> <span class="n">j</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">maxl</span> <span class="o">&lt;=</span> <span class="n">T2</span><span class="p">:</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="p">[</span><span class="mi">36</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">r</span> <span class="o">+=</span> <span class="p">[</span><span class="n">maxj</span><span class="p">]</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">def</span> <span class="nf">geteval</span><span class="p">(</span><span class="n">devp</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">correct_sys</span><span class="p">,</span> <span class="n">all_sys</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="n">correct_gt</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+            <span class="c1"># 每一个样本 都是[1,4,...,20] 表示有1,4,20 是1， 如果没有就是[36]</span>
+            <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">id</span> <span class="o">!=</span> <span class="mi">36</span><span class="p">:</span>
+                    <span class="c1"># 标签中 1 的个数</span>
+                    <span class="n">correct_gt</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">devp</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                        <span class="c1"># 预测正确</span>
+                        <span class="n">correct_sys</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">devp</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">id</span> <span class="o">!=</span> <span class="mi">36</span><span class="p">:</span>
+                    <span class="n">all_sys</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">precision</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">all_sys</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">correct_sys</span><span class="o">/</span><span class="n">all_sys</span>
+        <span class="n">recall</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">correct_gt</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">correct_sys</span><span class="o">/</span><span class="n">correct_gt</span>
+        <span class="n">f_1</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">precision</span><span class="o">*</span><span class="n">recall</span><span class="o">/</span><span class="p">(</span><span class="n">precision</span><span class="o">+</span><span class="n">recall</span><span class="p">)</span> <span class="k">if</span> <span class="n">precision</span><span class="o">+</span><span class="n">recall</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">f_1</span>
+
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">logits</span><span class="p">)))</span>
+
+    <span class="n">temp_labels</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">36</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">t</span> <span class="o">+=</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="mi">36</span><span class="p">]</span>
+        <span class="n">temp_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">logits</span><span class="p">))</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">temp_labels</span>
+    
+    <span class="n">bestT2</span> <span class="o">=</span> <span class="n">bestf_1</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">T2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">51</span><span class="p">):</span>
+        <span class="n">devp</span> <span class="o">=</span> <span class="n">getpred</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2</span><span class="o">/</span><span class="mf">100.</span><span class="p">)</span>
+        <span class="n">f_1</span> <span class="o">=</span> <span class="n">geteval</span><span class="p">(</span><span class="n">devp</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">f_1</span> <span class="o">&gt;</span> <span class="n">bestf_1</span><span class="p">:</span>
+            <span class="n">bestf_1</span> <span class="o">=</span> <span class="n">f_1</span>
+            <span class="n">bestT2</span> <span class="o">=</span> <span class="n">T2</span><span class="o">/</span><span class="mf">100.</span>
+
+    <span class="k">return</span> <span class="n">bestf_1</span><span class="p">,</span> <span class="n">bestT2</span></div>
+
+
+
+<div class="viewcode-block" id="compute_f1"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.lit_models.html#deepke.relation_extraction.few_shot.lit_models.util.compute_f1">[docs]</a><span class="k">def</span> <span class="nf">compute_f1</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="n">n_gold</span> <span class="o">=</span> <span class="n">n_pred</span> <span class="o">=</span> <span class="n">n_correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">pred</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">pred</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">n_pred</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">n_gold</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">pred</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">label</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">pred</span> <span class="o">==</span> <span class="n">label</span><span class="p">):</span>
+            <span class="n">n_correct</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">n_correct</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;precision&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;recall&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;f1&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">prec</span> <span class="o">=</span> <span class="n">n_correct</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">n_pred</span>
+        <span class="n">recall</span> <span class="o">=</span> <span class="n">n_correct</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">n_gold</span>
+        <span class="k">if</span> <span class="n">prec</span> <span class="o">+</span> <span class="n">recall</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">f1</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">prec</span> <span class="o">*</span> <span class="n">recall</span> <span class="o">/</span> <span class="p">(</span><span class="n">prec</span> <span class="o">+</span> <span class="n">recall</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">f1</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;precision&#39;</span><span class="p">:</span> <span class="n">prec</span><span class="p">,</span> <span class="s1">&#39;recall&#39;</span><span class="p">:</span> <span class="n">recall</span><span class="p">,</span> <span class="s1">&#39;f1&#39;</span><span class="p">:</span> <span class="n">f1</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="acc"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.lit_models.html#deepke.relation_extraction.few_shot.lit_models.util.acc">[docs]</a><span class="k">def</span> <span class="nf">acc</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">preds</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span></div>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<div class="viewcode-block" id="f1_score"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.lit_models.html#deepke.relation_extraction.few_shot.lit_models.util.f1_score">[docs]</a><span class="k">def</span> <span class="nf">f1_score</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">rel_num</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">na_num</span><span class="o">=</span><span class="mi">13</span><span class="p">):</span>
+    <span class="n">correct_by_relation</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+    <span class="n">guess_by_relation</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+    <span class="n">gold_by_relation</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">)):</span>
+        <span class="n">guess</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">gold</span> <span class="o">=</span> <span class="n">label</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">guess</span> <span class="o">==</span> <span class="n">na_num</span><span class="p">:</span>
+            <span class="n">guess</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">guess</span> <span class="o">&lt;</span> <span class="n">na_num</span><span class="p">:</span>
+            <span class="n">guess</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">gold</span> <span class="o">==</span> <span class="n">na_num</span><span class="p">:</span>
+            <span class="n">gold</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">gold</span> <span class="o">&lt;</span> <span class="n">na_num</span><span class="p">:</span>
+            <span class="n">gold</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">gold</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">guess</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">gold</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">guess</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">guess_by_relation</span><span class="p">[</span><span class="n">guess</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">gold</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">guess</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">gold_by_relation</span><span class="p">[</span><span class="n">gold</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">gold</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">guess</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">guess_by_relation</span><span class="p">[</span><span class="n">guess</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">gold_by_relation</span><span class="p">[</span><span class="n">gold</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">gold</span> <span class="o">==</span> <span class="n">guess</span><span class="p">:</span>
+                <span class="n">correct_by_relation</span><span class="p">[</span><span class="n">gold</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    
+    <span class="n">f1_by_relation</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+    <span class="n">recall_by_relation</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+    <span class="n">prec_by_relation</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">rel_num</span><span class="p">):</span>
+        <span class="n">recall</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">gold_by_relation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">recall</span> <span class="o">=</span> <span class="n">correct_by_relation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">gold_by_relation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">precision</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">guess_by_relation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">precision</span> <span class="o">=</span> <span class="n">correct_by_relation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">guess_by_relation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">recall</span> <span class="o">+</span> <span class="n">precision</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="n">f1_by_relation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">recall</span> <span class="o">*</span> <span class="n">precision</span> <span class="o">/</span> <span class="p">(</span><span class="n">recall</span> <span class="o">+</span> <span class="n">precision</span><span class="p">)</span>
+        <span class="n">recall_by_relation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">recall</span>
+        <span class="n">prec_by_relation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">precision</span>
+
+    <span class="n">micro_f1</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">guess_by_relation</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">sum</span><span class="p">(</span><span class="n">correct_by_relation</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">recall</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">correct_by_relation</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">gold_by_relation</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">prec</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">correct_by_relation</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">guess_by_relation</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>    
+        <span class="n">micro_f1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">recall</span> <span class="o">*</span> <span class="n">prec</span> <span class="o">/</span> <span class="p">(</span><span class="n">recall</span><span class="o">+</span><span class="n">prec</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">f1</span><span class="o">=</span><span class="n">micro_f1</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, zjunlp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

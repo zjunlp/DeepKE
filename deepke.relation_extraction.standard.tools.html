@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>deepke.relation_extraction.standard.tools package &mdash; DeepKE 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="deepke.relation_extraction.standard.utils package" href="deepke.relation_extraction.standard.utils.html" />
+    <link rel="prev" title="deepke.relation_extraction.standard.module package" href="deepke.relation_extraction.standard.module.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> DeepKE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="start.html">Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="deepke.html">DeepKE</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="deepke.attribution_extraction.html">deepke.attribution_extraction package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_re.html">deepke.name_entity_re package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="deepke.relation_extraction.html">deepke.relation_extraction package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="deepke.relation_extraction.document.html">deepke.relation_extraction.document package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deepke.relation_extraction.few_shot.html">deepke.relation_extraction.few_shot package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="deepke.relation_extraction.standard.html">deepke.relation_extraction.standard package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="deepke.relation_extraction.standard.models.html">deepke.relation_extraction.standard.models package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deepke.relation_extraction.standard.module.html">deepke.relation_extraction.standard.module package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">deepke.relation_extraction.standard.tools package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deepke.relation_extraction.standard.utils.html">deepke.relation_extraction.standard.utils package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DeepKE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="deepke.html">DeepKE</a> &raquo;</li>
+          <li><a href="deepke.relation_extraction.html">deepke.relation_extraction package</a> &raquo;</li>
+          <li><a href="deepke.relation_extraction.standard.html">deepke.relation_extraction.standard package</a> &raquo;</li>
+      <li>deepke.relation_extraction.standard.tools package</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/tlk1997/test_doc/blob/main/docs/source/deepke.relation_extraction.standard.tools.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="deepke-relation-extraction-standard-tools-package">
+<h1>deepke.relation_extraction.standard.tools package<a class="headerlink" href="#deepke-relation-extraction-standard-tools-package" title="Permalink to this headline">¶</a></h1>
+<section id="module-deepke.relation_extraction.standard.tools.dataset">
+<span id="deepke-relation-extraction-standard-tools-dataset-module"></span><h2>deepke.relation_extraction.standard.tools.dataset module<a class="headerlink" href="#module-deepke.relation_extraction.standard.tools.dataset" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.dataset.collate_fn">
+<span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.dataset.</span></span><span class="sig-name descname"><span class="pre">collate_fn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/dataset.html#collate_fn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.dataset.collate_fn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.dataset.CustomDataset">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.dataset.</span></span><span class="sig-name descname"><span class="pre">CustomDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/dataset.html#CustomDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.dataset.CustomDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.dataset.Dataset</span></code></p>
+<p>默认使用 List 存储数据</p>
+</dd></dl>
+
+</section>
+<section id="module-deepke.relation_extraction.standard.tools.metrics">
+<span id="deepke-relation-extraction-standard-tools-metrics-module"></span><h2>deepke.relation_extraction.standard.tools.metrics module<a class="headerlink" href="#module-deepke.relation_extraction.standard.tools.metrics" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.metrics.Metric">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.metrics.</span></span><span class="sig-name descname"><span class="pre">Metric</span></span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/metrics.html#Metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.metrics.Metric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.metrics.Metric.reset">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/metrics.html#Metric.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.metrics.Metric.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the metric to to it’s initial state.
+This is called at the start of each epoch.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.metrics.Metric.update">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/metrics.html#Metric.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.metrics.Metric.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the metric’s state using the passed batch output.
+This is called once for each batch.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.metrics.Metric.compute">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/metrics.html#Metric.compute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.metrics.Metric.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the metric based on it’s accumulated state.
+This is called at the end of each epoch.
+:return: the actual quantity of interest</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.metrics.PRMetric">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.metrics.</span></span><span class="sig-name descname"><span class="pre">PRMetric</span></span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/metrics.html#PRMetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.metrics.PRMetric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.metrics.PRMetric.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/metrics.html#PRMetric.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.metrics.PRMetric.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>重置为0</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.metrics.PRMetric.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/metrics.html#PRMetric.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.metrics.PRMetric.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>更新tensor，保留值，取消原有梯度</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.metrics.PRMetric.compute">
+<span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/metrics.html#PRMetric.compute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.metrics.PRMetric.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>计算acc,p,r,f1并返回</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-deepke.relation_extraction.standard.tools.preprocess">
+<span id="deepke-relation-extraction-standard-tools-preprocess-module"></span><h2>deepke.relation_extraction.standard.tools.preprocess module<a class="headerlink" href="#module-deepke.relation_extraction.standard.tools.preprocess" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.preprocess.preprocess">
+<span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.preprocess.</span></span><span class="sig-name descname"><span class="pre">preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/preprocess.html#preprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.preprocess.preprocess" title="Permalink to this definition">¶</a></dt>
+<dd><p>数据预处理阶段</p>
+</dd></dl>
+
+</section>
+<section id="module-deepke.relation_extraction.standard.tools.serializer">
+<span id="deepke-relation-extraction-standard-tools-serializer-module"></span><h2>deepke.relation_extraction.standard.tools.serializer module<a class="headerlink" href="#module-deepke.relation_extraction.standard.tools.serializer" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.serializer.Serializer">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.serializer.</span></span><span class="sig-name descname"><span class="pre">Serializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">never_split</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_lower_case</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_chinese_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/serializer.html#Serializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.serializer.Serializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.serializer.Serializer.serialize">
+<span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">never_split</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/serializer.html#Serializer.serialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.serializer.Serializer.serialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>将一段文本按照制定拆分规则，拆分成一个词汇List
+Args :</p>
+<blockquote>
+<div><p>text (String) : 所需拆分文本
+never_split (List) : 不拆分的词，默认为空</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Rerurn :</dt><dd><p>output_tokens (List): 拆分后的结果</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.serializer.Serializer.is_control">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">is_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/serializer.html#Serializer.is_control"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.serializer.Serializer.is_control" title="Permalink to this definition">¶</a></dt>
+<dd><p>判断字符是否为控制字符
+Arg :</p>
+<blockquote>
+<div><p>char : 字符</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return :</dt><dd><p>bool : 判断结果</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.serializer.Serializer.is_whitespace">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">is_whitespace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/serializer.html#Serializer.is_whitespace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.serializer.Serializer.is_whitespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>判断字符是否为空白字符
+Arg :</p>
+<blockquote>
+<div><p>char : 字符</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return :</dt><dd><p>bool : 判断结果</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.serializer.Serializer.is_chinese_char">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">is_chinese_char</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/serializer.html#Serializer.is_chinese_char"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.serializer.Serializer.is_chinese_char" title="Permalink to this definition">¶</a></dt>
+<dd><p>判断字符是否为中文字符
+Arg :</p>
+<blockquote>
+<div><p>cp (char): 字符</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return :</dt><dd><p>bool : 判断结果</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.serializer.Serializer.is_punctuation">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">is_punctuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/serializer.html#Serializer.is_punctuation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.serializer.Serializer.is_punctuation" title="Permalink to this definition">¶</a></dt>
+<dd><p>判断字符是否为标点字符
+Arg :</p>
+<blockquote>
+<div><p>char : 字符</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return :</dt><dd><p>bool : 判断结果</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-deepke.relation_extraction.standard.tools.trainer">
+<span id="deepke-relation-extraction-standard-tools-trainer-module"></span><h2>deepke.relation_extraction.standard.tools.trainer module<a class="headerlink" href="#module-deepke.relation_extraction.standard.tools.trainer" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.trainer.train">
+<span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.trainer.</span></span><span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">writer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/trainer.html#train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.trainer.train" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>training the model.</dt><dd><dl class="simple">
+<dt>Args:</dt><dd><p>epoch (int): number of training steps.
+model (class): model of training.
+dataloader (dict): dict of dataset iterator. Keys are tasknames, values are corresponding dataloaders.
+optimizer (Callable): optimizer of training.
+criterion (Callable): loss criterion of training.
+device (torch.device): device of training.
+writer (class): output to tensorboard.
+cfg: configutation of training.</p>
+</dd>
+<dt>Return:</dt><dd><p>losses[-1] : the loss of training</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.trainer.validate">
+<span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.trainer.</span></span><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/trainer.html#validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.trainer.validate" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>validating the model.</dt><dd><dl class="simple">
+<dt>Args:</dt><dd><p>epoch (int): number of validating steps.
+model (class): model of validating.
+dataloader (dict): dict of dataset iterator. Keys are tasknames, values are corresponding dataloaders.
+criterion (Callable): loss criterion of validating.
+device (torch.device): device of validating.
+cfg: configutation of validating.</p>
+</dd>
+<dt>Return:</dt><dd><p>f1 : f1 score
+loss : the loss of validating</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-deepke.relation_extraction.standard.tools.vocab">
+<span id="deepke-relation-extraction-standard-tools-vocab-module"></span><h2>deepke.relation_extraction.standard.tools.vocab module<a class="headerlink" href="#module-deepke.relation_extraction.standard.tools.vocab" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.vocab.Vocab">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.vocab.</span></span><span class="sig-name descname"><span class="pre">Vocab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'basic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_tokens</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">{'bos_token':</span> <span class="pre">'[BOS]',</span> <span class="pre">'cls_token':</span> <span class="pre">'[CLS]',</span> <span class="pre">'eos_token':</span> <span class="pre">'[EOS]',</span> <span class="pre">'head_token':</span> <span class="pre">'HEAD',</span> <span class="pre">'mask_token':</span> <span class="pre">'[MASK]',</span> <span class="pre">'pad_token':</span> <span class="pre">'[PAD]',</span> <span class="pre">'sep_token':</span> <span class="pre">'[SEP]',</span> <span class="pre">'tail_token':</span> <span class="pre">'TAIL',</span> <span class="pre">'unk_token':</span> <span class="pre">'[UNK]'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/vocab.html#Vocab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.vocab.Vocab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>构建词汇表,增加词汇，删除低频词汇</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.vocab.Vocab.add_words">
+<span class="sig-name descname"><span class="pre">add_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/vocab.html#Vocab.add_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.vocab.Vocab.add_words" title="Permalink to this definition">¶</a></dt>
+<dd><p>通过数组增加词汇
+Arg :</p>
+<blockquote>
+<div><p>words (List) : 增加的词汇组</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.vocab.Vocab.trim">
+<span class="sig-name descname"><span class="pre">trim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/vocab.html#Vocab.trim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.vocab.Vocab.trim" title="Permalink to this definition">¶</a></dt>
+<dd><p>当 word 词频低于 min_freq 时，从词库中删除
+:param min_freq: 最低词频
+:type min_freq: int
+:param verbose: 是否打印日志
+:type verbose: bool</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="deepke.relation_extraction.standard.module.html" class="btn btn-neutral float-left" title="deepke.relation_extraction.standard.module package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deepke.relation_extraction.standard.utils.html" class="btn btn-neutral float-right" title="deepke.relation_extraction.standard.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, zjunlp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>deepke.relation_extraction.few_shot.dataset.processor &mdash; DeepKE 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> DeepKE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../start.html">Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../deepke.html">DeepKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">DeepKE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      <li>deepke.relation_extraction.few_shot.dataset.processor</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for deepke.relation_extraction.few_shot.dataset.processor</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">pickle</span> 
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span><span class="p">,</span> <span class="n">trange</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">TensorDataset</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+
+<span class="kn">from</span> <span class="nn">transformers.utils.dummy_tokenizers_objects</span> <span class="kn">import</span> <span class="n">BertTokenizerFast</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(name)s</span><span class="s1"> -   </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span> 
+                    <span class="n">datefmt</span> <span class="o">=</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y %H:%M:%S&#39;</span><span class="p">,</span>
+                    <span class="n">level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="c1"># 这就是包内引用吗</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span>
+
+<span class="n">keyword_files</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;keyword_train.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;keyword_dev.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;keyword_test.txt&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="tokenize"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.tokenize">[docs]</a><span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">):</span>
+    <span class="c1"># berts tokenize ways</span>
+    <span class="c1"># tokenize the [unused12345678910]</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;[unused</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">]&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+    <span class="n">textraw</span> <span class="o">=</span> <span class="p">[</span><span class="n">text</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">delimiter</span> <span class="ow">in</span> <span class="n">D</span><span class="p">:</span>
+        <span class="n">ntextraw</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">textraw</span><span class="p">)):</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">textraw</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)):</span>
+                <span class="n">ntextraw</span> <span class="o">+=</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span>
+                <span class="k">if</span> <span class="n">j</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">ntextraw</span> <span class="o">+=</span> <span class="p">[</span><span class="n">delimiter</span><span class="p">]</span>
+        <span class="n">textraw</span> <span class="o">=</span> <span class="n">ntextraw</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">textraw</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">D</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="p">[</span><span class="n">t</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">add_special_tokens</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">tok</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">+=</span> <span class="p">[</span><span class="n">tok</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="ow">and</span> <span class="n">t</span> <span class="o">==</span> <span class="s2">&quot;[&quot;</span> <span class="ow">and</span> <span class="n">text</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;[UNK]&quot;</span> <span class="ow">and</span> <span class="n">text</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;]&quot;</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="n">idx</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;[MASK]&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">text</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">3</span><span class="p">:]</span>
+
+    <span class="k">return</span> <span class="n">text</span></div>
+
+<span class="n">n_class</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="viewcode-block" id="InputExample"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.InputExample">[docs]</a><span class="k">class</span> <span class="nc">InputExample</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A single training/test example for simple sequence classification.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="p">,</span> <span class="n">text_a</span><span class="p">,</span> <span class="n">text_b</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text_c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs a InputExample.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            guid: Unique id for the example.</span>
+<span class="sd">            text_a: string. The untokenized text of the first sequence. For single</span>
+<span class="sd">            sequence tasks, only this sequence must be specified.</span>
+<span class="sd">            text_b: (Optional) string. The untokenized text of the second sequence.</span>
+<span class="sd">            Only must be specified for sequence pair tasks.</span>
+<span class="sd">            label: (Optional) string. The label of the example. This should be</span>
+<span class="sd">            specified for train and dev examples, but not for test examples.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="n">guid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_a</span> <span class="o">=</span> <span class="n">text_a</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_b</span> <span class="o">=</span> <span class="n">text_b</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_c</span> <span class="o">=</span> <span class="n">text_c</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entity</span> <span class="o">=</span> <span class="n">entity</span></div>
+
+
+<div class="viewcode-block" id="InputExampleSST2"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.InputExampleSST2">[docs]</a><span class="k">class</span> <span class="nc">InputExampleSST2</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A single training/test example for simple sequence classification.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="p">,</span> <span class="n">text_a</span><span class="p">,</span> <span class="n">text_b</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text_c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs a InputExample.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            guid: Unique id for the example.</span>
+<span class="sd">            text_a: string. The untokenized text of the first sequence. For single</span>
+<span class="sd">            sequence tasks, only this sequence must be specified.</span>
+<span class="sd">            text_b: (Optional) string. The untokenized text of the second sequence.</span>
+<span class="sd">            Only must be specified for sequence pair tasks.</span>
+<span class="sd">            label: (Optional) string. The label of the example. This should be</span>
+<span class="sd">            specified for train and dev examples, but not for test examples.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="n">guid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_a</span> <span class="o">=</span> <span class="n">text_a</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_b</span> <span class="o">=</span> <span class="n">text_b</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span></div>
+
+
+<div class="viewcode-block" id="InputFeaturesSST2"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.InputFeaturesSST2">[docs]</a><span class="k">class</span> <span class="nc">InputFeaturesSST2</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A single set of features of data.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">,</span> <span class="n">token_type_ids</span><span class="p">,</span> <span class="n">label_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_ids</span> <span class="o">=</span> <span class="n">input_ids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attention_mask</span> <span class="o">=</span> <span class="n">attention_mask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token_type_ids</span> <span class="o">=</span> <span class="n">token_type_ids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_id</span> <span class="o">=</span> <span class="n">label_id</span></div>
+
+
+<div class="viewcode-block" id="InputExampleWiki80"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.InputExampleWiki80">[docs]</a><span class="k">class</span> <span class="nc">InputExampleWiki80</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A single training/test example for span pair classification.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="p">,</span> <span class="n">sentence</span><span class="p">,</span> <span class="n">span1</span><span class="p">,</span> <span class="n">span2</span><span class="p">,</span> <span class="n">ner1</span><span class="p">,</span> <span class="n">ner2</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="n">guid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">span1</span> <span class="o">=</span> <span class="n">span1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">span2</span> <span class="o">=</span> <span class="n">span2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ner1</span> <span class="o">=</span> <span class="n">ner1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ner2</span> <span class="o">=</span> <span class="n">ner2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span></div>
+
+<div class="viewcode-block" id="InputFeatures"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.InputFeatures">[docs]</a><span class="k">class</span> <span class="nc">InputFeatures</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A single set of features of data.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_ids</span><span class="p">,</span> <span class="n">input_mask</span><span class="p">,</span> <span class="n">segment_ids</span><span class="p">,</span> <span class="n">label_id</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_ids</span> <span class="o">=</span> <span class="n">input_ids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_mask</span> <span class="o">=</span> <span class="n">input_mask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">segment_ids</span> <span class="o">=</span> <span class="n">segment_ids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_id</span> <span class="o">=</span> <span class="n">label_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entity</span> <span class="o">=</span> <span class="n">entity</span></div>
+
+
+<div class="viewcode-block" id="DataProcessor"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.DataProcessor">[docs]</a><span class="k">class</span> <span class="nc">DataProcessor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for data converters for sequence classification data sets.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DataProcessor.get_train_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.DataProcessor.get_train_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_train_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets a collection of `InputExample`s for the train set.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DataProcessor.get_dev_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.DataProcessor.get_dev_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_dev_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets a collection of `InputExample`s for the dev set.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DataProcessor.get_labels"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.DataProcessor.get_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the list of labels for this data set.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_read_tsv</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">input_file</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reads a tab separated value file.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="n">quotechar</span><span class="p">)</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">lines</span></div>
+
+<div class="viewcode-block" id="Sst2Processor"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.Sst2Processor">[docs]</a><span class="k">class</span> <span class="nc">Sst2Processor</span><span class="p">(</span><span class="n">DataProcessor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Processor for the SST-2 data set (GLUE version).&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+
+<div class="viewcode-block" id="Sst2Processor.get_example_from_tensor_dict"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.Sst2Processor.get_example_from_tensor_dict">[docs]</a>    <span class="k">def</span> <span class="nf">get_example_from_tensor_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor_dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">InputExample</span><span class="p">(</span>
+            <span class="n">tensor_dict</span><span class="p">[</span><span class="s2">&quot;idx&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+            <span class="n">tensor_dict</span><span class="p">[</span><span class="s2">&quot;sentence&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">tensor_dict</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Sst2Processor.get_train_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.Sst2Processor.get_train_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_train_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_examples</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_tsv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;train.tsv&quot;</span><span class="p">)),</span> <span class="s2">&quot;train&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Sst2Processor.get_dev_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.Sst2Processor.get_dev_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_dev_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_examples</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_tsv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;dev.tsv&quot;</span><span class="p">)),</span> <span class="s2">&quot;dev&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Sst2Processor.get_test_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.Sst2Processor.get_test_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_test_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_examples</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_tsv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;test.tsv&quot;</span><span class="p">)),</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Sst2Processor.get_labels"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.Sst2Processor.get_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">]</span></div>
+
+    <span class="k">def</span> <span class="nf">_create_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">set_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates examples for the training, dev and test sets.&quot;&quot;&quot;</span>
+        <span class="n">examples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">text_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">guid</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">set_type</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">text_a</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">text_index</span><span class="p">]</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">examples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">InputExample</span><span class="p">(</span><span class="n">guid</span><span class="o">=</span><span class="n">guid</span><span class="p">,</span> <span class="n">text_a</span><span class="o">=</span><span class="n">text_a</span><span class="p">,</span> <span class="n">text_b</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text_c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">examples</span></div>
+
+
+
+<div class="viewcode-block" id="relossProcessor"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.relossProcessor">[docs]</a><span class="k">class</span> <span class="nc">relossProcessor</span><span class="p">(</span><span class="n">DataProcessor</span><span class="p">):</span> <span class="c1">#bert_s</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">use_prompt</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">is_speaker</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;speaker&quot;</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
+        
+        <span class="c1"># replace the speaker with [unused] token</span>
+        <span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;’&quot;</span><span class="p">,</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;im&quot;</span><span class="p">,</span><span class="s2">&quot;i&quot;</span><span class="p">)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="n">unused</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;[unused1]&quot;</span><span class="p">,</span> <span class="s2">&quot;[unused2]&quot;</span><span class="p">]</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">is_speaker</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="n">a</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">+=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">y</span> <span class="ow">and</span> <span class="n">is_speaker</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+                <span class="n">a</span> <span class="o">+=</span> <span class="p">[</span><span class="n">y</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">+=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">unused</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; :&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">x</span> <span class="o">=</span> <span class="n">unused</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">y</span> <span class="o">=</span> <span class="n">unused</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="p">[[],</span> <span class="p">[],</span> <span class="p">[]]</span>
+        <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="c1"># 分成三个数据集</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="p">[</span><span class="s2">&quot;train.json&quot;</span><span class="p">,</span> <span class="s2">&quot;dev.json&quot;</span><span class="p">,</span> <span class="s2">&quot;test.json&quot;</span><span class="p">][</span><span class="n">sid</span><span class="p">],</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])):</span>
+                    <span class="n">rid</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">36</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;rid&quot;</span><span class="p">]:</span>
+                            <span class="n">rid</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">rid</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">d</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">rename</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+                    <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;what is the relation between </span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2"> ? </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2"> is the [MASK] </span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s2"> .&quot;</span>
+                    <span class="n">d</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">prompt</span> <span class="o">+</span> <span class="n">d</span><span class="p">,</span>
+                        <span class="n">h</span><span class="p">,</span>
+                        <span class="n">t</span><span class="p">,</span>
+                        <span class="n">rid</span><span class="p">,</span>
+                        <span class="n">t</span>
+                    <span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">sid</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">d</span><span class="p">]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+        
+<div class="viewcode-block" id="relossProcessor.get_train_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.relossProcessor.get_train_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_train_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_examples</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;train&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="relossProcessor.get_test_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.relossProcessor.get_test_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_test_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_examples</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="relossProcessor.get_dev_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.relossProcessor.get_dev_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_dev_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_examples</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;dev&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="relossProcessor.get_labels"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.relossProcessor.get_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">36</span><span class="p">)]</span></div>
+
+    <span class="k">def</span> <span class="nf">_create_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">set_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates examples for the training and dev sets.&quot;&quot;&quot;</span>
+        <span class="n">examples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="n">guid</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">set_type</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">examples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">InputExample</span><span class="p">(</span><span class="n">guid</span><span class="o">=</span><span class="n">guid</span><span class="p">,</span> <span class="n">text_a</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">text_b</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">text_c</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">entity</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">4</span><span class="p">]))</span>
+            
+        <span class="k">return</span> <span class="n">examples</span></div>
+
+
+<div class="viewcode-block" id="bertProcessor"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.bertProcessor">[docs]</a><span class="k">class</span> <span class="nc">bertProcessor</span><span class="p">(</span><span class="n">DataProcessor</span><span class="p">):</span> <span class="c1">#bert_s</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">use_prompt</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">is_speaker</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;speaker&quot;</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
+        
+        <span class="c1"># replace the speaker with [unused] token</span>
+        <span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;’&quot;</span><span class="p">,</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;im&quot;</span><span class="p">,</span><span class="s2">&quot;i&quot;</span><span class="p">)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="n">unused</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;[unused1]&quot;</span><span class="p">,</span> <span class="s2">&quot;[unused2]&quot;</span><span class="p">]</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">is_speaker</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="n">a</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">+=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">y</span> <span class="ow">and</span> <span class="n">is_speaker</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+                <span class="n">a</span> <span class="o">+=</span> <span class="p">[</span><span class="n">y</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">+=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">unused</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; :&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">x</span> <span class="o">=</span> <span class="n">unused</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">y</span> <span class="o">=</span> <span class="n">unused</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="p">[[],</span> <span class="p">[],</span> <span class="p">[]]</span>
+        <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="c1"># 分成三个数据集</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="p">[</span><span class="s2">&quot;train.json&quot;</span><span class="p">,</span> <span class="s2">&quot;dev.json&quot;</span><span class="p">,</span> <span class="s2">&quot;test.json&quot;</span><span class="p">][</span><span class="n">sid</span><span class="p">],</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">sample_idx</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])):</span>
+                    <span class="n">rid</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">36</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;rid&quot;</span><span class="p">]:</span>
+                            <span class="n">rid</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">rid</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">d</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">rename</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+                    <span class="k">if</span> <span class="n">use_prompt</span><span class="p">:</span>
+                        <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s2"> is the [MASK] </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2"> .&quot;</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;what is the relation between </span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2"> ?&quot;</span>
+                    <span class="n">sample_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">d</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">prompt</span> <span class="o">+</span> <span class="n">d</span><span class="p">,</span>
+                        <span class="n">h</span><span class="p">,</span>
+                        <span class="n">t</span><span class="p">,</span>
+                        <span class="n">rid</span><span class="p">,</span>
+                    <span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">sid</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">d</span><span class="p">]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+        
+<div class="viewcode-block" id="bertProcessor.get_train_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.bertProcessor.get_train_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_train_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_examples</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;train&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="bertProcessor.get_test_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.bertProcessor.get_test_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_test_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_examples</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="bertProcessor.get_dev_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.bertProcessor.get_dev_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_dev_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_examples</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;dev&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="bertProcessor.get_labels"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.bertProcessor.get_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">36</span><span class="p">)]</span></div>
+
+    <span class="k">def</span> <span class="nf">_create_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">set_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates examples for the training and dev sets.&quot;&quot;&quot;</span>
+        <span class="n">examples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="n">guid</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">set_type</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">examples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">InputExample</span><span class="p">(</span><span class="n">guid</span><span class="o">=</span><span class="n">guid</span><span class="p">,</span> <span class="n">text_a</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">text_b</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">text_c</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]))</span>
+            
+        <span class="k">return</span> <span class="n">examples</span></div>
+
+
+<div class="viewcode-block" id="ptuneProcessor"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.ptuneProcessor">[docs]</a><span class="k">class</span> <span class="nc">ptuneProcessor</span><span class="p">(</span><span class="n">DataProcessor</span><span class="p">):</span> <span class="c1">#bert_s</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">use_prompt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ptune_k</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">is_speaker</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;speaker&quot;</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
+        
+        <span class="c1"># replace the speaker with [unused] token</span>
+        <span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;’&quot;</span><span class="p">,</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;im&quot;</span><span class="p">,</span><span class="s2">&quot;i&quot;</span><span class="p">)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="n">unused</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;[unused1]&quot;</span><span class="p">,</span> <span class="s2">&quot;[unused2]&quot;</span><span class="p">]</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">is_speaker</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="n">a</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">+=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">y</span> <span class="ow">and</span> <span class="n">is_speaker</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+                <span class="n">a</span> <span class="o">+=</span> <span class="p">[</span><span class="n">y</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">+=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">unused</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; :&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">x</span> <span class="o">=</span> <span class="n">unused</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">y</span> <span class="o">=</span> <span class="n">unused</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="p">[[],</span> <span class="p">[],</span> <span class="p">[]]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        TODO, add new samples, every sample if there is a trigger then mask trigger and replace the origin mask with right token,</span>
+<span class="sd">        if no trigger in the sentence, random mask a word in the sentence and replace the origin mask with the right token.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="c1"># 分成三个数据集</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="p">[</span><span class="s2">&quot;train.json&quot;</span><span class="p">,</span> <span class="s2">&quot;dev.json&quot;</span><span class="p">,</span> <span class="s2">&quot;test.json&quot;</span><span class="p">][</span><span class="n">sid</span><span class="p">],</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">sample_idx</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])):</span>
+                    <span class="n">rid</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">36</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;rid&quot;</span><span class="p">]:</span>
+                            <span class="n">rid</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">rid</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">d</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">rename</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+                    <span class="n">unused_word</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;[unused</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">]&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">ptune_k</span><span class="o">+</span><span class="mi">3</span><span class="p">)])</span>
+                    <span class="c1"># st 3,4 ; ed 5,6</span>
+                    <span class="n">st</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;[unused</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">]&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">)]</span>
+                    <span class="n">ed</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;[unused</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">]&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">)]</span>
+                    <span class="c1"># 789 as prompt</span>
+                    <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[sub] </span><span class="si">{</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">st</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> [sub] [unused7] [unused8] [MASK] [unused9] [obj] </span><span class="si">{</span><span class="n">ed</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">ed</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> [obj].&quot;</span>
+                    
+                    <span class="c1"># for temp_i in range(10):</span>
+                    <span class="c1">#     d = d.replace(f&quot;speaker {temp_i}:&quot;, f&quot;[speaker{temp_i}]&quot;)</span>
+
+                    <span class="n">sample_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">prompt</span> <span class="o">+</span> <span class="n">d</span><span class="p">,</span>
+                        <span class="n">h</span><span class="p">,</span>
+                        <span class="n">t</span><span class="p">,</span>
+                        <span class="n">rid</span><span class="p">,</span>
+                    <span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">sid</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">sample</span><span class="p">]</span>
+                    <span class="c1"># multi labels, add more data in the training set</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">trigger</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;t&#39;</span><span class="p">]):</span>
+                            <span class="k">if</span> <span class="n">trigger</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                                <span class="n">label_token</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[class</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;rid&#39;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">]&quot;</span>
+                                <span class="n">prompt</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[MASK]&quot;</span><span class="p">,</span> <span class="n">label_token</span><span class="p">)</span>
+                                <span class="c1"># first assume the model predict the same output in the trigger, ...</span>
+                                <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">trigger</span><span class="p">,</span> <span class="s2">&quot;[MASK]&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span>
+                            <span class="n">prompt</span> <span class="o">+</span> <span class="n">d</span><span class="p">,</span>
+                            <span class="n">h</span><span class="p">,</span>
+                            <span class="n">t</span><span class="p">,</span>
+                            <span class="n">rid</span><span class="p">,</span>
+                        <span class="p">]</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="n">sid</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">sample</span><span class="p">]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+        
+<div class="viewcode-block" id="ptuneProcessor.get_train_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.ptuneProcessor.get_train_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_train_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_examples</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;train&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ptuneProcessor.get_test_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.ptuneProcessor.get_test_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_test_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_examples</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ptuneProcessor.get_dev_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.ptuneProcessor.get_dev_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_dev_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_examples</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;dev&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ptuneProcessor.get_labels"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.ptuneProcessor.get_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">36</span><span class="p">)]</span></div>
+
+    <span class="k">def</span> <span class="nf">_create_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">set_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates examples for the training and dev sets.&quot;&quot;&quot;</span>
+        <span class="n">examples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="n">guid</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">set_type</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">examples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">InputExample</span><span class="p">(</span><span class="n">guid</span><span class="o">=</span><span class="n">guid</span><span class="p">,</span> <span class="n">text_a</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">text_b</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">text_c</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]))</span>
+            
+        <span class="k">return</span> <span class="n">examples</span></div>
+
+
+<div class="viewcode-block" id="wiki80Processor"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.wiki80Processor">[docs]</a><span class="k">class</span> <span class="nc">wiki80Processor</span><span class="p">(</span><span class="n">DataProcessor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Processor for the TACRED data set.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">use_prompt</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_path</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_read_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">input_file</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+            <span class="n">all_lines</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">all_lines</span><span class="p">:</span>
+                <span class="n">ins</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ins</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+<div class="viewcode-block" id="wiki80Processor.get_train_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.wiki80Processor.get_train_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_train_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_examples</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_json</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;train.txt&quot;</span><span class="p">)),</span> <span class="s2">&quot;train&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="wiki80Processor.get_dev_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.wiki80Processor.get_dev_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_dev_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_examples</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_json</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;val.txt&quot;</span><span class="p">)),</span> <span class="s2">&quot;dev&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="wiki80Processor.get_test_examples"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.wiki80Processor.get_test_examples">[docs]</a>    <span class="k">def</span> <span class="nf">get_test_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_examples</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_json</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;test.txt&quot;</span><span class="p">)),</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="wiki80Processor.get_labels"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.wiki80Processor.get_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">negative_label</span><span class="o">=</span><span class="s2">&quot;no_relation&quot;</span><span class="p">):</span>
+        <span class="n">data_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="c1"># if &#39;k-shot&#39; in self.data_dir:</span>
+        <span class="c1">#     data_dir = os.path.abspath(os.path.join(self.data_dir, &quot;../..&quot;))</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     data_dir = self.data_dir</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span><span class="s1">&#39;rel2id.json&#39;</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+            <span class="n">re2id</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">re2id</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_create_examples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">set_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates examples for the training and dev sets.&quot;&quot;&quot;</span>
+        <span class="n">examples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+            <span class="n">sentence</span> <span class="o">=</span> <span class="n">example</span><span class="p">[</span><span class="s1">&#39;token&#39;</span><span class="p">]</span>
+            <span class="n">examples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">InputExampleWiki80</span><span class="p">(</span><span class="n">guid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">sentence</span><span class="o">=</span><span class="n">sentence</span><span class="p">,</span>
+                            <span class="c1"># maybe some bugs here, I don&#39;t -1</span>
+                            <span class="n">span1</span><span class="o">=</span><span class="p">(</span><span class="n">example</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">example</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="n">span2</span><span class="o">=</span><span class="p">(</span><span class="n">example</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">example</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="n">ner1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">ner2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">label</span><span class="o">=</span><span class="n">example</span><span class="p">[</span><span class="s1">&#39;relation&#39;</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">examples</span></div>
+
+<div class="viewcode-block" id="convert_examples_to_features_for_loss"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.convert_examples_to_features_for_loss">[docs]</a><span class="k">def</span> <span class="nf">convert_examples_to_features_for_loss</span><span class="p">(</span><span class="n">examples</span><span class="p">,</span> <span class="n">max_seq_length</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#examples&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">examples</span><span class="p">))</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">ex_index</span><span class="p">,</span> <span class="n">example</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+        <span class="n">tokens_a</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">text_a</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">)</span>
+        <span class="n">tokens_b</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">text_b</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">)</span>
+        <span class="n">tokens_c</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">text_c</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">)</span>
+
+        <span class="c1"># t_tokens = tokenize(example.entity, tokenizer)</span>
+        <span class="n">t_tokens</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">entity</span><span class="p">,</span> <span class="n">add_special_tokens</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">]</span>
+
+        <span class="n">_truncate_seq_tuple</span><span class="p">(</span><span class="n">tokens_a</span><span class="p">,</span> <span class="n">tokens_b</span><span class="p">,</span> <span class="n">tokens_c</span><span class="p">,</span> <span class="n">max_seq_length</span> <span class="o">-</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">tokens_b</span> <span class="o">=</span> <span class="n">tokens_b</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;[SEP]&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">tokens_c</span>
+
+        <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">segment_ids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;[CLS]&quot;</span><span class="p">)</span>
+        <span class="n">segment_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens_a</span><span class="p">:</span>
+            <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+            <span class="n">segment_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;[SEP]&quot;</span><span class="p">)</span>
+        <span class="n">segment_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens_b</span><span class="p">:</span>
+            <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+            <span class="n">segment_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;[SEP]&quot;</span><span class="p">)</span>
+        <span class="n">segment_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">input_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">convert_tokens_to_ids</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+
+        <span class="c1"># The mask has 1 for real tokens and 0 for padding tokens. Only real</span>
+        <span class="c1"># tokens are attended to.</span>
+        <span class="n">input_mask</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+
+        <span class="c1"># Zero-pad up to the sequence length.</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">max_seq_length</span><span class="p">:</span>
+            <span class="n">input_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">input_mask</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">segment_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span> <span class="o">==</span> <span class="n">max_seq_length</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_mask</span><span class="p">)</span> <span class="o">==</span> <span class="n">max_seq_length</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">segment_ids</span><span class="p">)</span> <span class="o">==</span> <span class="n">max_seq_length</span>
+
+        <span class="n">label_id</span> <span class="o">=</span> <span class="n">example</span><span class="o">.</span><span class="n">label</span> 
+
+        <span class="n">len_t</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t_tokens</span><span class="p">)</span>
+        <span class="n">normal_input_ids</span> <span class="o">=</span> <span class="n">input_ids</span><span class="p">[:]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">input_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">input_ids</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">idx</span> <span class="o">+</span> <span class="n">len_t</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span> <span class="ow">and</span> <span class="n">input_ids</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span><span class="o">+</span><span class="n">len_t</span><span class="p">]</span> <span class="o">==</span> <span class="n">t_tokens</span><span class="p">:</span>
+                <span class="c1"># [MASK] id = 103</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_t</span><span class="p">):</span>
+                    <span class="n">input_ids</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">103</span>
+
+        <span class="c1"># append 1 sample with 2 input</span>
+        <span class="n">features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">InputFeatures</span><span class="p">(</span>
+                <span class="n">input_ids</span><span class="o">=</span><span class="n">normal_input_ids</span><span class="p">,</span>
+                <span class="n">input_mask</span><span class="o">=</span><span class="n">input_mask</span><span class="p">,</span>
+                <span class="n">segment_ids</span><span class="o">=</span><span class="n">segment_ids</span><span class="p">,</span>
+                <span class="n">label_id</span><span class="o">=</span><span class="n">label_id</span><span class="p">,</span>
+                <span class="n">entity</span> <span class="o">=</span> <span class="n">t_tokens</span>
+            <span class="p">),</span>
+            <span class="n">InputFeatures</span><span class="p">(</span>
+                <span class="n">input_ids</span><span class="o">=</span><span class="n">input_ids</span><span class="p">,</span>
+                <span class="n">input_mask</span><span class="o">=</span><span class="n">input_mask</span><span class="p">,</span>
+                <span class="n">segment_ids</span><span class="o">=</span><span class="n">segment_ids</span><span class="p">,</span>
+                <span class="n">label_id</span><span class="o">=</span><span class="n">label_id</span><span class="p">,</span>
+                <span class="n">entity</span> <span class="o">=</span> <span class="n">t_tokens</span>
+            <span class="p">)]</span>
+        <span class="p">)</span>
+        
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#features&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">features</span></div>
+
+<div class="viewcode-block" id="convert_examples_to_features_normal"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.convert_examples_to_features_normal">[docs]</a><span class="k">def</span> <span class="nf">convert_examples_to_features_normal</span><span class="p">(</span><span class="n">examples</span><span class="p">,</span> <span class="n">max_seq_length</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#examples&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">examples</span><span class="p">))</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">ex_index</span><span class="p">,</span> <span class="n">example</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+        <span class="n">tokens_a</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">text_a</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">)</span>
+        <span class="n">tokens_b</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">text_b</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">)</span>
+        <span class="n">tokens_c</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">text_c</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">)</span>
+
+
+        <span class="n">_truncate_seq_tuple</span><span class="p">(</span><span class="n">tokens_a</span><span class="p">,</span> <span class="n">tokens_b</span><span class="p">,</span> <span class="n">tokens_c</span><span class="p">,</span> <span class="n">max_seq_length</span> <span class="o">-</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">tokens_b</span> <span class="o">=</span> <span class="n">tokens_b</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;[SEP]&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">tokens_c</span>
+        
+        
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span>
+            <span class="n">example</span><span class="o">.</span><span class="n">text_a</span><span class="p">,</span>
+            <span class="n">example</span><span class="o">.</span><span class="n">text_b</span> <span class="o">+</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">sep_token</span> <span class="o">+</span> <span class="n">example</span><span class="o">.</span><span class="n">text_c</span><span class="p">,</span>
+            <span class="n">truncation</span><span class="o">=</span><span class="s2">&quot;longest_first&quot;</span><span class="p">,</span>
+            <span class="n">max_length</span><span class="o">=</span><span class="n">max_seq_length</span><span class="p">,</span>
+            <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;max_length&quot;</span><span class="p">,</span>
+            <span class="n">add_special_tokens</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="c1"># tokens = []</span>
+        <span class="c1"># segment_ids = []</span>
+        <span class="c1"># tokens.append(&quot;[CLS]&quot;)</span>
+        <span class="c1"># segment_ids.append(0)</span>
+        <span class="c1"># for token in tokens_a:</span>
+        <span class="c1">#     tokens.append(token)</span>
+        <span class="c1">#     segment_ids.append(0)</span>
+        <span class="c1"># tokens.append(&quot;[SEP]&quot;)</span>
+        <span class="c1"># segment_ids.append(0)</span>
+
+        <span class="c1"># for token in tokens_b:</span>
+        <span class="c1">#     tokens.append(token)</span>
+        <span class="c1">#     segment_ids.append(1)</span>
+        <span class="c1"># tokens.append(&quot;[SEP]&quot;)</span>
+        <span class="c1"># segment_ids.append(1)</span>
+
+        <span class="c1"># input_ids = tokenizer.convert_tokens_to_ids(tokens)</span>
+
+        <span class="c1"># # The mask has 1 for real tokens and 0 for padding tokens. Only real</span>
+        <span class="c1"># # tokens are attended to.</span>
+        <span class="c1"># input_mask = [1] * len(input_ids)</span>
+
+        <span class="c1"># # Zero-pad up to the sequence length.</span>
+        <span class="c1"># while len(input_ids) &lt; max_seq_length:</span>
+        <span class="c1">#     input_ids.append(0)</span>
+        <span class="c1">#     input_mask.append(0)</span>
+        <span class="c1">#     segment_ids.append(0)</span>
+
+        <span class="c1"># assert(inputs[&#39;input_ids&#39;] == input_ids), print(inputs[&#39;input_ids&#39;])</span>
+
+        <span class="c1"># assert len(input_ids) == max_seq_length</span>
+        <span class="c1"># assert len(input_mask) == max_seq_length</span>
+        <span class="c1"># assert len(segment_ids) == max_seq_length</span>
+
+        <span class="n">label_id</span> <span class="o">=</span> <span class="n">example</span><span class="o">.</span><span class="n">label</span> 
+
+        <span class="k">if</span> <span class="n">ex_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;input_text : </span><span class="si">{</span><span class="n">tokens_a</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">tokens_b</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">tokens_c</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;input_ids : </span><span class="si">{</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;token_type_ids : </span><span class="si">{</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;token_type_ids&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># inputs = {}</span>
+        <span class="c1"># inputs[&#39;input_ids&#39;] = input_ids</span>
+        <span class="c1"># inputs[&#39;attention_mask&#39;] = input_mask</span>
+        <span class="c1"># inputs[&#39;token_type_ids&#39;] = segment_ids</span>
+
+        <span class="c1"># append 1 sample with 2 input</span>
+        <span class="n">features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">InputFeatures</span><span class="p">(</span>
+                <span class="n">input_ids</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">],</span>
+                <span class="n">input_mask</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">],</span>
+                <span class="n">segment_ids</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;token_type_ids&#39;</span><span class="p">],</span>
+                <span class="n">label_id</span><span class="o">=</span><span class="n">label_id</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#features&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">features</span></div>
+
+
+
+<div class="viewcode-block" id="convert_examples_to_features"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.convert_examples_to_features">[docs]</a><span class="k">def</span> <span class="nf">convert_examples_to_features</span><span class="p">(</span><span class="n">examples</span><span class="p">,</span> <span class="n">max_seq_length</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">rel2id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Loads a data file into a list of `InputBatch`s.&quot;&quot;&quot;</span>
+
+    <span class="n">save_file</span> <span class="o">=</span> <span class="s2">&quot;data/cached_wiki80.pkl&quot;</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span>
+
+    <span class="n">num_tokens</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_fit_examples</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_shown_examples</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">instances</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    
+    <span class="n">use_bert</span> <span class="o">=</span> <span class="s2">&quot;BertTokenizer&quot;</span> <span class="ow">in</span> <span class="n">tokenizer</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="n">use_gpt</span> <span class="o">=</span> <span class="s2">&quot;GPT&quot;</span> <span class="ow">in</span> <span class="n">tokenizer</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+    
+    <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span><span class="n">use_bert</span> <span class="ow">and</span> <span class="n">use_gpt</span><span class="p">),</span> <span class="s2">&quot;model cannot be gpt and bert together&quot;</span>
+
+    <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">save_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fr</span><span class="p">:</span>
+            <span class="n">instances</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;load preprocessed data from </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">save_file</span><span class="p">))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;loading..&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">ex_index</span><span class="p">,</span> <span class="n">example</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+            
+
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                the relation between SUBJECT and OBJECT is .</span>
+<span class="sd">                </span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="k">if</span> <span class="n">ex_index</span> <span class="o">%</span> <span class="mi">10000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Writing example </span><span class="si">%d</span><span class="s2"> of </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ex_index</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">examples</span><span class="p">)))</span>
+
+            <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">SUBJECT_START</span> <span class="o">=</span> <span class="s2">&quot;[subject_start]&quot;</span>
+            <span class="n">SUBJECT_END</span> <span class="o">=</span> <span class="s2">&quot;[subject_end]&quot;</span>
+            <span class="n">OBJECT_START</span> <span class="o">=</span> <span class="s2">&quot;[object_start]&quot;</span>
+            <span class="n">OBJECT_END</span> <span class="o">=</span> <span class="s2">&quot;[object_end]&quot;</span>
+
+
+            <span class="k">if</span> <span class="n">mode</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">token</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">sentence</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">example</span><span class="o">.</span><span class="n">span1</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                        <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SUBJECT_START</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">example</span><span class="o">.</span><span class="n">span2</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                        <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">OBJECT_START</span><span class="p">)</span>
+                    <span class="c1"># for sub_token in tokenizer.tokenize(token):</span>
+                    <span class="c1">#     tokens.append(sub_token)</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">example</span><span class="o">.</span><span class="n">span1</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                        <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SUBJECT_END</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">example</span><span class="o">.</span><span class="n">span2</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                        <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">OBJECT_END</span><span class="p">)</span>
+
+                    <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+
+            <span class="n">SUBJECT</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">sentence</span><span class="p">[</span><span class="n">example</span><span class="o">.</span><span class="n">span1</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">example</span><span class="o">.</span><span class="n">span1</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+            <span class="n">OBJECT</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">sentence</span><span class="p">[</span><span class="n">example</span><span class="o">.</span><span class="n">span2</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">example</span><span class="o">.</span><span class="n">span2</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+            <span class="n">SUBJECT_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">+</span><span class="n">SUBJECT</span><span class="p">,</span> <span class="n">add_special_tokens</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]</span>
+            <span class="n">OBJECT_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">+</span><span class="n">OBJECT</span><span class="p">,</span> <span class="n">add_special_tokens</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="n">use_gpt</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">CT_CL</span><span class="p">:</span>
+                    <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[T1] [T2] [T3] [sub] </span><span class="si">{</span><span class="n">OBJECT</span><span class="si">}</span><span class="s2"> [sub] [T4] [obj] </span><span class="si">{</span><span class="n">SUBJECT</span><span class="si">}</span><span class="s2"> [obj] [T5] </span><span class="si">{</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">cls_token</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;The relation between [sub] </span><span class="si">{</span><span class="n">SUBJECT</span><span class="si">}</span><span class="s2"> [sub] and [obj] </span><span class="si">{</span><span class="n">OBJECT</span><span class="si">}</span><span class="s2"> [obj] is </span><span class="si">{</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">cls_token</span><span class="si">}</span><span class="s2"> .&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># add prompt [T_n] and entity marker [obj] to enrich the context.</span>
+                <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[sub] </span><span class="si">{</span><span class="n">SUBJECT</span><span class="si">}</span><span class="s2"> [sub] </span><span class="si">{</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">mask_token</span><span class="si">}</span><span class="s2"> [obj] </span><span class="si">{</span><span class="n">OBJECT</span><span class="si">}</span><span class="s2"> [obj] .&quot;</span>
+            
+            <span class="k">if</span> <span class="n">ex_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">input_text</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;input text : </span><span class="si">{</span><span class="n">input_text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;prompt : </span><span class="si">{</span><span class="n">prompt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;label : </span><span class="si">{</span><span class="n">example</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span>
+                <span class="n">prompt</span><span class="p">,</span>
+                <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">),</span>
+                <span class="n">truncation</span><span class="o">=</span><span class="s2">&quot;longest_first&quot;</span><span class="p">,</span>
+                <span class="n">max_length</span><span class="o">=</span><span class="n">max_seq_length</span><span class="p">,</span>
+                <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;max_length&quot;</span><span class="p">,</span>
+                <span class="n">add_special_tokens</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">use_gpt</span><span class="p">:</span> <span class="n">cls_token_location</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">cls_token_id</span><span class="p">)</span> 
+            
+            <span class="c1"># find the subject and object tokens, choose the first ones</span>
+            <span class="n">sub_st</span> <span class="o">=</span> <span class="n">sub_ed</span> <span class="o">=</span> <span class="n">obj_st</span> <span class="o">=</span> <span class="n">obj_ed</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">])):</span>
+                <span class="k">if</span> <span class="n">sub_st</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">SUBJECT_ids</span><span class="p">)]</span> <span class="o">==</span> <span class="n">SUBJECT_ids</span><span class="p">:</span>
+                    <span class="n">sub_st</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">sub_ed</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">SUBJECT_ids</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">obj_st</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">OBJECT_ids</span><span class="p">)]</span> <span class="o">==</span> <span class="n">OBJECT_ids</span><span class="p">:</span>
+                    <span class="n">obj_st</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">obj_ed</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">OBJECT_ids</span><span class="p">)</span>
+            
+            <span class="k">assert</span> <span class="n">sub_st</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">obj_st</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span>
+
+
+            <span class="n">num_tokens</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">])</span>
+
+
+            <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">max_seq_length</span><span class="p">:</span>
+                <span class="k">pass</span>
+                <span class="c1"># tokens = tokens[:max_seq_length]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">num_fit_examples</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">x</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+            <span class="n">x</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">use_bert</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;token_type_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;token_type_ids&#39;</span><span class="p">]</span>
+            <span class="n">x</span><span class="p">[</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">]</span>
+            <span class="n">x</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rel2id</span><span class="p">[</span><span class="n">example</span><span class="o">.</span><span class="n">label</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">use_gpt</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;cls_token_location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cls_token_location</span>
+            <span class="n">x</span><span class="p">[</span><span class="s1">&#39;so&#39;</span><span class="p">]</span> <span class="o">=</span><span class="p">[</span><span class="n">sub_st</span><span class="p">,</span> <span class="n">sub_ed</span><span class="p">,</span> <span class="n">obj_st</span><span class="p">,</span> <span class="n">obj_ed</span><span class="p">]</span>
+
+            <span class="n">instances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">save_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fw</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">instances</span><span class="p">,</span> <span class="n">fw</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finish save preprocessed data to </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">save_file</span><span class="p">))</span>
+
+    <span class="n">input_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">]</span>
+    <span class="n">attention_mask</span> <span class="o">=</span> <span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">use_bert</span><span class="p">:</span> <span class="n">token_type_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="s1">&#39;token_type_ids&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">use_gpt</span><span class="p">:</span> <span class="n">cls_idx</span> <span class="o">=</span> <span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="s1">&#39;cls_token_location&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">]</span>
+    <span class="n">so</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">o</span><span class="p">[</span><span class="s1">&#39;so&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">])</span>
+
+
+    <span class="n">input_ids</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+    <span class="n">attention_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">attention_mask</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">use_gpt</span><span class="p">:</span> <span class="n">cls_idx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">cls_idx</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">use_bert</span><span class="p">:</span> <span class="n">token_type_ids</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">token_type_ids</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Average #tokens: </span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">num_tokens</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">examples</span><span class="p">)))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> (</span><span class="si">%.2f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">) examples can fit max_seq_length = </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">num_fit_examples</span><span class="p">,</span>
+                <span class="n">num_fit_examples</span> <span class="o">*</span> <span class="mf">100.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">examples</span><span class="p">),</span> <span class="n">max_seq_length</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">use_gpt</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">,</span> <span class="n">cls_idx</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">use_bert</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">,</span> <span class="n">token_type_ids</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">so</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">dataset</span></div>
+
+
+<div class="viewcode-block" id="convert_examples_to_feature_sst2"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.convert_examples_to_feature_sst2">[docs]</a><span class="k">def</span> <span class="nf">convert_examples_to_feature_sst2</span><span class="p">(</span><span class="n">examples</span><span class="p">,</span> <span class="n">max_seq_length</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">rel2id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Loads a data file into a list of `InputBatch`s.&quot;&quot;&quot;</span>
+
+    <span class="n">save_file</span> <span class="o">=</span> <span class="s2">&quot;data/cached_wiki80.pkl&quot;</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span>
+
+    <span class="n">num_tokens</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_fit_examples</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_shown_examples</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">instances</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+    <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">save_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fr</span><span class="p">:</span>
+            <span class="n">instances</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;load preprocessed data from </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">save_file</span><span class="p">))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;loading..&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">ex_index</span><span class="p">,</span> <span class="n">example</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[T1] [T2] </span><span class="si">{</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">mask_token</span><span class="si">}</span><span class="s2"> .&quot;</span>
+                <span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span>
+                    <span class="n">example</span><span class="o">.</span><span class="n">text_a</span> <span class="o">+</span> <span class="n">prompt</span><span class="p">,</span>
+                    <span class="n">truncation</span><span class="o">=</span><span class="s2">&quot;longest_first&quot;</span><span class="p">,</span>
+                    <span class="n">max_length</span><span class="o">=</span><span class="n">max_seq_length</span><span class="p">,</span>
+                    <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;max_length&quot;</span><span class="p">,</span>
+                    <span class="n">add_special_tokens</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
+
+                <span class="n">x</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+                <span class="n">x</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]</span>
+                <span class="n">x</span><span class="p">[</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">&quot;roberta&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">model_name_or_path</span><span class="p">:</span>
+                    <span class="n">x</span><span class="p">[</span><span class="s1">&#39;token_type_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;token_type_ids&#39;</span><span class="p">]</span>
+                <span class="n">x</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+
+
+                <span class="n">instances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">save_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fw</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">instances</span><span class="p">,</span> <span class="n">fw</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finish save preprocessed data to </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">save_file</span><span class="p">))</span>
+
+    <span class="n">input_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">]</span>
+    <span class="n">attention_mask</span> <span class="o">=</span> <span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s2">&quot;roberta&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">model_name_or_path</span><span class="p">:</span>
+        <span class="n">token_type_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="s1">&#39;token_type_ids&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">]</span>
+        <span class="n">token_type_ids</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">token_type_ids</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">]</span>
+
+
+    <span class="n">input_ids</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+    <span class="n">attention_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">attention_mask</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Average #tokens: </span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">num_tokens</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">examples</span><span class="p">)))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> (</span><span class="si">%.2f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">) examples can fit max_seq_length = </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">num_fit_examples</span><span class="p">,</span>
+                <span class="n">num_fit_examples</span> <span class="o">*</span> <span class="mf">100.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">examples</span><span class="p">),</span> <span class="n">max_seq_length</span><span class="p">))</span>
+    <span class="k">if</span> <span class="s2">&quot;roberta&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">model_name_or_path</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">,</span> <span class="n">token_type_ids</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dataset</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_truncate_seq_tuple</span><span class="p">(</span><span class="n">tokens_a</span><span class="p">,</span> <span class="n">tokens_b</span><span class="p">,</span> <span class="n">tokens_c</span><span class="p">,</span> <span class="n">max_length</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Truncates a sequence tuple in place to the maximum length.&quot;&quot;&quot;</span>
+
+    <span class="c1"># This is a simple heuristic which will always truncate the longer sequence</span>
+    <span class="c1"># one token at a time. This makes more sense than truncating an equal percent</span>
+    <span class="c1"># of tokens from each, since if one sequence is very short then each token</span>
+    <span class="c1"># that&#39;s truncated likely contains more information than a longer sequence.</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">total_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens_a</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens_b</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens_c</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">total_length</span> <span class="o">&lt;=</span> <span class="n">max_length</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens_a</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens_b</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens_a</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens_c</span><span class="p">):</span>
+            <span class="n">tokens_a</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens_b</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens_a</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens_b</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens_c</span><span class="p">):</span>
+            <span class="n">tokens_b</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tokens_c</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>            
+
+<div class="viewcode-block" id="get_dataset"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.get_dataset">[docs]</a><span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">processor</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;train&quot;</span><span class="p">:</span>
+        <span class="n">examples</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">get_train_examples</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;dev&quot;</span><span class="p">:</span>
+        <span class="n">examples</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">get_dev_examples</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;test&quot;</span><span class="p">:</span>
+        <span class="n">examples</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">get_test_examples</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;mode must be in choice [trian, dev, test]&quot;</span><span class="p">)</span>
+    <span class="n">gpt_mode</span> <span class="o">=</span> <span class="s2">&quot;wiki80&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">task_name</span>
+  
+    <span class="k">if</span> <span class="s2">&quot;wiki80&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">task_name</span><span class="p">:</span>
+        <span class="c1"># normal relation extraction task</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">convert_examples_to_features</span><span class="p">(</span>
+            <span class="n">examples</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">max_seq_length</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">processor</span><span class="o">.</span><span class="n">get_labels</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">dataset</span>
+    <span class="k">elif</span> <span class="s2">&quot;sst&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">task_name</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">convert_examples_to_feature_sst2</span><span class="p">(</span>
+            <span class="n">examples</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">max_seq_length</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">dataset</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">train_features</span> <span class="o">=</span> <span class="n">convert_examples_to_features_normal</span><span class="p">(</span>
+            <span class="n">examples</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">max_seq_length</span><span class="p">,</span> <span class="n">tokenizer</span>
+        <span class="p">)</span>
+
+
+    <span class="n">input_ids</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">input_mask</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">segment_ids</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">label_id</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">entity_id</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">train_features</span><span class="p">:</span>
+        <span class="n">input_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">input_ids</span><span class="p">)</span>
+        <span class="n">input_mask</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">input_mask</span><span class="p">)</span>
+        <span class="n">segment_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">segment_ids</span><span class="p">)</span>
+        <span class="n">label_id</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">label_id</span><span class="p">)</span>                
+
+    <span class="n">all_input_ids</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+    <span class="n">all_input_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">input_mask</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+    <span class="n">all_segment_ids</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">segment_ids</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+    <span class="n">all_label_ids</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">label_id</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+   
+    <span class="n">train_data</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">all_input_ids</span><span class="p">,</span> <span class="n">all_input_mask</span><span class="p">,</span> <span class="n">all_segment_ids</span><span class="p">,</span> <span class="n">all_label_ids</span><span class="p">)</span>
+    
+
+    <span class="k">return</span> <span class="n">train_data</span></div>
+
+
+<div class="viewcode-block" id="collate_fn"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.few_shot.dataset.html#deepke.relation_extraction.few_shot.dataset.processor.collate_fn">[docs]</a><span class="k">def</span> <span class="nf">collate_fn</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+
+
+<span class="n">processors</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;normal&quot;</span><span class="p">:</span> <span class="n">bertProcessor</span><span class="p">,</span> <span class="s2">&quot;reloss&quot;</span><span class="p">:</span> <span class="n">relossProcessor</span> <span class="p">,</span> <span class="s2">&quot;ptune&quot;</span><span class="p">:</span> <span class="n">ptuneProcessor</span><span class="p">,</span> <span class="s2">&quot;wiki80&quot;</span><span class="p">:</span> <span class="n">wiki80Processor</span><span class="p">,</span>
+    <span class="s2">&quot;sst-2&quot;</span><span class="p">:</span> <span class="n">Sst2Processor</span>
+<span class="p">}</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, zjunlp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

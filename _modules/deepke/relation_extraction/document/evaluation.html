@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>deepke.relation_extraction.document.evaluation &mdash; DeepKE 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> DeepKE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../start.html">Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../deepke.html">DeepKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">DeepKE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      <li>deepke.relation_extraction.document.evaluation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for deepke.relation_extraction.document.evaluation</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+
+<div class="viewcode-block" id="to_official"><a class="viewcode-back" href="../../../../deepke.relation_extraction.document.html#deepke.relation_extraction.document.evaluation.to_official">[docs]</a><span class="k">def</span> <span class="nf">to_official</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
+    <span class="n">rel2id</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">data_dir</span><span class="si">}</span><span class="s1">/rel2id.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">))</span>
+    <span class="n">id2rel</span> <span class="o">=</span> <span class="p">{</span><span class="n">value</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">rel2id</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    
+    <span class="n">h_idx</span><span class="p">,</span> <span class="n">t_idx</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+        <span class="n">hts</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;hts&quot;</span><span class="p">]</span>
+        <span class="n">h_idx</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ht</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">ht</span> <span class="ow">in</span> <span class="n">hts</span><span class="p">]</span>
+        <span class="n">t_idx</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ht</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">ht</span> <span class="ow">in</span> <span class="n">hts</span><span class="p">]</span>
+        <span class="n">title</span> <span class="o">+=</span> <span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">ht</span> <span class="ow">in</span> <span class="n">hts</span><span class="p">]</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># print(&#39;h_idx, preds&#39;, len(h_idx), len(preds))</span>
+    <span class="c1"># assert len(h_idx) == len(preds)</span>
+
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">preds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">preds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">pred</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pred</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">title</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                        <span class="s1">&#39;h_idx&#39;</span><span class="p">:</span> <span class="n">h_idx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                        <span class="s1">&#39;t_idx&#39;</span><span class="p">:</span> <span class="n">t_idx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                        <span class="s1">&#39;r&#39;</span><span class="p">:</span> <span class="n">id2rel</span><span class="p">[</span><span class="n">p</span><span class="p">],</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
+<div class="viewcode-block" id="gen_train_facts"><a class="viewcode-back" href="../../../../deepke.relation_extraction.document.html#deepke.relation_extraction.document.evaluation.gen_train_facts">[docs]</a><span class="k">def</span> <span class="nf">gen_train_facts</span><span class="p">(</span><span class="n">data_file_name</span><span class="p">,</span> <span class="n">truth_dir</span><span class="p">):</span>
+    <span class="n">fact_file_name</span> <span class="o">=</span> <span class="n">data_file_name</span><span class="p">[</span><span class="n">data_file_name</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;train_&quot;</span><span class="p">):]</span>
+    <span class="n">fact_file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">truth_dir</span><span class="p">,</span> <span class="n">fact_file_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;.fact&quot;</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fact_file_name</span><span class="p">):</span>
+        <span class="n">fact_in_train</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
+        <span class="n">triples</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">fact_file_name</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">triples</span><span class="p">:</span>
+            <span class="n">fact_in_train</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">fact_in_train</span>
+
+    <span class="n">fact_in_train</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
+    <span class="n">ori_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">data_file_name</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">ori_data</span><span class="p">:</span>
+        <span class="n">vertexSet</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;vertexSet&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]:</span>
+            <span class="n">rel</span> <span class="o">=</span> <span class="n">label</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">n1</span> <span class="ow">in</span> <span class="n">vertexSet</span><span class="p">[</span><span class="n">label</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]]:</span>
+                <span class="k">for</span> <span class="n">n2</span> <span class="ow">in</span> <span class="n">vertexSet</span><span class="p">[</span><span class="n">label</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]]:</span>
+                    <span class="n">fact_in_train</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">n1</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">n2</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">rel</span><span class="p">))</span>
+
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">fact_in_train</span><span class="p">),</span> <span class="nb">open</span><span class="p">(</span><span class="n">fact_file_name</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">fact_in_train</span></div>
+
+
+<div class="viewcode-block" id="official_evaluate"><a class="viewcode-back" href="../../../../deepke.relation_extraction.document.html#deepke.relation_extraction.document.evaluation.official_evaluate">[docs]</a><span class="k">def</span> <span class="nf">official_evaluate</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Adapted from the official evaluation code</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">truth_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;ref&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">truth_dir</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">truth_dir</span><span class="p">)</span>
+
+    <span class="n">fact_in_train_annotated</span> <span class="o">=</span> <span class="n">gen_train_facts</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;train_annotated.json&quot;</span><span class="p">),</span> <span class="n">truth_dir</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;train_distant.json&quot;</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;Sorry, the file: &#39;train_annotated.json&#39; is too big to upload to github, </span><span class="se">\</span>
+<span class="s2">            please manually download to &#39;data/&#39; from DocRED GoogleDrive https://drive.google.com/drive/folders/1c5-0YwnoJx8NS6CV2f-NoTHR__BdkNqw&quot;</span><span class="p">)</span>
+    <span class="n">fact_in_train_distant</span> <span class="o">=</span> <span class="n">gen_train_facts</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;train_distant.json&quot;</span><span class="p">),</span> <span class="n">truth_dir</span><span class="p">)</span>
+
+    <span class="n">truth</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;dev.json&quot;</span><span class="p">)))</span>
+
+    <span class="n">std</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">tot_evidences</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">titleset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
+
+    <span class="n">title2vectexSet</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">truth</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+        <span class="n">titleset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+        <span class="n">vertexSet</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;vertexSet&#39;</span><span class="p">]</span>
+        <span class="n">title2vectexSet</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertexSet</span>
+
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">label</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">]</span>
+            <span class="n">h_idx</span> <span class="o">=</span> <span class="n">label</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span>
+            <span class="n">t_idx</span> <span class="o">=</span> <span class="n">label</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span>
+            <span class="n">std</span><span class="p">[(</span><span class="n">title</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">h_idx</span><span class="p">,</span> <span class="n">t_idx</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">label</span><span class="p">[</span><span class="s1">&#39;evidence&#39;</span><span class="p">])</span>
+            <span class="n">tot_evidences</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">[</span><span class="s1">&#39;evidence&#39;</span><span class="p">])</span>
+
+    <span class="n">tot_relations</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">std</span><span class="p">)</span>
+    <span class="n">tmp</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;h_idx&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;t_idx&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">]))</span>
+    <span class="n">submission_answer</span> <span class="o">=</span> <span class="p">[</span><span class="n">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tmp</span><span class="p">)):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;h_idx&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;t_idx&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="s1">&#39;h_idx&#39;</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="s1">&#39;t_idx&#39;</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">]):</span>
+            <span class="n">submission_answer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="n">correct_re</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">correct_evidence</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">pred_evi</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">correct_in_train_annotated</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">correct_in_train_distant</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">titleset2</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">submission_answer</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+        <span class="n">h_idx</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;h_idx&#39;</span><span class="p">]</span>
+        <span class="n">t_idx</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;t_idx&#39;</span><span class="p">]</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">]</span>
+        <span class="n">titleset2</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">title</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">title2vectexSet</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">vertexSet</span> <span class="o">=</span> <span class="n">title2vectexSet</span><span class="p">[</span><span class="n">title</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="s1">&#39;evidence&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+            <span class="n">evi</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;evidence&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">evi</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
+        <span class="n">pred_evi</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">evi</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">h_idx</span><span class="p">,</span> <span class="n">t_idx</span><span class="p">)</span> <span class="ow">in</span> <span class="n">std</span><span class="p">:</span>
+            <span class="n">correct_re</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">stdevi</span> <span class="o">=</span> <span class="n">std</span><span class="p">[(</span><span class="n">title</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">h_idx</span><span class="p">,</span> <span class="n">t_idx</span><span class="p">)]</span>
+            <span class="n">correct_evidence</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stdevi</span> <span class="o">&amp;</span> <span class="n">evi</span><span class="p">)</span>
+            <span class="n">in_train_annotated</span> <span class="o">=</span> <span class="n">in_train_distant</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">for</span> <span class="n">n1</span> <span class="ow">in</span> <span class="n">vertexSet</span><span class="p">[</span><span class="n">h_idx</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">n2</span> <span class="ow">in</span> <span class="n">vertexSet</span><span class="p">[</span><span class="n">t_idx</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">n1</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">n2</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">r</span><span class="p">)</span> <span class="ow">in</span> <span class="n">fact_in_train_annotated</span><span class="p">:</span>
+                        <span class="n">in_train_annotated</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">n1</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">n2</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">r</span><span class="p">)</span> <span class="ow">in</span> <span class="n">fact_in_train_distant</span><span class="p">:</span>
+                        <span class="n">in_train_distant</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="n">in_train_annotated</span><span class="p">:</span>
+                <span class="n">correct_in_train_annotated</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">in_train_distant</span><span class="p">:</span>
+                <span class="n">correct_in_train_distant</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">re_p</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">correct_re</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">submission_answer</span><span class="p">)</span>
+    <span class="n">re_r</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">correct_re</span> <span class="o">/</span> <span class="n">tot_relations</span>
+    <span class="k">if</span> <span class="n">re_p</span> <span class="o">+</span> <span class="n">re_r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">re_f1</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">re_f1</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">re_p</span> <span class="o">*</span> <span class="n">re_r</span> <span class="o">/</span> <span class="p">(</span><span class="n">re_p</span> <span class="o">+</span> <span class="n">re_r</span><span class="p">)</span>
+
+    <span class="n">evi_p</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">correct_evidence</span> <span class="o">/</span> <span class="n">pred_evi</span> <span class="k">if</span> <span class="n">pred_evi</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">evi_r</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">correct_evidence</span> <span class="o">/</span> <span class="n">tot_evidences</span>
+    <span class="k">if</span> <span class="n">evi_p</span> <span class="o">+</span> <span class="n">evi_r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">evi_f1</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">evi_f1</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">evi_p</span> <span class="o">*</span> <span class="n">evi_r</span> <span class="o">/</span> <span class="p">(</span><span class="n">evi_p</span> <span class="o">+</span> <span class="n">evi_r</span><span class="p">)</span>
+
+    <span class="n">re_p_ignore_train_annotated</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">correct_re</span> <span class="o">-</span> <span class="n">correct_in_train_annotated</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">submission_answer</span><span class="p">)</span> <span class="o">-</span> <span class="n">correct_in_train_annotated</span> <span class="o">+</span> <span class="mf">1e-5</span><span class="p">)</span>
+    <span class="n">re_p_ignore_train</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">correct_re</span> <span class="o">-</span> <span class="n">correct_in_train_distant</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">submission_answer</span><span class="p">)</span> <span class="o">-</span> <span class="n">correct_in_train_distant</span> <span class="o">+</span> <span class="mf">1e-5</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">re_p_ignore_train_annotated</span> <span class="o">+</span> <span class="n">re_r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">re_f1_ignore_train_annotated</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">re_f1_ignore_train_annotated</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">re_p_ignore_train_annotated</span> <span class="o">*</span> <span class="n">re_r</span> <span class="o">/</span> <span class="p">(</span><span class="n">re_p_ignore_train_annotated</span> <span class="o">+</span> <span class="n">re_r</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">re_p_ignore_train</span> <span class="o">+</span> <span class="n">re_r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">re_f1_ignore_train</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">re_f1_ignore_train</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">re_p_ignore_train</span> <span class="o">*</span> <span class="n">re_r</span> <span class="o">/</span> <span class="p">(</span><span class="n">re_p_ignore_train</span> <span class="o">+</span> <span class="n">re_r</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">re_f1</span><span class="p">,</span> <span class="n">evi_f1</span><span class="p">,</span> <span class="n">re_f1_ignore_train_annotated</span><span class="p">,</span> <span class="n">re_f1_ignore_train</span><span class="p">,</span> <span class="n">re_p</span><span class="p">,</span> <span class="n">re_r</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, zjunlp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

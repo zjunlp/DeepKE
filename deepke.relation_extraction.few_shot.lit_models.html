@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>deepke.relation_extraction.few_shot.lit_models package &mdash; DeepKE 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="deepke.relation_extraction.standard package" href="deepke.relation_extraction.standard.html" />
+    <link rel="prev" title="deepke.relation_extraction.few_shot.dataset package" href="deepke.relation_extraction.few_shot.dataset.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> DeepKE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="start.html">Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="deepke.html">DeepKE</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="deepke.attribution_extraction.html">deepke.attribution_extraction package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_re.html">deepke.name_entity_re package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="deepke.relation_extraction.html">deepke.relation_extraction package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="deepke.relation_extraction.document.html">deepke.relation_extraction.document package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="deepke.relation_extraction.few_shot.html">deepke.relation_extraction.few_shot package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="deepke.relation_extraction.few_shot.dataset.html">deepke.relation_extraction.few_shot.dataset package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">deepke.relation_extraction.few_shot.lit_models package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deepke.relation_extraction.few_shot.html#module-deepke.relation_extraction.few_shot.generate_k_shot">deepke.relation_extraction.few_shot.generate_k_shot module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deepke.relation_extraction.few_shot.html#module-deepke.relation_extraction.few_shot.get_label_word">deepke.relation_extraction.few_shot.get_label_word module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="deepke.relation_extraction.standard.html">deepke.relation_extraction.standard package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DeepKE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="deepke.html">DeepKE</a> &raquo;</li>
+          <li><a href="deepke.relation_extraction.html">deepke.relation_extraction package</a> &raquo;</li>
+          <li><a href="deepke.relation_extraction.few_shot.html">deepke.relation_extraction.few_shot package</a> &raquo;</li>
+      <li>deepke.relation_extraction.few_shot.lit_models package</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/tlk1997/test_doc/blob/main/docs/source/deepke.relation_extraction.few_shot.lit_models.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="deepke-relation-extraction-few-shot-lit-models-package">
+<h1>deepke.relation_extraction.few_shot.lit_models package<a class="headerlink" href="#deepke-relation-extraction-few-shot-lit-models-package" title="Permalink to this headline">¶</a></h1>
+<section id="module-deepke.relation_extraction.few_shot.lit_models.base">
+<span id="deepke-relation-extraction-few-shot-lit-models-base-module"></span><h2>deepke.relation_extraction.few_shot.lit_models.base module<a class="headerlink" href="#module-deepke.relation_extraction.few_shot.lit_models.base" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.base.Config">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.base.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/base.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.base.</span></span><span class="sig-name descname"><span class="pre">BaseLitModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/base.html#BaseLitModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Generic PyTorch-Lightning class that must be initialized with a PyTorch module.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.add_to_argparse">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">add_to_argparse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/base.html#BaseLitModel.add_to_argparse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.add_to_argparse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/base.html#BaseLitModel.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.training_step">
+<span class="sig-name descname"><span class="pre">training_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/base.html#BaseLitModel.training_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.training_step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.validation_step">
+<span class="sig-name descname"><span class="pre">validation_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/base.html#BaseLitModel.validation_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.validation_step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.test_step">
+<span class="sig-name descname"><span class="pre">test_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/base.html#BaseLitModel.test_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.test_step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.configure_optimizers">
+<span class="sig-name descname"><span class="pre">configure_optimizers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/base.html#BaseLitModel.configure_optimizers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.configure_optimizers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.num_training_steps">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_training_steps</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></em><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.num_training_steps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total training steps inferred from datamodule and devices.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-deepke.relation_extraction.few_shot.lit_models.transformer">
+<span id="deepke-relation-extraction-few-shot-lit-models-transformer-module"></span><h2>deepke.relation_extraction.few_shot.lit_models.transformer module<a class="headerlink" href="#module-deepke.relation_extraction.few_shot.lit_models.transformer" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.mask_hook">
+<span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.transformer.</span></span><span class="sig-name descname"><span class="pre">mask_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grad_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ed</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#mask_hook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.mask_hook" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.multilabel_categorical_crossentropy">
+<span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.transformer.</span></span><span class="sig-name descname"><span class="pre">multilabel_categorical_crossentropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#multilabel_categorical_crossentropy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.multilabel_categorical_crossentropy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.transformer.</span></span><span class="sig-name descname"><span class="pre">BertLitModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel" title="deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel</span></code></a></p>
+<p>use AutoModelForMaskedLM, and select the output by another layer in the lit model</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.training_step">
+<span class="sig-name descname"><span class="pre">training_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel.training_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.training_step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.validation_step">
+<span class="sig-name descname"><span class="pre">validation_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel.validation_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.validation_step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.validation_epoch_end">
+<span class="sig-name descname"><span class="pre">validation_epoch_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel.validation_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.validation_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.test_step">
+<span class="sig-name descname"><span class="pre">test_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel.test_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.test_step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.test_epoch_end">
+<span class="sig-name descname"><span class="pre">test_epoch_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel.test_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.test_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.add_to_argparse">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">add_to_argparse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel.add_to_argparse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.add_to_argparse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.pvp">
+<span class="sig-name descname"><span class="pre">pvp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_ids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel.pvp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.pvp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.ke_loss">
+<span class="sig-name descname"><span class="pre">ke_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">so</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel.ke_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.ke_loss" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.configure_optimizers">
+<span class="sig-name descname"><span class="pre">configure_optimizers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel.configure_optimizers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.configure_optimizers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-deepke.relation_extraction.few_shot.lit_models.util">
+<span id="deepke-relation-extraction-few-shot-lit-models-util-module"></span><h2>deepke.relation_extraction.few_shot.lit_models.util module<a class="headerlink" href="#module-deepke.relation_extraction.few_shot.lit_models.util" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.util.dialog_f1_eval">
+<span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.util.</span></span><span class="sig-name descname"><span class="pre">dialog_f1_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/util.html#dialog_f1_eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.util.dialog_f1_eval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.util.f1_eval">
+<span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.util.</span></span><span class="sig-name descname"><span class="pre">f1_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/util.html#f1_eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.util.f1_eval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.util.compute_f1">
+<span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.util.</span></span><span class="sig-name descname"><span class="pre">compute_f1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/util.html#compute_f1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.util.compute_f1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.util.acc">
+<span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.util.</span></span><span class="sig-name descname"><span class="pre">acc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/util.html#acc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.util.acc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.util.f1_score">
+<span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.util.</span></span><span class="sig-name descname"><span class="pre">f1_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rel_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">42</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">na_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/util.html#f1_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.util.f1_score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="deepke.relation_extraction.few_shot.dataset.html" class="btn btn-neutral float-left" title="deepke.relation_extraction.few_shot.dataset package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deepke.relation_extraction.standard.html" class="btn btn-neutral float-right" title="deepke.relation_extraction.standard package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, zjunlp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>deepke.relation_extraction.standard.tools.serializer &mdash; DeepKE 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> DeepKE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../start.html">Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../deepke.html">DeepKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">DeepKE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      <li>deepke.relation_extraction.standard.tools.serializer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for deepke.relation_extraction.standard.tools.serializer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">unicodedata</span>
+<span class="kn">import</span> <span class="nn">jieba</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">jieba</span><span class="o">.</span><span class="n">setLogLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Serializer"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.tools.html#deepke.relation_extraction.standard.tools.serializer.Serializer">[docs]</a><span class="k">class</span> <span class="nc">Serializer</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">never_split</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">do_lower_case</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">do_chinese_split</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">never_split</span> <span class="o">=</span> <span class="n">never_split</span> <span class="k">if</span> <span class="n">never_split</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_lower_case</span> <span class="o">=</span> <span class="n">do_lower_case</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_chinese_split</span> <span class="o">=</span> <span class="n">do_chinese_split</span>
+
+<div class="viewcode-block" id="Serializer.serialize"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.tools.html#deepke.relation_extraction.standard.tools.serializer.Serializer.serialize">[docs]</a>    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">never_split</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        将一段文本按照制定拆分规则，拆分成一个词汇List</span>
+<span class="sd">        Args :</span>
+<span class="sd">            text (String) : 所需拆分文本</span>
+<span class="sd">            never_split (List) : 不拆分的词，默认为空</span>
+<span class="sd">        Rerurn : </span>
+<span class="sd">            output_tokens (List): 拆分后的结果 </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">never_split</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">never_split</span> <span class="o">+</span> <span class="p">(</span><span class="n">never_split</span> <span class="k">if</span> <span class="n">never_split</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[])</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clean_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_chinese_split</span><span class="p">:</span>
+            <span class="n">output_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_jieba_cut</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">never_split</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">output_tokens</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokenize_chinese_chars</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">orig_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orig_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">split_tokens</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">orig_tokens</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_lower_case</span> <span class="ow">and</span> <span class="n">token</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">never_split</span><span class="p">:</span>
+                <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_strip_accents</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+            <span class="n">split_tokens</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_run_split_on_punc</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">never_split</span><span class="o">=</span><span class="n">never_split</span><span class="p">))</span>
+
+        <span class="n">output_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_whitespace_tokenize</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split_tokens</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">output_tokens</span></div>
+
+    <span class="k">def</span> <span class="nf">_clean_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        删除文本中无效字符以及空白字符</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            text (String) : 所需删除的文本</span>
+<span class="sd">        Return :</span>
+<span class="sd">            &quot;&quot;.join(output) (String) : 删除后的文本</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+            <span class="n">cp</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cp</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">cp</span> <span class="o">==</span> <span class="mh">0xfffd</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_control</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_whitespace</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_use_jieba_cut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">never_split</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        使用jieba分词</span>
+<span class="sd">        Args :</span>
+<span class="sd">            text (String) : 所需拆分文本</span>
+<span class="sd">            never_split (List) : 不拆分的词</span>
+<span class="sd">        Return :</span>
+<span class="sd">            tokens (List) : 拆分完的结果</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">never_split</span><span class="p">:</span>
+            <span class="n">jieba</span><span class="o">.</span><span class="n">suggest_freq</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">jieba</span><span class="o">.</span><span class="n">lcut</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_lower_case</span><span class="p">:</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">tokens</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tokens</span>
+
+    <span class="k">def</span> <span class="nf">_tokenize_chinese_chars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        在CJK字符周围添加空格</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            text (String) : 所需拆分文本</span>
+<span class="sd">        Return :</span>
+<span class="sd">            &quot;&quot;.join(output) (String) : 添加完后的文本</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+            <span class="n">cp</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_chinese_char</span><span class="p">(</span><span class="n">cp</span><span class="p">):</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_orig_tokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        在空白和一些标点符号（如逗号或句点）上拆分文本</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            text (String) : 所需拆分文本</span>
+<span class="sd">        Return :</span>
+<span class="sd">            tokens (List) : 分词完的结果</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">punc</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;,.?!;: 、｜，。？！；：《》「」【】/&lt;&gt;|\“ ”‘ ’&quot;&quot;&quot;</span>
+        <span class="n">punc_re</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">punc</span><span class="p">)</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">punc_re</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">x</span><span class="o">.</span><span class="n">group</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">tokens</span>
+
+    <span class="k">def</span> <span class="nf">_whitespace_tokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        进行基本的空白字符清理和分割</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            text (String) : 所需拆分文本</span>
+<span class="sd">        Return :</span>
+<span class="sd">            tokens (List) : 分词完的结果</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">tokens</span>
+
+    <span class="k">def</span> <span class="nf">_run_strip_accents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        从文本中去除重音符号</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            text (String) : 所需拆分文本</span>
+<span class="sd">        Return :</span>
+<span class="sd">            &quot;&quot;.join(output) (String) : 去除后的文本</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s2">&quot;NFD&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+            <span class="n">cat</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cat</span> <span class="o">==</span> <span class="s2">&quot;Mn&quot;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_run_split_on_punc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">never_split</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        通过标点符号拆分文本</span>
+<span class="sd">        Args :</span>
+<span class="sd">            text (String) : 所需拆分文本</span>
+<span class="sd">            never_split (List) : 不拆分的词，默认为空</span>
+<span class="sd">        Return :</span>
+<span class="sd">            [&quot;&quot;.join(x) for x in output] (List) : 拆分完的结果</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">never_split</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">never_split</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">text</span><span class="p">]</span>
+        <span class="n">chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">start_new_word</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">):</span>
+            <span class="n">char</span> <span class="o">=</span> <span class="n">chars</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_punctuation</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">char</span><span class="p">])</span>
+                <span class="n">start_new_word</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">start_new_word</span><span class="p">:</span>
+                    <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+                <span class="n">start_new_word</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">output</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">output</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Serializer.is_control"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.tools.html#deepke.relation_extraction.standard.tools.serializer.Serializer.is_control">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_control</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        判断字符是否为控制字符</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            char : 字符</span>
+<span class="sd">        Return :</span>
+<span class="sd">            bool : 判断结果</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">cat</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cat</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Serializer.is_whitespace"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.tools.html#deepke.relation_extraction.standard.tools.serializer.Serializer.is_whitespace">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_whitespace</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        判断字符是否为空白字符</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            char : 字符</span>
+<span class="sd">        Return :</span>
+<span class="sd">            bool : 判断结果</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot; &quot;</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">cat</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cat</span> <span class="o">==</span> <span class="s2">&quot;Zs&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Serializer.is_chinese_char"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.tools.html#deepke.relation_extraction.standard.tools.serializer.Serializer.is_chinese_char">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_chinese_char</span><span class="p">(</span><span class="n">cp</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        判断字符是否为中文字符</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            cp (char): 字符</span>
+<span class="sd">        Return :</span>
+<span class="sd">            bool : 判断结果</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+       
+        <span class="k">if</span> <span class="p">((</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mh">0x4E00</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mh">0x9FFF</span><span class="p">)</span> <span class="ow">or</span>  
+            <span class="p">(</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mh">0x3400</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mh">0x4DBF</span><span class="p">)</span> <span class="ow">or</span>  
+            <span class="p">(</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mh">0x20000</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mh">0x2A6DF</span><span class="p">)</span> <span class="ow">or</span>  
+            <span class="p">(</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mh">0x2A700</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mh">0x2B73F</span><span class="p">)</span> <span class="ow">or</span>  
+            <span class="p">(</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mh">0x2B740</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mh">0x2B81F</span><span class="p">)</span> <span class="ow">or</span>  
+            <span class="p">(</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mh">0x2B820</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mh">0x2CEAF</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mh">0xF900</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mh">0xFAFF</span><span class="p">)</span> <span class="ow">or</span>  
+            <span class="p">(</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mh">0x2F800</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mh">0x2FA1F</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Serializer.is_punctuation"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.tools.html#deepke.relation_extraction.standard.tools.serializer.Serializer.is_punctuation">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_punctuation</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        判断字符是否为标点字符</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            char : 字符</span>
+<span class="sd">        Return :</span>
+<span class="sd">            bool : 判断结果</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cp</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="p">((</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mi">33</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mi">47</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mi">58</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mi">64</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mi">91</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mi">96</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mi">123</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mi">126</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">cat</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cat</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, zjunlp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
