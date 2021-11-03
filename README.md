@@ -249,7 +249,7 @@ python predict.py
 
     [命名实体识别Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/standard/tutorial.ipynb)
 
-    [命名实体识别Colab]()
+    [命名实体识别Colab](https://colab.research.google.com/drive/1KpJFAT1nZfGDfnuNMZn02_okIU08j46d?usp=sharing)
     
     [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/standard/tutorial.ipynb)
 
