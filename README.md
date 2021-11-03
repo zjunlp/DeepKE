@@ -121,8 +121,8 @@ python predict.py
   | 秦始皇兵马俑位于陕西省西安市，1961年被国务院公布为第一批全国重点文物保护单位，是世界八大奇迹之一。 |           秦始皇           | 陕西省，西安市 |             国务院             |
 
 - 具体流程请进入详细的README中
-  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/main/example/ner/standard)** <br>
-     常规模块使用预训练模型BERT；<br>
+  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/main/example/ner/standard)** 
+  
      **Step1**: 进入`DeepKE/example/ner/standard`，数据集和参数配置可以分别在`data`和`conf`文件夹中修改；<br>
      
      **Step2**: 模型训练
@@ -137,8 +137,8 @@ python predict.py
      python predict.py
      ```
      
-  - **[少样本FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/main/example/ner/few-shot)** <br>
-    低资源少样本模块；<br>
+  - **[少样本FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/main/example/ner/few-shot)** 
+  
     **Step1**: 进入`DeepKE/example/ner/few-shot`，模型加载和保存位置以及参数配置可以在`conf`文件夹中修改；<br>
     
     **Step2**：模型训练，默认使用`CoNLL-2003`数据局进行训练
@@ -166,8 +166,8 @@ python predict.py
   |     提起杭州的美景，西湖总是第一个映入脑海的词语。     | 所在城市 |    西湖    |      8      |    杭州    |      2      |
 
 - 具体流程请进入详细的README中，RE包括了以下三个子功能
-  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/main/example/re/standard)** <br>
-    常规模块为常用的深度学习模型，包括CNN、RNN、Capsule、GCN、Transforemer以及预训练模型；<br>
+  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/main/example/re/standard)**  
+
     **Step1**：进入`DeepKE/example/re/standard`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
     
     **Step2**：模型训练
@@ -182,7 +182,8 @@ python predict.py
     python predict.py
     ```
    
-  - **[少样本FEW-SHOT](https://github.com/zjunlp/deepke/blob/main/example/re/few-shot)** <br>
+  - **[少样本FEW-SHOT](https://github.com/zjunlp/deepke/blob/main/example/re/few-shot)**
+  
     **Step1**：进入`DeepKE/example/re/few-shot`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
    
     **Step2**：模型训练，如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`train_from_saved_model`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置；<br>
@@ -224,8 +225,7 @@ python predict.py
   |        2014年10月1日许鞍华执导的电影《黄金时代》上映         | 上映时间 | 黄金时代 |     19     | 2014年10月1日 |     0      |
 
 - 具体流程请进入详细的README中
-  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/main/example/ae/standard)** <br>
-    常规模块为常用的深度学习模型，包括CNN、RNN、Capsule、GCN、Transforemer以及预训练模型；<br>
+  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/main/example/ae/standard)**  
     
     **Step1**：进入`DeepKE/example/re/standard`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
     
@@ -285,7 +285,7 @@ python predict.py
 2. 使用 pip 时，建议使用国内镜像，下载速度更快，如阿里云镜像。
 3. 安装后提示 `ModuleNotFoundError: No module named 'past'`，输入命令 `pip install future` 即可解决。
 4. 使用语言预训练模型时，在线安装下载模型比较慢，更建议提前下载好，存放到 pretrained 文件夹内。具体存放文件要求见文件夹内的 `README.md`。
-5. DeepKE老版本位于deepke-v1.0分支，用户可切换分支使用老版本，老版本的能力已全部迁移到标准设定关系抽取(example/re/standard)中。
+5. DeepKE老版本位于[deepke-v1.0](https://github.com/zjunlp/DeepKE/tree/deepke-v1.0)分支，用户可切换分支使用老版本，老版本的能力已全部迁移到标准设定关系抽取([example/re/standard](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README.md))中。
 
 <br>
 
