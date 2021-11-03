@@ -241,7 +241,43 @@ python predict.py
     python predict.py
     ```
 
-<br>
+### Notebook教程
+
+本工具提供了若干Notebook和Google Colab教程，用户可针对性调试学习。
+
+- 常规设定：
+
+    [命名实体识别Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/standard/tutorial.ipynb)
+
+    [命名实体识别Colab]()
+    
+    [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/standard/tutorial.ipynb)
+
+    [关系抽取Colab]()
+   
+    [属性抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ae/standard/tutorial.ipynb)
+
+    [属性抽取Colab]()
+
+- 低资源：
+
+    [命名实体识别Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/few-shot/tutorial.ipynb)
+
+    [命名实体识别Colab]()
+
+    [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/few-shot/tutorial.ipynb)
+    
+    [关系抽取Colab]()
+    
+
+- 篇章级：
+
+    [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/document/tutorial.ipynb)
+
+    [关系抽取Colab]()
+
+
+<!-- ![image](https://user-images.githubusercontent.com/31753427/140022588-c3b38495-89b1-4f3c-8298-bcc1086f78bf.png) -->
 
 ## 备注（常见问题）
 
@@ -249,6 +285,7 @@ python predict.py
 2. 使用 pip 时，建议使用国内镜像，下载速度更快，如阿里云镜像。
 3. 安装后提示 `ModuleNotFoundError: No module named 'past'`，输入命令 `pip install future` 即可解决。
 4. 使用语言预训练模型时，在线安装下载模型比较慢，更建议提前下载好，存放到 pretrained 文件夹内。具体存放文件要求见文件夹内的 `README.md`。
+5. DeepKE老版本位于deepke-v1.0分支，用户可切换分支使用老版本，老版本的能力已全部迁移到标准设定关系抽取(example/re/standard)中。
 
 <br>
 
