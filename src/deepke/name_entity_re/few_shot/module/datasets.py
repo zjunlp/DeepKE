@@ -37,6 +37,7 @@ class ConllNERProcessor(object):
         logger.info("Loading data from {}".format(load_file))
 
         # extract bio
+        split_c = '\t' if 'conll' in load_file  else ' '
         outputs = {'raw_words':[], 'raw_targets':[], 'entities':[], 'entity_tags':[], 'entity_spans':[]}
         with open(load_file, "r", encoding="utf-8") as f:
             lines = f.readlines()
@@ -44,8 +45,8 @@ class ConllNERProcessor(object):
             raw_word, raw_target = [], []
             for line in lines:
                 if line != "\n":
-                    raw_word.append(line.split('\t')[0])
-                    raw_target.append(line.split('\t')[1][:-1])
+                    raw_word.append(line.split(split_c)[0])
+                    raw_target.append(line.split(split_c)[1][:-1])
                 else:
                     raw_words.append(raw_word)
                     raw_targets.append(raw_target)
