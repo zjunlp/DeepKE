@@ -48,16 +48,48 @@ DeepKE包括了三个模块，可以进行命名实体识别、关系抽取以�
 
 ## 快速上手
 
-DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
+DeepKE支持pip安装使用，以常规全监督设定关系抽取为例，经过以下五个步骤就可以实现一个常规关系抽取模型
 
-1. 下载代码 ```git clone https://github.com/zjunlp/DeepKE.git```（别忘记star和fork哈！！！）
+**Step 1** 下载代码 ```git clone https://github.com/zjunlp/DeepKE.git```（别忘记star和fork哈！！！）
 
-2. 推荐使用anaconda创建虚拟环境 ```conda create -n deepke python=3.8```
-3. 进入虚拟环境 ```conda activate deepke```
-4. pip安装需要的依赖包，如果直接使用，```pip install deepke```；如需修改源码使用，首先```python setup.py install```,修改完后，```python setup.py develop```
-5. 进入使用位置 ```cd DeepKE/example/re/standard```
-6. 进行训练 ```python run.py```,训练用到的参数可在conf文件夹内修改
-7. 进行预测```python predict.py```,预测用到的参数可在conf文件夹内修改
+**Step 2** 使用anaconda创建虚拟环境，进入虚拟环境 
+
+```
+conda create -n deepke python=3.8
+
+conda activate deepke
+```
+1） 基于pip安装，直接使用
+
+```
+pip install deepke
+```
+
+2） 基于源码安装
+
+```
+python setup.py install
+
+python setup.py develop
+```
+
+**Step 3**  进入任务文件夹，以常规关系抽取为例
+
+```
+cd DeepKE/example/re/standard
+```
+
+**Step 4**  模型训练，训练用到的参数可在conf文件夹内修改
+
+```
+python run.py
+```
+
+**Step 5**  模型预测。预测用到的参数可在conf文件夹内修改
+
+```
+python predict.py
+```
 
 ### 环境依赖
 
@@ -89,16 +121,39 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
   | 秦始皇兵马俑位于陕西省西安市，1961年被国务院公布为第一批全国重点文物保护单位，是世界八大奇迹之一。 |           秦始皇           | 陕西省，西安市 |             国务院             |
 
 - 具体流程请进入详细的README中
-  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/standard)** <br>
+  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/main/example/ner/standard)** <br>
      常规模块使用预训练模型BERT；<br>
-     进入`DeepKE/example/ner/standard`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
-     ```python run.py```即可训练，```python predict.py```即可预测。
-  - **[少样本FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/test_new_deepke/example/ner/few-shot)** <br>
+     **Step1**: 进入`DeepKE/example/ner/standard`，数据集和参数配置可以分别在`data`和`conf`文件夹中修改；<br>
+     
+     **Step2**: 模型训练
+     
+     ```
+     python run.py
+     ```
+     
+     **Step3**: 模型预测
+         
+     ```
+     python predict.py
+     ```
+     
+  - **[少样本FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/main/example/ner/few-shot)** <br>
     低资源少样本模块；<br>
-    进入`DeepKE/example/ner/few-shot`，模型加载和保存位置以及配置可以在`conf`文件夹中修改；<br>
-    使用`CoNLL-2003`进行训练：`python run.py`；<br>
-    进行few-shot训练：`python run.py +train=few_shot`，若要加载模型，修改`few_shot.yaml`中的`load_path`；<br>
-    若要进行预测，在`config.yaml`中追加`- predict`，`predict.yaml`中修改`load_path`为模型路径以及`write_path`为预测结果的保存路径，完成修改后使用`python predict.py`即可预测。
+    **Step1**: 进入`DeepKE/example/ner/few-shot`，模型加载和保存位置以及参数配置可以在`conf`文件夹中修改；<br>
+    
+    **Step2**：模型训练，默认使用`CoNLL-2003`数据局进行训练
+    
+     ```
+     python run.py +train=few_shot
+     ```
+    
+    若要加载模型，修改`few_shot.yaml`中的`load_path`；<br>
+    
+    **Step3**：在`config.yaml`中追加`- predict`，`predict.yaml`中修改`load_path`为模型路径以及`write_path`为预测结果的保存路径，完成修改后使用
+    
+    ```
+    python predict.py
+    ```
 
 #### 2. 关系抽取RE
 
@@ -111,18 +166,52 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
   |     提起杭州的美景，西湖总是第一个映入脑海的词语。     | 所在城市 |    西湖    |      8      |    杭州    |      2      |
 
 - 具体流程请进入详细的README中，RE包括了以下三个子功能
-  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard)** <br>
+  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/main/example/re/standard)** <br>
     常规模块为常用的深度学习模型，包括CNN、RNN、Capsule、GCN、Transforemer以及预训练模型；<br>
-    进入`DeepKE/example/re/standard`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
-    ```python run.py```即可训练，```python predict.py```即可预测。
-  - **[少样本FEW-SHOT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/few-shot)** <br>
-    进入`DeepKE/example/re/few-shot`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
-    ```python run.py```即可训练；如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`train_from_saved_model`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置；<br>
-    ```python predict.py```即可预测。
-  - **[文档级DOCUMENT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/document)** <br>
+    **Step1**：进入`DeepKE/example/re/standard`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
+    
+    **Step2**：模型训练
+
+    ```
+    python run.py
+    ```
+    
+    **Step3**：模型预测
+
+    ```
+    python predict.py
+    ```
+   
+  - **[少样本FEW-SHOT](https://github.com/zjunlp/deepke/blob/main/example/re/few-shot)** <br>
+    **Step1**：进入`DeepKE/example/re/few-shot`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
+   
+    **Step2**：模型训练，如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`train_from_saved_model`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置；<br>
+    
+    ```
+    python run.py
+    ```
+       
+    **Step3**：模型预测
+
+    ```
+    python predict.py
+    ```
+
+  - **[文档级DOCUMENT](https://github.com/zjunlp/deepke/blob/main/example/re/document)** <br>
     ```train_distant.json```由于文件太大，请自行从Google Drive上下载到data/目录下；<br>
-    进入`DeepKE/example/re/document`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
-    ```python run.py```即可训练；如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`train_from_saved_model`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置；
+    
+    **Step1**：进入`DeepKE/example/re/document`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
+   
+    **Step2**：模型训练，如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`train_from_saved_model`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置；
+   
+    ```
+    python run.py
+    ```
+    **Step3**：模型预测
+    
+    ```
+    python predict.py
+    ```
 
 #### 3. 属性抽取AE
 
@@ -135,19 +224,31 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
   |        2014年10月1日许鞍华执导的电影《黄金时代》上映         | 上映时间 | 黄金时代 |     19     | 2014年10月1日 |     0      |
 
 - 具体流程请进入详细的README中
-  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/standard)** <br>
+  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/main/example/ae/standard)** <br>
     常规模块为常用的深度学习模型，包括CNN、RNN、Capsule、GCN、Transforemer以及预训练模型；<br>
-    进入`DeepKE/example/re/standard`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
-    ```python run.py```即可训练，```python predict.py```即可预测。
+    
+    **Step1**：进入`DeepKE/example/re/standard`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
+    
+    **Step2**：模型训练
+
+    ```
+    python run.py
+    ```
+    
+    **Step3**：模型预测
+
+    ```
+    python predict.py
+    ```
 
 <br>
 
 ## 备注（常见问题）
 
-1. 使用 Anaconda 时，建议添加国内镜像，下载速度更快。如[清华镜像](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/)。
-1. 使用 pip 时，建议使用国内镜像，下载速度更快，如阿里云镜像。
-1. 安装后提示 `ModuleNotFoundError: No module named 'past'`，输入命令 `pip install future` 即可解决。
-1. 使用语言预训练模型时，在线安装下载模型比较慢，更建议提前下载好，存放到 pretrained 文件夹内。具体存放文件要求见文件夹内的 `README.md`。
+1. 使用 Anaconda 时，建议添加国内镜像，下载速度更快。如[镜像](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/)。
+2. 使用 pip 时，建议使用国内镜像，下载速度更快，如阿里云镜像。
+3. 安装后提示 `ModuleNotFoundError: No module named 'past'`，输入命令 `pip install future` 即可解决。
+4. 使用语言预训练模型时，在线安装下载模型比较慢，更建议提前下载好，存放到 pretrained 文件夹内。具体存放文件要求见文件夹内的 `README.md`。
 
 <br>
 
@@ -155,5 +256,5 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例
 
 浙江大学：张宁豫、陶联宽、余海洋、陈想、徐欣、田玺、李磊、黎洲波、邓淑敏、姚云志、叶宏彬、谢辛、郑国轴、陈华钧
 
-达摩院：谭传奇、黄非
+达摩院：谭传奇、陈漠沙、黄非
 
