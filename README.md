@@ -132,7 +132,6 @@ python predict.py
      ```
      
      **Step3**: 模型预测
-         
      ```
      python predict.py
      ```
@@ -141,7 +140,7 @@ python predict.py
   
     **Step1**: 进入`DeepKE/example/ner/few-shot`，模型加载和保存位置以及参数配置可以在`conf`文件夹中修改；<br>
     
-    **Step2**：模型训练，默认使用`CoNLL-2003`数据局进行训练
+    **Step2**：模型训练，默认使用`CoNLL-2003`数据集进行训练
     
      ```
      python run.py +train=few_shot
@@ -181,17 +180,17 @@ python predict.py
     ```
     python predict.py
     ```
-   
+  
   - **[少样本FEW-SHOT](https://github.com/zjunlp/deepke/blob/main/example/re/few-shot)**
   
     **Step1**：进入`DeepKE/example/re/few-shot`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
-   
+  
     **Step2**：模型训练，如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`train_from_saved_model`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置；<br>
     
     ```
     python run.py
     ```
-       
+    
     **Step3**：模型预测
 
     ```
@@ -202,9 +201,9 @@ python predict.py
     ```train_distant.json```由于文件太大，请自行从Google Drive上下载到data/目录下；<br>
     
     **Step1**：进入`DeepKE/example/re/document`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
-   
+  
     **Step2**：模型训练，如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`train_from_saved_model`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置；
-   
+  
     ```
     python run.py
     ```
@@ -269,7 +268,6 @@ python predict.py
     
     [关系抽取Colab]()
     
-
 - 篇章级：
 
     [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/document/tutorial.ipynb)
