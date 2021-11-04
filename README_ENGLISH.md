@@ -54,20 +54,51 @@ There is a demonstration of prediction.<br>
 
 ## Quickstart
 
-Take the fully supervised attribute extraction for example.
+*DeepKE* is supported `pip install deepke`. Take the fully supervised attribute extraction for example.
 
-1. Download basic codes `git clone https://github.com/zjunlp/DeepKE.git `
-2. Create a virtual environment (recommend `anaconda`) `conda create -n deepke python=3.8`
-3. Enter the environment `conda activate deepke`
-4. Install dependent packages
-   - If use deepke directly:  `pip install deepke`
-   - If modify source codes before usage: 
-     run `python setup.py install` firstly,
-     after modification, run `python setup.py develop`
+**Step1** Download basic codes `git clone https://github.com/zjunlp/DeepKE.git ` (Please star✨ and fork :memo:)
 
-5. Enter the corresponding directory `cd DeepKE/example/re/standard`
-6. Train `python run.py` (Parameters for training can be changed in the `conf` folder)
-7. Predict `python predict.py`(Parameters for prediction can be changed in the `conf` folder)
+**Step2** Create a virtual environment using`Anaconda` and enter it
+
+```bash
+conda create -n deepke python=3.8
+
+conda activate deepke
+```
+
+1. Install *DeepKE* with `pip`
+
+   ```bash
+   pip install deepke
+   ```
+
+2. Install *DeepKE* with source codes
+
+   ```bash
+   python setup.py install
+   
+   python setup.py develop
+   ```
+
+**Step3** Enter the task directory
+
+```bash
+cd DeepKE/example/re/standard
+```
+
+**Step4** Training (Parameters for training can be changed in the `conf` folder)
+
+```bash
+python run.py
+```
+
+**Step5** Prediction (Parameters for prediction can be changed in the `conf` folder)
+
+```bash
+python predict.py
+```
+
+
 
 ### Requirements
 
@@ -102,18 +133,38 @@ Take the fully supervised attribute extraction for example.
 
 - Read the detailed process in specific README
   - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/standard)**
-    - The standard module is implemented by the pretrained model *BERT*. 
-    - Enter  `DeepKE/example/ner/standard`.
-    - The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.
-    - **Train**: `python run.py`
-    - **Predict**: `python predict.py`
+
+    **Step1** Enter  `DeepKE/example/ner/standard`. The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.<br>
+
+    **Step2** Training
+
+    ```bash
+    python run.py
+    ```
+
+    **Step3** Prediction
+
+    ```bash
+    python predict.py
+    ```
+
   - **[FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/test_new_deepke/example/ner/few-shot)**
-    - This module is in the low-resouce scenario.
-    - Enter  `DeepKE/example/ner/few-shot`. 
-    - The directory where the model is loaded and saved and the configuration parameters can be cusomized in the `conf` folder.
-    - **Train with *CoNLL-2003***: `python run.py`
-    - **Train in the few-shot scenario**: `python run.py +train=few_shot`. Users can modify `load_path` in `conf/train/few_shot.yaml` with the use of existing loaded model.
-    - **Predict**: add `- predict` to `conf/config.yaml`, modify `loda_path` as the model path and `write_path` as the path where the predicted results are saved in `conf/predict.yaml`, and then run `python predict.py`
+
+    **Step1** Enter  `DeepKE/example/ner/few-shot`. The directory where the model is loaded and saved and the configuration parameters can be cusomized in the `conf` folder.<br>
+
+    **Step2** Training with default `CoNLL-2003` dataset.
+
+    ```bash
+    python run.py +train=few_shot
+    ```
+
+    Users can modify `load_path` in `conf/train/few_shot.yaml` with the use of existing loaded model.<br>
+
+    **Step3** Add `- predict` to `conf/config.yaml`, modify `loda_path` as the model path and `write_path` as the path where the predicted results are saved in `conf/predict.yaml`, and then run `python predict.py`
+
+    ```bash
+    python predict.py
+    ```
 
 #### 2. Relation Extraction
 
@@ -130,27 +181,54 @@ Take the fully supervised attribute extraction for example.
 - Read the detailed process in specific README
 
   - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard)** 
-    - The standard module is implemented by common deep learning models, including CNN, RNN, Capsule, GCN, Transformer and the pretrained model.
-    - Enter the `DeepKE/example/re/standard` folder. 
-    - The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.
-    - **Train**: `python run.py`
-    - **Predict**: `python predict.py`
+
+    **Step1** Enter the `DeepKE/example/re/standard` folder. The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.<br>
+
+    **Step2** Training
+
+    ```bash
+    python run.py
+    ```
+
+    **Step3** Prediction
+
+    ```bash
+    python predict.py
+    ```
 
   - **[FEW-SHOT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/few-shot)**
-    - This module is in the low-resouce scenario.
-    - Enter `DeepKE/example/re/few-shot` .
-    - **Train**: `python run.py`
-      Start with the model trained last time: modify `train_from_saved_model` in `conf/train.yaml`as the path where the model trained last time was saved. 
-      And the path saving logs generated in training can be customized by `log_dir`.
-    - **Predict**: `python predict.py`
 
-  - **[DOCUMENT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/document)**
-    - Download the model `train_distant.json` from [*Google Drive*](https://drive.google.com/drive/folders/1c5-0YwnoJx8NS6CV2f-NoTHR__BdkNqw) to `data/`.
-    - Enter `DeepKE/example/re/document` .
-    - **Train**: `python run.py`
-      Start with the model trained last time: modify `train_from_saved_model` in `conf/train.yaml`as the path where the model trained last time was saved. 
-      And the path saving logs generated in training can be customized by `log_dir`.
-    - **Predict**: `python predict.py`
+    **Step1** Enter `DeepKE/example/re/few-shot`. The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.<br>
+
+    **Step 2** Training. Start with the model trained last time: modify `train_from_saved_model` in `conf/train.yaml`as the path where the model trained last time was saved. And the path saving logs generated in training can be customized by `log_dir`. <br>
+
+    ```bash
+    python run.py
+    ```
+
+    **Step3** Prediction
+
+    ```bash
+    python predict.py
+    ```
+
+  - **[DOCUMENT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/document)**<br>
+
+    Download the model `train_distant.json` from [*Google Drive*](https://drive.google.com/drive/folders/1c5-0YwnoJx8NS6CV2f-NoTHR__BdkNqw) to `data/`.
+
+    **Step1** Enter `DeepKE/example/re/document`. The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.<br>
+
+    **Step2** Training. Start with the model trained last time: modify `train_from_saved_model` in `conf/train.yaml`as the path where the model trained last time was saved. And the path saving logs generated in training can be customized by `log_dir`. 
+
+    ```bash
+    python run.py
+    ```
+
+    **Step3** Prediction
+
+    ```bash
+    python predict.py
+    ```
 
 #### 3. Attribute Extraction
 
@@ -166,11 +244,56 @@ Take the fully supervised attribute extraction for example.
 
 - Read the detailed process in specific README
   - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/standard)**
-    - The standard module is implemented by common deep learning models, including CNN, RNN, Capsule, GCN, Transformer and the pretrained model.
-    - Enter the `DeepKE/example/ae/standard` folder. 
-    - The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.
-    - **Train**: `python run.py`
-    - **Predict**: `python predict.py`
+
+    **Step1** Enter the `DeepKE/example/ae/standard` folder. The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.<br>
+
+    **Step2** Training
+
+    ```bash
+    python run.py
+    ```
+
+    **Step3** Prediction
+
+    ```bash
+    python predict.py
+    ```
+
+
+
+## Notebook Tutorial
+
+This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. Users can study *DeepKE* with them.
+
+- Standard Setting<br>
+
+  [NER Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/standard/tutorial.ipynb)
+
+  [NER Colab](https://colab.research.google.com/drive/1KpJFAT1nZfGDfnuNMZn02_okIU08j46d?usp=sharing)
+
+  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/standard/tutorial.ipynb)
+
+  [REColab](https://colab.research.google.com/drive/1o6rKIxBqrGZNnA2IMXqiSsY2GWANAZLl?usp=sharing)
+
+  [AE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ae/standard/tutorial.ipynb)
+
+  [AE Colab](https://colab.research.google.com/drive/1pgPouEtHMR7L9Z-QfG1sPYkJfrtRt8ML)
+
+- Low-resource<br>
+
+  [NER Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/few-shot/tutorial.ipynb)
+
+  [NER Colab](https://colab.research.google.com/drive/1Xz0sNpYQNbkjhebCG5djrwM8Mj2Crj7F?usp=sharing)
+
+  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/few-shot/tutorial.ipynb)
+
+  [RE Colab]()
+
+- Document-level<br>
+
+  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/document/tutorial.ipynb)
+
+  [RE Colab]()
 
 <br>
 
