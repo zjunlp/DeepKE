@@ -109,8 +109,6 @@ class Trainer(object):
         self.model.train()
 
     def predict(self):
-        assert self.load_path is not None and self.test_data is not None
-
         self.model.eval()
         self.logger.info("***** Running testing *****")
         self.logger.info("  Num instance = %d", len(self.test_data)*self.batch_size)
