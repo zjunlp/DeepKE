@@ -53,10 +53,10 @@ def _convert_tokens_into_index(data: List[Dict], vocab):
         d['token2idx'] = [vocab.word2idx.get(i, unk_idx) for i in d['tokens']]
         d['seq_len'] = len(d['token2idx'])
 
-def _serialize_sentence(data: List[Dict], serial, cfg):
+def _serialize_sentence(data: List[Dict], serial):
     for d in data:
         sent = d['sentence'].strip()
-        snet = sent.replace(d['entity'] , ' entity ' , 1).replace(d['attribute_value'] , ' attribute_value ' , 1)
+        sent = sent.replace(d['entity'] , ' entity ' , 1).replace(d['attribute_value'] , ' attribute_value ' , 1)
         d['tokens'] = serial(sent, never_split=['entity','attribute_value'])
         entity_index, attribute_value_index = d['entity_offset'] , d['attribute_value_offset']
         d['entity_index'],d['attribute_value_index'] = int(entity_index) , int(attribute_value_index)
