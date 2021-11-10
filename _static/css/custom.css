@@ -88,20 +88,20 @@ dl.field-list > dt {
 dl.py.class>dt
 {
 	color: rgba(17, 16, 17, 0.822) !important;
-	background: rgba(248, 191, 224, 0.1) !important;
-	border-top: solid 2px #674ef7 !important;
+	background: rgb(226, 241, 250) !important;
+	border-top: solid 2px #58b5cc !important;
 }
 
 dl.py.method>dt
 {
-	background: rgba(248, 191, 224, 0.1) !important;
+	background: rgb(226, 241, 250) !important;
 	border-left: solid 2px #bcb3be !important;
 }
 
 dl.py.attribute>dt,
 dl.py.property>dt
 {
-	background: rgba(194, 233, 248, 0.1) !important;
+	background: rgb(226, 241, 250) !important;
 	border-left: solid 2px #58b5cc !important;
 }
 
