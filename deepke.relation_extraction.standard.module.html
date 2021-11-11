@@ -107,20 +107,23 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.module.Attention.DotAttention.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">head_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/module/Attention.html#DotAttention.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.module.Attention.DotAttention.forward" title="Permalink to this definition">¶</a></dt>
-<dd><p>一般输入信息 X 时，假设 K = V = X</p>
-<p>att_weight = softmax( score_func(q, k) )
-att = sum( att_weight * v )</p>
+<dd><p>Generally, when inputting information X, assume K = V = X
+att_weight = softmax( score_func(q, k) )
+att = sum( att_weight * v )
+Args :</p>
+<blockquote>
+<div><p>Q: […, L, H]
+K: […, S, H]
+V: […, S, H]
+: […, 1, S]</p>
+</div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Q</strong> – […, L, H]</p></li>
-<li><p><strong>K</strong> – […, S, H]</p></li>
-<li><p><strong>V</strong> – […, S, H]</p></li>
-<li><p><strong>mask_out</strong> – […, 1, S]</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Attention
+attention_weight: Weight after attention</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>attention_out</p>
 </dd>
 </dl>
 </dd></dl>
@@ -140,9 +143,9 @@ att = sum( att_weight * v )</p>
 <li><p><strong>Q</strong> – [B, L, Hs]</p></li>
 <li><p><strong>K</strong> – [B, S, Hs]</p></li>
 <li><p><strong>V</strong> – [B, S, Hs]</p></li>
-<li><p><strong>key_padding_mask</strong> – [B, S]                为 1/True 的地方需要 mask</p></li>
-<li><p><strong>attention_mask</strong> – [S] / [L, S] 指定位置 mask 掉， 为 1/True 的地方需要 mask</p></li>
-<li><p><strong>head_mask</strong> – [N] 指定 head mask 掉，        为 1/True 的地方需要 mask</p></li>
+<li><p><strong>key_padding_mask</strong> – [B, S] , Mask is required where it is 1/True</p></li>
+<li><p><strong>attention_mask</strong> – [S] / [L, S] The specified position mask is dropped, and the mask is needed where it is 1/True</p></li>
+<li><p><strong>head_mask</strong> – [N] Specify the head mask off,the specified position mask is dropped, and the mask is needed where it is 1/True</p></li>
 </ul>
 </dd>
 </dl>
@@ -177,22 +180,19 @@ registered hooks while the latter silently ignores them.</p>
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.module.CNN.CNN">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.module.CNN.</span></span><span class="sig-name descname"><span class="pre">CNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/module/CNN.html#CNN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.module.CNN.CNN" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
-<p>nlp 里为了保证输出的句长 = 输入的句长，一般使用奇数 kernel_size，如 [3, 5, 7, 9]
-当然也可以不等长输出，keep_length 设为 False
-此时，padding = k // 2
-stride 一般为 1</p>
+<p>In order to ensure that the output sentence length = the input sentence length in nlp, an odd kernel_size is generally used, such as [3, 5, 7, 9].
+Of course, it can also be output with different lengths.
+Keep_length is set to False.
+At this time, padding = k / / 2, stride is generally 1</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.module.CNN.CNN.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/module/CNN.html#CNN.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.module.CNN.CNN.forward" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – torch.Tensor [batch_size, seq_max_length, input_size], [B, L, H] 一般是经过embedding后的值</p></li>
-<li><p><strong>mask</strong> – [batch_size, max_len], 句长部分为0，padding部分为1。不影响卷积运算，max-pool一定不会pool到pad为0的位置</p></li>
+<li><p><strong>x</strong> – torch.Tensor [batch_size, seq_max_length, input_size], [B, L, H] Generally the value after embedding</p></li>
+<li><p><strong>mask</strong> – [batch_size, max_len], The sentence length part is 0, and the padding part is 1. Does not affect the convolution operation, max-pool will not pool to the position where pad is 0</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
 </dd>
 </dl>
 </dd></dl>
@@ -209,8 +209,9 @@ stride 一般为 1</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.module.Capsule.Capsule.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/module/Capsule.html#Capsule.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.module.Capsule.Capsule.forward" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>x: [B, L, H]      # 从 CNN / RNN 得到的结果</dt><dd><p>L 作为 input_num_capsules, H 作为 input_dim_capsule</p>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – [B, L, H] The result after CNN / RNN , L represents the input_num_capsules, H represents input_dim_capsule</p>
 </dd>
 </dl>
 </dd></dl>
@@ -286,13 +287,14 @@ registered hooks while the latter silently ignores them.</p>
 <li><p><strong>input_size</strong><strong>]</strong> – </p></li>
 <li><p><strong>[</strong><strong>B</strong> – </p></li>
 <li><p><strong>L</strong> – </p></li>
-<li><p><strong>一般是经过embedding后的值</strong> (<em>H_in</em><em>]</em>) – </p></li>
-<li><p><strong>x_len</strong> – torch.Tensor [L] 已经排好序的句长值</p></li>
+<li><p><strong>H_in</strong><strong>]</strong> – </p></li>
+<li><p><strong>embedding</strong> (<em>the value after</em>) – </p></li>
+<li><p><strong>x_len</strong> – torch.Tensor [L], sentence length value by order</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>torch.Tensor [B, L, H_out] 序列标注的使用结果
-hn:     torch.Tensor [B, N, H_out] / [B, H_out] 分类的结果，当 last_layer_hn 时只有最后一层结果</p>
+<dd class="field-even"><p>torch.Tensor [B, L, H_out], the result of using sequence annotation
+hn:     torch.Tensor [B, N, H_out] / [B, H_out], the result of classification, when last_layer_hn is the result of the last layer</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>output</p>
@@ -333,16 +335,10 @@ Also see <a class="reference external" href="https://arxiv.org/abs/1606.08415">h
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.module.Transformer.TransformerAttention.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_padding_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">head_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/module/Transformer.html#TransformerAttention.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.module.Transformer.TransformerAttention.forward" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – [B, L, Hs]</p></li>
-<li><p><strong>attention_mask</strong> – [B, L] padding后的句子后面补0了，补0的位置为True，前面部分为False</p></li>
-<li><p><strong>head_mask</strong> – [L] [N,L]</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd><dl class="simple">
+<dt>Args :</dt><dd><p>x: [B, L, Hs]
+attention_mask: [B, L] After padding, 0 is added at the end of the sentence, the position of 0 is True, and the front part is False
+head_mask: [L] [N,L]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -400,9 +396,9 @@ registered hooks while the latter silently ignores them.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>hidden_states</strong> – [B, L, Hs]</p></li>
-<li><p><strong>key_padding_mask</strong> – [B, S]                   为 1/True 的地方需要 mask</p></li>
-<li><p><strong>attn_mask</strong> – [S] / [L, S] 指定位置 mask 掉，   为 1/True 的地方需要 mask</p></li>
-<li><p><strong>head_mask</strong> – [N] / [L, N] 指定 head mask 掉， 为 1/True 的地方需要 mask</p></li>
+<li><p><strong>key_padding_mask</strong> – [B, S], Mask is required where it is 1/True</p></li>
+<li><p><strong>attn_mask</strong> – [S] / [L, S] , The specified position mask is dropped, and the mask is required where it is 1/True</p></li>
+<li><p><strong>head_mask</strong> – [N] / [L, N] , Specify the head mask to drop, the mask is required where 1/True is</p></li>
 </ul>
 </dd>
 </dl>
@@ -424,7 +420,7 @@ registered hooks while the latter silently ignores them.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, zjunlp.</p>
+    <p>&#169; Copyright 2021, ZJUNLP.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
