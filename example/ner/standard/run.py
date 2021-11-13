@@ -159,7 +159,7 @@ def main(cfg):
         # Load a trained model and config that you have fine-tuned
     else:
         # Load a trained model and vocabulary that you have fine-tuned
-        model = Ner.from_pretrained(utils.get_original_cwd()+'/'+cfg.output_dir)
+        model = TrainNer.from_pretrained(utils.get_original_cwd()+'/'+cfg.output_dir)
         tokenizer = BertTokenizer.from_pretrained(utils.get_original_cwd()+'/'+cfg.output_dir, do_lower_case=cfg.do_lower_case)
 
     model.to(device)
