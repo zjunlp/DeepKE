@@ -89,7 +89,10 @@ def _serialize_sentence(data: List[Dict], serial, cfg):
     """
     for d in data:
         sent = d['sentence'].strip()
-        sent = sent.replace(d['head'], ' head ', 1).replace(d['tail'], ' tail ', 1)
+        if d['head'] in d['tail']:
+            sent = sent.replace(d['tail'], ' tail ', 1).replace(d['head'], ' head ', 1)
+        else:
+            sent = sent.replace(d['head'], ' head ', 1).replace(d['tail'], ' tail ', 1)
         d['tokens'] = serial(sent, never_split=['head', 'tail'])
         head_idx, tail_idx = d['tokens'].index('head'), d['tokens'].index('tail')
         d['head_idx'], d['tail_idx'] = head_idx, tail_idx
@@ -139,7 +142,7 @@ def _add_relation_data(rels: Dict, data: List) -> None:
 def _handle_relation_data(relation_data: List[Dict]) -> Dict:
     """
     处理关系数据，每一个关系有index，head_type,tail_type三个属性
-    Arg : 
+    Args: 
         relation_data (List[Dict]) : 所需要处理的关系数据
     Return :
         rels (Dict) : 处理之后的结果
@@ -154,6 +157,23 @@ def _handle_relation_data(relation_data: List[Dict]) -> Dict:
         }
 
     return rels
+
+def _clean_data(data):
+    """
+    清洗数据，去除一些头尾实体不存在的句子
+    Args: 
+        data((List[Dict])): 需要处理的数据
+    Returns:
+        clean_data : 处理后的数据
+    """
+    clean_data = []
+    for d in data:
+        sent = d['sentence']
+        head = d['head']
+        tail = d['tail']
+        if head in sent and tail in sent:
+            clean_data.append(d)
+    return clean_data
 
 def preprocess(cfg):
     """
@@ -170,6 +190,11 @@ def preprocess(cfg):
     valid_data = load_csv(valid_fp)
     test_data = load_csv(test_fp)
     relation_data = load_csv(relation_fp)
+
+    logger.info('clean data...')
+    train_data = _clean_data(train_data)
+    valid_data = _clean_data(valid_data)
+    test_data = _clean_data(valid_data)
 
     logger.info('convert relation into index...')
     rels = _handle_relation_data(relation_data)
