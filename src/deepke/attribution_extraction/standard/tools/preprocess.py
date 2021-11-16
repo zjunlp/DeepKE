@@ -112,9 +112,9 @@ def preprocess(cfg):
         logger.info('serialize sentence into tokens...')
         serializer = Serializer(do_chinese_split=cfg.chinese_split, do_lower_case=True)
         serial = serializer.serialize
-        _serialize_sentence(train_data, serial, cfg)
-        _serialize_sentence(valid_data, serial, cfg)
-        _serialize_sentence(test_data, serial, cfg)
+        _serialize_sentence(train_data, serial)
+        _serialize_sentence(valid_data, serial)
+        _serialize_sentence(test_data, serial)
 
         logger.info('build vocabulary...')
         vocab = Vocab('word')
