@@ -22,7 +22,10 @@ git clone git@github.com:zjunlp/DeepKE.git
 
 ### 使用数据进行训练预测
 
-- 存放数据：在 `data` 文件夹下存放训练数据。模型采用的数据集是[DocRED](https://github.com/thunlp/DocRED/tree/master/)，DocRED数据集来自于2010年的国际语义评测大会中Task 8："Multi-Way Classification of Semantic Relations Between Pairs of Nominals"。
+- 存放数据： 可先下载数据 ```wget 120.27.214.45/Data/re/document/data.tar.gz```在此目录下
+
+  在 `data` 文件夹下存放训练数据。模型采用的数据集是[DocRED](https://github.com/thunlp/DocRED/tree/master/)，DocRED数据集来自于2010年的国际语义评测大会中Task 8："Multi-Way Classification of Semantic Relations Between Pairs of Nominals"。
+
 
 - DocRED包含以下数据：
 
@@ -36,7 +39,7 @@ git clone git@github.com:zjunlp/DeepKE.git
 
   - `train_annotated.json`：训练集
 
-  - `train_distant.json`: 由于文件太大，请自行从[Google Drive](https://drive.google.com/drive/folders/1c5-0YwnoJx8NS6CV2f-NoTHR__BdkNqw)上下载到`data/`目录下
+  - `train_distant.json`
 
 - 开始训练：模型加载和保存位置以及配置可以在conf的`.yaml`文件中修改
   

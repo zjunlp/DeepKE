@@ -21,7 +21,9 @@ git clone git@github.com:zjunlp/DeepKE.git
 
 ### 使用数据进行训练预测
 
-- 存放数据：在 `data` 文件夹下存放训练数据。包含conll2003，mit-movie，mit-restaurant和atis等数据集。
+- 存放数据： 可先下载数据 ```wget 120.27.214.45/Data/ner/few_shot/data.tar.gz```在此目录下
+
+  在 `data` 文件夹下存放训练数据。包含conll2003，mit-movie，mit-restaurant和atis等数据集。
 
 - conll2003包含以下数据：
 
