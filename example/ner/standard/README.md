@@ -32,7 +32,10 @@ git clone git@github.com:zjunlp/DeepKE.git
 
 ### 使用数据进行训练预测
 
-- 存放数据：在`data`文件夹下存放数据。主要有三个文件：
+- 存放数据： 可先下载数据 ```wget 120.27.214.45/Data/ner/standard/data.tar.gz```在此目录下
+
+  在`data`文件夹下存放数据。主要有三个文件：
+  
   - `train.txt`：存放训练数据集
   - `valid.txt`：存放验证数据集
   - `test.txt`：存放测试数据集
