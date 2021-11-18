@@ -1,5 +1,5 @@
-deepke.relation\_extraction.standard.tools package
-==================================================
+Tools
+=====
 
 
 deepke.relation\_extraction.standard.tools.dataset module

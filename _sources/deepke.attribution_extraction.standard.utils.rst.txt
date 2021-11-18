@@ -1,5 +1,5 @@
-deepke.attribution\_extraction.standard.utils package
-=====================================================
+Utils
+=====
 
 
 deepke.attribution\_extraction.standard.utils.ioUtils module

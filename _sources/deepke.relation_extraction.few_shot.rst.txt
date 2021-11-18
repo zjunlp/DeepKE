@@ -1,5 +1,5 @@
-deepke.relation\_extraction.few\_shot package
-=============================================
+Few Shot
+========
 
 
 .. toctree::

@@ -111,7 +111,7 @@
 
 <div class="viewcode-block" id="Vocab"><a class="viewcode-back" href="../../../../../deepke.attribution_extraction.standard.tools.html#deepke.attribution_extraction.standard.tools.vocab.Vocab">[docs]</a><span class="k">class</span> <span class="nc">Vocab</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        构建词汇表,增加词汇，删除低频词汇</span>
+<span class="sd">        Build vocabulary, add vocabulary,and delete low-frequency vocabulary</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;basic&#39;</span><span class="p">,</span> <span class="n">init_tokens</span><span class="p">:</span> <span class="n">Sequence</span> <span class="o">=</span> <span class="n">SPECIAL_TOKENS</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
@@ -125,16 +125,16 @@
 
     <span class="k">def</span> <span class="nf">_add_init_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            添加初始tokens</span>
+<span class="sd">            Add origin tokens</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_tokens</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_add_word</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_add_word</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            增加单个词汇</span>
-<span class="sd">            Arg :</span>
-<span class="sd">                word (String) : 增加的词汇</span>
+<span class="sd">            Add single word</span>
+<span class="sd">            Args:</span>
+<span class="sd">                word (String) : Word to add</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">word2idx</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">word2idx</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span>
@@ -146,19 +146,19 @@
 
 <div class="viewcode-block" id="Vocab.add_words"><a class="viewcode-back" href="../../../../../deepke.attribution_extraction.standard.tools.html#deepke.attribution_extraction.standard.tools.vocab.Vocab.add_words">[docs]</a>    <span class="k">def</span> <span class="nf">add_words</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            通过数组增加词汇</span>
-<span class="sd">            Arg :</span>
-<span class="sd">                words (List) : 增加的词汇组</span>
+<span class="sd">            Add words</span>
+<span class="sd">            Args:</span>
+<span class="sd">                words (List) : List of words</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_add_word</span><span class="p">(</span><span class="n">word</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Vocab.trim"><a class="viewcode-back" href="../../../../../deepke.attribution_extraction.standard.tools.html#deepke.attribution_extraction.standard.tools.vocab.Vocab.trim">[docs]</a>    <span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_freq</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            当 word 词频低于 min_freq 时，从词库中删除</span>
+<span class="sd">            When the word frequency of word is lower than min_freq, delete from the thesaurus</span>
 <span class="sd">            Args:</span>
-<span class="sd">                min_freq (int): 最低词频</span>
-<span class="sd">                verbose (bool) : 是否打印日志</span>
+<span class="sd">                min_freq (int): Minimum word frequency</span>
+<span class="sd">                verbose (bool) : Whether to print log</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="n">min_freq</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">min_freq</span><span class="p">),</span> <span class="sa">f</span><span class="s1">&#39;min_freq must be integer, can</span><span class="se">\&#39;</span><span class="s1">t be </span><span class="si">{</span><span class="n">min_freq</span><span class="si">}</span><span class="s1">&#39;</span>
         <span class="n">min_freq</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">min_freq</span><span class="p">)</span>
@@ -197,7 +197,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, zjunlp.</p>
+    <p>&#169; Copyright 2021, ZJUNLP.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

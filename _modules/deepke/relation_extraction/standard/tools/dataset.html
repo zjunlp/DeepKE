@@ -86,12 +86,12 @@
     
     <span class="k">def</span> <span class="nf">collate_fn_intra</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Arg : </span>
-<span class="sd">        batch () : 数据集</span>
-<span class="sd">    Return : </span>
-<span class="sd">        x (dict) : key为词，value为长度</span>
-<span class="sd">        y (List) : 关系对应值的集合</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        Args: </span>
+<span class="sd">            batch () : Data</span>
+<span class="sd">        Returns : </span>
+<span class="sd">            x (dict) : key is the words，and value is its length.</span>
+<span class="sd">            y (List) : Collection of key-values pairs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">batch</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">data</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;seq_len&#39;</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="n">max_len</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;seq_len&#39;</span><span class="p">]</span>
@@ -156,7 +156,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, zjunlp.</p>
+    <p>&#169; Copyright 2021, ZJUNLP.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

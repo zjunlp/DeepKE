@@ -1,5 +1,5 @@
-deepke.relation\_extraction.standard.models package
-===================================================
+Models
+======
 
 
 deepke.relation\_extraction.standard.models.BasicModule module

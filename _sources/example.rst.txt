@@ -1,7 +1,7 @@
 Example
 =======
 
-standard_ner
+Standard NER
 ------------
 - The standard module is implemented by the pretrained model BERT. 
 - Enter  ``DeepKE/example/ner/standard`` .
@@ -17,7 +17,7 @@ standard_ner
     
     python predict.py
 
-few-shot_ner
+Few-shot NER
 ------------
 - This module is in the low-resouce scenario.
 - Enter  ``DeepKE/example/ner/few-shot`` . 
@@ -34,7 +34,7 @@ few-shot_ner
     
     python predict.py
 
-standard_re
+Standard RE
 -----------
 - The standard module is implemented by common deep learning models, including CNN, RNN, Capsule, GCN, Transformer and the pretrained model.
 - Enter the ``DeepKE/example/re/standard`` folder. 
@@ -50,7 +50,7 @@ standard_re
 
     python predict.py
 
-few-shot_re
+Few-shot RE
 -----------
 - This module is in the low-resouce scenario.
 - Enter ``DeepKE/example/re/few-shot`` .
@@ -67,7 +67,7 @@ few-shot_re
     
     python predict.py
 
-document_re
+Document RE
 -----------
 - Download the model `train_distant.json` from [*Google Drive*](https://drive.google.com/drive/folders/1c5-0YwnoJx8NS6CV2f-NoTHR__BdkNqw) to ``data/``.
 - Enter ``DeepKE/example/re/document`` .
@@ -84,7 +84,7 @@ document_re
 
     python predict.py
 
-standard_ae
+Standard AE
 -----------
 - The standard module is implemented by common deep learning models, including CNN, RNN, Capsule, GCN, Transformer and the pretrained model.
 - Enter the ``DeepKE/example/ae/standard`` folder. 

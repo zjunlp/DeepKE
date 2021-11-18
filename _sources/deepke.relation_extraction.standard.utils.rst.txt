@@ -1,6 +1,5 @@
-deepke.relation\_extraction.standard.utils package
-==================================================
-
+Utils
+=====
 
 deepke.relation\_extraction.standard.utils.ioUtils module
 ---------------------------------------------------------

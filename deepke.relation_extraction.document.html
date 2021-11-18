@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>deepke.relation_extraction.document package &mdash; DeepKE 1.0.0 documentation</title>
+  <title>Document &mdash; DeepKE 1.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -22,8 +22,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="deepke.relation_extraction.few_shot package" href="deepke.relation_extraction.few_shot.html" />
-    <link rel="prev" title="deepke.relation_extraction package" href="deepke.relation_extraction.html" /> 
+    <link rel="next" title="Few Shot" href="deepke.relation_extraction.few_shot.html" />
+    <link rel="prev" title="Relation Extraction" href="deepke.relation_extraction.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,10 +51,10 @@
 <p class="caption" role="heading"><span class="caption-text">Package</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="deepke.html">DeepKE</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="deepke.attribution_extraction.html">deepke.attribution_extraction package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_re.html">deepke.name_entity_re package</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="deepke.relation_extraction.html">deepke.relation_extraction package</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">deepke.relation_extraction.document package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deepke.attribution_extraction.html">Attribution Extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_recognition.html">Name Entity Recognition</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="deepke.relation_extraction.html">Relation Extraction</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Document</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#module-deepke.relation_extraction.document.evaluation">deepke.relation_extraction.document.evaluation module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-deepke.relation_extraction.document.losses">deepke.relation_extraction.document.losses module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-deepke.relation_extraction.document.model">deepke.relation_extraction.document.model module</a></li>
@@ -63,8 +63,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#module-deepke.relation_extraction.document.utils">deepke.relation_extraction.document.utils module</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="deepke.relation_extraction.few_shot.html">deepke.relation_extraction.few_shot package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deepke.relation_extraction.standard.html">deepke.relation_extraction.standard package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deepke.relation_extraction.few_shot.html">Few Shot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deepke.relation_extraction.standard.html">Standard</a></li>
 </ul>
 </li>
 </ul>
@@ -86,8 +86,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="deepke.html">DeepKE</a> &raquo;</li>
-          <li><a href="deepke.relation_extraction.html">deepke.relation_extraction package</a> &raquo;</li>
-      <li>deepke.relation_extraction.document package</li>
+          <li><a href="deepke.relation_extraction.html">Relation Extraction</a> &raquo;</li>
+      <li>Document</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/tlk1997/test_doc/blob/main/docs/source/deepke.relation_extraction.document.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -97,8 +97,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="deepke-relation-extraction-document-package">
-<h1>deepke.relation_extraction.document package<a class="headerlink" href="#deepke-relation-extraction-document-package" title="Permalink to this headline">¶</a></h1>
+  <section id="document">
+<h1>Document<a class="headerlink" href="#document" title="Permalink to this headline">¶</a></h1>
 <section id="module-deepke.relation_extraction.document.evaluation">
 <span id="deepke-relation-extraction-document-evaluation-module"></span><h2>deepke.relation_extraction.document.evaluation module<a class="headerlink" href="#module-deepke.relation_extraction.document.evaluation" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
@@ -123,17 +123,9 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.losses.multilabel_categorical_crossentropy">
 <span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.losses.</span></span><span class="sig-name descname"><span class="pre">multilabel_categorical_crossentropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/losses.html#multilabel_categorical_crossentropy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.losses.multilabel_categorical_crossentropy" title="Permalink to this definition">¶</a></dt>
-<dd><p>多标签分类的交叉熵
-说明：y_true和y_pred的shape一致，y_true的元素非0即1，</p>
-<blockquote>
-<div><p>1表示对应的类为目标类，0表示对应的类为非目标类。</p>
-</div></blockquote>
-<dl class="simple">
-<dt>警告：请保证y_pred的值域是全体实数，换言之一般情况下y_pred</dt><dd><p>不用加激活函数，尤其是不能加sigmoid或者softmax！预测
-阶段则输出y_pred大于0的类。如有疑问，请仔细阅读并理解
-本文。</p>
-</dd>
-</dl>
+<dd><p>Multilabel categorical crossentroy
+Description: <a href="#id1"><span class="problematic" id="id2">y_</span></a> True and <a href="#id3"><span class="problematic" id="id4">Y_</span></a> The shape of PRED is consistent, <a href="#id5"><span class="problematic" id="id6">y_</span></a> The element of true is either 0 or 1,1 indicates that the corresponding class is the target class, and 0 indicates that the corresponding class is a non target class.
+Warning: please ensure <a href="#id7"><span class="problematic" id="id8">Y_</span></a> The value range of PRED is all real numbers, in other words, in general, <a href="#id9"><span class="problematic" id="id10">y_</span></a> pred.Do not add activation functions, especially sigmoid or softmax! forecast.Phase outputs <a href="#id11"><span class="problematic" id="id12">y_</span></a> Classes with PRED greater than 0. If you have any questions, please read and understand them carefully this paper.</p>
 </dd></dl>
 
 <dl class="py class">
@@ -382,8 +374,8 @@ registered hooks while the latter silently ignores them.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="deepke.relation_extraction.html" class="btn btn-neutral float-left" title="deepke.relation_extraction package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="deepke.relation_extraction.few_shot.html" class="btn btn-neutral float-right" title="deepke.relation_extraction.few_shot package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="deepke.relation_extraction.html" class="btn btn-neutral float-left" title="Relation Extraction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deepke.relation_extraction.few_shot.html" class="btn btn-neutral float-right" title="Few Shot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,6 +1,5 @@
-deepke.relation\_extraction.standard.module package
-===================================================
-
+Module
+======
 
 deepke.relation\_extraction.standard.module.Attention module
 ------------------------------------------------------------
@@ -57,3 +56,4 @@ deepke.relation\_extraction.standard.module.Transformer module
    :members:
    :undoc-members:
    :show-inheritance:
+

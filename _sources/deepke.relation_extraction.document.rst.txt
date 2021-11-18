@@ -1,5 +1,5 @@
-deepke.relation\_extraction.document package
-============================================
+Document
+========
 
 deepke.relation\_extraction.document.evaluation module
 ------------------------------------------------------

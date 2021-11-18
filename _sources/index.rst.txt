@@ -17,7 +17,7 @@ DeepKE Documentation
 
 .. toctree::
    :glob:
-   :maxdepth: 5
+   :maxdepth: 3
    :caption: Package 
 
    deepke

@@ -1,6 +1,5 @@
-deepke.relation\_extraction.few\_shot.dataset package
-=====================================================
-
+Dataset
+=======
 
 deepke.relation\_extraction.few\_shot.dataset.base\_data\_module module
 -----------------------------------------------------------------------
@@ -25,4 +24,3 @@ deepke.relation\_extraction.few\_shot.dataset.processor module
    :members:
    :undoc-members:
    :show-inheritance:
-

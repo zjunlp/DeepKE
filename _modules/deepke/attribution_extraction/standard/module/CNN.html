@@ -91,19 +91,20 @@
 
 <div class="viewcode-block" id="CNN"><a class="viewcode-back" href="../../../../../deepke.attribution_extraction.standard.module.html#deepke.attribution_extraction.standard.module.CNN.CNN">[docs]</a><span class="k">class</span> <span class="nc">CNN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    nlp 里为了保证输出的句长 = 输入的句长，一般使用奇数 kernel_size，如 [3, 5, 7, 9]</span>
-<span class="sd">    当然也可以不等长输出，keep_length 设为 False</span>
-<span class="sd">    此时，padding = k // 2</span>
-<span class="sd">    stride 一般为 1</span>
+<span class="sd">    In order to ensure that the output sentence length = the input sentence length in nlp, an odd kernel_size is generally used, such as [3, 5, 7, 9]. </span>
+<span class="sd">    Of course, it can also be output with different lengths. </span>
+<span class="sd">    Keep_length is set to False. </span>
+<span class="sd">    At this time, padding = k / / 2, stride is generally 1</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        in_channels      : 一般就是 word embedding 的维度，或者 hidden size 的维度</span>
-<span class="sd">        out_channels     : int</span>
-<span class="sd">        kernel_sizes     : list 为了保证输出长度=输入长度，必须为奇数: 3, 5, 7...</span>
-<span class="sd">        activation       : [relu, lrelu, prelu, selu, celu, gelu, sigmoid, tanh]</span>
-<span class="sd">        pooling_strategy : [max, avg, cls]</span>
-<span class="sd">        dropout:         : float</span>
+<span class="sd">        Args:</span>
+<span class="sd">            in_channels: Generally it is the dimension of word embedding, or the dimension of hidden size</span>
+<span class="sd">            out_channels: int</span>
+<span class="sd">            kernel_sizes: In order to ensure that the output length = the input length, list must be an odd number: 3, 5, 7...</span>
+<span class="sd">            activation: [relu, lrelu, prelu, selu, celu, gelu, sigmoid, tanh]</span>
+<span class="sd">            pooling_strategy : [max, avg, cls]</span>
+<span class="sd">            dropout: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">CNN</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -151,11 +152,11 @@
 
 <div class="viewcode-block" id="CNN.forward"><a class="viewcode-back" href="../../../../../deepke.attribution_extraction.standard.module.html#deepke.attribution_extraction.standard.module.CNN.CNN.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            :param x: torch.Tensor [batch_size, seq_max_length, input_size], [B, L, H] 一般是经过embedding后的值</span>
-<span class="sd">            :param mask: [batch_size, max_len], 句长部分为0，padding部分为1。不影响卷积运算，max-pool一定不会pool到pad为0的位置</span>
-<span class="sd">            :return:</span>
-<span class="sd">            &quot;&quot;&quot;</span>
-        <span class="c1"># [B, L, H] -&gt; [B, H, L] （注释：将 H 维度当作输入 channel 维度)</span>
+<span class="sd">        Args:</span>
+<span class="sd">            x: torch.Tensor [batch_size, seq_max_length, input_size], [B, L, H] Generally the value after embedding</span>
+<span class="sd">            mask: [batch_size, max_len], The sentence length part is 0, and the padding part is 1. Does not affect the convolution operation, max-pool will not pool to the position where pad is 0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># [B, L, H] -&gt; [B, H, L] </span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
         <span class="c1"># convolution + activation  [[B, H, L], ... ]</span>
@@ -174,7 +175,6 @@
         <span class="c1"># [[B, H, L], ... ] -&gt; [[B, H], ... ]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pooling_strategy</span> <span class="o">==</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span>
             <span class="n">xp</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">max_pool1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-            <span class="c1"># 等价于 xp = torch.max(x, dim=2)[0]</span>
 
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">pooling_strategy</span> <span class="o">==</span> <span class="s1">&#39;avg&#39;</span><span class="p">:</span>
             <span class="n">x_len</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">mask</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
@@ -198,7 +198,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, zjunlp.</p>
+    <p>&#169; Copyright 2021, ZJUNLP.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

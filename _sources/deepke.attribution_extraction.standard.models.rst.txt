@@ -1,6 +1,5 @@
-deepke.attribution\_extraction.standard.models package
-======================================================
-
+Models
+======
 
 
 deepke.attribution\_extraction.standard.models.BasicModule module

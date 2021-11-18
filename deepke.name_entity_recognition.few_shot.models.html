@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Models &mdash; DeepKE 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Module" href="deepke.name_entity_recognition.few_shot.module.html" />
+    <link rel="prev" title="Few Shot" href="deepke.name_entity_recognition.few_shot.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> DeepKE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="start.html">Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="deepke.html">DeepKE</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="deepke.attribution_extraction.html">Attribution Extraction</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="deepke.name_entity_recognition.html">Name Entity Recognition</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="deepke.name_entity_recognition.few_shot.html">Few Shot</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deepke.name_entity_recognition.few_shot.module.html">Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deepke.name_entity_recognition.few_shot.utils.html">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="deepke.name_entity_recognition.standard.html">Standard</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deepke.relation_extraction.html">Relation Extraction</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DeepKE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="deepke.html">DeepKE</a> &raquo;</li>
+          <li><a href="deepke.name_entity_recognition.html">Name Entity Recognition</a> &raquo;</li>
+          <li><a href="deepke.name_entity_recognition.few_shot.html">Few Shot</a> &raquo;</li>
+      <li>Models</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/tlk1997/test_doc/blob/main/docs/source/deepke.name_entity_recognition.few_shot.models.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="models">
+<h1>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h1>
+<section id="module-deepke.name_entity_recognition.few_shot.models.model">
+<span id="deepke-name-entity-recognition-few-shot-models-model-module"></span><h2>deepke.name_entity_recognition.few_shot.models.model module<a class="headerlink" href="#module-deepke.name_entity_recognition.few_shot.models.model" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.PromptBartEncoder">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.model.</span></span><span class="sig-name descname"><span class="pre">PromptBartEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#PromptBartEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.PromptBartEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.PromptBartEncoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">past_key_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#PromptBartEncoder.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.PromptBartEncoder.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.PromptBartDecoder">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.model.</span></span><span class="sig-name descname"><span class="pre">PromptBartDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_token_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_prompt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learn_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#PromptBartDecoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.PromptBartDecoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.PromptBartDecoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tgt_tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#PromptBartDecoder.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.PromptBartDecoder.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.PromptBartDecoder.decode">
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#PromptBartDecoder.decode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.PromptBartDecoder.decode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.PromptBartModel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.model.</span></span><span class="sig-name descname"><span class="pre">PromptBartModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#PromptBartModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.PromptBartModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.PromptBartModel.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tgt_tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#PromptBartModel.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.PromptBartModel.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.PromptBartModel.generator">
+<span class="sig-name descname"><span class="pre">generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_seq_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#PromptBartModel.generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.PromptBartModel.generator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.PromptBartModel.get_prompt">
+<span class="sig-name descname"><span class="pre">get_prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#PromptBartModel.get_prompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.PromptBartModel.get_prompt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.PromptBartState">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.model.</span></span><span class="sig-name descname"><span class="pre">PromptBartState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">past_key_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_embed_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preseqlen</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#PromptBartState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.PromptBartState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.PromptBartState.reorder_state">
+<span class="sig-name descname"><span class="pre">reorder_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">torch.LongTensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#PromptBartState.reorder_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.PromptBartState.reorder_state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.PromptBartState.num_samples">
+<span class="sig-name descname"><span class="pre">num_samples</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#PromptBartState.num_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.PromptBartState.num_samples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.PromptGeneratorModel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.model.</span></span><span class="sig-name descname"><span class="pre">PromptGeneratorModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len_a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_beams</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bos_token_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eos_token_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repetition_penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_token_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restricter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#PromptGeneratorModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.PromptGeneratorModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.PromptGeneratorModel.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tgt_tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_seq_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tgt_seq_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#PromptGeneratorModel.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.PromptGeneratorModel.forward" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src_tokens</strong> (<em>torch.LongTensor</em>) – bsz x max_len</p></li>
+<li><p><strong>tgt_tokens</strong> (<em>torch.LongTensor</em>) – bsz x max_len’</p></li>
+<li><p><strong>src_seq_len</strong> (<em>torch.LongTensor</em>) – bsz</p></li>
+<li><p><strong>tgt_seq_len</strong> (<em>torch.LongTensor</em>) – bsz</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.PromptGeneratorModel.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_seq_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#PromptGeneratorModel.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.PromptGeneratorModel.predict" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src_tokens</strong> (<em>torch.LongTensor</em>) – bsz x max_len</p></li>
+<li><p><strong>src_seq_len</strong> (<em>torch.LongTensor</em>) – bsz</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.greedy_generate">
+<span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.model.</span></span><span class="sig-name descname"><span class="pre">greedy_generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len_a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_beams</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bos_token_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eos_token_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_token_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repetition_penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restricter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#greedy_generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.greedy_generate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.BeamHypotheses">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.model.</span></span><span class="sig-name descname"><span class="pre">BeamHypotheses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_beams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_penalty</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#BeamHypotheses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.BeamHypotheses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.BeamHypotheses.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hyp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_logprobs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#BeamHypotheses.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.BeamHypotheses.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new hypothesis to the list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.model.BeamHypotheses.is_done">
+<span class="sig-name descname"><span class="pre">is_done</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">best_sum_logprobs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/model.html#BeamHypotheses.is_done"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.model.BeamHypotheses.is_done" title="Permalink to this definition">¶</a></dt>
+<dd><p>If there are enough hypotheses and that none of the hypotheses being generated
+can become better than the worst one in the heap, then we are done with this sentence.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-deepke.name_entity_recognition.few_shot.models.modeling_bart">
+<span id="deepke-name-entity-recognition-few-shot-models-modeling-bart-module"></span><h2>deepke.name_entity_recognition.few_shot.models.modeling_bart module<a class="headerlink" href="#module-deepke.name_entity_recognition.few_shot.models.modeling_bart" title="Permalink to this headline">¶</a></h2>
+<p>PyTorch BART model, ported from the fairseq repo.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.invert_mask">
+<span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">invert_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#invert_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.invert_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns 1-&gt;0, 0-&gt;1, False-&gt;True, True-&gt; False</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">PretrainedBartModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">transformers.configuration_utils.PretrainedConfig</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#PretrainedBartModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">transformers.modeling_utils.PreTrainedModel</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel.config_class">
+<span class="sig-name descname"><span class="pre">config_class</span></span><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel.config_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">transformers.configuration_bart.BartConfig</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel.base_model_prefix">
+<span class="sig-name descname"><span class="pre">base_model_prefix</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'model'</span></em><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel.base_model_prefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel.dummy_inputs">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dummy_inputs</span></span><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel.dummy_inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dummy inputs to do a forward pass in the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">torch.Tensor]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.shift_tokens_right">
+<span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">shift_tokens_right</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_token_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#shift_tokens_right"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.shift_tokens_right" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shift input ids one token to the right, and wrap the last non pad token (usually &lt;eos&gt;).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.make_padding_mask">
+<span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">make_padding_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#make_padding_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.make_padding_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>True for pad tokens</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.EncoderLayer">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">EncoderLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">transformers.configuration_bart.BartConfig</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#EncoderLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.EncoderLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.EncoderLayer.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_padding_mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_attentions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#EncoderLayer.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.EncoderLayer.forward" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>Tensor</em>) – input to the layer of shape <cite>(seq_len, batch, embed_dim)</cite></p></li>
+<li><p><strong>encoder_padding_mask</strong> (<em>ByteTensor</em>) – binary ByteTensor of shape
+<cite>(batch, src_len)</cite> where padding elements are indicated by <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><strong>t_tgt</strong> (<em>for</em>) – </p></li>
+<li><p><strong>excluded</strong> (<em>t_src is</em>) – </p></li>
+<li><p><strong>attention</strong> (<em>included in</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>encoded output of shape <cite>(seq_len, batch, embed_dim)</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartEncoder">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">BartEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">transformers.configuration_bart.BartConfig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embed_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Transformer encoder consisting of <em>config.encoder_layers</em> self attention layers. Each layer
+is a <a class="reference internal" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.EncoderLayer" title="deepke.name_entity_recognition.few_shot.models.modeling_bart.EncoderLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">EncoderLayer</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> – BartConfig</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartEncoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">past_key_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_attentions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_hidden_states</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartEncoder.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartEncoder.forward" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_ids</strong> (<em>LongTensor</em>) – tokens in the source language of shape
+<cite>(batch, src_len)</cite></p></li>
+<li><p><strong>attention_mask</strong> (<em>torch.LongTensor</em>) – indicating which indices are padding tokens.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>x</strong> (Tensor): the last encoder layer’s output of
+shape <cite>(src_len, batch, embed_dim)</cite></p></li>
+<li><p><strong>encoder_states</strong> (tuple(torch.FloatTensor)): all intermediate
+hidden states of shape <cite>(src_len, batch, embed_dim)</cite>.
+Only populated if <em>output_hidden_states:</em> is True.</p></li>
+<li><p><strong>all_attentions</strong> (tuple(torch.FloatTensor)): Attention weights for each layer.</p></li>
+</ul>
+<p>During training might not be of length n_layers because of layer dropout.</p>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>BaseModelOutput or Tuple comprised of</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartEncoder.forward_with_encoder_past">
+<span class="sig-name descname"><span class="pre">forward_with_encoder_past</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">past_key_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_attentions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_hidden_states</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartEncoder.forward_with_encoder_past"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartEncoder.forward_with_encoder_past" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_ids</strong> (<em>LongTensor</em>) – tokens in the source language of shape
+<cite>(batch, src_len)</cite></p></li>
+<li><p><strong>attention_mask</strong> (<em>torch.LongTensor</em>) – indicating which indices are padding tokens.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>x</strong> (Tensor): the last encoder layer’s output of
+shape <cite>(src_len, batch, embed_dim)</cite></p></li>
+<li><p><strong>encoder_states</strong> (tuple(torch.FloatTensor)): all intermediate
+hidden states of shape <cite>(src_len, batch, embed_dim)</cite>.
+Only populated if <em>output_hidden_states:</em> is True.</p></li>
+<li><p><strong>all_attentions</strong> (tuple(torch.FloatTensor)): Attention weights for each layer.</p></li>
+</ul>
+<p>During training might not be of length n_layers because of layer dropout.</p>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>BaseModelOutput or Tuple comprised of</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.DecoderLayer">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">DecoderLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">transformers.configuration_bart.BartConfig</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#DecoderLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.DecoderLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.DecoderLayer.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_hidden_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_attn_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">causal_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_padding_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_attentions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#DecoderLayer.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.DecoderLayer.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartDecoder">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">BartDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">transformers.configuration_bart.BartConfig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embed_tokens</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">torch.nn.modules.sparse.Embedding</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartDecoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartDecoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Transformer decoder consisting of <em>config.decoder_layers</em> layers. Each layer
+is a <a class="reference internal" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.DecoderLayer" title="deepke.name_entity_recognition.few_shot.models.modeling_bart.DecoderLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">DecoderLayer</span></code></a>.
+:param config: BartConfig
+:param embed_tokens: output embedding
+:type embed_tokens: torch.nn.Embedding</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartDecoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_hidden_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_padding_mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_padding_mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_causal_mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">past_key_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_prompt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_attentions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_hidden_states</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">unused</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartDecoder.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartDecoder.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Includes several features from “Jointly Learning to Align and
+Translate with Transformer Models” (Garg et al., EMNLP 2019).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_ids</strong> (<em>LongTensor</em>) – previous decoder outputs of shape
+<cite>(batch, tgt_len)</cite>, for teacher forcing</p></li>
+<li><p><strong>encoder_hidden_states</strong> – output from the encoder, used for
+encoder-side attention</p></li>
+<li><p><strong>encoder_padding_mask</strong> – for ignoring pad tokens</p></li>
+<li><p><strong>past_key_values</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – dictionary used for storing state during generation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>the decoder’s features of shape <cite>(batch, tgt_len, embed_dim)</cite></p></li>
+<li><p>the cache</p></li>
+<li><p>hidden states</p></li>
+<li><p>attentions</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>BaseModelOutputWithPast or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.Attention">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">Attention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embed_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_heads</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_decoder_attention</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preseqlen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_prompt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#Attention"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.Attention" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Multi-headed attention from ‘Attention Is All You Need’ paper</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.Attention.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_padding_mask</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attn_mask</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_attentions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#Attention.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.Attention.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input shape: Time(SeqLen) x Batch x Channel</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartClassificationHead">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">BartClassificationHead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pooler_dropout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartClassificationHead"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartClassificationHead" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Head for sentence-level classification tasks.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartClassificationHead.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartClassificationHead.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartClassificationHead.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.LearnedPositionalEmbedding">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">LearnedPositionalEmbedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_embeddings</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_dim</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding_idx</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#LearnedPositionalEmbedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.LearnedPositionalEmbedding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.sparse.Embedding</span></code></p>
+<p>This module learns positional embeddings up to a fixed maximum size.
+Padding ids are ignored by either offsetting based on padding_idx
+or by setting padding_idx to None and ensuring that the appropriate
+position ids are passed to the forward function.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.LearnedPositionalEmbedding.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#LearnedPositionalEmbedding.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.LearnedPositionalEmbedding.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input is expected to be of size [bsz x seqlen].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.LayerNorm">
+<span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">LayerNorm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normalized_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elementwise_affine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#LayerNorm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.LayerNorm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.fill_with_neg_inf">
+<span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">fill_with_neg_inf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#fill_with_neg_inf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.fill_with_neg_inf" title="Permalink to this definition">¶</a></dt>
+<dd><p>FP16-compatible function that fills a input_ids with -inf.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartModel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">BartModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">transformers.configuration_bart.BartConfig</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel" title="deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel</span></code></a></p>
+<p>The bare BART Model outputting raw hidden-states without any specific head on top.</p>
+<p>This model inherits from <code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedModel</span></code>. Check the superclass documentation for the generic
+methods the library implements for all its model (such as downloading or saving, resizing the input embeddings,
+pruning heads etc.)</p>
+<p>This model is also a PyTorch <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#torch.nn.Module">torch.nn.Module</a> subclass.
+Use it as a regular PyTorch Module and refer to the PyTorch documentation for all matter related to general
+usage and behavior.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">BartConfig</span></code>) – Model configuration class with all the parameters of the model.
+Initializing with a config file does not load the weights associated with the model, only the configuration.
+Check out the <code class="xref py py-meth docutils literal notranslate"><span class="pre">from_pretrained()</span></code> method to load the model weights.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartModel.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_input_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_outputs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">past_key_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_prompt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_attentions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_hidden_states</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartModel.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartModel.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">BartModel</span></code> forward method, overrides the <code class="xref py py-func docutils literal notranslate"><span class="pre">__call__()</span></code> special method.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+pre and post processing steps while the latter silently ignores them.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_ids</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.LongTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length)</span></code>) – <p>Indices of input sequence tokens in the vocabulary. Padding will be ignored by default should you provide
+it.</p>
+<p>Indices can be obtained using <code class="xref py py-class docutils literal notranslate"><span class="pre">BartTokenizer</span></code>.
+See <code class="xref py py-meth docutils literal notranslate"><span class="pre">transformers.PreTrainedTokenizer.encode()</span></code> and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">transformers.PreTrainedTokenizer.__call__()</span></code> for details.</p>
+<p><a class="reference external" href="../glossary.html#input-ids">What are input IDs?</a></p>
+</p></li>
+<li><p><strong>attention_mask</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.Tensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length)</span></code>, <cite>optional</cite>) – <p>Mask to avoid performing attention on padding token indices.
+Mask values selected in <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>:</p>
+<ul>
+<li><p>1 for tokens that are <strong>not masked</strong>,</p></li>
+<li><p>0 for tokens that are <strong>masked</strong>.</p></li>
+</ul>
+<p><a class="reference external" href="../glossary.html#attention-mask">What are attention masks?</a></p>
+</p></li>
+<li><p><strong>decoder_input_ids</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.LongTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">target_sequence_length)</span></code>, <cite>optional</cite>) – Provide for translation and summarization training. By default, the model will create this tensor by
+shifting the <code class="xref py py-obj docutils literal notranslate"><span class="pre">input_ids</span></code> to the right, following the paper.</p></li>
+<li><p><strong>decoder_attention_mask</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.BoolTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">tgt_seq_len)</span></code>, <cite>optional</cite>) – <p>Default behavior: generate a tensor that ignores pad tokens in <code class="xref py py-obj docutils literal notranslate"><span class="pre">decoder_input_ids</span></code>. Causal mask will
+also be used by default.</p>
+<p>If you want to change padding behavior, you should read <code class="xref py py-func docutils literal notranslate"><span class="pre">modeling_bart._prepare_decoder_inputs()</span></code> and
+modify to your needs. See diagram 1 in <a class="reference external" href="https://arxiv.org/abs/1910.13461">the paper</a> for more
+information on the default strategy.</p>
+</p></li>
+<li><p><strong>encoder_outputs</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>) – Tuple consists of (<code class="xref py py-obj docutils literal notranslate"><span class="pre">last_hidden_state</span></code>, <cite>optional</cite>: <code class="xref py py-obj docutils literal notranslate"><span class="pre">hidden_states</span></code>, <cite>optional</cite>: <code class="xref py py-obj docutils literal notranslate"><span class="pre">attentions</span></code>)
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">last_hidden_state</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>, <cite>optional</cite>) is a
+sequence of hidden-states at the output of the last layer of the encoder. Used in the cross-attention of
+the decoder.</p></li>
+<li><p><strong>past_key_values</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(tuple(torch.FloatTensor))</span></code> of length <code class="xref py py-obj docutils literal notranslate"><span class="pre">config.n_layers</span></code> with each tuple having 4 tensors of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length</span> <span class="pre">-</span> <span class="pre">1,</span> <span class="pre">embed_size_per_head)</span></code>) – <p>Contains precomputed key and value hidden-states of the attention blocks. Can be used to speed up decoding.</p>
+<p>If <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code> are used, the user can optionally input only the last
+<code class="docutils literal notranslate"><span class="pre">decoder_input_ids</span></code> (those that don’t have their past key value states given to this model) of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">1)</span></code> instead of all <code class="docutils literal notranslate"><span class="pre">decoder_input_ids</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length)</span></code>.</p>
+</p></li>
+<li><p><strong>use_cache</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – If set to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code> key value states are returned and can be used to speed up
+decoding (see <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code>).</p></li>
+<li><p><strong>output_attentions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – Whether or not to return the attentions tensors of all attention layers. See <code class="docutils literal notranslate"><span class="pre">attentions</span></code> under returned
+tensors for more detail.</p></li>
+<li><p><strong>output_hidden_states</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – Whether or not to return the hidden states of all layers. See <code class="docutils literal notranslate"><span class="pre">hidden_states</span></code> under returned tensors for
+more detail.</p></li>
+<li><p><strong>return_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – Whether or not to return a <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelOutput</span></code> instead of a plain tuple.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Seq2SeqModelOutput</span></code> (if <code class="docutils literal notranslate"><span class="pre">return_dict=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.return_dict=True</span></code>) or a
+tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> comprising various elements depending on the configuration
+(<code class="xref py py-class docutils literal notranslate"><span class="pre">BartConfig</span></code>) and inputs.</p>
+<ul>
+<li><p><strong>last_hidden_state</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>) – Sequence of hidden-states at the output of the last layer of the decoder of the model.</p>
+<p>If <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code> is used only the last hidden-state of the sequences of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">1,</span> <span class="pre">hidden_size)</span></code> is output.</p>
+</li>
+<li><p><strong>past_key_values</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">List[torch.FloatTensor]</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">use_cache=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.use_cache=True</span></code>) – List of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of length <code class="xref py py-obj docutils literal notranslate"><span class="pre">config.n_layers</span></code>,  with each tensor of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length,</span> <span class="pre">embed_size_per_head)</span></code>).</p>
+<p>Contains pre-computed hidden-states (key and values in the attention blocks) of the decoder that can be
+used (see <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code> input) to speed up sequential decoding.</p>
+</li>
+<li><p><strong>decoder_hidden_states</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_hidden_states=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_hidden_states=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for the output of the embeddings + one for the output of each layer)
+of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>.</p>
+<p>Hidden-states of the decoder at the output of each layer plus the initial embedding outputs.</p>
+</li>
+<li><p><strong>decoder_attentions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_attentions=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_attentions=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for each layer) of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length,</span> <span class="pre">sequence_length)</span></code>.</p>
+<p>Attentions weights of the decoder, after the attention softmax, used to compute the weighted average in the
+self-attention heads.</p>
+</li>
+<li><p><strong>encoder_last_hidden_state</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>, <cite>optional</cite>) – Sequence of hidden-states at the output of the last layer of the encoder of the model.</p></li>
+<li><p><strong>encoder_hidden_states</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_hidden_states=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_hidden_states=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for the output of the embeddings + one for the output of each layer)
+of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>.</p>
+<p>Hidden-states of the encoder at the output of each layer plus the initial embedding outputs.</p>
+</li>
+<li><p><strong>encoder_attentions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_attentions=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_attentions=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for each layer) of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length,</span> <span class="pre">sequence_length)</span></code>.</p>
+<p>Attentions weights of the encoder, after the attention softmax, used to compute the weighted average in the
+self-attention heads.</p>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Seq2SeqModelOutput</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code></p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">BartTokenizer</span><span class="p">,</span> <span class="n">BartModel</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">BartTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;facebook/bart-large&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">BartModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;facebook/bart-large&#39;</span><span class="p">,</span> <span class="n">return_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="s2">&quot;Hello, my dog is cute&quot;</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">last_hidden_states</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">last_hidden_state</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartModel.get_input_embeddings">
+<span class="sig-name descname"><span class="pre">get_input_embeddings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartModel.get_input_embeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartModel.get_input_embeddings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the model’s input embeddings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A torch module mapping vocabulary to hidden states.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">nn.Module</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartModel.set_input_embeddings">
+<span class="sig-name descname"><span class="pre">set_input_embeddings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartModel.set_input_embeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartModel.set_input_embeddings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set model’s input embeddings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">nn.Module</span></code>) – A module mapping vocabulary to hidden states.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartModel.get_output_embeddings">
+<span class="sig-name descname"><span class="pre">get_output_embeddings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartModel.get_output_embeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartModel.get_output_embeddings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the model’s output embeddings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A torch module mapping hidden states to vocabulary.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">nn.Module</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">BartForConditionalGeneration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">transformers.configuration_bart.BartConfig</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartForConditionalGeneration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel" title="deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel</span></code></a></p>
+<p>The BART Model with a language modeling head. Can be used for summarization.</p>
+<p>This model inherits from <code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedModel</span></code>. Check the superclass documentation for the generic
+methods the library implements for all its model (such as downloading or saving, resizing the input embeddings,
+pruning heads etc.)</p>
+<p>This model is also a PyTorch <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#torch.nn.Module">torch.nn.Module</a> subclass.
+Use it as a regular PyTorch Module and refer to the PyTorch documentation for all matter related to general
+usage and behavior.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">BartConfig</span></code>) – Model configuration class with all the parameters of the model.
+Initializing with a config file does not load the weights associated with the model, only the configuration.
+Check out the <code class="xref py py-meth docutils literal notranslate"><span class="pre">from_pretrained()</span></code> method to load the model weights.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.base_model_prefix">
+<span class="sig-name descname"><span class="pre">base_model_prefix</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'model'</span></em><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.base_model_prefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.authorized_missing_keys">
+<span class="sig-name descname"><span class="pre">authorized_missing_keys</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['final_logits_bias',</span> <span class="pre">'encoder\\.version',</span> <span class="pre">'decoder\\.version']</span></em><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.authorized_missing_keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.resize_token_embeddings">
+<span class="sig-name descname"><span class="pre">resize_token_embeddings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_num_tokens</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.sparse.Embedding</span></span></span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartForConditionalGeneration.resize_token_embeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.resize_token_embeddings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes input token embeddings matrix of the model if <code class="xref py py-obj docutils literal notranslate"><span class="pre">new_num_tokens</span> <span class="pre">!=</span> <span class="pre">config.vocab_size</span></code>.</p>
+<p>Takes care of tying weights embeddings afterwards if the model class has a <code class="xref py py-obj docutils literal notranslate"><span class="pre">tie_weights()</span></code> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_num_tokens</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, <cite>optional</cite>) – The number of new tokens in the embedding matrix. Increasing the size will add newly initialized
+vectors at the end. Reducing the size will remove vectors from the end. If not provided or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>,
+just returns a pointer to the input tokens <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.nn.Embedding</span></code> module of the model wihtout doing
+anything.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Pointer to the input tokens Embeddings Module of the model.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.nn.Embedding</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_outputs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_input_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">past_key_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_prompt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_attentions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_hidden_states</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">unused</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartForConditionalGeneration.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">BartForConditionalGeneration</span></code> forward method, overrides the <code class="xref py py-func docutils literal notranslate"><span class="pre">__call__()</span></code> special method.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+pre and post processing steps while the latter silently ignores them.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_ids</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.LongTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length)</span></code>) – <p>Indices of input sequence tokens in the vocabulary. Padding will be ignored by default should you provide
+it.</p>
+<p>Indices can be obtained using <code class="xref py py-class docutils literal notranslate"><span class="pre">BartTokenizer</span></code>.
+See <code class="xref py py-meth docutils literal notranslate"><span class="pre">transformers.PreTrainedTokenizer.encode()</span></code> and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">transformers.PreTrainedTokenizer.__call__()</span></code> for details.</p>
+<p><a class="reference external" href="../glossary.html#input-ids">What are input IDs?</a></p>
+</p></li>
+<li><p><strong>attention_mask</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.Tensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length)</span></code>, <cite>optional</cite>) – <p>Mask to avoid performing attention on padding token indices.
+Mask values selected in <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>:</p>
+<ul>
+<li><p>1 for tokens that are <strong>not masked</strong>,</p></li>
+<li><p>0 for tokens that are <strong>masked</strong>.</p></li>
+</ul>
+<p><a class="reference external" href="../glossary.html#attention-mask">What are attention masks?</a></p>
+</p></li>
+<li><p><strong>decoder_input_ids</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.LongTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">target_sequence_length)</span></code>, <cite>optional</cite>) – Provide for translation and summarization training. By default, the model will create this tensor by
+shifting the <code class="xref py py-obj docutils literal notranslate"><span class="pre">input_ids</span></code> to the right, following the paper.</p></li>
+<li><p><strong>decoder_attention_mask</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.BoolTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">tgt_seq_len)</span></code>, <cite>optional</cite>) – <p>Default behavior: generate a tensor that ignores pad tokens in <code class="xref py py-obj docutils literal notranslate"><span class="pre">decoder_input_ids</span></code>. Causal mask will
+also be used by default.</p>
+<p>If you want to change padding behavior, you should read <code class="xref py py-func docutils literal notranslate"><span class="pre">modeling_bart._prepare_decoder_inputs()</span></code> and
+modify to your needs. See diagram 1 in <a class="reference external" href="https://arxiv.org/abs/1910.13461">the paper</a> for more
+information on the default strategy.</p>
+</p></li>
+<li><p><strong>encoder_outputs</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>) – Tuple consists of (<code class="xref py py-obj docutils literal notranslate"><span class="pre">last_hidden_state</span></code>, <cite>optional</cite>: <code class="xref py py-obj docutils literal notranslate"><span class="pre">hidden_states</span></code>, <cite>optional</cite>: <code class="xref py py-obj docutils literal notranslate"><span class="pre">attentions</span></code>)
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">last_hidden_state</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>, <cite>optional</cite>) is a
+sequence of hidden-states at the output of the last layer of the encoder. Used in the cross-attention of
+the decoder.</p></li>
+<li><p><strong>past_key_values</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(tuple(torch.FloatTensor))</span></code> of length <code class="xref py py-obj docutils literal notranslate"><span class="pre">config.n_layers</span></code> with each tuple having 4 tensors of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length</span> <span class="pre">-</span> <span class="pre">1,</span> <span class="pre">embed_size_per_head)</span></code>) – <p>Contains precomputed key and value hidden-states of the attention blocks. Can be used to speed up decoding.</p>
+<p>If <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code> are used, the user can optionally input only the last
+<code class="docutils literal notranslate"><span class="pre">decoder_input_ids</span></code> (those that don’t have their past key value states given to this model) of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">1)</span></code> instead of all <code class="docutils literal notranslate"><span class="pre">decoder_input_ids</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length)</span></code>.</p>
+</p></li>
+<li><p><strong>use_cache</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – If set to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code> key value states are returned and can be used to speed up
+decoding (see <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code>).</p></li>
+<li><p><strong>output_attentions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – Whether or not to return the attentions tensors of all attention layers. See <code class="docutils literal notranslate"><span class="pre">attentions</span></code> under returned
+tensors for more detail.</p></li>
+<li><p><strong>output_hidden_states</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – Whether or not to return the hidden states of all layers. See <code class="docutils literal notranslate"><span class="pre">hidden_states</span></code> under returned tensors for
+more detail.</p></li>
+<li><p><strong>return_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – Whether or not to return a <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelOutput</span></code> instead of a plain tuple.</p></li>
+<li><p><strong>labels</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.LongTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length)</span></code>, <cite>optional</cite>) – Labels for computing the masked language modeling loss.
+Indices should either be in <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">...,</span> <span class="pre">config.vocab_size]</span></code> or -100 (see <code class="docutils literal notranslate"><span class="pre">input_ids</span></code> docstring).
+Tokens with indices set to <code class="docutils literal notranslate"><span class="pre">-100</span></code> are ignored (masked), the loss is only computed for the tokens
+with labels in <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">...,</span> <span class="pre">config.vocab_size]</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Seq2SeqLMOutput</span></code> (if <code class="docutils literal notranslate"><span class="pre">return_dict=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.return_dict=True</span></code>) or a
+tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> comprising various elements depending on the configuration
+(<code class="xref py py-class docutils literal notranslate"><span class="pre">BartConfig</span></code>) and inputs.</p>
+<ul>
+<li><p><strong>loss</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(1,)</span></code>, <cite>optional</cite>, returned when <code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code> is provided) – Languaged modeling loss.</p></li>
+<li><p><strong>logits</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">config.vocab_size)</span></code>) – Prediction scores of the language modeling head (scores for each vocabulary token before SoftMax).</p></li>
+<li><p><strong>past_key_values</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">List[torch.FloatTensor]</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">use_cache=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.use_cache=True</span></code>) – List of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of length <code class="xref py py-obj docutils literal notranslate"><span class="pre">config.n_layers</span></code>,  with each tensor of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length,</span> <span class="pre">embed_size_per_head)</span></code>).</p>
+<p>Contains pre-computed hidden-states (key and values in the attention blocks) of the decoder that can be
+used (see <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code> input) to speed up sequential decoding.</p>
+</li>
+<li><p><strong>decoder_hidden_states</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_hidden_states=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_hidden_states=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for the output of the embeddings + one for the output of each layer)
+of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>.</p>
+<p>Hidden-states of the decoder at the output of each layer plus the initial embedding outputs.</p>
+</li>
+<li><p><strong>decoder_attentions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_attentions=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_attentions=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for each layer) of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length,</span> <span class="pre">sequence_length)</span></code>.</p>
+<p>Attentions weights of the decoder, after the attention softmax, used to compute the weighted average in the
+self-attention heads.</p>
+</li>
+<li><p><strong>encoder_last_hidden_state</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>, <cite>optional</cite>) – Sequence of hidden-states at the output of the last layer of the encoder of the model.</p></li>
+<li><p><strong>encoder_hidden_states</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_hidden_states=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_hidden_states=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for the output of the embeddings + one for the output of each layer)
+of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>.</p>
+<p>Hidden-states of the encoder at the output of each layer plus the initial embedding outputs.</p>
+</li>
+<li><p><strong>encoder_attentions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_attentions=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_attentions=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for each layer) of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length,</span> <span class="pre">sequence_length)</span></code>.</p>
+<p>Attentions weights of the encoder, after the attention softmax, used to compute the weighted average in the
+self-attention heads.</p>
+</li>
+</ul>
+<p>Conditional generation example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Mask filling only works for bart-large</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">BartTokenizer</span><span class="p">,</span> <span class="n">BartForConditionalGeneration</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">BartTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;facebook/bart-large&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TXT</span> <span class="o">=</span> <span class="s2">&quot;My friends are &lt;mask&gt; but they eat too many carbs.&quot;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">BartForConditionalGeneration</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;facebook/bart-large&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">([</span><span class="n">TXT</span><span class="p">],</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s1">&#39;pt&#39;</span><span class="p">)[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span><span class="o">.</span><span class="n">logits</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">masked_index</span> <span class="o">=</span> <span class="p">(</span><span class="n">input_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">mask_token_id</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">probs</span> <span class="o">=</span> <span class="n">logits</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">masked_index</span><span class="p">]</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">values</span><span class="p">,</span> <span class="n">predictions</span> <span class="o">=</span> <span class="n">probs</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># [&#39;good&#39;, &#39;great&#39;, &#39;all&#39;, &#39;really&#39;, &#39;very&#39;]</span>
+</pre></div>
+</div>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Seq2SeqLMOutput</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code></p>
+</dd>
+</dl>
+<p>Summarization example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">BartTokenizer</span><span class="p">,</span> <span class="n">BartForConditionalGeneration</span><span class="p">,</span> <span class="n">BartConfig</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># see ``examples/summarization/bart/run_eval.py`` for a longer example</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">BartForConditionalGeneration</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;facebook/bart-large-cnn&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">BartTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;facebook/bart-large-cnn&#39;</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ARTICLE_TO_SUMMARIZE</span> <span class="o">=</span> <span class="s2">&quot;My friends are cool but they eat too many carbs.&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">([</span><span class="n">ARTICLE_TO_SUMMARIZE</span><span class="p">],</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s1">&#39;pt&#39;</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Generate Summary</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">summary_ids</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">],</span> <span class="n">num_beams</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">early_stopping</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">([</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clean_up_tokenization_spaces</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">summary_ids</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.prepare_inputs_for_generation">
+<span class="sig-name descname"><span class="pre">prepare_inputs_for_generation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decoder_input_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">past</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartForConditionalGeneration.prepare_inputs_for_generation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.prepare_inputs_for_generation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implement in subclasses of <code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedModel</span></code> for custom behavior to prepare inputs in the
+generate method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.adjust_logits_during_generation">
+<span class="sig-name descname"><span class="pre">adjust_logits_during_generation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cur_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_length</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartForConditionalGeneration.adjust_logits_during_generation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.adjust_logits_during_generation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implement in subclasses of <code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedModel</span></code> for custom behavior to adjust the logits in
+the generate method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.get_encoder">
+<span class="sig-name descname"><span class="pre">get_encoder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartForConditionalGeneration.get_encoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.get_encoder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.get_output_embeddings">
+<span class="sig-name descname"><span class="pre">get_output_embeddings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartForConditionalGeneration.get_output_embeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForConditionalGeneration.get_output_embeddings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the model’s output embeddings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A torch module mapping hidden states to vocabulary.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">nn.Module</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForSequenceClassification">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">BartForSequenceClassification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">transformers.configuration_bart.BartConfig</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartForSequenceClassification"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForSequenceClassification" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel" title="deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel</span></code></a></p>
+<p>Bart model with a sequence classification/head on top (a linear layer on top of the pooled output) e.g. for GLUE tasks.</p>
+<p>This model inherits from <code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedModel</span></code>. Check the superclass documentation for the generic
+methods the library implements for all its model (such as downloading or saving, resizing the input embeddings,
+pruning heads etc.)</p>
+<p>This model is also a PyTorch <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#torch.nn.Module">torch.nn.Module</a> subclass.
+Use it as a regular PyTorch Module and refer to the PyTorch documentation for all matter related to general
+usage and behavior.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">BartConfig</span></code>) – Model configuration class with all the parameters of the model.
+Initializing with a config file does not load the weights associated with the model, only the configuration.
+Check out the <code class="xref py py-meth docutils literal notranslate"><span class="pre">from_pretrained()</span></code> method to load the model weights.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForSequenceClassification.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_input_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_outputs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_attentions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_hidden_states</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartForSequenceClassification.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForSequenceClassification.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">BartForSequenceClassification</span></code> forward method, overrides the <code class="xref py py-func docutils literal notranslate"><span class="pre">__call__()</span></code> special method.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+pre and post processing steps while the latter silently ignores them.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_ids</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.LongTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length)</span></code>) – <p>Indices of input sequence tokens in the vocabulary. Padding will be ignored by default should you provide
+it.</p>
+<p>Indices can be obtained using <code class="xref py py-class docutils literal notranslate"><span class="pre">BartTokenizer</span></code>.
+See <code class="xref py py-meth docutils literal notranslate"><span class="pre">transformers.PreTrainedTokenizer.encode()</span></code> and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">transformers.PreTrainedTokenizer.__call__()</span></code> for details.</p>
+<p><a class="reference external" href="../glossary.html#input-ids">What are input IDs?</a></p>
+</p></li>
+<li><p><strong>attention_mask</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.Tensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length)</span></code>, <cite>optional</cite>) – <p>Mask to avoid performing attention on padding token indices.
+Mask values selected in <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>:</p>
+<ul>
+<li><p>1 for tokens that are <strong>not masked</strong>,</p></li>
+<li><p>0 for tokens that are <strong>masked</strong>.</p></li>
+</ul>
+<p><a class="reference external" href="../glossary.html#attention-mask">What are attention masks?</a></p>
+</p></li>
+<li><p><strong>decoder_input_ids</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.LongTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">target_sequence_length)</span></code>, <cite>optional</cite>) – Provide for translation and summarization training. By default, the model will create this tensor by
+shifting the <code class="xref py py-obj docutils literal notranslate"><span class="pre">input_ids</span></code> to the right, following the paper.</p></li>
+<li><p><strong>decoder_attention_mask</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.BoolTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">tgt_seq_len)</span></code>, <cite>optional</cite>) – <p>Default behavior: generate a tensor that ignores pad tokens in <code class="xref py py-obj docutils literal notranslate"><span class="pre">decoder_input_ids</span></code>. Causal mask will
+also be used by default.</p>
+<p>If you want to change padding behavior, you should read <code class="xref py py-func docutils literal notranslate"><span class="pre">modeling_bart._prepare_decoder_inputs()</span></code> and
+modify to your needs. See diagram 1 in <a class="reference external" href="https://arxiv.org/abs/1910.13461">the paper</a> for more
+information on the default strategy.</p>
+</p></li>
+<li><p><strong>encoder_outputs</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>) – Tuple consists of (<code class="xref py py-obj docutils literal notranslate"><span class="pre">last_hidden_state</span></code>, <cite>optional</cite>: <code class="xref py py-obj docutils literal notranslate"><span class="pre">hidden_states</span></code>, <cite>optional</cite>: <code class="xref py py-obj docutils literal notranslate"><span class="pre">attentions</span></code>)
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">last_hidden_state</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>, <cite>optional</cite>) is a
+sequence of hidden-states at the output of the last layer of the encoder. Used in the cross-attention of
+the decoder.</p></li>
+<li><p><strong>past_key_values</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(tuple(torch.FloatTensor))</span></code> of length <code class="xref py py-obj docutils literal notranslate"><span class="pre">config.n_layers</span></code> with each tuple having 4 tensors of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length</span> <span class="pre">-</span> <span class="pre">1,</span> <span class="pre">embed_size_per_head)</span></code>) – <p>Contains precomputed key and value hidden-states of the attention blocks. Can be used to speed up decoding.</p>
+<p>If <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code> are used, the user can optionally input only the last
+<code class="docutils literal notranslate"><span class="pre">decoder_input_ids</span></code> (those that don’t have their past key value states given to this model) of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">1)</span></code> instead of all <code class="docutils literal notranslate"><span class="pre">decoder_input_ids</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length)</span></code>.</p>
+</p></li>
+<li><p><strong>use_cache</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – If set to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code> key value states are returned and can be used to speed up
+decoding (see <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code>).</p></li>
+<li><p><strong>output_attentions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – Whether or not to return the attentions tensors of all attention layers. See <code class="docutils literal notranslate"><span class="pre">attentions</span></code> under returned
+tensors for more detail.</p></li>
+<li><p><strong>output_hidden_states</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – Whether or not to return the hidden states of all layers. See <code class="docutils literal notranslate"><span class="pre">hidden_states</span></code> under returned tensors for
+more detail.</p></li>
+<li><p><strong>return_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – Whether or not to return a <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelOutput</span></code> instead of a plain tuple.</p></li>
+<li><p><strong>labels</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.LongTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,)</span></code>, <cite>optional</cite>) – Labels for computing the sequence classification/regression loss.
+Indices should be in <code class="xref py py-obj docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">...,</span> <span class="pre">config.num_labels</span> <span class="pre">-</span> <span class="pre">1]</span></code>.
+If <code class="xref py py-obj docutils literal notranslate"><span class="pre">config.num_labels</span> <span class="pre">&gt;</span> <span class="pre">1</span></code> a classification loss is computed (Cross-Entropy).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Seq2SeqSequenceClassifierOutput</span></code> (if <code class="docutils literal notranslate"><span class="pre">return_dict=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.return_dict=True</span></code>) or a
+tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> comprising various elements depending on the configuration
+(<code class="xref py py-class docutils literal notranslate"><span class="pre">BartConfig</span></code>) and inputs.</p>
+<ul>
+<li><p><strong>loss</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(1,)</span></code>, <cite>optional</cite>, returned when <code class="xref py py-obj docutils literal notranslate"><span class="pre">label</span></code> is provided) – Classification (or regression if config.num_labels==1) loss.</p></li>
+<li><p><strong>logits</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">config.num_labels)</span></code>) – Classification (or regression if config.num_labels==1) scores (before SoftMax).</p></li>
+<li><p><strong>past_key_values</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">List[torch.FloatTensor]</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">use_cache=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.use_cache=True</span></code>) – List of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of length <code class="xref py py-obj docutils literal notranslate"><span class="pre">config.n_layers</span></code>,  with each tensor of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length,</span> <span class="pre">embed_size_per_head)</span></code>).</p>
+<p>Contains pre-computed hidden-states (key and values in the attention blocks) of the decoder that can be
+used (see <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code> input) to speed up sequential decoding.</p>
+</li>
+<li><p><strong>decoder_hidden_states</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_hidden_states=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_hidden_states=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for the output of the embeddings + one for the output of each layer)
+of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>.</p>
+<p>Hidden-states of the decoder at the output of each layer plus the initial embedding outputs.</p>
+</li>
+<li><p><strong>decoder_attentions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_attentions=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_attentions=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for each layer) of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length,</span> <span class="pre">sequence_length)</span></code>.</p>
+<p>Attentions weights of the decoder, after the attention softmax, used to compute the weighted average in the
+self-attention heads.</p>
+</li>
+<li><p><strong>encoder_last_hidden_state</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>, <cite>optional</cite>) – Sequence of hidden-states at the output of the last layer of the encoder of the model.</p></li>
+<li><p><strong>encoder_hidden_states</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_hidden_states=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_hidden_states=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for the output of the embeddings + one for the output of each layer)
+of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>.</p>
+<p>Hidden-states of the encoder at the output of each layer plus the initial embedding outputs.</p>
+</li>
+<li><p><strong>encoder_attentions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_attentions=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_attentions=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for each layer) of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length,</span> <span class="pre">sequence_length)</span></code>.</p>
+<p>Attentions weights of the encoder, after the attention softmax, used to compute the weighted average in the
+self-attention heads.</p>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Seq2SeqSequenceClassifierOutput</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code></p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">BartTokenizer</span><span class="p">,</span> <span class="n">BartForSequenceClassification</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">BartTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;facebook/bart-large&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">BartForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;facebook/bart-large&#39;</span><span class="p">,</span> <span class="n">return_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="s2">&quot;Hello, my dog is cute&quot;</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Batch size 1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">loss</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logits</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">logits</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForQuestionAnswering">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">BartForQuestionAnswering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartForQuestionAnswering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForQuestionAnswering" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel" title="deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.PretrainedBartModel</span></code></a></p>
+<p>BART Model with a span classification head on top for extractive question-answering tasks like SQuAD (a linear layer on top of
+the hidden-states output to compute <cite>span start logits</cite> and <cite>span end logits</cite>).</p>
+<p>This model inherits from <code class="xref py py-class docutils literal notranslate"><span class="pre">PreTrainedModel</span></code>. Check the superclass documentation for the generic
+methods the library implements for all its model (such as downloading or saving, resizing the input embeddings,
+pruning heads etc.)</p>
+<p>This model is also a PyTorch <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#torch.nn.Module">torch.nn.Module</a> subclass.
+Use it as a regular PyTorch Module and refer to the PyTorch documentation for all matter related to general
+usage and behavior.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">BartConfig</span></code>) – Model configuration class with all the parameters of the model.
+Initializing with a config file does not load the weights associated with the model, only the configuration.
+Check out the <code class="xref py py-meth docutils literal notranslate"><span class="pre">from_pretrained()</span></code> method to load the model weights.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForQuestionAnswering.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_input_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_outputs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_positions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_positions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_attentions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_hidden_states</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#BartForQuestionAnswering.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.BartForQuestionAnswering.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">BartForQuestionAnswering</span></code> forward method, overrides the <code class="xref py py-func docutils literal notranslate"><span class="pre">__call__()</span></code> special method.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+pre and post processing steps while the latter silently ignores them.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_ids</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.LongTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length)</span></code>) – <p>Indices of input sequence tokens in the vocabulary. Padding will be ignored by default should you provide
+it.</p>
+<p>Indices can be obtained using <code class="xref py py-class docutils literal notranslate"><span class="pre">BartTokenizer</span></code>.
+See <code class="xref py py-meth docutils literal notranslate"><span class="pre">transformers.PreTrainedTokenizer.encode()</span></code> and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">transformers.PreTrainedTokenizer.__call__()</span></code> for details.</p>
+<p><a class="reference external" href="../glossary.html#input-ids">What are input IDs?</a></p>
+</p></li>
+<li><p><strong>attention_mask</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.Tensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length)</span></code>, <cite>optional</cite>) – <p>Mask to avoid performing attention on padding token indices.
+Mask values selected in <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>:</p>
+<ul>
+<li><p>1 for tokens that are <strong>not masked</strong>,</p></li>
+<li><p>0 for tokens that are <strong>masked</strong>.</p></li>
+</ul>
+<p><a class="reference external" href="../glossary.html#attention-mask">What are attention masks?</a></p>
+</p></li>
+<li><p><strong>decoder_input_ids</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.LongTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">target_sequence_length)</span></code>, <cite>optional</cite>) – Provide for translation and summarization training. By default, the model will create this tensor by
+shifting the <code class="xref py py-obj docutils literal notranslate"><span class="pre">input_ids</span></code> to the right, following the paper.</p></li>
+<li><p><strong>decoder_attention_mask</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.BoolTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">tgt_seq_len)</span></code>, <cite>optional</cite>) – <p>Default behavior: generate a tensor that ignores pad tokens in <code class="xref py py-obj docutils literal notranslate"><span class="pre">decoder_input_ids</span></code>. Causal mask will
+also be used by default.</p>
+<p>If you want to change padding behavior, you should read <code class="xref py py-func docutils literal notranslate"><span class="pre">modeling_bart._prepare_decoder_inputs()</span></code> and
+modify to your needs. See diagram 1 in <a class="reference external" href="https://arxiv.org/abs/1910.13461">the paper</a> for more
+information on the default strategy.</p>
+</p></li>
+<li><p><strong>encoder_outputs</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>) – Tuple consists of (<code class="xref py py-obj docutils literal notranslate"><span class="pre">last_hidden_state</span></code>, <cite>optional</cite>: <code class="xref py py-obj docutils literal notranslate"><span class="pre">hidden_states</span></code>, <cite>optional</cite>: <code class="xref py py-obj docutils literal notranslate"><span class="pre">attentions</span></code>)
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">last_hidden_state</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>, <cite>optional</cite>) is a
+sequence of hidden-states at the output of the last layer of the encoder. Used in the cross-attention of
+the decoder.</p></li>
+<li><p><strong>past_key_values</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(tuple(torch.FloatTensor))</span></code> of length <code class="xref py py-obj docutils literal notranslate"><span class="pre">config.n_layers</span></code> with each tuple having 4 tensors of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length</span> <span class="pre">-</span> <span class="pre">1,</span> <span class="pre">embed_size_per_head)</span></code>) – <p>Contains precomputed key and value hidden-states of the attention blocks. Can be used to speed up decoding.</p>
+<p>If <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code> are used, the user can optionally input only the last
+<code class="docutils literal notranslate"><span class="pre">decoder_input_ids</span></code> (those that don’t have their past key value states given to this model) of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">1)</span></code> instead of all <code class="docutils literal notranslate"><span class="pre">decoder_input_ids</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length)</span></code>.</p>
+</p></li>
+<li><p><strong>use_cache</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – If set to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code> key value states are returned and can be used to speed up
+decoding (see <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code>).</p></li>
+<li><p><strong>output_attentions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – Whether or not to return the attentions tensors of all attention layers. See <code class="docutils literal notranslate"><span class="pre">attentions</span></code> under returned
+tensors for more detail.</p></li>
+<li><p><strong>output_hidden_states</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – Whether or not to return the hidden states of all layers. See <code class="docutils literal notranslate"><span class="pre">hidden_states</span></code> under returned tensors for
+more detail.</p></li>
+<li><p><strong>return_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <cite>optional</cite>) – Whether or not to return a <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelOutput</span></code> instead of a plain tuple.</p></li>
+<li><p><strong>start_positions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.LongTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,)</span></code>, <cite>optional</cite>) – Labels for position (index) of the start of the labelled span for computing the token classification loss.
+Positions are clamped to the length of the sequence (<cite>sequence_length</cite>).
+Position outside of the sequence are not taken into account for computing the loss.</p></li>
+<li><p><strong>end_positions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.LongTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,)</span></code>, <cite>optional</cite>) – Labels for position (index) of the end of the labelled span for computing the token classification loss.
+Positions are clamped to the length of the sequence (<cite>sequence_length</cite>).
+Position outside of the sequence are not taken into account for computing the loss.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Seq2SeqQuestionAnsweringModelOutput</span></code> (if <code class="docutils literal notranslate"><span class="pre">return_dict=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.return_dict=True</span></code>) or a
+tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> comprising various elements depending on the configuration
+(<code class="xref py py-class docutils literal notranslate"><span class="pre">BartConfig</span></code>) and inputs.</p>
+<ul>
+<li><p><strong>loss</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(1,)</span></code>, <cite>optional</cite>, returned when <code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code> is provided) – Total span extraction loss is the sum of a Cross-Entropy for the start and end positions.</p></li>
+<li><p><strong>start_logits</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length)</span></code>) – Span-start scores (before SoftMax).</p></li>
+<li><p><strong>end_logits</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length)</span></code>) – Span-end scores (before SoftMax).</p></li>
+<li><p><strong>past_key_values</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">List[torch.FloatTensor]</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">use_cache=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.use_cache=True</span></code>) – List of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of length <code class="xref py py-obj docutils literal notranslate"><span class="pre">config.n_layers</span></code>,  with each tensor of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length,</span> <span class="pre">embed_size_per_head)</span></code>).</p>
+<p>Contains pre-computed hidden-states (key and values in the attention blocks) of the decoder that can be
+used (see <code class="xref py py-obj docutils literal notranslate"><span class="pre">past_key_values</span></code> input) to speed up sequential decoding.</p>
+</li>
+<li><p><strong>decoder_hidden_states</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_hidden_states=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_hidden_states=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for the output of the embeddings + one for the output of each layer)
+of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>.</p>
+<p>Hidden-states of the decoder at the output of each layer plus the initial embedding outputs.</p>
+</li>
+<li><p><strong>decoder_attentions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_attentions=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_attentions=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for each layer) of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length,</span> <span class="pre">sequence_length)</span></code>.</p>
+<p>Attentions weights of the decoder, after the attention softmax, used to compute the weighted average in the
+self-attention heads.</p>
+</li>
+<li><p><strong>encoder_last_hidden_state</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>, <cite>optional</cite>) – Sequence of hidden-states at the output of the last layer of the encoder of the model.</p></li>
+<li><p><strong>encoder_hidden_states</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_hidden_states=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_hidden_states=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for the output of the embeddings + one for the output of each layer)
+of shape <code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>.</p>
+<p>Hidden-states of the encoder at the output of each layer plus the initial embedding outputs.</p>
+</li>
+<li><p><strong>encoder_attentions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code>, <cite>optional</cite>, returned when <code class="docutils literal notranslate"><span class="pre">output_attentions=True</span></code> is passed or when <code class="docutils literal notranslate"><span class="pre">config.output_attentions=True</span></code>) – Tuple of <code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.FloatTensor</span></code> (one for each layer) of shape
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">num_heads,</span> <span class="pre">sequence_length,</span> <span class="pre">sequence_length)</span></code>.</p>
+<p>Attentions weights of the encoder, after the attention softmax, used to compute the weighted average in the
+self-attention heads.</p>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Seq2SeqQuestionAnsweringModelOutput</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple(torch.FloatTensor)</span></code></p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">BartTokenizer</span><span class="p">,</span> <span class="n">BartForQuestionAnswering</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">BartTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;facebook/bart-large&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">BartForQuestionAnswering</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;facebook/bart-large&#39;</span><span class="p">,</span> <span class="n">return_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">question</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Who was Jim Henson?&quot;</span><span class="p">,</span> <span class="s2">&quot;Jim Henson was a nice puppet&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s1">&#39;pt&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start_positions</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">end_positions</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">,</span> <span class="n">start_positions</span><span class="o">=</span><span class="n">start_positions</span><span class="p">,</span> <span class="n">end_positions</span><span class="o">=</span><span class="n">end_positions</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">loss</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start_scores</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">start_logits</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">end_scores</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">end_logits</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.SinusoidalPositionalEmbedding">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.name_entity_recognition.few_shot.models.modeling_bart.</span></span><span class="sig-name descname"><span class="pre">SinusoidalPositionalEmbedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#SinusoidalPositionalEmbedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.SinusoidalPositionalEmbedding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.sparse.Embedding</span></code></p>
+<p>This module produces sinusoidal positional embeddings of any length.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.name_entity_recognition.few_shot.models.modeling_bart.SinusoidalPositionalEmbedding.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/name_entity_recognition/few_shot/models/modeling_bart.html#SinusoidalPositionalEmbedding.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.name_entity_recognition.few_shot.models.modeling_bart.SinusoidalPositionalEmbedding.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input is expected to be of size [bsz x seqlen].</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="deepke.name_entity_recognition.few_shot.html" class="btn btn-neutral float-left" title="Few Shot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deepke.name_entity_recognition.few_shot.module.html" class="btn btn-neutral float-right" title="Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, ZJUNLP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

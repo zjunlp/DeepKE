@@ -1,6 +1,5 @@
-deepke.relation\_extraction.few\_shot.lit\_models package
-=========================================================
-
+Lit Models
+==========
 
 deepke.relation\_extraction.few\_shot.lit\_models.base module
 -------------------------------------------------------------

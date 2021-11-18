@@ -1,6 +1,5 @@
-deepke.attribution\_extraction.standard package
-===============================================
-
+Standard
+========
 
 
 .. toctree::
@@ -10,4 +9,3 @@ deepke.attribution\_extraction.standard package
    deepke.attribution_extraction.standard.module
    deepke.attribution_extraction.standard.tools
    deepke.attribution_extraction.standard.utils
-

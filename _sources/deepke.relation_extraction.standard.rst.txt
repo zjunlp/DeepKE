@@ -1,6 +1,5 @@
-deepke.relation\_extraction.standard package
-============================================
-
+Standard
+========
 
 .. toctree::
    :maxdepth: 4
@@ -9,4 +8,3 @@ deepke.relation\_extraction.standard package
    deepke.relation_extraction.standard.module
    deepke.relation_extraction.standard.tools
    deepke.relation_extraction.standard.utils
-

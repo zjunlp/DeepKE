@@ -95,7 +95,7 @@
 <span class="sd">            device (torch.device): device of training.</span>
 <span class="sd">            writer (class): output to tensorboard.</span>
 <span class="sd">            cfg: configutation of training.</span>
-<span class="sd">        Return:</span>
+<span class="sd">        Returns:</span>
 <span class="sd">            losses[-1] : the loss of training</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
@@ -126,7 +126,6 @@
         <span class="n">data_total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
         <span class="n">data_cal</span> <span class="o">=</span> <span class="n">data_total</span> <span class="k">if</span> <span class="n">batch_idx</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span> <span class="k">else</span> <span class="n">batch_idx</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">train_log</span> <span class="ow">and</span> <span class="n">batch_idx</span> <span class="o">%</span> <span class="n">cfg</span><span class="o">.</span><span class="n">log_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">batch_idx</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
-            <span class="c1"># p r f1 皆为 macro，因为micro时三者相同，定义为acc</span>
             <span class="n">acc</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Train Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s1">: [</span><span class="si">{</span><span class="n">data_cal</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">data_total</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="mf">100.</span> <span class="o">*</span> <span class="n">data_cal</span> <span class="o">/</span> <span class="n">data_total</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">%)]</span><span class="se">\t</span><span class="s1">&#39;</span>
                         <span class="sa">f</span><span class="s1">&#39;Loss: </span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -156,7 +155,7 @@
 <span class="sd">            criterion (Callable): loss criterion of validating.</span>
 <span class="sd">            device (torch.device): device of validating.</span>
 <span class="sd">            cfg: configutation of validating.</span>
-<span class="sd">        Return:</span>
+<span class="sd">        Returns:</span>
 <span class="sd">            f1 : f1 score</span>
 <span class="sd">            loss : the loss of validating</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -201,7 +200,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, zjunlp.</p>
+    <p>&#169; Copyright 2021, ZJUNLP.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

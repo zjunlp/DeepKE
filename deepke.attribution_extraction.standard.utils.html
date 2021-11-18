@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>deepke.attribution_extraction.standard.utils package &mdash; DeepKE 1.0.0 documentation</title>
+  <title>Utils &mdash; DeepKE 1.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -22,8 +22,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="deepke.name_entity_re package" href="deepke.name_entity_re.html" />
-    <link rel="prev" title="deepke.attribution_extraction.standard.tools package" href="deepke.attribution_extraction.standard.tools.html" /> 
+    <link rel="next" title="Name Entity Recognition" href="deepke.name_entity_recognition.html" />
+    <link rel="prev" title="Tools" href="deepke.attribution_extraction.standard.tools.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,18 +51,18 @@
 <p class="caption" role="heading"><span class="caption-text">Package</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="deepke.html">DeepKE</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="deepke.attribution_extraction.html">deepke.attribution_extraction package</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="deepke.attribution_extraction.standard.html">deepke.attribution_extraction.standard package</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="deepke.attribution_extraction.standard.models.html">deepke.attribution_extraction.standard.models package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="deepke.attribution_extraction.standard.module.html">deepke.attribution_extraction.standard.module package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="deepke.attribution_extraction.standard.tools.html">deepke.attribution_extraction.standard.tools package</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">deepke.attribution_extraction.standard.utils package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="deepke.attribution_extraction.html">Attribution Extraction</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="deepke.attribution_extraction.standard.html">Standard</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="deepke.attribution_extraction.standard.models.html">Models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deepke.attribution_extraction.standard.module.html">Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deepke.attribution_extraction.standard.tools.html">Tools</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Utils</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_re.html">deepke.name_entity_re package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="deepke.relation_extraction.html">deepke.relation_extraction package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_recognition.html">Name Entity Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepke.relation_extraction.html">Relation Extraction</a></li>
 </ul>
 </li>
 </ul>
@@ -82,9 +82,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="deepke.html">DeepKE</a> &raquo;</li>
-          <li><a href="deepke.attribution_extraction.html">deepke.attribution_extraction package</a> &raquo;</li>
-          <li><a href="deepke.attribution_extraction.standard.html">deepke.attribution_extraction.standard package</a> &raquo;</li>
-      <li>deepke.attribution_extraction.standard.utils package</li>
+          <li><a href="deepke.attribution_extraction.html">Attribution Extraction</a> &raquo;</li>
+          <li><a href="deepke.attribution_extraction.standard.html">Standard</a> &raquo;</li>
+      <li>Utils</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/tlk1997/test_doc/blob/main/docs/source/deepke.attribution_extraction.standard.utils.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -94,21 +94,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="deepke-attribution-extraction-standard-utils-package">
-<h1>deepke.attribution_extraction.standard.utils package<a class="headerlink" href="#deepke-attribution-extraction-standard-utils-package" title="Permalink to this headline">¶</a></h1>
+  <section id="utils">
+<h1>Utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h1>
 <section id="module-deepke.attribution_extraction.standard.utils.ioUtils">
 <span id="deepke-attribution-extraction-standard-utils-ioutils-module"></span><h2>deepke.attribution_extraction.standard.utils.ioUtils module<a class="headerlink" href="#module-deepke.attribution_extraction.standard.utils.ioUtils" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.utils.ioUtils.load_pkl">
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.ioUtils.</span></span><span class="sig-name descname"><span class="pre">load_pkl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/ioUtils.html#load_pkl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.ioUtils.load_pkl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read from pkl file
-Args :</p>
-<blockquote>
-<div><p>fp (String) : Address of data
-verbose (bool) : Whether to print log</p>
-</div></blockquote>
-<dl class="simple">
-<dt>Return :</dt><dd><p>data (Any) : Data after reading</p>
+:param fp: Address of data
+:type fp: String
+:param verbose: Whether to print log
+:type verbose: bool</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Data after reading</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>data (Any)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -117,26 +120,30 @@ verbose (bool) : Whether to print log</p>
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.utils.ioUtils.save_pkl">
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.ioUtils.</span></span><span class="sig-name descname"><span class="pre">save_pkl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/ioUtils.html#save_pkl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.ioUtils.save_pkl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save as pkl file
-Args :</p>
-<blockquote>
-<div><p>data (Any) : Data to save
-fp (String) : Address of data
-verbose (bool) : Whether to print log</p>
-</div></blockquote>
+:param data: Data to save
+:type data: Any
+:param fp: Address of data
+:type fp: String
+:param verbose: Whether to print log
+:type verbose: bool</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.utils.ioUtils.load_csv">
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.ioUtils.</span></span><span class="sig-name descname"><span class="pre">load_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_tsv</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/ioUtils.html#load_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.ioUtils.load_csv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read from csv file
-Args :</p>
-<blockquote>
-<div><p>fp (String) : Address of data
-is_tsv (bool) : Whether it is in excel-tab format
-verbose (bool) : Whether to print log</p>
-</div></blockquote>
-<dl class="simple">
-<dt>Return :</dt><dd><p>list(reader) (List): List data after reading</p>
+:param fp: Address of data
+:type fp: String
+:param is_tsv: Whether it is in excel-tab format
+:type is_tsv: bool
+:param verbose: Whether to print log
+:type verbose: bool</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List data after reading</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a>(reader) (List)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -145,14 +152,16 @@ verbose (bool) : Whether to print log</p>
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.utils.ioUtils.save_csv">
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.ioUtils.</span></span><span class="sig-name descname"><span class="pre">save_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_in_tsv</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_head</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/ioUtils.html#save_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.ioUtils.save_csv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save as csv file
-Args :</p>
-<blockquote>
-<div><p>data (List) : List data for saving
-fp (String) : Address of data
-save_in_tsv (bool) : Whether it is in excel-tab format
-write_head (bool) : Whether to write head
-verbose (bool) : Whether to print log</p>
-</div></blockquote>
+:param data: List data for saving
+:type data: List
+:param fp: Address of data
+:type fp: String
+:param save_in_tsv: Whether it is in excel-tab format
+:type save_in_tsv: bool
+:param write_head: Whether to write head
+:type write_head: bool
+:param verbose: Whether to print log
+:type verbose: bool</p>
 </dd></dl>
 
 <dl class="py function">
@@ -222,10 +231,8 @@ verbose (bool) : Whether to print log</p>
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.utils.nnUtils.manual_seed">
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.nnUtils.</span></span><span class="sig-name descname"><span class="pre">manual_seed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/nnUtils.html#manual_seed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.nnUtils.manual_seed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set seeds
-Args :</p>
-<blockquote>
-<div><p>seed(int): The number of setting</p>
-</div></blockquote>
+:param seed: The number of setting
+:type seed: int</p>
 </dd></dl>
 
 <dl class="py function">
@@ -233,17 +240,18 @@ Args :</p>
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.nnUtils.</span></span><span class="sig-name descname"><span class="pre">seq_len_to_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_len</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_pos_to_true</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/nnUtils.html#seq_len_to_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.nnUtils.seq_len_to_mask" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a one-dimensional array representing sequence length to a two-dimensional mask, the default position of the pad is 1.
 Convert 1-d seq_len to 2-d mask.</p>
-<dl class="simple">
-<dt>Args :</dt><dd><p>seq_len (list, np.ndarray, torch.LongTensor) : shape will be (B,)
-max_len (int): Pad the length to this length. The default (None) uses the longest length in seq_len. But in the scenario of nn.DataParallel, the seq_len of different cards may be different, so you need to pass in a max_len so that the length of the mask is from pad to that length.</p>
-</dd>
-</dl>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>shape will be (B, max_length),the element is similar to bool or torch.uint8</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seq_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>np.ndarray</em><em>, </em><em>torch.LongTensor</em>) – shape will be (B,)</p></li>
+<li><p><strong>max_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Pad the length to this length. The default (None) uses the longest length in seq_len. But in the scenario of nn.DataParallel, the seq_len of different cards may be different, so you need to pass in a max_len so that the length of the mask is from pad to that length.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>mask (np.ndarray, torch.Tensor)</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>shape will be (B, max_length),the element is similar to bool or torch.uint8</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>mask (np.ndarray, torch.Tensor)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -274,8 +282,8 @@ max_len (int): Pad the length to this length. The default (None) uses the longes
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="deepke.attribution_extraction.standard.tools.html" class="btn btn-neutral float-left" title="deepke.attribution_extraction.standard.tools package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="deepke.name_entity_re.html" class="btn btn-neutral float-right" title="deepke.name_entity_re package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="deepke.attribution_extraction.standard.tools.html" class="btn btn-neutral float-left" title="Tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deepke.name_entity_recognition.html" class="btn btn-neutral float-right" title="Name Entity Recognition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

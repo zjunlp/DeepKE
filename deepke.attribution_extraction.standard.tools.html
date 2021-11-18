@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>deepke.attribution_extraction.standard.tools package &mdash; DeepKE 1.0.0 documentation</title>
+  <title>Tools &mdash; DeepKE 1.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -22,8 +22,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="deepke.attribution_extraction.standard.utils package" href="deepke.attribution_extraction.standard.utils.html" />
-    <link rel="prev" title="deepke.attribution_extraction.standard.module package" href="deepke.attribution_extraction.standard.module.html" /> 
+    <link rel="next" title="Utils" href="deepke.attribution_extraction.standard.utils.html" />
+    <link rel="prev" title="Module" href="deepke.attribution_extraction.standard.module.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,18 +51,18 @@
 <p class="caption" role="heading"><span class="caption-text">Package</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="deepke.html">DeepKE</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="deepke.attribution_extraction.html">deepke.attribution_extraction package</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="deepke.attribution_extraction.standard.html">deepke.attribution_extraction.standard package</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="deepke.attribution_extraction.standard.models.html">deepke.attribution_extraction.standard.models package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="deepke.attribution_extraction.standard.module.html">deepke.attribution_extraction.standard.module package</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">deepke.attribution_extraction.standard.tools package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="deepke.attribution_extraction.standard.utils.html">deepke.attribution_extraction.standard.utils package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="deepke.attribution_extraction.html">Attribution Extraction</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="deepke.attribution_extraction.standard.html">Standard</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="deepke.attribution_extraction.standard.models.html">Models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deepke.attribution_extraction.standard.module.html">Module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Tools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deepke.attribution_extraction.standard.utils.html">Utils</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_re.html">deepke.name_entity_re package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="deepke.relation_extraction.html">deepke.relation_extraction package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_recognition.html">Name Entity Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepke.relation_extraction.html">Relation Extraction</a></li>
 </ul>
 </li>
 </ul>
@@ -82,9 +82,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="deepke.html">DeepKE</a> &raquo;</li>
-          <li><a href="deepke.attribution_extraction.html">deepke.attribution_extraction package</a> &raquo;</li>
-          <li><a href="deepke.attribution_extraction.standard.html">deepke.attribution_extraction.standard package</a> &raquo;</li>
-      <li>deepke.attribution_extraction.standard.tools package</li>
+          <li><a href="deepke.attribution_extraction.html">Attribution Extraction</a> &raquo;</li>
+          <li><a href="deepke.attribution_extraction.standard.html">Standard</a> &raquo;</li>
+      <li>Tools</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/tlk1997/test_doc/blob/main/docs/source/deepke.attribution_extraction.standard.tools.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -94,8 +94,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="deepke-attribution-extraction-standard-tools-package">
-<h1>deepke.attribution_extraction.standard.tools package<a class="headerlink" href="#deepke-attribution-extraction-standard-tools-package" title="Permalink to this headline">¶</a></h1>
+  <section id="tools">
+<h1>Tools<a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h1>
 <section id="module-deepke.attribution_extraction.standard.tools.dataset">
 <span id="deepke-attribution-extraction-standard-tools-dataset-module"></span><h2>deepke.attribution_extraction.standard.tools.dataset module<a class="headerlink" href="#module-deepke.attribution_extraction.standard.tools.dataset" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
@@ -184,13 +184,16 @@ This is called at the end of each epoch.
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.serializer.Serializer.serialize">
 <span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">never_split</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/serializer.html#Serializer.serialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.serializer.Serializer.serialize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split a piece of text into a vocabulary list according to the established splitting rules
-Args :</p>
-<blockquote>
-<div><p>text (String) : Text for spliting
-never_split (List) : Words not to be split, empty by default</p>
-</div></blockquote>
-<dl class="simple">
-<dt>Rerurn :</dt><dd><p>output_tokens (List): Results after spliting</p>
+:param text: Text for spliting
+:type text: String
+:param never_split: Words not to be split, empty by default
+:type never_split: List</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Results after spliting</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>output_tokens (List)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -199,12 +202,13 @@ never_split (List) : Words not to be split, empty by default</p>
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.serializer.Serializer.is_control">
 <em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">is_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/serializer.html#Serializer.is_control"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.serializer.Serializer.is_control" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine whether the character is a control character
-Arg :</p>
-<blockquote>
-<div><p>char : Character</p>
-</div></blockquote>
-<dl class="simple">
-<dt>Return :</dt><dd><p>bool : Result</p>
+:param char: Character</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Result</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -213,12 +217,13 @@ Arg :</p>
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.serializer.Serializer.is_whitespace">
 <em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">is_whitespace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/serializer.html#Serializer.is_whitespace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.serializer.Serializer.is_whitespace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine whether the character is a whitespace character
-Arg :</p>
-<blockquote>
-<div><p>char : Character</p>
-</div></blockquote>
-<dl class="simple">
-<dt>Return :</dt><dd><p>bool : Result</p>
+:param char: Character</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Result</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -227,10 +232,15 @@ Arg :</p>
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.serializer.Serializer.is_chinese_char">
 <em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">is_chinese_char</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/serializer.html#Serializer.is_chinese_char"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.serializer.Serializer.is_chinese_char" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine whether the character is a chinese character</p>
-<dl class="simple">
-<dt>Arg :</dt><dd><p>cp (char): Character</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cp</strong> (<em>char</em>) – Character</p>
 </dd>
-<dt>Return :</dt><dd><p>bool : Result</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Result</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -239,12 +249,13 @@ Arg :</p>
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.serializer.Serializer.is_punctuation">
 <em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">is_punctuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/serializer.html#Serializer.is_punctuation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.serializer.Serializer.is_punctuation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine whether the character is a punctuation character
-Arg :</p>
-<blockquote>
-<div><p>char : Character</p>
-</div></blockquote>
-<dl class="simple">
-<dt>Return :</dt><dd><p>bool : Result</p>
+:param char: Character</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Result</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -268,7 +279,7 @@ device (torch.device): device of training.
 writer (class): output to tensorboard.
 cfg: configutation of training.</p>
 </dd>
-<dt>Return:</dt><dd><p>losses[-1] : the loss of training</p>
+<dt>Returns:</dt><dd><p>losses[-1] : the loss of training</p>
 </dd>
 </dl>
 </dd>
@@ -287,7 +298,7 @@ criterion (Callable): loss criterion of validating.
 device (torch.device): device of validating.
 cfg: configutation of validating.</p>
 </dd>
-<dt>Return:</dt><dd><p>f1 : f1 score
+<dt>Returns:</dt><dd><p>f1 : f1 score
 loss : the loss of validating</p>
 </dd>
 </dl>
@@ -307,10 +318,8 @@ loss : the loss of validating</p>
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.vocab.Vocab.add_words">
 <span class="sig-name descname"><span class="pre">add_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/vocab.html#Vocab.add_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.vocab.Vocab.add_words" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add words
-Arg :</p>
-<blockquote>
-<div><p>words (List) : List of words</p>
-</div></blockquote>
+:param words: List of words
+:type words: List</p>
 </dd></dl>
 
 <dl class="py method">
@@ -332,8 +341,8 @@ Arg :</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="deepke.attribution_extraction.standard.module.html" class="btn btn-neutral float-left" title="deepke.attribution_extraction.standard.module package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="deepke.attribution_extraction.standard.utils.html" class="btn btn-neutral float-right" title="deepke.attribution_extraction.standard.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="deepke.attribution_extraction.standard.module.html" class="btn btn-neutral float-left" title="Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deepke.attribution_extraction.standard.utils.html" class="btn btn-neutral float-right" title="Utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

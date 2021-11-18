@@ -1,5 +1,5 @@
-deepke.relation\_extraction package
-===================================
+Relation Extraction
+===================
 
 
 .. toctree::

@@ -1,6 +1,5 @@
-deepke.attribution\_extraction.standard.module package
-======================================================
-
+Module
+======
 
 
 deepke.attribution\_extraction.standard.module.Attention module
