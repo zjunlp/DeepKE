@@ -22,7 +22,7 @@
     <p>A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population</p>
 </h2>
 
-DeepKE is a knowledge extraction toolkit supporting **low-resource** and **document-level** scenarios. It provides three functions based **PyTorch**, including **Named Entity Recognition**, **Relation Extraciton** and **Attribute Extraction**.
+DeepKE is a knowledge extraction toolkit supporting **low-resource** and **document-level** scenarios. It provides three functions based on **PyTorch**, including **Named Entity Recognition**, **Relation Extraciton** and **Attribute Extraction**.
 
 <br>
 
