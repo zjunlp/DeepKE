@@ -307,4 +307,4 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 
 Zhejiang University: Ningyu Zhang, Liankuan Tao, Haiyang Yu, Xiang Chen, Xin Xu, Xi Tian, Lei Li, Zhoubo Li, Shumin Deng, Yunzhi Yao, Hongbin Ye, Xin Xie, Guozhou Zheng, Huajun Chen
 
-Alibaba DAMO: Chuanqi Tan, Fei Huang
+DAMO Academy: Chuanqi Tan, Fei Huang
