@@ -26,11 +26,7 @@ DeepKE is a knowledge extraction toolkit supporting **low-resource** and **docum
 
 <br>
 
-## Online Demo
-
-[demo](https://deepke.openkg.cn)
-
-### Prediction
+## Prediction
 
 There is a demonstration of prediction.<br>
 <img src="pics/demo.gif" width="636" height="494" align=center>
