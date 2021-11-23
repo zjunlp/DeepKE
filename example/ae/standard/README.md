@@ -9,7 +9,7 @@
 - tensorboard == 2.4.1
 - matplotlib == 3.4.1
 - scikit-learn == 0.24.1
-- transformers == 4.5.0
+- transformers == 3.4.0
 - jieba == 0.42.1
 - deepke 
 
