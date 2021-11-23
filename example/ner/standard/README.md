@@ -7,8 +7,8 @@
 - pytorch-transformers == 1.2.0
 - torch == 1.5.0
 - hydra-core == 1.0.6
-- seqeval == 0.0.5
-- tqdm == 4.31.1
+- seqeval == 1.2.2
+- tqdm == 4.60.0
 - matplotlib == 3.4.1
 - deepke
 
