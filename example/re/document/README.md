@@ -4,8 +4,8 @@
 
 > python == 3.8
 
-- torch == 1.8.1
-- transformers == 4.7.0
+- torch == 1.5.0
+- transformers == 3.4.0
 - opt-einsum == 3.3.0
 - ujson
 - deepke
