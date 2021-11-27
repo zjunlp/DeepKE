@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
-LABEL maintainer="Hugging Face"
-LABEL repository="transformers"
+LABEL maintainer="ZJUNLP"
+LABEL repository="DeepKE"
 ENV PYTHON_VERSION=3.8
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -26,4 +26,3 @@ RUN conda init bash
 RUN cd ~ && \
     git clone https://github.com/zjunlp/DeepKE.git 
     
-
