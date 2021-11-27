@@ -1,7 +1,6 @@
 Tools
 =====
 
-
 deepke.relation\_extraction.standard.tools.dataset module
 ---------------------------------------------------------
 

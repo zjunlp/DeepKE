@@ -45,9 +45,9 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="start.html">Start</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#create-conda">create conda</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#install-by-pypi">install by pypi</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#install-by-setup-py">install by setup.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-environment">Create environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-by-pypi">Install by pypi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-by-setup-py">Install by setup.py</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
@@ -84,23 +84,29 @@
              
   <section id="install">
 <h1>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h1>
-<section id="create-conda">
-<h2>create conda<a class="headerlink" href="#create-conda" title="Permalink to this headline">¶</a></h2>
-<p>First , create a virtual environment (recommend anaconda)</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">deepke</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.8</span>
-<span class="n">conda</span> <span class="n">activate</span> <span class="n">deepke</span>
+<section id="create-environment">
+<h2>Create environment<a class="headerlink" href="#create-environment" title="Permalink to this headline">¶</a></h2>
+<p>Create a virtual environment directly (recommend anaconda)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create -n deepke <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8
+conda activate deepke
+</pre></div>
+</div>
+<p>We also provide dockerfile to create docker image.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> docker
+docker build -t deepke .
+conda activate deepke
 </pre></div>
 </div>
 </section>
 <section id="install-by-pypi">
-<h2>install by pypi<a class="headerlink" href="#install-by-pypi" title="Permalink to this headline">¶</a></h2>
+<h2>Install by pypi<a class="headerlink" href="#install-by-pypi" title="Permalink to this headline">¶</a></h2>
 <p>If use deepke directly</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">deepke</span>
 </pre></div>
 </div>
 </section>
 <section id="install-by-setup-py">
-<h2>install by setup.py<a class="headerlink" href="#install-by-setup-py" title="Permalink to this headline">¶</a></h2>
+<h2>Install by setup.py<a class="headerlink" href="#install-by-setup-py" title="Permalink to this headline">¶</a></h2>
 <p>If modify source codes before usage</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
 </pre></div>

@@ -89,14 +89,31 @@
 <h1>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h1>
 <section id="standard-ner">
 <h2>Standard NER<a class="headerlink" href="#standard-ner" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>The standard module is implemented by the pretrained model BERT.</p></li>
-<li><p>Enter  <code class="docutils literal notranslate"><span class="pre">DeepKE/example/ner/standard</span></code> .</p></li>
-<li><p>The dataset and parameters can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder and <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder respectively.</p></li>
-<li><p><strong>Train</strong>: <cite>python run.py</cite></p></li>
-<li><p><strong>Predict</strong>: <cite>python predict.py</cite></p></li>
-</ul>
+<p>The standard module is implemented by the pretrained model BERT.</p>
+<p><strong>Step 1</strong></p>
+<p>Enter  <code class="docutils literal notranslate"><span class="pre">DeepKE/example/ner/standard</span></code> .</p>
+<p><strong>Step 2</strong></p>
+<p>Get data:</p>
+<blockquote>
+<div><p><cite>wget 120.27.214.45/Data/ner/standard/data.tar.gz</cite></p>
+<p><cite>tar -xzvf data.tar.gz</cite></p>
+</div></blockquote>
+<p>The dataset and parameters can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder and <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder respectively.</p>
+<p><strong>Step 3</strong></p>
+<p>Train:</p>
+<blockquote>
+<div><p><cite>python run.py</cite></p>
+</div></blockquote>
+<p><strong>Step 4</strong></p>
+<p>Predict:</p>
+<blockquote>
+<div><p><cite>python predict.py</cite></p>
+</div></blockquote>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> example/ner/standard
+
+wget <span class="m">120</span>.27.214.45/Data/ner/standard/data.tar.gz
+
+tar -xzvf data.tar.gz
 
 python run.py
 
@@ -106,15 +123,35 @@ python predict.py
 </section>
 <section id="few-shot-ner">
 <h2>Few-shot NER<a class="headerlink" href="#few-shot-ner" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>This module is in the low-resouce scenario.</p></li>
-<li><p>Enter  <code class="docutils literal notranslate"><span class="pre">DeepKE/example/ner/few-shot</span></code> .</p></li>
-<li><p>The directory where the model is loaded and saved and the configuration parameters can be cusomized in the <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder.</p></li>
-<li><p><strong>Train with CoNLL-2003</strong>: <cite>python run.py</cite></p></li>
-<li><p><strong>Train in the few-shot scenario</strong>: <cite>python run.py +train=few_shot</cite>. Users can modify <cite>load_path</cite> in <code class="docutils literal notranslate"><span class="pre">conf/train/few_shot.yaml</span></code> with the use of existing loaded model.</p></li>
-<li><p><strong>Predict</strong>: add <cite>- predict</cite> to <code class="docutils literal notranslate"><span class="pre">conf/config.yaml</span></code> , modify <cite>loda_path</cite> as the model path and <cite>write_path</cite> as the path where the predicted results are saved in <code class="docutils literal notranslate"><span class="pre">conf/predict.yaml</span></code> , and then run <cite>python predict.py</cite></p></li>
-</ul>
+<p>This module is in the low-resouce scenario.</p>
+<p><strong>Step 1</strong></p>
+<p>Enter  <code class="docutils literal notranslate"><span class="pre">DeepKE/example/ner/few-shot</span></code> .</p>
+<p><strong>Step 2</strong>
+Get data:</p>
+<blockquote>
+<div><p><cite>wget 120.27.214.45/Data/ner/few_shot/data.tar.gz</cite>
+<cite>tar -xzvf data.tar.gz</cite></p>
+</div></blockquote>
+<p>The directory where the model is loaded and saved and the configuration parameters can be cusomized in the <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder.The dataset can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder.</p>
+<p><strong>Step 3</strong></p>
+<p>Train with CoNLL-2003:</p>
+<blockquote>
+<div><p><cite>python run.py</cite></p>
+</div></blockquote>
+<p>Train in the few-shot scenario:</p>
+<blockquote>
+<div><p><cite>python run.py +train=few_shot</cite>. Users can modify <cite>load_path</cite> in <code class="docutils literal notranslate"><span class="pre">conf/train/few_shot.yaml</span></code> with the use of existing loaded model.</p>
+</div></blockquote>
+<p><strong>Step 4</strong></p>
+<p>Predict:</p>
+<blockquote>
+<div><p>add <cite>- predict</cite> to <code class="docutils literal notranslate"><span class="pre">conf/config.yaml</span></code> , modify <cite>loda_path</cite> as the model path and <cite>write_path</cite> as the path where the predicted results are saved in <code class="docutils literal notranslate"><span class="pre">conf/predict.yaml</span></code> , and then run <cite>python predict.py</cite></p>
+</div></blockquote>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> example/ner/few-shot
+
+wget <span class="m">120</span>.27.214.45/Data/ner/few_shot/data.tar.gz
+
+tar -xzvf data.tar.gz
 
 python run.py
 
@@ -124,14 +161,31 @@ python predict.py
 </section>
 <section id="standard-re">
 <h2>Standard RE<a class="headerlink" href="#standard-re" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>The standard module is implemented by common deep learning models, including CNN, RNN, Capsule, GCN, Transformer and the pretrained model.</p></li>
-<li><p>Enter the <code class="docutils literal notranslate"><span class="pre">DeepKE/example/re/standard</span></code> folder.</p></li>
-<li><p>The dataset and parameters can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder and <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder respectively.</p></li>
-<li><p><strong>Train</strong>: <cite>python run.py</cite></p></li>
-<li><p><strong>Predict</strong>: <cite>python predict.py</cite></p></li>
-</ul>
+<p>The standard module is implemented by common deep learning models, including CNN, RNN, Capsule, GCN, Transformer and the pretrained model.</p>
+<p><strong>Step 1</strong></p>
+<p>Enter the <code class="docutils literal notranslate"><span class="pre">DeepKE/example/re/standard</span></code> folder.</p>
+<p><strong>Step 2</strong></p>
+<p>Get data:</p>
+<blockquote>
+<div><p><cite>wget 120.27.214.45/Data/re/standard/data.tar.gz</cite>
+<cite>tar -xzvf data.tar.gz</cite></p>
+</div></blockquote>
+<p>The dataset and parameters can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder and <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder respectively.</p>
+<p><strong>Step 3</strong></p>
+<p>Train:</p>
+<blockquote>
+<div><p><cite>python run.py</cite></p>
+</div></blockquote>
+<p><strong>Step 4</strong></p>
+<p>Predict:</p>
+<blockquote>
+<div><p><cite>python predict.py</cite></p>
+</div></blockquote>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> example/re/standard
+
+wget <span class="m">120</span>.27.214.45/Data/re/standard/data.tar.gz
+
+tar -xzvf data.tar.gz
 
 python run.py
 
@@ -141,15 +195,32 @@ python predict.py
 </section>
 <section id="few-shot-re">
 <h2>Few-shot RE<a class="headerlink" href="#few-shot-re" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>This module is in the low-resouce scenario.</p></li>
-<li><p>Enter <code class="docutils literal notranslate"><span class="pre">DeepKE/example/re/few-shot</span></code> .</p></li>
-<li><p><strong>Train</strong>: <cite>python run.py</cite>
-Start with the model trained last time: modify <cite>train_from_saved_model</cite> in <code class="docutils literal notranslate"><span class="pre">conf/train.yaml</span></code> as the path where the model trained last time was saved.
-And the path saving logs generated in training can be customized by <code class="docutils literal notranslate"><span class="pre">log_dir</span></code>.</p></li>
-<li><p><strong>Predict</strong>: <cite>python predict.py</cite></p></li>
-</ul>
+<p>This module is in the low-resouce scenario.</p>
+<p><strong>Step 1</strong></p>
+<p>Enter <code class="docutils literal notranslate"><span class="pre">DeepKE/example/re/few-shot</span></code> .</p>
+<p><strong>Step 2</strong></p>
+<p>Get data:</p>
+<blockquote>
+<div><p><cite>wget 120.27.214.45/Data/re/few_shot/data.tar.gz</cite>
+<cite>tar -xzvf data.tar.gz</cite></p>
+</div></blockquote>
+<p>The dataset and parameters can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder and <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder respectively.</p>
+<p><strong>Step 3</strong></p>
+<p>Train:</p>
+<blockquote>
+<div><p><cite>python run.py</cite></p>
+</div></blockquote>
+<p>Start with the model trained last time: modify <cite>train_from_saved_model</cite> in <code class="docutils literal notranslate"><span class="pre">conf/train.yaml</span></code> as the path where the model trained last time was saved. And the path saving logs generated in training can be customized by <code class="docutils literal notranslate"><span class="pre">log_dir</span></code>.</p>
+<p><strong>Step 4</strong></p>
+<p>Predict:</p>
+<blockquote>
+<div><p><cite>python predict.py</cite></p>
+</div></blockquote>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> example/re/few-shot
+
+wget <span class="m">120</span>.27.214.45/Data/re/few_shot/data.tar.gz
+
+tar -xzvf data.tar.gz
 
 python run.py
 
@@ -159,15 +230,32 @@ python predict.py
 </section>
 <section id="document-re">
 <h2>Document RE<a class="headerlink" href="#document-re" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Download the model <cite>train_distant.json</cite> from [<em>Google Drive</em>](<a class="reference external" href="https://drive.google.com/drive/folders/1c5-0YwnoJx8NS6CV2f-NoTHR__BdkNqw">https://drive.google.com/drive/folders/1c5-0YwnoJx8NS6CV2f-NoTHR__BdkNqw</a>) to <code class="docutils literal notranslate"><span class="pre">data/</span></code>.</p></li>
-<li><p>Enter <code class="docutils literal notranslate"><span class="pre">DeepKE/example/re/document</span></code> .</p></li>
-<li><p><strong>Train</strong>: <cite>python run.py</cite>
-Start with the model trained last time: modify <cite>train_from_saved_model</cite> in <code class="docutils literal notranslate"><span class="pre">conf/train.yaml</span></code> as the path where the model trained last time was saved.
-And the path saving logs generated in training can be customized by <code class="docutils literal notranslate"><span class="pre">log_dir</span></code>.</p></li>
-<li><p><strong>Predict</strong>: <cite>python predict.py</cite></p></li>
-</ul>
+<p>This module is in the document scenario.</p>
+<p><strong>Step 1</strong></p>
+<p>Enter <code class="docutils literal notranslate"><span class="pre">DeepKE/example/re/document</span></code> .</p>
+<p><strong>Step2</strong></p>
+<p>Get data:</p>
+<blockquote>
+<div><p><cite>wget 120.27.214.45/Data/re/document/data.tar.gz</cite></p>
+<p><cite>tar -xzvf data.tar.gz</cite></p>
+</div></blockquote>
+<p>The dataset and parameters can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder and <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder respectively.</p>
+<p><strong>Step 3</strong></p>
+<p>Train:</p>
+<blockquote>
+<div><p><cite>python run.py</cite></p>
+</div></blockquote>
+<p>Start with the model trained last time: modify <cite>train_from_saved_model</cite> in <code class="docutils literal notranslate"><span class="pre">conf/train.yaml</span></code> as the path where the model trained last time was saved. And the path saving logs generated in training can be customized by <code class="docutils literal notranslate"><span class="pre">log_dir</span></code>.</p>
+<p><strong>Step 4</strong></p>
+<p>Predict:</p>
+<blockquote>
+<div><p><cite>python predict.py</cite></p>
+</div></blockquote>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> example/re/document
+
+wget <span class="m">120</span>.27.214.45/Data/re/document/data.tar.gz
+
+tar -xzvf data.tar.gz
 
 python run.py
 
@@ -177,14 +265,31 @@ python predict.py
 </section>
 <section id="standard-ae">
 <h2>Standard AE<a class="headerlink" href="#standard-ae" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>The standard module is implemented by common deep learning models, including CNN, RNN, Capsule, GCN, Transformer and the pretrained model.</p></li>
-<li><p>Enter the <code class="docutils literal notranslate"><span class="pre">DeepKE/example/ae/standard</span></code> folder.</p></li>
-<li><p>The dataset and parameters can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder and <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder respectively.</p></li>
-<li><p><strong>Train</strong>: <cite>python run.py</cite></p></li>
-<li><p><strong>Predict</strong>: <cite>python predict.py</cite></p></li>
-</ul>
+<p>The standard module is implemented by common deep learning models, including CNN, RNN, Capsule, GCN, Transformer and the pretrained model.</p>
+<p><strong>Step 1</strong></p>
+<p>Enter the <code class="docutils literal notranslate"><span class="pre">DeepKE/example/ae/standard</span></code> folder.</p>
+<p><strong>Step 2</strong></p>
+<p>Get data:</p>
+<blockquote>
+<div><p><cite>wget 120.27.214.45/Data/ae/standard/data.tar.gz</cite></p>
+<p><cite>tar -xzvf data.tar.gz</cite></p>
+</div></blockquote>
+<p>The dataset and parameters can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder and <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder respectively.</p>
+<p><strong>Step 3</strong></p>
+<p>Train:</p>
+<blockquote>
+<div><p><cite>python run.py</cite></p>
+</div></blockquote>
+<p><strong>Step 4</strong></p>
+<p>Predict:</p>
+<blockquote>
+<div><p><cite>python predict.py</cite></p>
+</div></blockquote>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> example/ae/regular
+
+wget <span class="m">120</span>.27.214.45/Data/ae/standard/data.tar.gz
+
+tar -xzvf data.tar.gz
 
 python run.py
 

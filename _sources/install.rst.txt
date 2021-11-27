@@ -1,17 +1,25 @@
 Install
 =======
 
-create conda
-------------
+Create environment
+------------------
 
-First , create a virtual environment (recommend anaconda)
+Create a virtual environment directly (recommend anaconda)
 
-.. code-block:: python
+.. code-block:: bash
 
     conda create -n deepke python=3.8
     conda activate deepke
 
-install by pypi
+We also provide dockerfile to create docker image.
+
+.. code-block:: bash
+
+    cd docker
+    docker build -t deepke .
+    conda activate deepke
+
+Install by pypi
 ---------------
 
 If use deepke directly
@@ -21,7 +29,7 @@ If use deepke directly
     pip install deepke
 
 
-install by setup.py
+Install by setup.py
 -------------------
 
 If modify source codes before usage
