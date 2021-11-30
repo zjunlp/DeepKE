@@ -18,22 +18,23 @@
 
 <br>
 
-<h2 align="center">
-    <p>A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population</p>
-</h2>
+<h1 align="center">
+    <p>A Deep Learning Based Knowledge Extraction Toolkit<br>for Knowledge Base Population</p>
+</h1>
+
 
 DeepKE is a knowledge extraction toolkit supporting **low-resource** and **document-level** scenarios. It provides three functions based on **PyTorch**, including **Named Entity Recognition**, **Relation Extraciton** and **Attribute Extraction**.
 
 <br>
 
-## Prediction
+# Prediction
 
 There is a demonstration of prediction.<br>
 <img src="pics/demo.gif" width="636" height="494" align=center>
 
 <br>
 
-## Model Framework
+# Model Framework
 
 <h3 align="center">
     <img src="pics/architectures.png">
@@ -42,23 +43,25 @@ There is a demonstration of prediction.<br>
     Figure 1: The framework of DeepKE
 </p>
 
-- DeepKE contains three modules for **named entity recognition**, **relation extraction** and **attribute extraction**, the three tasks respectively.
-- Each module has its own submodules. For example, there are **standard**, **document-level** and **few-shot** submodules in the attribute extraction modular.
-- Each submodule compose of three parts: a **collection of tools**, which can function as tokenizer, dataloader, preprocessor and the like, a **encoder** and a part for **training and prediction**
+- DeepKE contains a unified framework for **named entity recognition**, **relation extraction** and **attribute extraction**, the three  knowledge extraction functions.
+- Each task can be implemented in different scenarios. For example, we can achieve relation extraction in **standard**, **low-resource (few-shot)** and **document-level** settings.
+- Each application scenario comprises of three components: **Data** including Tokenizer, Preprocessor and Loader, **Model** including Module, Encoder and Forwarder, **Core** including Training, Evaluation and Prediction. 
 
 <br>
 
-## Quickstart
+# Quickstart
 
-*DeepKE* is supported `pip install deepke`. Take the fully supervised attribute extraction for example.
+*DeepKE* is supported `pip install deepke`. Take the fully supervised relation extraction for example. <br>(Please star✨ and fork :memo: !!!)
 
-**Step1** Download basic codes `git clone https://github.com/zjunlp/DeepKE.git ` (Please star✨ and fork :memo:)
+**Step1** Download the basic codes
 
-**Step2** Create a virtual environment using`Anaconda` and enter it.
+```bash
+git clone https://github.com/zjunlp/DeepKE.git
+```
 
- We also provide dockerfile source code, you can create your own image, which is located in the docker folder.
+**Step2** Create a virtual environment using `Anaconda` and enter it.<br>
 
-
+We also provide dockerfile source code, you can create your own image, which is located in the `docker` folder.
 
 ```bash
 conda create -n deepke python=3.8
@@ -86,21 +89,29 @@ conda activate deepke
 cd DeepKE/example/re/standard
 ```
 
-**Step4** Training (Parameters for training can be changed in the `conf` folder)
+**Step4** Download the dataset
+
+```bash
+wget 120.27.214.45/Data/re/standard/data.tar.gz
+
+tar -xzvf data.tar.gz
+```
+
+**Step5** Training (Parameters for training can be changed in the `conf` folder)
 
 ```bash
 python run.py
 ```
 
-**Step5** Prediction (Parameters for prediction can be changed in the `conf` folder)
+**Step6** Prediction (Parameters for prediction can be changed in the `conf` folder)
 
 ```bash
 python predict.py
 ```
 
+<br>
 
-
-### Requirements
+# Requirements
 
 > python == 3.8
 
@@ -117,9 +128,11 @@ python predict.py
 - opt-einsum==3.3.0
 - ujson
 
-### Introduction of Three Functions
+<br>
 
-#### 1. Named Entity Recognition
+# Introduction of Three Functions
+
+## 1. Named Entity Recognition
 
 - Named entity recognition seeks to locate and classify named entities mentioned in unstructured text into pre-defined categories such as person names, organizations, locations, organizations, etc.
 
@@ -134,10 +147,18 @@ python predict.py
 - Read the detailed process in specific README
   - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard)**
 
-    **Step1** Enter  `DeepKE/example/ner/standard`. The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.<br>
+    **Step1** Enter  `DeepKE/example/ner/standard`.  Download the dataset.
 
-    **Step2** Training
+    ```bash
+    wget 120.27.214.45/Data/ner/standard/data.tar.gz
+    
+    tar -xzvf data.tar.gz
+    ```
 
+    **Step2** Training<br>
+
+    The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.
+  
     ```bash
     python run.py
     ```
@@ -147,26 +168,34 @@ python predict.py
     ```bash
     python predict.py
     ```
-
+  
   - **[FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/main/example/ner/few-shot)**
 
-    **Step1** Enter  `DeepKE/example/ner/few-shot`. The directory where the model is loaded and saved and the configuration parameters can be cusomized in the `conf` folder.<br>
+    **Step1** Enter  `DeepKE/example/ner/few-shot`.  Download the dataset.
 
-    **Step2** Training with default `CoNLL-2003` dataset.
-
+    ```bash
+    wget 120.27.214.45/Data/ner/few_shot/data.tar.gz
+    
+    tar -xzvf data.tar.gz
+    ```
+  
+    **Step2** Training in the low-resouce setting <br>
+  
+    The directory where the model is loaded and saved and the configuration parameters can be cusomized in the `conf` folder.
+  
     ```bash
     python run.py +train=few_shot
     ```
-
-    Users can modify `load_path` in `conf/train/few_shot.yaml` with the use of existing loaded model.<br>
-
+    
+    Users can modify `load_path` in `conf/train/few_shot.yaml` to use existing loaded model.<br>
+    
     **Step3** Add `- predict` to `conf/config.yaml`, modify `loda_path` as the model path and `write_path` as the path where the predicted results are saved in `conf/predict.yaml`, and then run `python predict.py`
-
+    
     ```bash
     python predict.py
     ```
 
-#### 2. Relation Extraction
+## 2. Relation Extraction
 
 - Relationship extraction is the task of extracting semantic relations between entities from a unstructured text.
 
@@ -180,12 +209,20 @@ python predict.py
 
 - Read the detailed process in specific README
 
-  - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/standard)** 
+  - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard)** 
 
-    **Step1** Enter the `DeepKE/example/re/standard` folder. The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.<br>
+    **Step1** Enter the `DeepKE/example/re/standard` folder.  Download the dataset.
 
-    **Step2** Training
+    ```bash
+    wget 120.27.214.45/Data/re/standard/data.tar.gz
+    
+    tar -xzvf data.tar.gz
+    ```
 
+    **Step2** Training<br>
+
+    The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.
+  
     ```bash
     python run.py
     ```
@@ -195,42 +232,58 @@ python predict.py
     ```bash
     python predict.py
     ```
+  
+  - **[FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot)**
 
-  - **[FEW-SHOT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/few-shot)**
+    **Step1** Enter `DeepKE/example/re/few-shot`. Download the dataset.
 
-    **Step1** Enter `DeepKE/example/re/few-shot`. The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.<br>
+    ```bash
+    wget 120.27.214.45/Data/re/few_shot/data.tar.gz
+    
+    tar -xzvf data.tar.gz
+    ```
 
-    **Step 2** Training. Start with the model trained last time: modify `train_from_saved_model` in `conf/train.yaml`as the path where the model trained last time was saved. And the path saving logs generated in training can be customized by `log_dir`. <br>
+    **Step 2** Training<br>
 
+    - The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.
+    - Start with the model trained last time: modify `train_from_saved_model` in `conf/train.yaml`as the path where the model trained last time was saved. And the path saving logs generated in training can be customized by `log_dir`. 
+  
     ```bash
     python run.py
     ```
-
+  
     **Step3** Prediction
-
+  
+    ```bash
+    python predict.py
+    ```
+  
+  - **[DOCUMENT](https://github.com/zjunlp/DeepKE/tree/main/example/re/document)**<br>
+  
+    **Step1** Enter `DeepKE/example/re/document`.  Download the dataset.
+  
+    ```bash
+    wget 120.27.214.45/Data/re/document/data.tar.gz
+    
+    tar -xzvf data.tar.gz
+    ```
+    
+    **Step2** Training<br>
+  
+    - The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.
+    - Start with the model trained last time: modify `train_from_saved_model` in `conf/train.yaml`as the path where the model trained last time was saved. And the path saving logs generated in training can be customized by `log_dir`. 
+    
+    ```bash
+    python run.py
+    ```
+    
+    **Step3** Prediction
+    
     ```bash
     python predict.py
     ```
 
-  - **[DOCUMENT](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/re/document)**<br>
-
-    Download the model `train_distant.json` from [*Google Drive*](https://drive.google.com/drive/folders/1c5-0YwnoJx8NS6CV2f-NoTHR__BdkNqw) to `data/`.
-
-    **Step1** Enter `DeepKE/example/re/document`. The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.<br>
-
-    **Step2** Training. Start with the model trained last time: modify `train_from_saved_model` in `conf/train.yaml`as the path where the model trained last time was saved. And the path saving logs generated in training can be customized by `log_dir`. 
-
-    ```bash
-    python run.py
-    ```
-
-    **Step3** Prediction
-
-    ```bash
-    python predict.py
-    ```
-
-#### 3. Attribute Extraction
+## 3. Attribute Extraction
 
 - Attribute extraction is to extract attributes for entities in a unstructed text.
 
@@ -243,25 +296,33 @@ python predict.py
   |        2014年10月1日许鞍华执导的电影《黄金时代》上映         | 上映时间 | 黄金时代 |     19     | 2014年10月1日 |     0      |
 
 - Read the detailed process in specific README
-  - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ae/standard)**
+  - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/DeepKE/tree/main/example/ae/standard)**
 
-    **Step1** Enter the `DeepKE/example/ae/standard` folder. The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.<br>
+    **Step1** Enter the `DeepKE/example/ae/standard` folder. Download the dataset.
 
-    **Step2** Training
+    ```bash
+    wget 120.27.214.45/Data/ae/standard/data.tar.gz
+    
+    tar -xzvf data.tar.gz
+    ```
 
+    **Step2** Training<br>
+
+    The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.
+    
     ```bash
     python run.py
     ```
-
+    
     **Step3** Prediction
-
+    
     ```bash
     python predict.py
     ```
 
+<br>
 
-
-## Notebook Tutorial
+# Notebook Tutorial
 
 This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. Users can study *DeepKE* with them.
 
@@ -297,7 +358,7 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 
 <br>
 
-## Tips
+# Tips
 
 1. Using nearest mirror, like [THU](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/) in China, will speed up the installation of *Anaconda*.
 2. Using nearest mirror, like [aliyun](http://mirrors.aliyun.com/pypi/simple/) in China, will speed up `pip install XXX`.
@@ -307,7 +368,7 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 
 <br>
 
-## Developers
+# Developers
 
 Zhejiang University: Ningyu Zhang, Liankuan Tao, Haiyang Yu, Xiang Chen, Xin Xu, Xi Tian, Lei Li, Zhoubo Li, Shumin Deng, Yunzhi Yao, Hongbin Ye, Xin Xie, Guozhou Zheng, Huajun Chen
 

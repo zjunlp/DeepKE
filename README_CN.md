@@ -47,9 +47,9 @@ DeepKE包括了三个模块，可以进行命名实体识别、关系抽取以�
 
 DeepKE支持pip安装使用，以常规全监督设定关系抽取为例，经过以下五个步骤就可以实现一个常规关系抽取模型
 
-**Step 1** 下载代码 ```git clone https://github.com/zjunlp/DeepKE.git```（别忘记star和fork哈！！！）
+**Step 1**：下载代码 ```git clone https://github.com/zjunlp/DeepKE.git```（别忘记star和fork哈！！！）
 
-**Step 2** 使用anaconda创建虚拟环境，进入虚拟环境(提供Dockerfile源码可自行创建镜像，位于docker文件夹中)
+**Step 2**：使用anaconda创建虚拟环境，进入虚拟环境(提供Dockerfile源码可自行创建镜像，位于docker文件夹中)
 
 ```
 conda create -n deepke python=3.8
@@ -70,23 +70,25 @@ python setup.py install
 python setup.py develop
 ```
 
-**Step 3**  进入任务文件夹，以常规关系抽取为例
+**Step 3** ：进入任务文件夹，以常规关系抽取为例
 
 ```
 cd DeepKE/example/re/standard
 ```
 
-**Step 4**  模型训练，训练用到的参数可在conf文件夹内修改
+**Step 4** ：模型训练，训练用到的参数可在conf文件夹内修改
 
 ```
 python run.py
 ```
 
-**Step 5**  模型预测。预测用到的参数可在conf文件夹内修改
+**Step 5** ：模型预测。预测用到的参数可在conf文件夹内修改
 
 ```
 python predict.py
 ```
+
+<br>
 
 ### 环境依赖
 
@@ -118,11 +120,19 @@ python predict.py
   | 秦始皇兵马俑位于陕西省西安市，1961年被国务院公布为第一批全国重点文物保护单位，是世界八大奇迹之一。 |           秦始皇           | 陕西省，西安市 |             国务院             |
 
 - 具体流程请进入详细的README中
-  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/main/example/ner/standard)** 
+  - **[常规全监督STANDARD](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard)** 
   
-     **Step1**: 进入`DeepKE/example/ner/standard`，数据集和参数配置可以分别在`data`和`conf`文件夹中修改；<br>
+     **Step1**: 进入`DeepKE/example/ner/standard`，下载数据集
      
-     **Step2**: 模型训练
+     ```bash
+     wget 120.27.214.45/Data/ner/standard/data.tar.gz
+     
+     tar -xzvf data.tar.gz
+     ```
+     
+     **Step2**: 模型训练<br>
+     
+     数据集和参数配置可以分别在`data`和`conf`文件夹中修改
      
      ```
      python run.py
@@ -135,9 +145,17 @@ python predict.py
      
   - **[少样本FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/main/example/ner/few-shot)** 
   
-    **Step1**: 进入`DeepKE/example/ner/few-shot`，模型加载和保存位置以及参数配置可以在`conf`文件夹中修改；<br>
+    **Step1**: 进入`DeepKE/example/ner/few-shot`，下载数据集
     
-    **Step2**：模型训练，默认使用`CoNLL-2003`数据集进行训练
+    ```bash
+    wget 120.27.214.45/Data/ner/few_shot/data.tar.gz
+    
+    tar -xzvf data.tar.gz
+    ```
+    
+    **Step2**：低资源场景下训练模型<br>
+    
+    模型加载和保存位置以及参数配置可以在`conf`文件夹中修改
     
      ```
      python run.py +train=few_shot
@@ -162,45 +180,71 @@ python predict.py
   |     提起杭州的美景，西湖总是第一个映入脑海的词语。     | 所在城市 |    西湖    |      8      |    杭州    |      2      |
 
 - 具体流程请进入详细的README中，RE包括了以下三个子功能
-  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/main/example/re/standard)**  
+  - **[常规全监督STANDARD](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard)**  
 
-    **Step1**：进入`DeepKE/example/re/standard`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
+    **Step1**：进入`DeepKE/example/re/standard`，下载数据集
+  
+    ```bash
+    wget 120.27.214.45/Data/re/standard/data.tar.gz
     
-    **Step2**：模型训练
+    tar -xzvf data.tar.gz
+    ```
+  
+    **Step2**：模型训练<br>
 
+    数据集和参数配置可以分别进入`data`和`conf`文件夹中修改
+  
     ```
     python run.py
     ```
-    
+  
     **Step3**：模型预测
-
+  
     ```
     python predict.py
     ```
   
-  - **[少样本FEW-SHOT](https://github.com/zjunlp/deepke/blob/main/example/re/few-shot)**
+  - **[少样本FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot)**
   
-    **Step1**：进入`DeepKE/example/re/few-shot`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
-  
-    **Step2**：模型训练，如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`train_from_saved_model`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置；<br>
+    **Step1**：进入`DeepKE/example/re/few-shot`，下载数据集
+
+    ```bash
+    wget 120.27.214.45/Data/re/few_shot/data.tar.gz
     
+    tar -xzvf data.tar.gz
+    ```
+  
+    **Step2**：模型训练<br>
+  
+    - 数据集和参数配置可以分别进入`data`和`conf`文件夹中修改
+  
+    - 如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`train_from_saved_model`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置
+  
     ```
     python run.py
     ```
-    
+  
     **Step3**：模型预测
-
+  
     ```
     python predict.py
     ```
-
-  - **[文档级DOCUMENT](https://github.com/zjunlp/deepke/blob/main/example/re/document)** <br>
-    ```train_distant.json```由于文件太大，请自行从Google Drive上下载到data/目录下；<br>
+  
+  - **[文档级DOCUMENT](https://github.com/zjunlp/DeepKE/tree/main/example/re/document)** <br>
     
-    **Step1**：进入`DeepKE/example/re/document`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
-  
-    **Step2**：模型训练，如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`train_from_saved_model`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置；
-  
+    **Step1**：进入`DeepKE/example/re/document`，下载数据集
+    
+    ```bash
+    wget 120.27.214.45/Data/re/document/data.tar.gz
+    
+    tar -xzvf data.tar.gz
+    ```
+    
+    **Step2**：模型训练<br>
+    
+    - 数据集和参数配置可以分别进入`data`和`conf`文件夹中修改
+    - 如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`train_from_saved_model`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置；
+    
     ```
     python run.py
     ```
@@ -221,21 +265,31 @@ python predict.py
   |        2014年10月1日许鞍华执导的电影《黄金时代》上映         | 上映时间 | 黄金时代 |     19     | 2014年10月1日 |     0      |
 
 - 具体流程请进入详细的README中
-  - **[常规全监督STANDARD](https://github.com/zjunlp/deepke/blob/main/example/ae/standard)**  
+  - **[常规全监督STANDARD](https://github.com/zjunlp/DeepKE/tree/main/example/ae/standard)**  
     
-    **Step1**：进入`DeepKE/example/re/standard`，数据集和参数配置可以分别进入`data`和`conf`文件夹中修改；<br>
+    **Step1**：进入`DeepKE/example/re/standard`，下载数据集
     
-    **Step2**：模型训练
+    ```bash
+    wget 120.27.214.45/Data/ae/standard/data.tar.gz
+    
+    tar -xzvf data.tar.gz
+    ```
+    
+    **Step2**：模型训练<br>
 
+    数据集和参数配置可以分别进入`data`和`conf`文件夹中修改
+    
     ```
     python run.py
     ```
     
     **Step3**：模型预测
-
+    
     ```
     python predict.py
     ```
+
+<br>
 
 ### Notebook教程
 
