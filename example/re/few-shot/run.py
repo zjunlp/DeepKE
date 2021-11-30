@@ -15,6 +15,8 @@ from tqdm import tqdm
 
 from deepke.relation_extraction.few_shot import *
 
+import wandb
+
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 
@@ -28,6 +30,8 @@ def logging(log_dir, s, print_=True, log_=True):
                 f_log.write(s + '\n')
 
 
+wandb.init(project="DeepKE_RE_Few")
+wandb.watch_called = False
 @hydra.main(config_path="conf/config.yaml")
 def main(cfg):
     cwd = get_original_cwd()
@@ -54,8 +58,11 @@ def main(cfg):
     #     model = torch.nn.DataParallel(model, device_ids = list(range(torch.cuda.device_count())))
 
     model.to(device)
+    wandb.watch(model, log="all")
 
     lit_model = BertLitModel(args=cfg, model=model, tokenizer=data.tokenizer)
+
+
     data.setup()
     
     if cfg.train_from_saved_model != '':
@@ -102,6 +109,11 @@ def main(cfg):
                     , print_=False)
                 log_loss = 0
         avrg_loss = total_loss / num_batch
+
+        wandb.log({
+                "train_loss": avrg_loss
+            })
+
         logging(cfg.log_dir,
             '| epoch {:2d} | train loss {:5.3f}'.format(
                 epoch, avrg_loss * 1000))
@@ -120,6 +132,12 @@ def main(cfg):
             logging(cfg.log_dir,
                 '| best_f1: {}'.format(best_f1))
             logging(cfg.log_dir,'-' * 89)
+
+            wandb.log({
+                "dev_result": f1,
+                "best_f1":best_f1
+            })
+            
             if cfg.save_path != "" and best != -1:
                 save_path = cfg.save_path
                 torch.save({

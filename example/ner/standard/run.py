@@ -19,6 +19,9 @@ import hydra
 from hydra import utils
 from deepke.name_entity_re.standard import *
 
+import wandb
+
+
 logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt = '%m/%d/%Y %H:%M:%S',
                     level = logging.INFO)
@@ -53,7 +56,7 @@ class TrainNer(BertForTokenClassification):
         else:
             return logits
 
-
+wandb.init(project="DeepKE_NER_Standard")
 @hydra.main(config_path="conf", config_name='config')
 def main(cfg):
     
@@ -148,7 +151,9 @@ def main(cfg):
                     scheduler.step()  # Update learning rate schedule
                     model.zero_grad()
                     global_step += 1
-
+            wandb.log({
+                "train_loss":tr_loss/nb_tr_steps
+            })
         # Save a trained model and the associated configuration
         model_to_save = model.module if hasattr(model, 'module') else model  # Only save the model it-self
         model_to_save.save_pretrained(utils.get_original_cwd()+'/'+cfg.output_dir)

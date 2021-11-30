@@ -12,6 +12,7 @@ from transformers.optimization import AdamW, get_linear_schedule_with_warmup
 
 from deepke.relation_extraction.document import *
 
+import wandb
 
 def train(args, model, train_features, dev_features, test_features):
     def logging(s, print_=True, log_=True):
@@ -87,6 +88,10 @@ def train(args, model, train_features, dev_features, test_features):
                         total_loss = 0
                         start_time = time.time()
 
+                        wandb.log({
+                            "train_loss":cur_loss
+                        })
+
                 if (step + 1) == len(train_dataloader) - 1 or (args.evaluation_steps > 0 and num_steps % args.evaluation_steps == 0 and step % args.gradient_accumulation_steps == 0):
                 # if step ==0:
                     logging('-' * 89)
@@ -96,11 +101,21 @@ def train(args, model, train_features, dev_features, test_features):
                     logging(
                         '| epoch {:3d} | time: {:5.2f}s | dev_result:{}'.format(epoch, time.time() - eval_start_time,
                                                                                 dev_output))
+
+                    wandb.log({
+                            "dev_result":dev_output
+                    })
+
                     logging('-' * 89)
                     if dev_score > best_score:
                         best_score = dev_score
                         logging(
                             '| epoch {:3d} | best_f1:{}'.format(epoch, best_score))
+
+                        wandb.log({
+                            "best_f1":best_score
+                        })
+
                         if args.save_path != "":
                             torch.save({
                                 'epoch': epoch,
@@ -170,10 +185,14 @@ def evaluate(args, model, features, tag="dev"):
         tag + "_re_r": re_r * 100,
         tag + "_average_loss": average_loss
     }
+
+    
+
     return best_f1, output
 
 
-
+wandb.init(project="DeepKE_RE_Document")
+wandb.watch_called = False
 @hydra.main(config_path="conf/config.yaml")
 def main(cfg):
     cwd = get_original_cwd()
@@ -207,6 +226,8 @@ def main(cfg):
         from_tf=bool(".ckpt" in cfg.model_name_or_path),
         config=config,
     )
+    wandb.watch(model, log="all")
+
 
     config.cls_token_id = tokenizer.cls_token_id
     config.sep_token_id = tokenizer.sep_token_id
