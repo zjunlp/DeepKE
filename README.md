@@ -126,6 +126,7 @@ python predict.py
 - seqeval == 1.2.2
 - tqdm == 4.60.0
 - opt-einsum==3.3.0
+- wandb==0.12.7
 - ujson
 
 <br>
