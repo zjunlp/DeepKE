@@ -132,7 +132,7 @@ python predict.py
   | 秦始皇兵马俑位于陕西省西安市，1961年被国务院公布为第一批全国重点文物保护单位，是世界八大奇迹之一。 |           秦始皇           | 陕西省，西安市 |             国务院             |
 
 - Read the detailed process in specific README
-  - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/deepke/blob/test_new_deepke/example/ner/standard)**
+  - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/deepke/test_new_deepke/example/ner/standard)**
 
     **Step1** Enter  `DeepKE/example/ner/standard`. The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.<br>
 
@@ -148,7 +148,7 @@ python predict.py
     python predict.py
     ```
 
-  - **[FEW-SHOT](https://github.com/zjunlp/DeepKE/tree/test_new_deepke/example/ner/few-shot)**
+  - **[FEW-SHOT](https://github.com/zjunlp/DeepKE/test_new_deepke/example/ner/few-shot)**
 
     **Step1** Enter  `DeepKE/example/ner/few-shot`. The directory where the model is loaded and saved and the configuration parameters can be cusomized in the `conf` folder.<br>
 
