@@ -18,8 +18,10 @@ from deepke.name_entity_re.few_shot.module.mapping_type import mit_movie_mapping
 
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
-from tensorboardX import SummaryWriter
-writer = SummaryWriter(log_dir='logs')
+
+import wandb
+
+writer = wandb.init(project="DeepKE_NER_Few")
 
 logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt = '%m/%d/%Y %H:%M:%S',

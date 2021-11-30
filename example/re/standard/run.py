@@ -15,6 +15,7 @@ import deepke.relation_extraction.standard.models as models
 from deepke.relation_extraction.standard.tools import preprocess , CustomDataset, collate_fn ,train, validate
 from deepke.relation_extraction.standard.utils import manual_seed, load_pkl
 
+import wandb
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +26,9 @@ def main(cfg):
     cfg.cwd = cwd
     cfg.pos_size = 2 * cfg.pos_limit + 2
     logger.info(f'\n{cfg.pretty()}')
+
+    wandb.init(project="DeepKE_RE_Standard", name=cfg.model_name)
+    wandb.watch_called = False
 
     __Model__ = {
         'cnn': models.PCNN,
@@ -68,6 +72,8 @@ def main(cfg):
 
     model = __Model__[cfg.model_name](cfg)
     model.to(device)
+
+    wandb.watch(model, log="all")
     logger.info(f'\n {model}')
 
     optimizer = optim.Adam(model.parameters(), lr=cfg.learning_rate, weight_decay=cfg.weight_decay)
@@ -95,6 +101,12 @@ def main(cfg):
 
         train_losses.append(train_loss)
         valid_losses.append(valid_loss)
+
+        wandb.log({
+            "train_loss":train_loss,
+            "valid_loss":valid_loss
+        })
+
         if best_f1 < valid_f1:
             best_f1 = valid_f1
             best_epoch = epoch
@@ -137,7 +149,12 @@ def main(cfg):
     logger.info('=====end of training====')
     logger.info('')
     logger.info('=====start test performance====')
-    validate(-1, model, test_dataloader, criterion, device, cfg)
+    _ , test_loss = validate(-1, model, test_dataloader, criterion, device, cfg)
+
+    wandb.log({
+        "test_loss":test_loss,
+    })
+    
     logger.info('=====ending====')
 
 

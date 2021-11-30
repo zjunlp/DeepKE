@@ -67,9 +67,11 @@ class Trainer(object):
                         avg_loss = float(avg_loss) / self.refresh_step
                         print_output = "loss:{:<6.5f}".format(avg_loss)
                         pbar.update(1)
-                        pbar.set_postfix_str(print_output)
-                        self.writer.add_scalar(tag='loss', scalar_value=avg_loss, global_step=self.step)    # tensorbordx
+                        pbar.set_postfix_str(print_output)            
+                        # self.writer.add_scalar(tag='loss', scalar_value=avg_loss, global_step=self.step)    # tensorbordx
+                        self.writer.log({ 'avg_loss':avg_loss})
                         avg_loss = 0
+                        
                 if epoch >= self.eval_begin_epoch:
                     self.evaluate(epoch)   # generator to dev.
             pbar.close()
@@ -95,9 +97,11 @@ class Trainer(object):
                 pbar.close()
                 self.logger.info("Epoch {}/{}, best f1: {}, current f1 score: {:.2f}, recall: {:.2f}, precision: {:.2f}."\
                             .format(epoch, self.num_epochs, self.best_metric, eva_result['f'], eva_result['rec'], eva_result['pre']))
-                self.writer.add_scalars('evaluate', {'f1': eva_result['f'],
-                                                    'recall': eva_result['rec'],
-                                                    'precision': eva_result['pre']}, epoch)
+                # self.writer.add_scalars('evaluate', {'f1': eva_result['f'],
+                #                                     'recall': eva_result['rec'],
+                #                                     'precision': eva_result['pre']}, epoch)
+                self.writer.log({'f1': eva_result['f'],'recall': eva_result['rec'],'precision': eva_result['pre']})
+
                 if eva_result['f'] >= self.best_metric:  # this epoch get best performance
                     self.logger.info("Get better performance at epoch {}".format(epoch))
                     self.best_dev_epoch = epoch
