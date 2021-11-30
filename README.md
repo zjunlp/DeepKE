@@ -97,6 +97,8 @@ tar -xzvf data.tar.gz
 
 **Step5** Training (Parameters for training can be changed in the `conf` folder)
 
+We support visual parameter tuning using *wandb*
+
 ```bash
 python run.py
 ```
