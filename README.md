@@ -2,8 +2,9 @@
     <a href="https://github.com/zjunlp/deepke"> <img src="pics/logo.png" width="400"/></a>
 <p>
 <p align="center">  
-
+    <a href="https://deepke.openkg.cn">
         <img alt="Documentation" src="https://img.shields.io/badge/DeepKE-website-green">
+    </a>
     <a href="https://pypi.org/project/deepke/#files">
         <img alt="PyPI" src="https://img.shields.io/pypi/v/deepke">
     </a>
