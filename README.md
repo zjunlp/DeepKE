@@ -16,8 +16,6 @@
     <b><a href="https://github.com/zjunlp/DeepKE/blob/main/README_CN.md">简体中文</a> | English</b>
 </p>
 
-<br>
-
 <h1 align="center">
     <p>A Deep Learning Based Knowledge Extraction Toolkit<br>for Knowledge Base Population</p>
 </h1>
