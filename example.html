@@ -99,6 +99,12 @@
 <p><cite>tar -xzvf data.tar.gz</cite></p>
 </div></blockquote>
 <p>The dataset and parameters can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder and <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder respectively.</p>
+<p>Dataset needs to be input as <code class="docutils literal notranslate"><span class="pre">TXT</span></code> file</p>
+<p>The <cite>data’s format</cite> of file needs to comply with the following：</p>
+<p>杭 B-LOC ‘\n’
+州 I-LOC ‘\n’
+真 O ‘\n’
+美 O ‘\n’</p>
 <p><strong>Step 3</strong></p>
 <p>Train:</p>
 <blockquote>
@@ -133,6 +139,17 @@ python predict.py
 <p><cite>tar -xzvf data.tar.gz</cite></p>
 </div></blockquote>
 <p>The directory where the model is loaded and saved and the configuration parameters can be cusomized in the <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder.The dataset can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder.</p>
+<p>Dataset needs to be input as <code class="docutils literal notranslate"><span class="pre">TXT</span></code> file</p>
+<p>The <cite>data’s format</cite> of file needs to comply with the following：</p>
+<p>EU      B-ORG ‘\n’
+rejects O ‘\n’
+German  B-MISC ‘\n’
+call    O ‘\n’
+to      O ‘\n’
+boycott O ‘\n’
+British B-MISC ‘\n’
+lamb    O ‘\n’
+.       O ‘\n’</p>
 <p><strong>Step 3</strong></p>
 <p>Train with CoNLL-2003:</p>
 <blockquote>
@@ -171,6 +188,43 @@ python predict.py
 <p><cite>tar -xzvf data.tar.gz</cite></p>
 </div></blockquote>
 <p>The dataset and parameters can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder and <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder respectively.</p>
+<p>Dataset needs to be input as <code class="docutils literal notranslate"><span class="pre">CSV</span></code> file.</p>
+<p>The <cite>data’s format</cite> of file needs to comply with the following：</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 13%" />
+<col style="width: 14%" />
+<col style="width: 15%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Sentence</p></td>
+<td><p>Relation</p></td>
+<td><p>Head</p></td>
+<td><p>Head_offset</p></td>
+<td><p>Tail</p></td>
+<td><p>Tail_offset</p></td>
+</tr>
+</tbody>
+</table>
+<p>The relation’s format of file needs to comply with the following：</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 20%" />
+<col style="width: 33%" />
+<col style="width: 24%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Head_type</p></td>
+<td><p>Tail_type</p></td>
+<td><p>relation</p></td>
+<td><p>Index</p></td>
+</tr>
+</tbody>
+</table>
 <p><strong>Step 3</strong></p>
 <p>Train:</p>
 <blockquote>
@@ -205,6 +259,11 @@ python predict.py
 <p><cite>tar -xzvf data.tar.gz</cite></p>
 </div></blockquote>
 <p>The dataset and parameters can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder and <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder respectively.</p>
+<p>Dataset needs to be input as <code class="docutils literal notranslate"><span class="pre">TXT</span></code> file and <code class="docutils literal notranslate"><span class="pre">JSON</span></code> file.</p>
+<p>The <cite>data’s format</cite> of file needs to comply with the following：</p>
+<p>{“token”: [“the”, “most”, “common”, “audits”, “were”, “about”, “waste”, “and”, “recycling”, “.”], “h”: {“name”: “audits”, “pos”: [3, 4]}, “t”: {“name”: “waste”, “pos”: [6, 7]}, “relation”: “Message-Topic(e1,e2)”}</p>
+<p>The relation’s format of file needs to comply with the following：</p>
+<p>{“Other”: 0 , “Message-Topic(e1,e2)”: 1 … }</p>
 <p><strong>Step 3</strong></p>
 <p>Train:</p>
 <blockquote>
@@ -240,6 +299,14 @@ python predict.py
 <p><cite>tar -xzvf data.tar.gz</cite></p>
 </div></blockquote>
 <p>The dataset and parameters can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder and <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder respectively.</p>
+<p>Dataset needs to be input as <code class="docutils literal notranslate"><span class="pre">JSON</span></code> file</p>
+<p>The <cite>data’s format</cite> of file needs to comply with the following：</p>
+<p>[{“vertexSet”: [[{“name”: “Lark Force”, “pos”: [0, 2], “sent_id”: 0, “type”: “ORG”},…]],</p>
+<p>“labels”: [{“r”: “P607”, “h”: 1, “t”: 3, “evidence”: [0]}, …],</p>
+<p>“title”: “Lark Force”,</p>
+<p>“sents”: [[“Lark”, “Force”, “was”, “an”, “Australian”, “Army”, “formation”, “established”, “in”, “March”, “1941”, “during”, “World”, “War”, “II”, “for”, “service”, “in”, “New”, “Britain”, “and”, “New”, “Ireland”, “.”],…}]</p>
+<p>The relation’s format of file needs to comply with the following：</p>
+<p>{“P1376”: 79,”P607”: 27,…}</p>
 <p><strong>Step 3</strong></p>
 <p>Train:</p>
 <blockquote>
@@ -275,6 +342,39 @@ python predict.py
 <p><cite>tar -xzvf data.tar.gz</cite></p>
 </div></blockquote>
 <p>The dataset and parameters can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder and <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder respectively.</p>
+<p>Dataset needs to be input as <code class="docutils literal notranslate"><span class="pre">CSV</span></code> file.</p>
+<p>The <cite>data’s format</cite> of file needs to comply with the following：</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 14%" />
+<col style="width: 18%" />
+<col style="width: 21%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Sentence</p></td>
+<td><p>Attribute</p></td>
+<td><p>Entity</p></td>
+<td><p>Entity_offset</p></td>
+<td><p>Attribute_value</p></td>
+<td><p>Attribute_value_offset</p></td>
+</tr>
+</tbody>
+</table>
+<p>The attribute’s format of file needs to comply with the following：</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 59%" />
+<col style="width: 41%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Attribute</p></td>
+<td><p>Index</p></td>
+</tr>
+</tbody>
+</table>
 <p><strong>Step 3</strong></p>
 <p>Train:</p>
 <blockquote>
