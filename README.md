@@ -349,13 +349,11 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 
   [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/few-shot/tutorial.ipynb)
 
-  [RE Colab]()
 
 - Document-level<br>
 
   [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/document/tutorial.ipynb)
 
-  [RE Colab]()
 
 <br>
 
