@@ -97,6 +97,8 @@ tar -xzvf data.tar.gz
 
 **Step5** Training (Parameters for training can be changed in the `conf` folder)
 
+We support visual parameter tuning using *wandb*
+
 ```bash
 python run.py
 ```
@@ -124,6 +126,7 @@ python predict.py
 - seqeval == 1.2.2
 - tqdm == 4.60.0
 - opt-einsum==3.3.0
+- wandb==0.12.7
 - ujson
 
 <br>
@@ -346,13 +349,11 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 
   [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/few-shot/tutorial.ipynb)
 
-  [RE Colab]()
 
 - Document-level<br>
 
   [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/document/tutorial.ipynb)
 
-  [RE Colab]()
 
 <br>
 
