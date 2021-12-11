@@ -105,7 +105,6 @@ def main(cfg):
                       metrics=metrics, writer=writer)
     trainer.train()
 
-    writer.close()
 
 
 if __name__ == "__main__":
