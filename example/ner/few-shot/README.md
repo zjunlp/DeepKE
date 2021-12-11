@@ -5,7 +5,6 @@
 > python == 3.8
 
 - torch == 1.5
-- tensorboardX ==2.4
 - transformers == 3.4.0
 - deepke 
 
