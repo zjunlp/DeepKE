@@ -26,7 +26,7 @@ def _preprocess_data(data, cfg):
         serializer = Serializer(do_chinese_split=cfg.chinese_split)
         serial = serializer.serialize
 
-        _serialize_sentence(data, serial, cfg)
+        _serialize_sentence(data, serial)
         _convert_tokens_into_index(data, vocab)
         _add_pos_seq(data, cfg)
         logger.info('start sentence preprocess...')
