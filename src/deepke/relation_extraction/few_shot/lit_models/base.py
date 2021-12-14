@@ -22,11 +22,11 @@ class BaseLitModel(nn.Module):
     Generic PyTorch-Lightning class that must be initialized with a PyTorch module.
     """
 
-    def __init__(self, model, args):
+    def __init__(self, model, device, args):
         super().__init__()
         self.model = model
         self.cur_model = model.module if hasattr(model, 'module') else model
-        self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+        self.device = device
         self.args = args
 
         optimizer = self.args.get("optimizer", OPTIMIZER)

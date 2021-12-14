@@ -36,8 +36,8 @@ class BertLitModel(BaseLitModel):
     """
     use AutoModelForMaskedLM, and select the output by another layer in the lit model
     """
-    def __init__(self, model, args, tokenizer):
-        super().__init__(model, args)
+    def __init__(self, model, device ,args, tokenizer):
+        super().__init__(model, device, args)
         self.tokenizer = tokenizer
         
         with open(f"{args.data_dir}/rel2id.json","r") as file:
