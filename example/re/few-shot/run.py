@@ -60,7 +60,7 @@ def main(cfg):
     model.to(device)
     wandb.watch(model, log="all")
 
-    lit_model = BertLitModel(args=cfg, model=model, tokenizer=data.tokenizer)
+    lit_model = BertLitModel(args=cfg, model=model, device=device, tokenizer=data.tokenizer)
 
 
     data.setup()
