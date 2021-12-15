@@ -30,7 +30,7 @@ def readfile(filename):
     '''
     read file
     '''
-    f = open(filename)
+    f = open(filename, encoding='utf-8')
     data = []
     sentence = []
     label= []
