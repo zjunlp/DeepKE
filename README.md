@@ -11,6 +11,12 @@
     <a href="https://github.com/zjunlp/DeepKE/blob/master/LICENSE">
         <img alt="GitHub" src="https://img.shields.io/github/license/zjunlp/deepke">
     </a>
+    <a href="http://zjunlp.github.io/DeepKE">
+        <img alt="Documentation" src="https://img.shields.io/website/http/zjunlp.github.io/DeepKE/index.html">
+    </a>
+    <a href="https://github.com/zjunlp/DeepKE/blob/master/LICENSE">
+        <img alt="Star" src="https://img.shields.io/github/stars/zjunlp/deepke?style=social">
+    </a>
 </p>
 <p align="center">
     <b><a href="https://github.com/zjunlp/DeepKE/blob/main/README_CN.md">简体中文</a> | English</b>
