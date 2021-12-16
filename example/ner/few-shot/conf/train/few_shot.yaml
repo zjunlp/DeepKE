@@ -5,8 +5,8 @@ dataset_name: mit-movie
 device: cuda
 
 num_epochs: 30
-batch_size: 16
-learning_rate: 1e-4
+batch_size: 3
+learning_rate: 5e-5
 warmup_ratio: 0.01
 eval_begin_epoch: 16
 src_seq_ratio: 0.8
