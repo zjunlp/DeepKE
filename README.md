@@ -3,7 +3,7 @@
 <p>
 <p align="center">  
     <a href="https://deepke.zjukg.cn">
-        <img alt="Documentation" src="https://img.shields.io/badge/demo-website-green">
+        <img alt="Documentation" src="https://img.shields.io/badge/demo-website-blue">
     </a>
     <a href="https://pypi.org/project/deepke/#files">
         <img alt="PyPI" src="https://img.shields.io/pypi/v/deepke">
