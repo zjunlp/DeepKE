@@ -25,6 +25,7 @@ DeepKE is a knowledge extraction toolkit supporting **low-resource** and **docum
 
 <br>
 
+
 # Prediction
 
 There is a demonstration of prediction.<br>
@@ -367,6 +368,11 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 6. It's recommended to install *DeepKE* with source codes. Because user may meet some problems in Windows system with 'pip'.
 
 <br>
+
+# To do
+In next version, we plan to add multi-modality knowledge extraction to the toolkit. 
+
+Meanwhile, we will offer long-term maintenance to fix bugs, solve issues and meet new requests. So if you have any problems, please put issues to us.
 
 # Developers
 
