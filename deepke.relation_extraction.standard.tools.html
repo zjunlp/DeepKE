@@ -113,6 +113,99 @@
 </dd></dl>
 
 </section>
+<section id="module-deepke.relation_extraction.standard.tools.loss">
+<span id="deepke-relation-extraction-standard-tools-loss-module"></span><h2>deepke.relation_extraction.standard.tools.loss module<a class="headerlink" href="#module-deepke.relation_extraction.standard.tools.loss" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.FocalLoss">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.loss.</span></span><span class="sig-name descname"><span class="pre">FocalLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#FocalLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.FocalLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Focal Loss : [1] Lin T Y ,  Goyal P ,  Girshick R , et al. Focal Loss for Dense Object Detection[J]. IEEE Transactions on Pattern Analysis &amp; Machine Intelligence, 2017, PP(99):2999-3007.
+In this work, authors identify class imbalance as the primary obstacle preventing one-stage object detectors from surpassing top-performing, two-stage methods, such as Faster R-CNN variants. To address this, we propose the focal loss which applies a modulating term to the cross entropy loss in order to focus learning on hard examples and down-weight the numerous easy negatives</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.FocalLoss.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#FocalLoss.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.FocalLoss.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.LabelSmoothSoftmaxCEV1">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.loss.</span></span><span class="sig-name descname"><span class="pre">LabelSmoothSoftmaxCEV1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lb_smooth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#LabelSmoothSoftmaxCEV1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.LabelSmoothSoftmaxCEV1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Label Smooth Softmax</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.LabelSmoothSoftmaxCEV1.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#LabelSmoothSoftmaxCEV1.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.LabelSmoothSoftmaxCEV1.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.taylor_softmax_v1">
+<span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.loss.</span></span><span class="sig-name descname"><span class="pre">taylor_softmax_v1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#taylor_softmax_v1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.taylor_softmax_v1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.LogTaylorSoftmaxV1">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.loss.</span></span><span class="sig-name descname"><span class="pre">LogTaylorSoftmaxV1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#LogTaylorSoftmaxV1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.LogTaylorSoftmaxV1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.LogTaylorSoftmaxV1.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#LogTaylorSoftmaxV1.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.LogTaylorSoftmaxV1.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.TaylorCrossEntropyLossV1">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.loss.</span></span><span class="sig-name descname"><span class="pre">TaylorCrossEntropyLossV1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#TaylorCrossEntropyLossV1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.TaylorCrossEntropyLossV1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>TaylorCrossEntropyLoss : [1] Banerjee K ,  Vishak P C ,  RR  Gupta, et al. Exploring Alternatives to Softmax Function[J].  2020.
+In this work, author investigate Taylor softmax, soft-margin softmax and our proposed SM-Taylor softmax as alternatives to softmax function</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.TaylorCrossEntropyLossV1.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#TaylorCrossEntropyLossV1.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.TaylorCrossEntropyLossV1.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-deepke.relation_extraction.standard.tools.metrics">
 <span id="deepke-relation-extraction-standard-tools-metrics-module"></span><h2>deepke.relation_extraction.standard.tools.metrics module<a class="headerlink" href="#module-deepke.relation_extraction.standard.tools.metrics" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
