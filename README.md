@@ -2,8 +2,8 @@
     <a href="https://github.com/zjunlp/deepke"> <img src="pics/logo.png" width="400"/></a>
 <p>
 <p align="center">  
-    <a href="https://deepke.openkg.cn">
-        <img alt="Documentation" src="https://img.shields.io/badge/DeepKE-website-green">
+    <a href="https://deepke.zjukg.cn">
+        <img alt="Documentation" src="https://img.shields.io/badge/demo-website-green">
     </a>
     <a href="https://pypi.org/project/deepke/#files">
         <img alt="PyPI" src="https://img.shields.io/pypi/v/deepke">
@@ -12,7 +12,7 @@
         <img alt="GitHub" src="https://img.shields.io/github/license/zjunlp/deepke">
     </a>
     <a href="http://zjunlp.github.io/DeepKE">
-        <img alt="Documentation" src="https://img.shields.io/website/http/zjunlp.github.io/DeepKE/index.html">
+        <img alt="Documentation" src="https://img.shields.io/badge/doc-website-red">
     </a>
     <a href="https://github.com/zjunlp/DeepKE/blob/master/LICENSE">
         <img alt="Star" src="https://img.shields.io/github/stars/zjunlp/deepke?style=social">
