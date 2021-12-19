@@ -33,17 +33,17 @@ DeepKE is a knowledge extraction toolkit supporting **low-resource** and **docum
 
 # What's New
 
-## Dec,2021
-* We added `dockerfile` to create the enviroment automatically. 
-## Nov,2021
-* The demo of Deepke was released, which supports real-time extration without deploying and training.
-* The documentation of Deepke was released, which contains the details of Deepke, such as source codes and datasets.
-## Oct,2021
+## Dec, 2021
+* We have added `dockerfile` to create the enviroment automatically. 
+## Nov, 2021
+* The demo of Deepke has been released, which supports real-time extration without deploying and training.
+* The documentation of Deepke has been released, which contains the details of Deepke, such as source codes and datasets.
+## Oct, 2021
 * `pip install deepke`
-* The codes of deepke-v2.0 were released.
-## Before
+* The codes of deepke-v2.0 have been released.
+## May, 2021
 * `pip install deepke`
-* The codes of deepke-v1.0 were released.
+* The codes of deepke-v1.0 have been released.
 
 # Prediction
 
