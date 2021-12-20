@@ -24,14 +24,27 @@ DeepKE 是一个支持<b>低资源、长篇章</b>的知识抽取工具，可以
 
 <br>
 
+# 新版特性
+## 2021年12月
+- 加入`dockerfile`以便自动创建环境
+## 2021年11月
+- 发布DeepKE demo页面，支持实时抽取，无需部署和训练模型
+- 发布DeepKE文档，包含DeepKE源码和数据集等详细信息
+## 2021年10月
+- `pip install deepke`
+- deepke-v2.0发布
+## 2021年5月
+- `pip install deepke`
+- deepke-v1.0发布
+<br>
 
-### 进行预测
+# 进行预测
 下面使用一个demo展示预测过程<br>
 <img src="pics/demo.gif" width="636" height="494" align=center>
 
 <br>
 
-## 模型架构
+# 模型架构
 
 Deepke的架构图如下所示
 
@@ -39,11 +52,14 @@ Deepke的架构图如下所示
     <img src="pics/architectures.png">
 </h3>
 
-DeepKE包括了三个模块，可以进行命名实体识别、关系抽取以及属性抽取任务，在各个模块下包括各自的子模块。其中关系抽取模块就有常规模块、文档级抽取模块以及低资源少样本模块。在每一个子模块中，包含实现分词、预处理等功能的一个工具集合，以及编码、训练和预测部分。
+- DeepKE为三个知识抽取功能（命名实体识别、关系抽取和属性抽取）设计了一个统一的框架
+- 可以在不同场景下实现不同功能。比如，可以在标准全监督、低资源少样本和文档级设定下进行关系抽取
+- 每一个应用场景由三个部分组成：Data部分包含Tokenizer、Preprocessor和Loader，Model部分包含Module、Encoder和Forwarder，Core部分包含Training、Evaluation和Prediction
+
 
 <br>
 
-## 快速上手
+# 快速上手
 
 DeepKE支持pip安装使用，以常规全监督设定关系抽取为例，经过以下五个步骤就可以实现一个常规关系抽取模型
 
@@ -317,13 +333,9 @@ python predict.py
 
     [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/few-shot/tutorial.ipynb)
     
-    [关系抽取Colab]()
-    
 - 篇章级：
 
     [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/document/tutorial.ipynb)
-
-    [关系抽取Colab]()
 
 
 <!-- ![image](https://user-images.githubusercontent.com/31753427/140022588-c3b38495-89b1-4f3c-8298-bcc1086f78bf.png) -->
