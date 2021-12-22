@@ -25,7 +25,7 @@
 </h1>
 
 
-DeepKE is a knowledge extraction toolkit supporting **low-resource** and **document-level** scenariosfor *entity*, *relation* and *attribution* extraction. It allows developers and researchers to customize datasets and models to extract information from unstructured texts. 
+DeepKE is a knowledge extraction toolkit supporting **low-resource** and **document-level** scenarios for *entity*, *relation* and *attribution* extraction. It allows developers and researchers to customize datasets and models to extract information from unstructured texts. 
 
 <br>
 
