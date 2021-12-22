@@ -14,12 +14,10 @@
     <a href="http://zjunlp.github.io/DeepKE">
         <img alt="Documentation" src="https://img.shields.io/badge/doc-website-red">
     </a>
-    <a href="https://github.com/zjunlp/DeepKE/blob/master/LICENSE">
-        <img alt="Star" src="https://img.shields.io/github/stars/zjunlp/deepke?style=social">
-    </a>
+
 </p>
 <p align="center">
-    <b><a href="https://github.com/zjunlp/DeepKE/blob/main/README_CN.md">简体中文</a> | English</b>
+    <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/README_CN.md">简体中文</a> </b>
 </p>
 
 <h1 align="center">
@@ -27,7 +25,7 @@
 </h1>
 
 
-DeepKE is a knowledge extraction toolkit supporting **low-resource** and **document-level** scenarios. It provides three functions based on **PyTorch**, including **Named Entity Recognition**, **Relation Extraciton** and **Attribute Extraction**.
+DeepKE is a knowledge extraction toolkit supporting **low-resource** and **document-level** scenariosfor *entity*, *relation* and *attribution* extraction. It allows developers and researchers to customize datasets and models to extract information from unstructured texts. 
 
 <br>
 
@@ -57,9 +55,7 @@ There is a demonstration of prediction.<br>
 <h3 align="center">
     <img src="pics/architectures.png">
 </h3>
-<p align="center">
-    Figure 1: The framework of DeepKE
-</p>
+
 
 - DeepKE contains a unified framework for **named entity recognition**, **relation extraction** and **attribute extraction**, the three  knowledge extraction functions.
 - Each task can be implemented in different scenarios. For example, we can achieve relation extraction in **standard**, **low-resource (few-shot)** and **document-level** settings.
