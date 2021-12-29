@@ -69,7 +69,7 @@ def main(cfg):
 
     model.to(device)
 
-    lit_model = BertLitModel(args=cfg, model=model, tokenizer=data.tokenizer)
+    lit_model = BertLitModel(args=cfg, model=model, device=device,tokenizer=data.tokenizer)
     data.setup()
     
     model.load_state_dict(torch.load(cfg.load_path)["checkpoint"], False)
