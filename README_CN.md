@@ -283,7 +283,7 @@ python predict.py
 - 具体流程请进入详细的README中
   - **[常规全监督STANDARD](https://github.com/zjunlp/DeepKE/tree/main/example/ae/standard)**  
     
-    **Step1**：进入`DeepKE/example/re/standard`，下载数据集
+    **Step1**：进入`DeepKE/example/ae/standard`，下载数据集
     
     ```bash
     wget 120.27.214.45/Data/ae/standard/data.tar.gz
