@@ -347,7 +347,7 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 
   [NER Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/standard/tutorial.ipynb)
 
-  [NER Colab](https://colab.research.google.com/drive/1KpJFAT1nZfGDfnuNMZn02_okIU08j46d?usp=sharing)
+  [NER Colab](https://colab.research.google.com/drive/1h4k6-_oNEHBRxrnzpxHPczO5SFaLS9uq?usp=sharing)
 
   [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/standard/tutorial.ipynb)
 
