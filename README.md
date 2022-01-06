@@ -25,7 +25,7 @@
 </h1>
 
 
-DeepKE is a knowledge extraction toolkit supporting **low-resource** and **document-level** scenarios for *entity*, *relation* and *attribution* extraction. We provide [comprehensive documents](https://zjunlp.github.io/DeepKE/), [Google Colab tutorials]() for beginners.
+DeepKE is a knowledge extraction toolkit supporting **low-resource** and **document-level** scenarios for *entity*, *relation* and *attribution* extraction. We provide [comprehensive documents](https://zjunlp.github.io/DeepKE/), [Google Colab tutorials](), and [online demo](http://deepke.zjukg.cn/) for beginners.
 
 <br>
 
