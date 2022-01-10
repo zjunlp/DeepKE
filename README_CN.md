@@ -20,7 +20,7 @@
     <p>基于深度学习的开源中文知识图谱抽取框架</p>
 </h1>
 
-DeepKE 是一个支持<b>低资源、长篇章</b>的知识抽取工具，可以基于<b>PyTorch</b>实现<b>命名实体识别</b>、<b>关系抽取</b>和<b>属性抽取</b>功能。
+DeepKE 是一个支持<b>低资源、长篇章</b>的知识抽取工具，可以基于<b>PyTorch</b>实现<b>命名实体识别</b>、<b>关系抽取</b>和<b>属性抽取</b>功能。同时为初学者提供了详尽的[文档](https://zjunlp.github.io/DeepKE/)，[Google Colab教程](https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing)和[在线演示](http://deepke.zjukg.cn/)。
 
 <br>
 
@@ -61,11 +61,11 @@ Deepke的架构图如下所示
 
 # 快速上手
 
-DeepKE支持pip安装使用，以常规全监督设定关系抽取为例，经过以下五个步骤就可以实现一个常规关系抽取模型
+DeepKE支持pip安装使用，以常规全监督设定关系抽取为例，经过以下6个步骤就可以实现一个常规关系抽取模型
 
 **Step 1**：下载代码 ```git clone https://github.com/zjunlp/DeepKE.git```（别忘记star和fork哈！！！）
 
-**Step 2**：使用anaconda创建虚拟环境，进入虚拟环境(提供Dockerfile源码可自行创建镜像，位于docker文件夹中)
+**Step 2**：使用anaconda创建虚拟环境，进入虚拟环境（提供Dockerfile源码可自行创建镜像，位于docker文件夹中）
 
 ```
 conda create -n deepke python=3.8
@@ -92,14 +92,24 @@ python setup.py develop
 cd DeepKE/example/re/standard
 ```
 
-**Step 4** ：模型训练，训练用到的参数可在conf文件夹内修改
+**Step 4**：下载数据集
+```
+wget 120.27.214.45/Data/re/standard/data.tar.gz
+
+tar -xzvf data.tar.gz
+```
+
+**Step 5** ：模型训练，训练用到的参数可在conf文件夹内修改
+
+DeepKE使用*wandb*支持可视化调参
 
 ```
 python run.py
 ```
 
-**Step 5** ：模型预测。预测用到的参数可在conf文件夹内修改
+**Step 6** ：模型预测。预测用到的参数可在conf文件夹内修改
 
+修改`conf/predict.yaml`中保存训练好的模型路径。
 ```
 python predict.py
 ```
@@ -277,7 +287,7 @@ python predict.py
   |                           Sentence                           |   Att    |   Ent    | Ent_offset |      Val      | Val_offset |
   | :----------------------------------------------------------: | :------: | :------: | :--------: | :-----------: | :--------: |
   |          张冬梅，女，汉族，1968年2月生，河南淇县人           |   民族   |  张冬梅  |     0      |     汉族      |     6      |
-  | 杨缨，字绵公，号钓溪，松溪县人，祖籍将乐，是北宋理学家杨时的七世孙 |   朝代   |   杨缨   |     0      |     北宋      |     22     |
+  | 诸葛亮，字孔明，三国时期杰出的军事家、文学家、发明家。 |   朝代   |   诸葛亮   |     0      |     三国时期      |     8     |
   |        2014年10月1日许鞍华执导的电影《黄金时代》上映         | 上映时间 | 黄金时代 |     19     | 2014年10月1日 |     0      |
 
 - 具体流程请进入详细的README中
