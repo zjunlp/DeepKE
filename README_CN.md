@@ -343,9 +343,13 @@ python predict.py
 
     [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/few-shot/tutorial.ipynb)
     
+    [关系抽取Colab](https://colab.research.google.com/drive/1o1ly6ORgerkm1fCDjEQb7hsN5WKyg3JH?usp=sharing)
+    
 - 篇章级：
 
     [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/document/tutorial.ipynb)
+    
+    [关系抽取Colab](https://colab.research.google.com/drive/1RGUBbbOBHlWJ1NXQLtP_YEUktntHtROa?usp=sharing)
 
 
 <!-- ![image](https://user-images.githubusercontent.com/31753427/140022588-c3b38495-89b1-4f3c-8298-bcc1086f78bf.png) -->
