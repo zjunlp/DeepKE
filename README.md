@@ -25,7 +25,7 @@
 </h1>
 
 
-DeepKE is a knowledge extraction toolkit supporting **low-resource** and **document-level** scenarios for *entity*, *relation* and *attribution* extraction. We provide [comprehensive documents](https://zjunlp.github.io/DeepKE/), [Google Colab tutorials](), and [online demo](http://deepke.zjukg.cn/) for beginners.
+DeepKE is a knowledge extraction toolkit supporting **low-resource** and **document-level** scenarios for *entity*, *relation* and *attribute* extraction. We provide [comprehensive documents](https://zjunlp.github.io/DeepKE/), [Google Colab tutorials](), and [online demo](http://deepke.zjukg.cn/) for beginners.
 
 <br>
 
@@ -65,9 +65,9 @@ There is a demonstration of prediction.<br>
 
 # Quickstart
 
-*DeepKE* is supported `pip install deepke`. Take the fully supervised relation extraction for example. <br>(Please star✨ and fork :memo: !!!)
+*DeepKE* supports `pip install deepke`. <br>Take the fully supervised relation extraction for example.
 
-**Step1** Download the basic codes
+**Step1** Download the basic code
 
 ```bash
 git clone https://github.com/zjunlp/DeepKE.git
@@ -75,7 +75,7 @@ git clone https://github.com/zjunlp/DeepKE.git
 
 **Step2** Create a virtual environment using `Anaconda` and enter it.<br>
 
-We also provide dockerfile source code, you can create your own image, which is located in the `docker` folder.
+We also provide dockerfile source code, which is located in the `docker` folder, to help users create their own mirrors.
 
 ```bash
 conda create -n deepke python=3.8
@@ -83,7 +83,7 @@ conda create -n deepke python=3.8
 conda activate deepke
 ```
 
-1. Install *DeepKE* with source codes
+1. Install *DeepKE* with source code
 
    ```bash
    python setup.py install
@@ -113,13 +113,15 @@ tar -xzvf data.tar.gz
 
 **Step5** Training (Parameters for training can be changed in the `conf` folder)
 
-We support visual parameter tuning using *wandb*
+We support visual parameter tuning by using *wandb*.
 
 ```bash
 python run.py
 ```
 
 **Step6** Prediction (Parameters for prediction can be changed in the `conf` folder)
+
+Modify the path of the trained model in `predict.yaml`.
 
 ```bash
 python predict.py
@@ -309,7 +311,7 @@ python predict.py
   |                           Sentence                           |   Att    |   Ent    | Ent_offset |      Val      | Val_offset |
   | :----------------------------------------------------------: | :------: | :------: | :--------: | :-----------: | :--------: |
   |          张冬梅，女，汉族，1968年2月生，河南淇县人           |   民族   |  张冬梅  |     0      |     汉族      |     6      |
-  | 杨缨，字绵公，号钓溪，松溪县人，祖籍将乐，是北宋理学家杨时的七世孙 |   朝代   |   杨缨   |     0      |     北宋      |     22     |
+  |诸葛亮，字孔明，三国时期杰出的军事家、文学家、发明家。|   朝代   |   诸葛亮   |     0      |     三国时期      |     8     |
   |        2014年10月1日许鞍华执导的电影《黄金时代》上映         | 上映时间 | 黄金时代 |     19     | 2014年10月1日 |     0      |
 
 - Read the detailed process in specific README
