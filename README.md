@@ -398,4 +398,4 @@ Meanwhile, we will offer long-term maintenance to fix bugs, solve issues and mee
 
 Zhejiang University: Ningyu Zhang, Liankuan Tao, Haiyang Yu, Xiang Chen, Xin Xu, Xi Tian, Lei Li, Zhoubo Li, Shumin Deng, Yunzhi Yao, Hongbin Ye, Xin Xie, Guozhou Zheng, Huajun Chen
 
-DAMO Academy: Chuanqi Tan, Fei Huang
+DAMO Academy: Zhenru Zhang, Chuanqi Tan, Fei Huang
