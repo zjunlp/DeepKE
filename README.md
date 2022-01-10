@@ -39,7 +39,7 @@ DeepKE is a knowledge extraction toolkit supporting **low-resource** and **docum
 ## Oct, 2021
 * `pip install deepke`
 * The codes of deepke-v2.0 have been released.
-## May, 2021
+## August, 2020
 * `pip install deepke`
 * The codes of deepke-v1.0 have been released.
 
@@ -347,36 +347,35 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 
 - Standard Setting<br>
 
-  [NER Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/standard/tutorial.ipynb)
+  [NER Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/standard/standard_ner_tutorial.ipynb)
 
   [NER Colab](https://colab.research.google.com/drive/1h4k6-_oNEHBRxrnzpxHPczO5SFaLS9uq?usp=sharing)
 
-  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/standard/tutorial.ipynb)
+  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/standard/standard_re_pcnn_tutorial.ipynb)
 
   [RE Colab](https://colab.research.google.com/drive/1o6rKIxBqrGZNnA2IMXqiSsY2GWANAZLl?usp=sharing)
 
-  [AE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ae/standard/tutorial.ipynb)
+  [AE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ae/standard/standard_ae_tutorial.ipynb)
 
   [AE Colab](https://colab.research.google.com/drive/1pgPouEtHMR7L9Z-QfG1sPYkJfrtRt8ML)
 
 - Low-resource<br>
 
-  [NER Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/few-shot/tutorial.ipynb)
+  [NER Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/few-shot/fewshot_ner_tutorial.ipynb)
 
   [NER Colab](https://colab.research.google.com/drive/1Xz0sNpYQNbkjhebCG5djrwM8Mj2Crj7F?usp=sharing)
 
-  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/few-shot/tutorial.ipynb)
+  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/few-shot/fewshot_re_tutorial.ipynb)
   
   [RE Colab](https://colab.research.google.com/drive/1o1ly6ORgerkm1fCDjEQb7hsN5WKyg3JH?usp=sharing)
 
 
 - Document-level<br>
 
-  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/document/tutorial.ipynb)
-  
+  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/document/document_re_tutorial.ipynb)
+
   [RE Colab](https://colab.research.google.com/drive/1RGUBbbOBHlWJ1NXQLtP_YEUktntHtROa?usp=sharing)
-
-
+  
 <br>
 
 # Tips
