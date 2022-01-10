@@ -1,0 +1,78 @@
+cff-version: "1.0.0"
+message: "If you use this toolkit, please cite it using these metadata."
+title: "deepke"
+repository-code: "https://https://github.com/zjunlp/DeepKE"
+authors: 
+  - family-names: Zhang
+    given-names: Ningyu
+  - family-names: Xu
+    given-names: Xin
+  - family-names: Tao
+    given-names: Liankuan
+  - family-names: Yu
+    given-names: Haiyang
+  - family-names: Ye
+    given-names: Hongbin
+  - family-names: Xie
+    given-names: Xin
+  - family-names: Chen
+    given-names: Xiang
+  - family-names: Li
+    given-names: Zhoubo
+  - family-names: Li
+    given-names: Lei
+  - family-names: Liang
+    given-names: Xiaozhuan
+  - family-names: Yao
+    given-names: Yunzhi
+  - family-names: Deng
+    given-names: Shumin
+  - family-names: Zhang
+    given-names: Zhenru
+  - family-names: Tan
+    given-names: Chuanqi
+  - family-names: Huang
+    given-names: Fei
+  - family-names: Zheng
+    given-names: Guozhou
+  - family-names: Chen
+    given-names: Huajun
+preferred-citation:
+  type: article
+  title: "DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population"
+  authors:
+  - family-names: Zhang
+    given-names: Ningyu
+  - family-names: Xu
+    given-names: Xin
+  - family-names: Tao
+    given-names: Liankuan
+  - family-names: Yu
+    given-names: Haiyang
+  - family-names: Ye
+    given-names: Hongbin
+  - family-names: Xie
+    given-names: Xin
+  - family-names: Chen
+    given-names: Xiang
+  - family-names: Li
+    given-names: Zhoubo
+  - family-names: Li
+    given-names: Lei
+  - family-names: Liang
+    given-names: Xiaozhuan
+  - family-names: Yao
+    given-names: Yunzhi
+  - family-names: Deng
+    given-names: Shumin
+  - family-names: Zhang
+    given-names: Zhenru
+  - family-names: Tan
+    given-names: Chuanqi
+  - family-names: Huang
+    given-names: Fei
+  - family-names: Zheng
+    given-names: Guozhou
+  - family-names: Chen
+    given-names: Huajun
+  
