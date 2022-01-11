@@ -31,6 +31,8 @@ DeepKE is a knowledge extraction toolkit supporting **low-resource** and **docum
 
 # What's New
 
+## Jan, 2022
+* We have released a paper [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)
 ## Dec, 2021
 * We have added `dockerfile` to create the enviroment automatically. 
 ## Nov, 2021
