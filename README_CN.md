@@ -25,6 +25,11 @@ DeepKE 是一个支持<b>低资源、长篇章</b>的知识抽取工具，可以
 <br>
 
 # 新版特性
+
+## 2021年1月
+
+- 发布论文[DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)
+
 ## 2021年12月
 - 加入`dockerfile`以便自动创建环境
 ## 2021年11月

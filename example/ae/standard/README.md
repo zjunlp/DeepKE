@@ -1,6 +1,10 @@
-## 快速上手
+# Easy Start
 
-### 环境依赖
+<p align="left">
+    <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/ae/standard/README_CN.md">简体中文</a> </b>
+</p>
+
+## Requirements
 
 > python == 3.8
 
@@ -11,48 +15,59 @@
 - scikit-learn == 0.24.1
 - transformers == 3.4.0
 - jieba == 0.42.1
-- deepke 
+- deepke
 
-### 克隆代码
+## Download Code
+
+```bash
+git clone https://github.com/zjunlp/DeepKE.git
+cd DeepKE/example/ae/standard
 ```
-git clone git@github.com:zjunlp/DeepKE.git
-```
-### 使用pip安装
 
-首先创建python虚拟环境，再进入虚拟环境
+## Install with Pip
 
-- 安装依赖: ```pip install -r requirements.txt```
+- Create and enter the python virtual environment.
+- Install dependencies: `pip install -r requirements.txt`.
 
-### 使用数据进行训练预测
+## Train and Predict
 
-- 存放数据：  可先下载数据 ```wget 120.27.214.45/Data/ae/standard/data.tar.gz```至此目录下
+- Dataset
 
-  解压后`data/origin` 文件夹下存放来训练数据。训练文件主要有三个文件。
+  - Download the dataset to this directory.
 
-  - `train.csv`：存放训练数据集
+    ```bash
+    wget 120.27.214.45/Data/ae/standard/data.tar.gz
+    tar -xzvf data.tar.gz
+    ```
 
-  - `valid.csv`：存放验证数据集
+  - The dataset is stored in `data/origin`:
+    - `train.csv`: Training set
+    - `valid.csv `: Validation set
+    - `test.csv`: Test set
+    - `attribute.csv`: Attribute types
 
-  - `test.csv`：存放测试数据集
+- Training
 
-  - `attribute.csv`：存放属性种类
+  - Parameters for training are in the `conf` folder and users can modify them before training.
+  - If using LM, modify `lm_file` to use the local model.
 
-- 开始训练：```python run.py``` (训练所用到参数都在conf文件夹中，修改即可使用lm时，可修改'lm_file'使用下载至本地的模型)
+  - Logs for training are in the `log` folder and the trained model is saved in the `checkpoints` folder.
 
-- 每次训练的日志保存在 `logs` 文件夹内，模型结果保存在 `checkpoints` 文件夹内。
+  ```bash
+  python run.py
+  ```
 
-- 进行预测 ```python predict.py```
+- Prediction
 
+  ```bash
+  python predict.py
+  ```
 
-## 模型内容
-1、CNN
+## Models
 
-2、RNN
-
-3、Capsule
-
-4、GCN
-
-5、Transformer
-
-6、预训练模型
+1. CNN
+2. RNN
+3. Capsule
+4. GCN
+5. Transformer
+6. Pre-trained Model (BERT)
