@@ -1,6 +1,10 @@
-## 快速上手
+# Easy Start
 
-### 环境依赖
+<p align="left">
+    <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/README_CN.md">简体中文</a> </b>
+</p>
+
+## Requirements
 
 > python == 3.8 
 
@@ -12,41 +16,50 @@
 - matplotlib == 3.4.1
 - deepke
 
+## Download Code
 
-
-### 克隆代码
-
+```bash
+git clone https://github.com/zjunlp/DeepKE.git
+cd DeepKE/example/ner/standard
 ```
-git clone git@github.com:zjunlp/DeepKE.git
-```
 
+## Install with Pip
 
+- Create and enter the python virtual environment.
+- Install dependencies: `pip install -r requirements.txt`.
 
-### 使用pip安装
+## Train and Predict
 
-首先创建python虚拟环境，再进入虚拟环境
+- Dataset
 
-- 安装依赖：`pip install -r requirements.txt`
+  - Download the dataset to this directory.
 
+    ```bash
+    wget 120.27.214.45/Data/ner/standard/data.tar.gz
+    tar -xzvf data.tar.gz
+    ```
 
+  - The dataset is stored in `data`：
+    - `train.txt`: Training set
+    - `valid.txt `: Validation set
+    - `test.txt`: Test set
 
-### 使用数据进行训练预测
+- Training
 
-- 存放数据： 可先下载数据 ```wget 120.27.214.45/Data/ner/standard/data.tar.gz```在此目录下
+  - Parameters for training are in the `conf` folder and users can modify them before training.
 
-  在`data`文件夹下存放数据。主要有三个文件：
-  
-  - `train.txt`：存放训练数据集
-  - `valid.txt`：存放验证数据集
-  - `test.txt`：存放测试数据集
-- 开始训练：```python run.py``` (训练所用到参数都在conf文件夹中，修改即可)
+  - Logs for training are in the `log` folder and the trained model is saved in the `checkpoints` folder.
 
-- 每次训练的日志保存在 `logs` 文件夹内，模型结果保存在 `checkpoints` 文件夹内。
+  ```bash
+  python run.py
+  ```
 
-- 进行预测 ```python predict.py```
+- Prediction
 
+  ```bash
+  python predict.py
+  ```
 
-
-### 模型内容
+## Model
 
 BERT

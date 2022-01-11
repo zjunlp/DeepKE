@@ -1,56 +1,83 @@
-## 快速上手
+# Easy Start
 
-### 环境依赖
+<p align="left">
+    <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/ner/few-shot/README_CN.md">简体中文</a> </b>
+</p>
+
+## Requirements
 
 > python == 3.8
 
 - torch == 1.5
 - transformers == 3.4.0
-- deepke 
+- deepke
 
-### 克隆代码
+## Download Code
+
+```bash
+git clone https://github.com/zjunlp/DeepKE.git
+cd DeepKE/example/ner/few-shot
 ```
-git clone git@github.com:zjunlp/DeepKE.git
-```
-### 使用pip安装
 
-首先创建python虚拟环境，再进入虚拟环境
+## Install with Pip
 
-- 安装依赖: ```pip install -r requirements.txt```
+- Create and enter the python virtual environment.
+- Install dependencies: `pip install -r requirements.txt`.
 
-### 使用数据进行训练预测
+## Train and Predict
 
-- 存放数据： 可先下载数据 ```wget 120.27.214.45/Data/ner/few_shot/data.tar.gz```在此目录下
+- Dataset
 
-  在 `data` 文件夹下存放训练数据。包含conll2003，mit-movie，mit-restaurant和atis等数据集。
+  - Download the dataset to this directory.
 
-- conll2003包含以下数据：
+    ```bash
+    wget 120.27.214.45/Data/ner/few-shot/data.tar.gz
+    tar -xzvf data.tar.gz
+    ```
 
-  - `train.txt`：存放训练数据集
+  - The datasets are stored in `data`, including CoNLL-2003, MIT-movie, MIT-restaurant and ATIS.
+    
+  - **CoNLL-2003**
+    
+    - `train.txt`: Training set
+    - `valid.txt `: Validation set
+    - `test.txt`: Test set
+    - `indomain-train.txt`: In-domain training set
 
-  - `dev.txt`：存放验证数据集
+  - **MIT-movie, MIT-restaurant and ATIS**
+    - `k-shot-train.txt`: k=[10, 20, 50, 100, 200, 500], Training set
+    - `test.txt`: Testing set
 
-  - `test.txt`：存放测试数据集
+- Training
 
-  - `indomain-train.txt`：存放indomain数据集
+  - Parameters, model paths and configuration for training are in the `conf` folder and users can modify them before training.
 
-- mit-movie, mit-restaurant和atis包含以下数据：
+  - Training on CoNLL-2003
 
-  - `k-shot-train.txt`：k=[10, 20, 50, 100, 200, 500]，存放训练数据集
+    ```bash
+    python run.py
+    ```
 
-  - `test.txt`：存放测试数据集
+  - Few-shot Training
 
+    If the model need to be uploaded, modify `load_path` in `few_shot.yaml`
 
-- 开始训练：模型加载和保存位置以及配置可以在conf文件夹中修改
-  
-  - 训练conll2003：` python run.py ` (训练所用到参数都在conf文件夹中，修改即可)
+    ```bash
+    python run.py +train=few_shot
+    ```
 
-  - 进行few-shot训练：` python run.py +train=few_shot ` (若要加载模型，修改few_shot.yaml中的load_path)
+  - Logs for training are in the `log` folder. The path of the trained model can be customized.
 
+- Prediction
 
-- 每次训练的日志保存在 `logs` 文件夹内，模型结果保存目录可以自定义。
+  - Add `- predict` in `config.yaml`
 
-- 进行预测：在config.yaml中加入 - predict ， 再在predict.yaml中修改load_path为模型路径以及write_path为预测结果保存路径，再` python predict.py `
+  - Modify `load_path` as the path of the trained model and `write_path` as the path of predicted results in `predict.yaml` 
 
+  - ```bash
+    python predict.py
+    ```
 
+## Model
 
+[LightNER](https://arxiv.org/abs/2109.00720)

@@ -1,6 +1,10 @@
-## 快速上手
+# Easy Start
 
-### 环境依赖
+<p align="left">
+    <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/re/rew-shot/README_CN.md">简体中文</a> </b>
+</p>
+
+## Requirements
 
 > python == 3.8
 
@@ -9,46 +13,63 @@
 - hydra-core == 1.0.6
 - deepke
 
-### 克隆代码
+## Download Code
+
+```bash
+git clone https://github.com/zjunlp/DeepKE.git
+cd DeepKE/example/re/few-shot
 ```
-git clone git@github.com:zjunlp/DeepKE.git
-```
-### 使用pip安装
 
-首先创建python虚拟环境，再进入虚拟环境
+## Install with Pip
 
-- 安装依赖: ```pip install -r requirements.txt```
+- Create and enter the python virtual environment.
+- Install dependencies: `pip install -r requirements.txt`.
 
-### 使用数据进行训练预测
+## Train and Predict
 
-- 存放数据： 可先下载数据 ```wget 120.27.214.45/Data/re/few_shot/data.tar.gz```在此目录下
+- Dataset
 
-  在 `data` 文件夹下存放训练数据。模型采用的数据集是[SEMEVAL](https://semeval2.fbk.eu/semeval2.php?location=tasks#T11)，SEMEVAL数据集来自于2010年的国际语义评测大会中Task 8："Multi-Way Classification of Semantic Relations Between Pairs of Nominals"。
+  - Download the dataset to this directory.
 
-- SEMEVAL包含以下数据：
+    ```bash
+    wget 120.27.214.45/Data/re/few-shot/data.tar.gz
+    tar -xzvf data.tar.gz
+    ```
 
-  - `rel2id.json`：关系标签到ID的映射
+  - The dataset [SEMEVAL](https://semeval2.fbk.eu/semeval2.php?location=tasks#T11) is stored in `data`:
+    - `rel2id.json`：Relation Label - ID
+    - `temp.txt`：Results of handled relation labels
 
-  - `temp.txt`：关系标签处理
+    - `test.txt`： Test set
 
-  - `test.txt`： 测试集
+    - `train.txt`: Training set
 
-  - `train.txt`：训练集
+    - `val.txt`：Validation set
 
-  - `val.txt`：验证集
+- Training
 
-- 开始训练：模型加载和保存位置以及配置可以在conf的`.yaml`文件中修改
-  
-  - 对数据集SEMEVAL进行few-shot训练：`python run.py` 
+  - Parameters, model paths and configuration for training are in the `conf` folder and users can modify them before training.
 
-  - 训练好的模型默认保存在根目录
+  - Few-shot training on SEMEVAL
 
-- 从上次训练的模型开始训练：设置`.yaml`中的train_from_saved_model为上次保存模型的路径
+    ```bash
+    python run.py
+    ```
 
-- 每次训练的日志保存路径默认保存在根目录，可以通过`.yaml`中的log_dir来配置
+  - The trained model is stored in the current directory by default.
 
-- 进行预测： `python predict.py `
+  - Start to train from last-trained model<br>
 
+    modify `train_from_saved_model` in `.yaml` as the path of the last-trained model
 
-## 模型内容
-KnowPrompt
+  - Logs for training are stored in the current directory by default and the path can be configured by modifying `log_dir` in `.yaml`
+
+- Prediction
+
+  ```bash
+  python predict.py
+  ```
+
+## Model
+
+[KnowPrompt](https://arxiv.org/abs/2104.07650)
