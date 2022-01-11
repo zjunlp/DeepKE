@@ -394,6 +394,17 @@ In next version, we plan to add multi-modality knowledge extraction to the toolk
 
 Meanwhile, we will offer long-term maintenance to fix bugs, solve issues and meet new requests. So if you have any problems, please put issues to us.
 
+# Citation
+Please cite our paper if you use DeepKE in your work
+
+```bibtex
+@article{Zhang_DeepKE_A_Deep_2022,
+author = {Zhang, Ningyu and Xu, Xin and Tao, Liankuan and Yu, Haiyang and Ye, Hongbin and Xie, Xin and Chen, Xiang and Li, Zhoubo and Li, Lei and Liang, Xiaozhuan and Yao, Yunzhi and Deng, Shumin and Zhang, Zhenru and Tan, Chuanqi and Huang, Fei and Zheng, Guozhou and Chen, Huajun},
+journal = {http://arxiv.org/abs/2201.03335},
+title = {{DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population}},
+year = {2022}
+}
+```
 # Developers
 
 Zhejiang University: Ningyu Zhang, Liankuan Tao, Haiyang Yu, Xiang Chen, Xin Xu, Xi Tian, Lei Li, Zhoubo Li, Shumin Deng, Yunzhi Yao, Hongbin Ye, Xin Xie, Guozhou Zheng, Huajun Chen
