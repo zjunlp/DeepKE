@@ -42,7 +42,6 @@ DeepKE is a knowledge extraction toolkit supporting **low-resource** and **docum
 * `pip install deepke`
 * The codes of deepke-v2.0 have been released.
 ## August, 2020
-* `pip install deepke`
 * The codes of deepke-v1.0 have been released.
 
 # Prediction
