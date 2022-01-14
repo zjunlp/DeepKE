@@ -2,8 +2,8 @@
     <a href="https://github.com/zjunlp/deepke"> <img src="pics/logo.png" width="400"/></a>
 <p>
 <p align="center">  
-    <a href="https://deepke.openkg.cn">
-        <img alt="Documentation" src="https://img.shields.io/badge/DeepKE-website-green">
+    <a href="http://deepke.zjukg.cn">
+        <img alt="Documentation" src="https://img.shields.io/badge/demo-website-blue">
     </a>
     <a href="https://pypi.org/project/deepke/#files">
         <img alt="PyPI" src="https://img.shields.io/pypi/v/deepke">
@@ -11,16 +11,38 @@
     <a href="https://github.com/zjunlp/DeepKE/blob/master/LICENSE">
         <img alt="GitHub" src="https://img.shields.io/github/license/zjunlp/deepke">
     </a>
+    <a href="http://zjunlp.github.io/DeepKE">
+        <img alt="Documentation" src="https://img.shields.io/badge/doc-website-red">
+    </a>
+    <a href="https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing">
+        <img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg">
+    </a>
 </p>
-<p align="center">
-    <b>简体中文 | <a href="https://github.com/zjunlp/DeepKE/blob/main/README.md">English</a></b>
-</p>
+
 
 <h1 align="center">
     <p>基于深度学习的开源中文知识图谱抽取框架</p>
 </h1>
-
 DeepKE 是一个支持<b>低资源、长篇章</b>的知识抽取工具，可以基于<b>PyTorch</b>实现<b>命名实体识别</b>、<b>关系抽取</b>和<b>属性抽取</b>功能。同时为初学者提供了详尽的[文档](https://zjunlp.github.io/DeepKE/)，[Google Colab教程](https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing)和[在线演示](http://deepke.zjukg.cn/)。
+
+<br>
+
+# 目录
+
+* [新版特性](#新版特性)
+* [预测演示](#预测演示)
+* [模型架构](#模型架构)
+* [快速上手](#快速上手)
+   * [环境依赖](#环境依赖)
+   * [具体功能介绍](#具体功能介绍)
+      * [1. 命名实体识别NER](#1-命名实体识别ner)
+      * [2. 关系抽取RE](#2-关系抽取re)
+      * [3. 属性抽取AE](#3-属性抽取ae)
+* [Notebook教程](#notebook教程)
+* [备注（常见问题）](#备注常见问题)
+* [未来计划](#未来计划)
+* [引用](#引用)
+* [项目成员](#项目成员)
 
 <br>
 
@@ -28,7 +50,7 @@ DeepKE 是一个支持<b>低资源、长篇章</b>的知识抽取工具，可以
 
 ## 2021年1月
 
-- 发布论文[DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)
+- 发布论文 [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)
 
 ## 2021年12月
 - 加入`dockerfile`以便自动创建环境
@@ -43,7 +65,7 @@ DeepKE 是一个支持<b>低资源、长篇章</b>的知识抽取工具，可以
 - deepke-v1.0发布
 <br>
 
-# 进行预测
+# 预测演示
 下面使用一个demo展示预测过程<br>
 <img src="pics/demo.gif" width="636" height="494" align=center>
 
@@ -121,7 +143,7 @@ python predict.py
 
 <br>
 
-### 环境依赖
+## 环境依赖
 
 > python == 3.8
 
@@ -138,9 +160,11 @@ python predict.py
 - opt-einsum==3.3.0
 - ujson
 
-### 具体功能介绍
+<br>
 
-#### 1. 命名实体识别NER
+## 具体功能介绍
+
+### 1. 命名实体识别NER
 
 - 命名实体识别是从非结构化的文本中识别出实体和其类型。数据为txt文件，样式范例为：
 
@@ -200,7 +224,7 @@ python predict.py
     python predict.py
     ```
 
-#### 2. 关系抽取RE
+### 2. 关系抽取RE
 
 - 关系抽取是从非结构化的文本中抽取出实体之间的关系，以下为几个样式范例，数据为csv文件：
 
@@ -285,7 +309,7 @@ python predict.py
     python predict.py
     ```
 
-#### 3. 属性抽取AE
+### 3. 属性抽取AE
 
 - 数据为csv文件，样式范例为：
 
@@ -322,7 +346,7 @@ python predict.py
 
 <br>
 
-### Notebook教程
+# Notebook教程
 
 本工具提供了若干Notebook和Google Colab教程，用户可针对性调试学习。
 
@@ -356,10 +380,9 @@ python predict.py
     
     [关系抽取Colab](https://colab.research.google.com/drive/1RGUBbbOBHlWJ1NXQLtP_YEUktntHtROa?usp=sharing)
 
+<br>
 
-<!-- ![image](https://user-images.githubusercontent.com/31753427/140022588-c3b38495-89b1-4f3c-8298-bcc1086f78bf.png) -->
-
-## 备注（常见问题）
+# 备注（常见问题）
 
 1. 使用 Anaconda 时，建议添加国内镜像，下载速度更快。如[镜像](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/)。
 2. 使用 pip 时，建议使用国内镜像，下载速度更快，如阿里云镜像。
@@ -369,7 +392,29 @@ python predict.py
 
 <br>
 
-## 项目成员
+# 未来计划
+
+- 在DeepKE的下一个版本中加入多模态知识抽取
+- 我们提供长期技术维护和答疑解惑。如有疑问，请提交issues
+
+<br>
+
+# 引用
+
+如果使用DeepKE，请按以下格式引用
+
+```bibtex
+@article{Zhang_DeepKE_A_Deep_2022,
+author = {Zhang, Ningyu and Xu, Xin and Tao, Liankuan and Yu, Haiyang and Ye, Hongbin and Xie, Xin and Chen, Xiang and Li, Zhoubo and Li, Lei and Liang, Xiaozhuan and Yao, Yunzhi and Deng, Shumin and Zhang, Zhenru and Tan, Chuanqi and Huang, Fei and Zheng, Guozhou and Chen, Huajun},
+journal = {http://arxiv.org/abs/2201.03335},
+title = {{DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population}},
+year = {2022}
+}
+```
+
+<br>
+
+# 项目成员
 
 浙江大学：张宁豫、陶联宽、余海洋、陈想、徐欣、田玺、李磊、黎洲波、邓淑敏、姚云志、叶宏彬、谢辛、郑国轴、陈华钧
 
