@@ -36,7 +36,7 @@ DeepKE is a knowledge extraction toolkit supporting **low-resource** and **docum
 # Table of Contents
 
 * [What's New](#whats-new)
-* [Prediction](#prediction)
+* [Prediction Demo](#prediction-demo)
 * [Model Framework](#model-framework)
 * [Quick Start](#quick-start)
 * [Requirements](#requirements)
@@ -69,7 +69,7 @@ DeepKE is a knowledge extraction toolkit supporting **low-resource** and **docum
 
 <br>
 
-# Prediction
+# Prediction Demo
 
 There is a demonstration of prediction.<br>
 <img src="pics/demo.gif" width="636" height="494" align=center>
