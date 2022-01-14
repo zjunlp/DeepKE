@@ -14,8 +14,11 @@
     <a href="http://zjunlp.github.io/DeepKE">
         <img alt="Documentation" src="https://img.shields.io/badge/doc-website-red">
     </a>
-
+    <a href="https://colab.research.google.com/drive/1f9yTXC3GpSyRJOjzsKceG_bhk-Cw71Ga#scrollTo=r_3-DN0SvC97">
+        <img alt="Open In Colab" src="https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing">
+    </a>
 </p>
+
 <p align="center">
     <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/README_CN.md">简体中文</a> </b>
 </p>
@@ -28,6 +31,8 @@
 DeepKE is a knowledge extraction toolkit supporting **low-resource** and **document-level** scenarios for *entity*, *relation* and *attribute* extraction. We provide [comprehensive documents](https://zjunlp.github.io/DeepKE/), [Google Colab tutorials](), and [online demo](http://deepke.zjukg.cn/) for beginners.
 
 <br>
+
+[toc]
 
 # What's New
 
@@ -43,6 +48,8 @@ DeepKE is a knowledge extraction toolkit supporting **low-resource** and **docum
 * The codes of deepke-v2.0 have been released.
 ## August, 2020
 * The codes of deepke-v1.0 have been released.
+
+<br>
 
 # Prediction
 
