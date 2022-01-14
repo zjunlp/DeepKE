@@ -14,10 +14,11 @@
     <a href="http://zjunlp.github.io/DeepKE">
         <img alt="Documentation" src="https://img.shields.io/badge/doc-website-red">
     </a>
-    <a href="https://colab.research.google.com/drive/1f9yTXC3GpSyRJOjzsKceG_bhk-Cw71Ga#scrollTo=r_3-DN0SvC97">
-        <img alt="Open In Colab" src="https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing">
+    <a href="https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing">
+        <img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg">
     </a>
 </p>
+
 
 <p align="center">
     <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/README_CN.md">简体中文</a> </b>
@@ -32,7 +33,24 @@ DeepKE is a knowledge extraction toolkit supporting **low-resource** and **docum
 
 <br>
 
-[toc]
+# Table of Contents
+
+* [What's New](#whats-new)
+* [Prediction](#prediction)
+* [Model Framework](#model-framework)
+* [Quick Start](#quick-start)
+* [Requirements](#requirements)
+* [Introduction of Three Functions](#introduction-of-three-functions)
+   * [1. Named Entity Recognition](#1-named-entity-recognition)
+   * [2. Relation Extraction](#2-relation-extraction)
+   * [3. Attribute Extraction](#3-attribute-extraction)
+* [Notebook Tutorial](#notebook-tutorial)
+* [Tips](#tips)
+* [To do](#to-do)
+* [Citation](#citation)
+* [Developers](#developers)
+
+<br>
 
 # What's New
 
@@ -71,7 +89,7 @@ There is a demonstration of prediction.<br>
 
 <br>
 
-# Quickstart
+# Quick Start
 
 *DeepKE* supports `pip install deepke`. <br>Take the fully supervised relation extraction for example.
 
@@ -404,7 +422,10 @@ In next version, we plan to add multi-modality knowledge extraction to the toolk
 
 Meanwhile, we will offer long-term maintenance to fix bugs, solve issues and meet new requests. So if you have any problems, please put issues to us.
 
+<br>
+
 # Citation
+
 Please cite our paper if you use DeepKE in your work
 
 ```bibtex
@@ -415,6 +436,8 @@ title = {{DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowled
 year = {2022}
 }
 ```
+<br>
+
 # Developers
 
 Zhejiang University: Ningyu Zhang, Liankuan Tao, Haiyang Yu, Xiang Chen, Xin Xu, Xi Tian, Lei Li, Zhoubo Li, Shumin Deng, Yunzhi Yao, Hongbin Ye, Xin Xie, Guozhou Zheng, Huajun Chen
