@@ -39,11 +39,11 @@ DeepKE is a knowledge extraction toolkit supporting **low-resource** and **docum
 * [Prediction Demo](#prediction-demo)
 * [Model Framework](#model-framework)
 * [Quick Start](#quick-start)
-* [Requirements](#requirements)
-* [Introduction of Three Functions](#introduction-of-three-functions)
-   * [1. Named Entity Recognition](#1-named-entity-recognition)
-   * [2. Relation Extraction](#2-relation-extraction)
-   * [3. Attribute Extraction](#3-attribute-extraction)
+   * [Requirements](#requirements)
+   * [Introduction of Three Functions](#introduction-of-three-functions)
+      * [1. Named Entity Recognition](#1-named-entity-recognition)
+      * [2. Relation Extraction](#2-relation-extraction)
+      * [3. Attribute Extraction](#3-attribute-extraction)
 * [Notebook Tutorial](#notebook-tutorial)
 * [Tips](#tips)
 * [To do](#to-do)
@@ -154,9 +154,7 @@ Modify the path of the trained model in `predict.yaml`.
 python predict.py
 ```
 
-<br>
-
-# Requirements
+## Requirements
 
 > python == 3.8
 
@@ -174,11 +172,9 @@ python predict.py
 - wandb==0.12.7
 - ujson
 
-<br>
+## Introduction of Three Functions
 
-# Introduction of Three Functions
-
-## 1. Named Entity Recognition
+### 1. Named Entity Recognition
 
 - Named entity recognition seeks to locate and classify named entities mentioned in unstructured text into pre-defined categories such as person names, organizations, locations, organizations, etc.
 
@@ -241,7 +237,7 @@ python predict.py
     python predict.py
     ```
 
-## 2. Relation Extraction
+### 2. Relation Extraction
 
 - Relationship extraction is the task of extracting semantic relations between entities from a unstructured text.
 
@@ -329,7 +325,7 @@ python predict.py
     python predict.py
     ```
 
-## 3. Attribute Extraction
+### 3. Attribute Extraction
 
 - Attribute extraction is to extract attributes for entities in a unstructed text.
 
