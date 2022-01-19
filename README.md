@@ -436,6 +436,6 @@ year = {2022}
 
 # Developers
 
-Zhejiang University: Ningyu Zhang, Liankuan Tao, Haiyang Yu, Xiang Chen, Xin Xu, Xi Tian, Lei Li, Zhoubo Li, Shumin Deng, Wen Zhang, Yunzhi Yao, Hongbin Ye, Xin Xie, Guozhou Zheng, Huajun Chen
+Zhejiang University: Ningyu Zhang, Liankuan Tao, Xin Xu, Haiyang Yu, Hongbin Ye, Xin Xie, Xiang Chen, Zhoubo Li, Lei Li, Xiaozhuan Liang, YunzhiYao, Shuofei Qiao, Shumin Deng, Wen Zhang, Guozhou Zheng, Huajun Chen
 
 DAMO Academy: Zhenru Zhang, Chuanqi Tan, Fei Huang
