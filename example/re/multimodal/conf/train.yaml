@@ -1,0 +1,18 @@
+seed: 1234
+
+bert_name: "bert-base-uncased"
+vit_name: "openai/clip-vit-base-patch3"
+device: cuda
+
+num_epochs: 12
+batch_size: 32
+lr: 1e-5
+warmup_ratio: 0.06
+eval_begin_epoch: 1
+
+max_seq: 80
+aux_size: 128
+rcnn_size: 64
+
+save_path: "checkpoints"
+load_path: null
