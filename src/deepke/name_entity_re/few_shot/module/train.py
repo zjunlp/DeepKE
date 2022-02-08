@@ -45,7 +45,19 @@ class Trainer(object):
 
         if self.load_path is not None:  # load model from load_path
             self.logger.info("Loading model from {}".format(self.load_path))
-            self.model.load_state_dict(torch.load(self.load_path))
+            load_model_dict = torch.load(self.args.load_path)
+            model_dict = self.model.state_dict()
+            for name in load_model_dict:
+                if name in model_dict:
+                    if model_dict[name].shape == load_model_dict[name].shape:
+                        model_dict[name] = load_model_dict[name]
+                    else:
+                        self.logger.info(f"Skip loading parameter: {name}, "
+                            f"required shape: {model_dict[name].shape}, "
+                            f"loaded shape: {load_model_dict[name].shape}")
+                else:
+                    self.logger.info(f"Not Found! Skip loading parameter: {name}.")
+            self.model.load_state_dict(model_dict)
             self.logger.info("Load model successful!")
 
         with tqdm(total=self.train_num_steps, postfix='loss:{0:<6.5f}', leave=False, dynamic_ncols=True, initial=self.step) as pbar:
