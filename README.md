@@ -436,7 +436,7 @@ Please cite our paper if you use DeepKE in your work
 
 # Developers
 
-Zhejiang University: Ningyu Zhang, Liankuan Tao, Xin Xu, Haiyang Yu, Hongbin Ye, Xin Xie, Xiang Chen, Zhoubo Li, Lei Li, Xiaozhuan Liang, YunzhiYao, Shuofei Qiao, Shumin Deng, Wen Zhang, Guozhou Zheng, Huajun Chen
+Zhejiang University: Ningyu Zhang, Liankuan Tao, Xin Xu, Haiyang Yu, Hongbin Ye, Shuofei Qiao, Xin Xie, Xiang Chen, Zhoubo Li, Lei Li, Xiaozhuan Liang, YunzhiYao, Shuofei Qiao, Shumin Deng, Wen Zhang, Guozhou Zheng, Huajun Chen
 
 Alibaba Group: Feiyu Xiong, Hui Chen, Qiang Chen
 
