@@ -438,4 +438,6 @@ Please cite our paper if you use DeepKE in your work
 
 Zhejiang University: Ningyu Zhang, Liankuan Tao, Xin Xu, Haiyang Yu, Hongbin Ye, Xin Xie, Xiang Chen, Zhoubo Li, Lei Li, Xiaozhuan Liang, YunzhiYao, Shuofei Qiao, Shumin Deng, Wen Zhang, Guozhou Zheng, Huajun Chen
 
+Alibab Group: Feiyu Xiong, Hui Chen, Qiang Chen
+
 DAMO Academy: Zhenru Zhang, Chuanqi Tan, Fei Huang
