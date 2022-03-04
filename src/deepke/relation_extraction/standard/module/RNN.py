@@ -28,21 +28,7 @@ class RNN(nn.Module):
                        bias=True,
                        batch_first=True)
 
-        # 有bug
-        # self._init_weights()
-
-    def _init_weights(self):
-        """orthogonal init yields generally good results than uniform init"""
-        gain = 1  # use default value
-        for nth in range(self.num_layers * self.bidirectional):
-            # w_ih, (4 * hidden_size x input_size)
-            nn.init.orthogonal_(self.rnn.all_weights[nth][0], gain=gain)
-            # w_hh, (4 * hidden_size x hidden_size)
-            nn.init.orthogonal_(self.rnn.all_weights[nth][1], gain=gain)
-            # b_ih, (4 * hidden_size)
-            nn.init.zeros_(self.rnn.all_weights[nth][2])
-            # b_hh, (4 * hidden_size)
-            nn.init.zeros_(self.rnn.all_weights[nth][3])
+     
 
     def forward(self, x, x_len):
         """
