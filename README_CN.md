@@ -59,10 +59,10 @@ DeepKE 是一个支持<b>低资源、长篇章</b>的知识抽取工具，可以
 ## 2021年11月
 - 发布DeepKE demo页面，支持实时抽取，无需部署和训练模型
 - 发布DeepKE文档，包含DeepKE源码和数据集等详细信息
-## 2021年10月
+## 2021年1月
 - `pip install deepke`
 - deepke-v2.0发布
-## 2021年5月
+## 2020年5月
 - `pip install deepke`
 - deepke-v1.0发布
 <br>
