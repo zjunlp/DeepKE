@@ -192,18 +192,14 @@ class Trainer(object):
                 pbar.close()
                 sk_result = classification_report(y_true=true_labels, y_pred=pred_labels, labels=list(self.re_dict.values())[1:], target_names=list(self.re_dict.keys())[1:], digits=4)
                 self.logger.info("%s\n", sk_result)
+                # save predict results
+                import os
+                with open(os.path.join(self.args.cwd,'data/txt/result.txt'), 'w', encoding="utf-8") as wf:
+                    wf.write(sk_result)
+                    print('Successful write!!')
+
                 
-        # save predict results
-        import ast, json
-        with open('data/txt/test.txt') as f, \
-             open('data/txt/predict.txt', 'w', encoding="utf-8") as wf:
-            lines = f.readlines()
-            for i, line in enumerate(lines):
-                line = ast.literal_eval(line)   # str to dict
-                re_labels = list(self.re_dict.keys())
-                line['predict_labels'] = re_labels[pred_labels[i]]
-                wf.writelines(json.dumps(line)+'\n')
-            print('Successful write!!')
+        
         self.model.train()
 
     def _step(self, batch, mode="train"):
