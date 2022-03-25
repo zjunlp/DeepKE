@@ -194,7 +194,7 @@ def preprocess(cfg):
     logger.info('clean data...')
     train_data = _clean_data(train_data)
     valid_data = _clean_data(valid_data)
-    test_data = _clean_data(valid_data)
+    test_data = _clean_data(test_data)
 
     logger.info('convert relation into index...')
     rels = _handle_relation_data(relation_data)
