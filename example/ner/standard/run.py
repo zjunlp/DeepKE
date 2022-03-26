@@ -213,7 +213,7 @@ def main(cfg):
                 temp_1 = []
                 temp_2 = []
                 for j,m in enumerate(label):
-                    if j == 0:
+                    if m == 0 or logits[i][j] == 0:
                         continue
                     elif label_ids[i][j] == len(label_map):
                         y_true.append(temp_1)
