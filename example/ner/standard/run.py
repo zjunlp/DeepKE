@@ -221,7 +221,12 @@ def main(cfg):
                         break
                     else:
                         temp_1.append(label_map[label_ids[i][j]])
-                        temp_2.append(label_map[logits[i][j]])
+                        
+                        if logits[i][j] != 0:
+                            temp_2.append(label_map[logits[i][j]])
+                        else:
+                            temp_2.append(0)
+
 
         report = classification_report(y_true, y_pred,digits=4)
         logger.info("\n%s", report)
