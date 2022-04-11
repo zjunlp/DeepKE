@@ -1,4 +1,4 @@
-"""GCT finetuning runner."""
+"""GenRTE finetuning runner."""
 
 from __future__ import absolute_import
 from __future__ import division
@@ -23,7 +23,7 @@ from pytorch_pretrained_bert.modeling import BertForPreTrainingLossMask
 from pytorch_pretrained_bert.optimization import BertAdam, warmup_linear
 
 from nn.data_parallel import DataParallelImbalance
-import GCT_loader as seq2seq_loader
+import GenRTE_loader as seq2seq_loader
 import torch.distributed as dist
 
 
