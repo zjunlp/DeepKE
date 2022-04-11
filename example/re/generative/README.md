@@ -1,6 +1,6 @@
 # Easy Start
 
-This is a simple impementation of generative triple extraction for knowledge graph construction.
+This is a simple impementation of generative relational triple extraction (GenRTE) for knowledge graph construction.
 
 This branch is still under development and a stable version is comming soon.
 
@@ -64,7 +64,7 @@ The links to the pre-trained unilm1-large-cased models. Please place it in the p
 Model training:
 
 ```
-python GCT_seq2seq.py --do_train --fp16 --amp --num_workers 0 \
+python GenRTE_seq2seq.py --do_train --fp16 --amp --num_workers 0 \
   --bert_model /pre-trained_model --new_segment_ids  --data_dir data_prepare/NYT \
   --src_file date_source.txt --tgt_file date_target.txt --neg_src_file neg_source.txt \
   --neg_tgt_file neg_target.txt --output_dir /fine-tuned_model/bert_save \
@@ -78,7 +78,7 @@ python GCT_seq2seq.py --do_train --fp16 --amp --num_workers 0 \
 Model evaluation:
 
 ```
-python GCT_decoder.py --fp16 --amp --bert_model /pre-trained_model \
+python GenRTE_decoder.py --fp16 --amp --bert_model /pre-trained_model \
   --new_segment_ids --mode s2s --input_file /data_prepare/NYT/test_date_source.txt \
   --split test --model_recover_path /fine-tuned_model/bert_save/finetune-model.bin \
   --max_seq_length 192 --max_tgt_length 32 --batch_size 64 --beam_size 5 \
@@ -90,7 +90,7 @@ python GCT_decoder.py --fp16 --amp --bert_model /pre-trained_model \
 
 NYT results
 
-| Model | CGT(UniLM) | CGT(Random) | CopyRE | CopyMTL | CasRel(Extractive) |
+| Model | GenRTE(UniLM) | GenRTE(Random) | CopyRE | CopyMTL | CasRel(Extractive) |
 | ----- | ---------- | ----------- | ------ | ------- | ------------------ |
 | P     | 94.7%      | 90.8%       | 61.0%  | 75.7%   | 89.7%              |
 | R     | 84.2%      | 77.7%       | 56.6%  | 68.7%   | 89.5%              |
@@ -98,7 +98,7 @@ NYT results
 
 WebNLG results
 
-| Model | CGT(UniLM) | CGT(Random) | CopyRE | CopyMTL | CasRel(Extractive) |
+| Model | GenRTE(UniLM) | GenRTE(Random) | CopyRE | CopyMTL | CasRel(Extractive) |
 | ----- | ---------- | ----------- | ------ | ------- | ------------------ |
 | P     | 92.9%      | 87.6%       | 37.7%  | 58.0%   | 93.4%              |
 | R     | 75.6%      | 70.5%       | 36.4%  | 54.9%   | 90.1%              |
@@ -106,7 +106,7 @@ WebNLG results
 
 MIE results
 
-| Model | CGT(UniLM) | CGT(random) | Bi-LSTM | MIE-multi |
+| Model | GenRTE(UniLM) | GenRTE(random) | Bi-LSTM | MIE-multi |
 | ----- | ---------- | ----------- | ------- | --------- |
 | P     | 80.53%     | 70.75%      | 53.13%  | 70.24%    |
 | R     | 78.83%     | 66.96%      | 49.46%  | 64.96%    |
