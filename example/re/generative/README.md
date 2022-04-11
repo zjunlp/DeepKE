@@ -53,15 +53,25 @@ https://github.com/nlpir2020/MIE-ACL-2020/tree/master/data
 
 For convenience, we have placed the data sets needed for the experimental project under each subfolder of /data_prepare.
 
-The preprocessing and evaluation procedures for each data set are also placed under the corresponding subfiles of each data set in /data_prepare.
+## Data Preprocessing
+
+The preprocessing and evaluation procedures for each data set are placed under the corresponding subfiles of each data set in /data_prepare.
+
+```
+>> python build_data.py       # build positive
+>> python build_neg_sents.py  # build negative
+```
+
+## Download Pre-trained Language Model
 
 The links to the pre-trained unilm1-large-cased models. Please place it in the pre-trained_model folder after downloading:
 
 - [unilm1-large-cased](https://unilm.blob.core.windows.net/ckpt/unilm1-large-cased.bin): 24-layer, 1024-hidden, 16-heads, 340M parameters
 
+
 ## How to Run
 
-Model training:
+### Model training:
 
 ```
 python GenRTE_seq2seq.py --do_train --fp16 --amp --num_workers 0 \
@@ -75,7 +85,7 @@ python GenRTE_seq2seq.py --do_train --fp16 --amp --num_workers 0 \
   --num_train_epochs 50
 ```
 
-Model evaluation:
+### Model evaluation:
 
 ```
 python GenRTE_decoder.py --fp16 --amp --bert_model /pre-trained_model \
