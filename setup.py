@@ -28,7 +28,7 @@ setup(
         'opt-einsum==3.3.0',
         'wandb==0.12.7',
         "ujson",
-        "huggingface_hub==0.0.8"
+        "huggingface_hub==0.2.1"
     ], 
     classifiers=[
         "Programming Language :: Python :: 3",
