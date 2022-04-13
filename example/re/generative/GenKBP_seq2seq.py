@@ -1,5 +1,3 @@
-"""GenRTE finetuning runner."""
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -23,7 +21,7 @@ from pytorch_pretrained_bert.modeling import BertForPreTrainingLossMask
 from pytorch_pretrained_bert.optimization import BertAdam, warmup_linear
 
 from nn.data_parallel import DataParallelImbalance
-import GenRTE_loader as seq2seq_loader
+import GenKBP_loader as seq2seq_loader
 import torch.distributed as dist
 
 

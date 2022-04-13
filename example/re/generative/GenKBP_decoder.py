@@ -23,7 +23,7 @@ from pytorch_pretrained_bert.modeling import BertForSeq2SeqDecoder
 from pytorch_pretrained_bert.optimization import BertAdam, warmup_linear
 
 from nn.data_parallel import DataParallelImbalance
-import GenRTE_seq2seq as seq2seq_loader
+import GenKBP_seq2seq as seq2seq_loader
 
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
