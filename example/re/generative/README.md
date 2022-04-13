@@ -1,6 +1,6 @@
 # Easy Start
 
-This is a simple impementation of generative knowledge base population (GenKBP) for  based on AAAI 2021 paper "[Contrastive Triple Extraction with Generative Transformer](https://arxiv.org/pdf/2009.06207.pdf)".
+This is a simple impementation of generative knowledge base population (GenKBP).
 
 This branch is still under development and a stable version is comming soon.
 
