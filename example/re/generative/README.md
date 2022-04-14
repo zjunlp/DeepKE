@@ -2,6 +2,7 @@
 
 This is a simple impementation of generative knowledge base population (GenKBP).
 
+This branch is still under development and a stable version is comming soon.
 
 ## Requirements
 
