@@ -2,13 +2,6 @@
 
 This is a simple impementation of generative knowledge base population (GenKBP).
 
-# Overview
-
-<div align=center>
-<img src="motivation.png" width="75%" height="75%" />
-</div>
-
-We encourage the model to generate gold triples and does not generate negative ones.
 
 ## Requirements
 
