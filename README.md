@@ -412,6 +412,9 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 5. The old version of *DeepKE* is in the [deepke-v1.0](https://github.com/zjunlp/DeepKE/tree/deepke-v1.0) branch. Users can change the branch to use the old version. The old version has been totally transfered to the standard relation extraction ([example/re/standard](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README.md)).
 6. It's recommended to install *DeepKE* with source codes. Because user may meet some problems in Windows system with 'pip'.
 7. More related low-resource knowledge extraction  works can be found in [Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective](https://arxiv.org/pdf/2202.08063.pdf).
+8. Make sure to the version of requirements in `requirements.txt`.
+
+
 
 <br>
 
