@@ -1,0 +1,21 @@
+seed: 1234
+
+bert_name: "bert-base-uncased"
+vit_name: "openai/clip-vit-base-patch32"
+device: cuda
+
+num_epochs: 30
+batch_size: 32
+lr: 5e-5
+warmup_ratio: 0.06
+eval_begin_epoch: 1
+
+max_seq: 40
+aux_size: 128
+rcnn_size: 64
+ignore_idx: 0
+
+save_path: "checkpoints/twitter15"
+load_path: null
+
+dataset_name: 'twitter15'

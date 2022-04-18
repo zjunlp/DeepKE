@@ -1,0 +1,14 @@
+seed: 1234
+
+bert_name: "bert-base-uncased"
+vit_name: "openai/clip-vit-base-patch32"
+device: cuda
+
+batch_size: 32
+
+max_seq: 40
+aux_size: 128
+rcnn_size: 64
+ignore_idx: 0
+
+load_path: null
