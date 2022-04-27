@@ -13,6 +13,18 @@
 - hydra-core == 1.0.6
 - deepke
 
+
+### 模型
+
+<div align=center>
+<img src="knowprompt-model.png" width="75%" height="75%" />
+</div>
+
+基于Knowprompt的低资源关系抽取方法 (详情请查阅论文 [https://arxiv.org/pdf/2104.07650.pdf](https://arxiv.org/pdf/2104.07650.pdf)).
+
+更多模型介绍请阅读 [KnowPrompt：“知识提示”学习之知识约束](https://mp.weixin.qq.com/s/3ds2qiy_OmKSj40zYMUbgA)
+
+
 ### 克隆代码
 ```
 git clone https://github.com/zjunlp/DeepKE.git
@@ -54,9 +66,6 @@ cd DeepKE/example/re/few-shot
 
 - 进行预测： `python predict.py `
 
-
-## 模型内容
-[KnowPrompt](https://arxiv.org/abs/2104.07650)
 
 ## 引用
 
