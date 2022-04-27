@@ -86,10 +86,6 @@ cd DeepKE/example/ner/few-shot
     python predict.py
     ```
 
-## Model
-
-[LightNER](https://arxiv.org/abs/2109.00720)
-
 ## Cite
 
 If you use or extend our work, please cite the following paper:
