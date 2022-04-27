@@ -14,6 +14,17 @@
 - ujson
 - deepke
 
+### 模型
+
+<div align=center>
+<img src="docunet-model.png" width="75%" height="75%" />
+</div>
+
+
+基于DocuNet的篇章级关系抽取方法 (详情请查阅论文 [https://arxiv.org/pdf/2106.03618.pdf](https://arxiv.org/pdf/2106.03618.pdf)).
+
+更多模型介绍请阅读 [长文本知识抽取：基于语义分割的文档级三元组关系抽取](https://mp.weixin.qq.com/s/I4Dob-_GaG23lrqmVb34Rg)
+
 ### 克隆代码
 ```
 git clone https://github.com/zjunlp/DeepKE.git
@@ -60,6 +71,32 @@ cd DeepKE/example/re/d
 
   - 预测生成的`result.json`保存在根目录
 
+## 引用
 
-## 模型内容
-[DocuNet](https://arxiv.org/abs/2106.03618)
+如果您使用了上述代码，请您引用下列论文:
+
+```bibtex
+@inproceedings{DBLP:conf/ijcai/ZhangCXDTCHSC21,
+  author    = {Ningyu Zhang and
+               Xiang Chen and
+               Xin Xie and
+               Shumin Deng and
+               Chuanqi Tan and
+               Mosha Chen and
+               Fei Huang and
+               Luo Si and
+               Huajun Chen},
+  title     = {Document-level Relation Extraction as Semantic Segmentation},
+  booktitle = {Proceedings of the Thirtieth International Joint Conference on Artificial
+               Intelligence, {IJCAI} 2021, Virtual Event / Montreal, Canada, 19-27
+               August 2021},
+  pages     = {3999--4006},
+  year      = {2021},
+  crossref  = {DBLP:conf/ijcai/2021},
+  url       = {https://doi.org/10.24963/ijcai.2021/551},
+  doi       = {10.24963/ijcai.2021/551},
+  timestamp = {Wed, 25 Aug 2021 17:11:16 +0200},
+  biburl    = {https://dblp.org/rec/conf/ijcai/ZhangCXDTCHSC21.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+```
