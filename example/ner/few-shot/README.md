@@ -4,6 +4,14 @@
     <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/ner/few-shot/README_CN.md">简体中文</a> </b>
 </p>
 
+## Model
+
+<div align=center>
+<img src="lightner-model.png" width="75%" height="75%" />
+</div>
+
+Illustration of LightNER for few-shot named entity recognition (Details in paper [https://arxiv.org/pdf/2109.00720.pdf](https://arxiv.org/pdf/2109.00720.pdf)).
+
 ## Requirements
 
 > python == 3.8
