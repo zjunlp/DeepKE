@@ -73,3 +73,40 @@ cd DeepKE/example/re/few-shot
 ## Model
 
 [KnowPrompt](https://arxiv.org/abs/2104.07650)
+
+## Cite
+
+If you use or extend our work, please cite the following paper:
+
+```bibtex
+@inproceedings{DBLP:conf/www/ChenZXDYTHSC22,
+  author    = {Xiang Chen and
+               Ningyu Zhang and
+               Xin Xie and
+               Shumin Deng and
+               Yunzhi Yao and
+               Chuanqi Tan and
+               Fei Huang and
+               Luo Si and
+               Huajun Chen},
+  editor    = {Fr{\'{e}}d{\'{e}}rique Laforest and
+               Rapha{\"{e}}l Troncy and
+               Elena Simperl and
+               Deepak Agarwal and
+               Aristides Gionis and
+               Ivan Herman and
+               Lionel M{\'{e}}dini},
+  title     = {KnowPrompt: Knowledge-aware Prompt-tuning with Synergistic Optimization
+               for Relation Extraction},
+  booktitle = {{WWW} '22: The {ACM} Web Conference 2022, Virtual Event, Lyon, France,
+               April 25 - 29, 2022},
+  pages     = {2778--2788},
+  publisher = {{ACM}},
+  year      = {2022},
+  url       = {https://doi.org/10.1145/3485447.3511998},
+  doi       = {10.1145/3485447.3511998},
+  timestamp = {Tue, 26 Apr 2022 16:02:09 +0200},
+  biburl    = {https://dblp.org/rec/conf/www/ChenZXDYTHSC22.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+```
