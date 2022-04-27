@@ -12,6 +12,15 @@
 - transformers == 3.4.0
 - deepke 
 
+## 模型
+
+<div align=center>
+<img src="lightner-model.png" width="75%" height="75%" />
+</div>
+
+基于LightNER的低资源实体识别方法 (详情请查阅论文 [https://arxiv.org/pdf/2109.00720.pdf](https://arxiv.org/pdf/2109.00720.pdf)).
+
+
 ### 克隆代码
 ```bash
 git clone https://github.com/zjunlp/DeepKE.git
@@ -56,9 +65,6 @@ cd DeepKE/example/ner/few-shot
 - 每次训练的日志保存在 `logs` 文件夹内，模型结果保存目录可以自定义。
 - 进行预测：在config.yaml中加入 - predict ， 再在predict.yaml中修改load_path为模型路径以及write_path为预测结果保存路径，再` python predict.py `
 
-### 模型
-
-[LightNER](https://arxiv.org/abs/2109.00720)
 
 ## 引用
 
