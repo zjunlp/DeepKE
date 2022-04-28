@@ -21,7 +21,7 @@
 </div>
 
 
-基于DocuNet的篇章级关系抽取方法 (详情请查阅论文 [https://arxiv.org/pdf/2106.03618.pdf](https://arxiv.org/pdf/2106.03618.pdf)).
+基于DocuNet的篇章级关系抽取方法，详情请查阅IJCAI2021论文”[Document-level Relation Extraction as Semantic Segmentation](https://arxiv.org/pdf/2106.03618.pdf)“
 
 更多模型介绍请阅读 [长文本知识抽取：基于语义分割的文档级三元组关系抽取](https://mp.weixin.qq.com/s/I4Dob-_GaG23lrqmVb34Rg)
 
