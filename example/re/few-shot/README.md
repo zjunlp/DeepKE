@@ -13,6 +13,14 @@
 - hydra-core == 1.0.6
 - deepke
 
+## Model
+
+<div align=center>
+<img src="knowprompt-model.png" width="75%" height="75%" />
+</div>
+
+Few-shot relation extraction based on the WWW2020 paper”[KnowPrompt: Knowledge-aware Prompt-tuning with Synergistic Optimization for Relation Extraction](https://arxiv.org/pdf/2104.07650.pdf)"
+
 ## Download Code
 
 ```bash
@@ -69,10 +77,6 @@ cd DeepKE/example/re/few-shot
   ```bash
   python predict.py
   ```
-
-## Model
-
-[KnowPrompt](https://arxiv.org/abs/2104.07650)
 
 ## Cite
 
