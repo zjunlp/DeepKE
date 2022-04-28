@@ -20,10 +20,7 @@
 <img src="knowprompt-model.png" width="75%" height="75%" />
 </div>
 
-基于Knowprompt的低资源关系抽取方法 (详情请查阅论文 [https://arxiv.org/pdf/2104.07650.pdf](https://arxiv.org/pdf/2104.07650.pdf)).
-
-更多模型介绍请阅读 [KnowPrompt：“知识提示”学习之知识约束](https://mp.weixin.qq.com/s/3ds2qiy_OmKSj40zYMUbgA)
-
+基于Knowprompt的低资源关系抽取方法，详情请查阅WWW2020论文”[KnowPrompt: Knowledge-aware Prompt-tuning with Synergistic Optimization for Relation Extraction](https://arxiv.org/pdf/2104.07650.pdf)"
 
 ### 克隆代码
 ```
