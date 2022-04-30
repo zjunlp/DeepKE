@@ -1,10 +1,19 @@
 Tools
 =====
 
+
 deepke.relation\_extraction.standard.tools.dataset module
 ---------------------------------------------------------
 
 .. automodule:: deepke.relation_extraction.standard.tools.dataset
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+deepke.relation\_extraction.standard.tools.loss module
+------------------------------------------------------
+
+.. automodule:: deepke.relation_extraction.standard.tools.loss
    :members:
    :undoc-members:
    :show-inheritance:

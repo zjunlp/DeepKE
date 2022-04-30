@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Module &mdash; DeepKE 1.0.0 documentation</title>
+  <title>Module &mdash; DeepKE 0.2.97 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -100,7 +100,7 @@
 <span id="deepke-attribution-extraction-standard-module-attention-module"></span><h2>deepke.attribution_extraction.standard.module.Attention module<a class="headerlink" href="#module-deepke.attribution_extraction.standard.module.Attention" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Attention.DotAttention">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Attention.</span></span><span class="sig-name descname"><span class="pre">DotAttention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Attention.html#DotAttention"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Attention.DotAttention" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Attention.</span></span><span class="sig-name descname"><span class="pre">DotAttention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Attention.html#DotAttention"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Attention.DotAttention" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Attention.DotAttention.forward">
@@ -129,11 +129,16 @@ attention_weight: Weight after attention</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Attention.DotAttention.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Attention.DotAttention.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Attention.MultiHeadAttention">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Attention.</span></span><span class="sig-name descname"><span class="pre">MultiHeadAttention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embed_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_heads</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_attentions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Attention.html#MultiHeadAttention"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Attention.MultiHeadAttention" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Attention.</span></span><span class="sig-name descname"><span class="pre">MultiHeadAttention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embed_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_heads</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_attentions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Attention.html#MultiHeadAttention"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Attention.MultiHeadAttention" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Attention.MultiHeadAttention.forward">
@@ -152,6 +157,11 @@ attention_weight: Weight after attention</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Attention.MultiHeadAttention.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Attention.MultiHeadAttention.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -159,7 +169,7 @@ attention_weight: Weight after attention</p>
 <span id="deepke-attribution-extraction-standard-module-cnn-module"></span><h2>deepke.attribution_extraction.standard.module.CNN module<a class="headerlink" href="#module-deepke.attribution_extraction.standard.module.CNN" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.CNN.GELU">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.CNN.</span></span><span class="sig-name descname"><span class="pre">GELU</span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/CNN.html#GELU"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.CNN.GELU" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.CNN.</span></span><span class="sig-name descname"><span class="pre">GELU</span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/CNN.html#GELU"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.CNN.GELU" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.CNN.GELU.forward">
@@ -175,11 +185,16 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.CNN.GELU.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.attribution_extraction.standard.module.CNN.GELU.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.CNN.CNN">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.CNN.</span></span><span class="sig-name descname"><span class="pre">CNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/CNN.html#CNN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.CNN.CNN" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.CNN.</span></span><span class="sig-name descname"><span class="pre">CNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/CNN.html#CNN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.CNN.CNN" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <p>In order to ensure that the output sentence length = the input sentence length in nlp, an odd kernel_size is generally used, such as [3, 5, 7, 9].
 Of course, it can also be output with different lengths.
@@ -198,6 +213,11 @@ At this time, padding = k / / 2, stride is generally 1</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.CNN.CNN.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.attribution_extraction.standard.module.CNN.CNN.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -205,7 +225,7 @@ At this time, padding = k / / 2, stride is generally 1</p>
 <span id="deepke-attribution-extraction-standard-module-capsule-module"></span><h2>deepke.attribution_extraction.standard.module.Capsule module<a class="headerlink" href="#module-deepke.attribution_extraction.standard.module.Capsule" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Capsule.Capsule">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Capsule.</span></span><span class="sig-name descname"><span class="pre">Capsule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Capsule.html#Capsule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Capsule.Capsule" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Capsule.</span></span><span class="sig-name descname"><span class="pre">Capsule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Capsule.html#Capsule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Capsule.Capsule" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Capsule.Capsule.forward">
@@ -219,7 +239,12 @@ At this time, padding = k / / 2, stride is generally 1</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Capsule.Capsule.squash">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">squash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Capsule.html#Capsule.squash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Capsule.Capsule.squash" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">squash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Capsule.html#Capsule.squash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Capsule.Capsule.squash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Capsule.Capsule.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Capsule.Capsule.training" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -229,7 +254,7 @@ At this time, padding = k / / 2, stride is generally 1</p>
 <span id="deepke-attribution-extraction-standard-module-embedding-module"></span><h2>deepke.attribution_extraction.standard.module.Embedding module<a class="headerlink" href="#module-deepke.attribution_extraction.standard.module.Embedding" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Embedding.Embedding">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Embedding.</span></span><span class="sig-name descname"><span class="pre">Embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Embedding.html#Embedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Embedding.Embedding" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Embedding.</span></span><span class="sig-name descname"><span class="pre">Embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Embedding.html#Embedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Embedding.Embedding" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Embedding.Embedding.forward">
@@ -245,6 +270,11 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Embedding.Embedding.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Embedding.Embedding.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -252,7 +282,7 @@ registered hooks while the latter silently ignores them.</p>
 <span id="deepke-attribution-extraction-standard-module-gcn-module"></span><h2>deepke.attribution_extraction.standard.module.GCN module<a class="headerlink" href="#module-deepke.attribution_extraction.standard.module.GCN" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.GCN.GCN">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.GCN.</span></span><span class="sig-name descname"><span class="pre">GCN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/GCN.html#GCN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.GCN.GCN" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.GCN.</span></span><span class="sig-name descname"><span class="pre">GCN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/GCN.html#GCN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.GCN.GCN" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.GCN.GCN.forward">
@@ -268,11 +298,16 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.GCN.GCN.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.attribution_extraction.standard.module.GCN.GCN.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.GCN.Tree">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.GCN.</span></span><span class="sig-name descname"><span class="pre">Tree</span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/GCN.html#Tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.GCN.Tree" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.GCN.</span></span><span class="sig-name descname"><span class="pre">Tree</span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/GCN.html#Tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.GCN.Tree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.GCN.Tree.add_child">
@@ -307,7 +342,7 @@ registered hooks while the latter silently ignores them.</p>
 <span id="deepke-attribution-extraction-standard-module-rnn-module"></span><h2>deepke.attribution_extraction.standard.module.RNN module<a class="headerlink" href="#module-deepke.attribution_extraction.standard.module.RNN" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.RNN.RNN">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.RNN.</span></span><span class="sig-name descname"><span class="pre">RNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/RNN.html#RNN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.RNN.RNN" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.RNN.</span></span><span class="sig-name descname"><span class="pre">RNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/RNN.html#RNN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.RNN.RNN" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.RNN.RNN.forward">
@@ -334,6 +369,11 @@ hn:     torch.Tensor [B, N, H_out] / [B, H_out], the result of classification, w
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.RNN.RNN.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.attribution_extraction.standard.module.RNN.RNN.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -363,7 +403,7 @@ Also see <a class="reference external" href="https://arxiv.org/abs/1606.08415">h
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Transformer.TransformerAttention">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Transformer.</span></span><span class="sig-name descname"><span class="pre">TransformerAttention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Transformer.html#TransformerAttention"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Transformer.TransformerAttention" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Transformer.</span></span><span class="sig-name descname"><span class="pre">TransformerAttention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Transformer.html#TransformerAttention"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Transformer.TransformerAttention" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Transformer.TransformerAttention.forward">
@@ -379,11 +419,16 @@ Also see <a class="reference external" href="https://arxiv.org/abs/1606.08415">h
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Transformer.TransformerAttention.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Transformer.TransformerAttention.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Transformer.TransformerOutput">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Transformer.</span></span><span class="sig-name descname"><span class="pre">TransformerOutput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Transformer.html#TransformerOutput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Transformer.TransformerOutput" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Transformer.</span></span><span class="sig-name descname"><span class="pre">TransformerOutput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Transformer.html#TransformerOutput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Transformer.TransformerOutput" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Transformer.TransformerOutput.forward">
@@ -399,11 +444,16 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Transformer.TransformerOutput.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Transformer.TransformerOutput.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Transformer.TransformerLayer">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Transformer.</span></span><span class="sig-name descname"><span class="pre">TransformerLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Transformer.html#TransformerLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Transformer.TransformerLayer" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Transformer.</span></span><span class="sig-name descname"><span class="pre">TransformerLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Transformer.html#TransformerLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Transformer.TransformerLayer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Transformer.TransformerLayer.forward">
@@ -419,12 +469,22 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Transformer.TransformerLayer.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Transformer.TransformerLayer.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Transformer.Transformer">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Transformer.</span></span><span class="sig-name descname"><span class="pre">Transformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Transformer.html#Transformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Transformer.Transformer" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.module.Transformer.</span></span><span class="sig-name descname"><span class="pre">Transformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Transformer.html#Transformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Transformer.Transformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Transformer.Transformer.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Transformer.Transformer.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.module.Transformer.Transformer.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_padding_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">head_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/module/Transformer.html#Transformer.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.module.Transformer.Transformer.forward" title="Permalink to this definition">¶</a></dt>

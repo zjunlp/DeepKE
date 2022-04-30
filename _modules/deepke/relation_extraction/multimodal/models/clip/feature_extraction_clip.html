@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>deepke.relation_extraction.multimodal.models.clip.feature_extraction_clip &mdash; DeepKE 0.2.97 documentation</title>
+      <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../../" id="documentation_options" src="../../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../../_static/jquery.js"></script>
+        <script src="../../../../../../_static/underscore.js"></script>
+        <script src="../../../../../../_static/doctools.js"></script>
+        <script src="../../../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../../index.html" class="icon icon-home"> DeepKE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../start.html">Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../deepke.html">DeepKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">DeepKE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
+      <li>deepke.relation_extraction.multimodal.models.clip.feature_extraction_clip</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for deepke.relation_extraction.multimodal.models.clip.feature_extraction_clip</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="c1"># Copyright 2021 The HuggingFace Inc. team. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot;Feature extractor class for CLIP.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span> <span class="nn">transformers.utils</span> <span class="kn">import</span> <span class="n">logging</span>
+<span class="kn">from</span> <span class="nn">.feature_extraction_utils</span> <span class="kn">import</span> <span class="n">BatchFeature</span><span class="p">,</span> <span class="n">FeatureExtractionMixin</span><span class="p">,</span> <span class="n">TensorType</span>
+<span class="kn">from</span> <span class="nn">.image_utils</span> <span class="kn">import</span> <span class="n">ImageFeatureExtractionMixin</span><span class="p">,</span> <span class="n">is_torch_tensor</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="CLIPFeatureExtractor"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.feature_extraction_clip.CLIPFeatureExtractor">[docs]</a><span class="k">class</span> <span class="nc">CLIPFeatureExtractor</span><span class="p">(</span><span class="n">FeatureExtractionMixin</span><span class="p">,</span> <span class="n">ImageFeatureExtractionMixin</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constructs a CLIP feature extractor.</span>
+
+<span class="sd">    This feature extractor inherits from [`FeatureExtractionMixin`] which contains most of the main methods. Users</span>
+<span class="sd">    should refer to this superclass for more information regarding those methods.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        do_resize (`bool`, *optional*, defaults to `True`):</span>
+<span class="sd">            Whether to resize the input to a certain `size`.</span>
+<span class="sd">        size (`int`, *optional*, defaults to 224):</span>
+<span class="sd">            Resize the input to the given size. Only has an effect if `do_resize` is set to `True`.</span>
+<span class="sd">        resample (`int`, *optional*, defaults to `PIL.Image.BICUBIC`):</span>
+<span class="sd">            An optional resampling filter. This can be one of `PIL.Image.NEAREST`, `PIL.Image.BOX`,</span>
+<span class="sd">            `PIL.Image.BILINEAR`, `PIL.Image.HAMMING`, `PIL.Image.BICUBIC` or `PIL.Image.LANCZOS`. Only has an effect</span>
+<span class="sd">            if `do_resize` is set to `True`.</span>
+<span class="sd">        do_center_crop (`bool`, *optional*, defaults to `True`):</span>
+<span class="sd">            Whether to crop the input at the center. If the input size is smaller than `crop_size` along any edge, the</span>
+<span class="sd">            image is padded with 0&#39;s and then center cropped.</span>
+<span class="sd">        crop_size (`int`, *optional*, defaults to 224):</span>
+<span class="sd">            Desired output size when applying center-cropping. Only has an effect if `do_center_crop` is set to `True`.</span>
+<span class="sd">        do_normalize (`bool`, *optional*, defaults to `True`):</span>
+<span class="sd">            Whether or not to normalize the input with `image_mean` and `image_std`.</span>
+<span class="sd">        image_mean (`List[int]`, defaults to `[0.485, 0.456, 0.406]`):</span>
+<span class="sd">            The sequence of means for each channel, to be used when normalizing images.</span>
+<span class="sd">        image_std (`List[int]`, defaults to `[0.229, 0.224, 0.225]`):</span>
+<span class="sd">            The sequence of standard deviations for each channel, to be used when normalizing images.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_input_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;pixel_values&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">do_resize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">size</span><span class="o">=</span><span class="mi">224</span><span class="p">,</span>
+        <span class="n">resample</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BICUBIC</span><span class="p">,</span>
+        <span class="n">do_center_crop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">crop_size</span><span class="o">=</span><span class="mi">224</span><span class="p">,</span>
+        <span class="n">do_normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">image_mean</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">image_std</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_resize</span> <span class="o">=</span> <span class="n">do_resize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resample</span> <span class="o">=</span> <span class="n">resample</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_center_crop</span> <span class="o">=</span> <span class="n">do_center_crop</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crop_size</span> <span class="o">=</span> <span class="n">crop_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_normalize</span> <span class="o">=</span> <span class="n">do_normalize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_mean</span> <span class="o">=</span> <span class="n">image_mean</span> <span class="k">if</span> <span class="n">image_mean</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="mf">0.48145466</span><span class="p">,</span> <span class="mf">0.4578275</span><span class="p">,</span> <span class="mf">0.40821073</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_std</span> <span class="o">=</span> <span class="n">image_std</span> <span class="k">if</span> <span class="n">image_std</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="mf">0.26862954</span><span class="p">,</span> <span class="mf">0.26130258</span><span class="p">,</span> <span class="mf">0.27577711</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">images</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+            <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot;torch.Tensor&quot;</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;torch.Tensor&quot;</span><span class="p">]</span>  <span class="c1"># noqa</span>
+        <span class="p">],</span>
+        <span class="n">return_tensors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TensorType</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BatchFeature</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Main method to prepare for the model one or several image(s).</span>
+
+<span class="sd">        &lt;Tip warning={true}&gt;</span>
+
+<span class="sd">        NumPy arrays and PyTorch tensors are converted to PIL images when resizing, so the most efficient is to pass</span>
+<span class="sd">        PIL images.</span>
+
+<span class="sd">        &lt;/Tip&gt;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            images (`PIL.Image.Image`, `np.ndarray`, `torch.Tensor`, `List[PIL.Image.Image]`, `List[np.ndarray]`, `List[torch.Tensor]`):</span>
+<span class="sd">                The image or batch of images to be prepared. Each image can be a PIL image, NumPy array or PyTorch</span>
+<span class="sd">                tensor. In case of a NumPy array/PyTorch tensor, each image should be of shape (C, H, W), where C is a</span>
+<span class="sd">                number of channels, H and W are image height and width.</span>
+
+<span class="sd">            return_tensors (`str` or [`~file_utils.TensorType`], *optional*, defaults to `&#39;np&#39;`):</span>
+<span class="sd">                If set, will return tensors of a particular framework. Acceptable values are:</span>
+
+<span class="sd">                - `&#39;tf&#39;`: Return TensorFlow `tf.constant` objects.</span>
+<span class="sd">                - `&#39;pt&#39;`: Return PyTorch `torch.Tensor` objects.</span>
+<span class="sd">                - `&#39;np&#39;`: Return NumPy `np.ndarray` objects.</span>
+<span class="sd">                - `&#39;jax&#39;`: Return JAX `jnp.ndarray` objects.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            [`BatchFeature`]: A [`BatchFeature`] with the following fields:</span>
+
+<span class="sd">            - **pixel_values** -- Pixel values to be fed to a model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Input type checking for clearer error</span>
+        <span class="n">valid_images</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Check that images has a valid type</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">))</span> <span class="ow">or</span> <span class="n">is_torch_tensor</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
+            <span class="n">valid_images</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">))</span> <span class="ow">or</span> <span class="n">is_torch_tensor</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">valid_images</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_images</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Images must of type `PIL.Image.Image`, `np.ndarray` or `torch.Tensor` (single example), &quot;</span>
+                <span class="s2">&quot;`List[PIL.Image.Image]`, `List[np.ndarray]` or `List[torch.Tensor]` (batch of examples).&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">is_batched</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">))</span> <span class="ow">or</span> <span class="n">is_torch_tensor</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_batched</span><span class="p">:</span>
+            <span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">images</span><span class="p">]</span>
+
+        <span class="c1"># transformations (resizing + center cropping + normalization)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_resize</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">resample</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">resample</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">resample</span><span class="p">)</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_center_crop</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">center_crop</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_size</span><span class="p">)</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_normalize</span><span class="p">:</span>
+            <span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_mean</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_std</span><span class="p">)</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span>
+
+        <span class="c1"># return as BatchFeature</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pixel_values&quot;</span><span class="p">:</span> <span class="n">images</span><span class="p">}</span>
+        <span class="n">encoded_inputs</span> <span class="o">=</span> <span class="n">BatchFeature</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">tensor_type</span><span class="o">=</span><span class="n">return_tensors</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">encoded_inputs</span>
+
+<div class="viewcode-block" id="CLIPFeatureExtractor.center_crop"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.feature_extraction_clip.CLIPFeatureExtractor.center_crop">[docs]</a>    <span class="k">def</span> <span class="nf">center_crop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crops `image` to the given size using a center crop. Note that if the image is too small to be cropped to the</span>
+<span class="sd">        size is given, it will be padded (so the returned result has the size asked).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            image (`PIL.Image.Image` or `np.ndarray` or `torch.Tensor`):</span>
+<span class="sd">                The image to resize.</span>
+<span class="sd">            size (`int` or `Tuple[int, int]`):</span>
+<span class="sd">                The size to which crop the image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_format_supported</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pil_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+        <span class="n">image_width</span><span class="p">,</span> <span class="n">image_height</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">crop_height</span><span class="p">,</span> <span class="n">crop_width</span> <span class="o">=</span> <span class="n">size</span>
+
+        <span class="n">crop_top</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">image_height</span> <span class="o">-</span> <span class="n">crop_height</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">crop_left</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">image_width</span> <span class="o">-</span> <span class="n">crop_width</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">image</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">crop_left</span><span class="p">,</span> <span class="n">crop_top</span><span class="p">,</span> <span class="n">crop_left</span> <span class="o">+</span> <span class="n">crop_width</span><span class="p">,</span> <span class="n">crop_top</span> <span class="o">+</span> <span class="n">crop_height</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="CLIPFeatureExtractor.resize"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.feature_extraction_clip.CLIPFeatureExtractor.resize">[docs]</a>    <span class="k">def</span> <span class="nf">resize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">resample</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BICUBIC</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resizes `image`. Note that this will trigger a conversion of `image` to a PIL Image.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            image (`PIL.Image.Image` or `np.ndarray` or `torch.Tensor`):</span>
+<span class="sd">                The image to resize.</span>
+<span class="sd">            size (`int` or `Tuple[int, int]`):</span>
+<span class="sd">                The size to use for resizing the image. If `int` it will be resized to match the shorter side</span>
+<span class="sd">            resample (`int`, *optional*, defaults to `PIL.Image.BILINEAR`):</span>
+<span class="sd">                The filter to user for resampling.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_format_supported</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pil_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">new_w</span><span class="p">,</span> <span class="n">new_h</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">short</span><span class="p">,</span> <span class="n">long</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span> <span class="k">if</span> <span class="n">width</span> <span class="o">&lt;=</span> <span class="n">height</span> <span class="k">else</span> <span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">short</span> <span class="o">==</span> <span class="n">size</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">image</span>
+            <span class="n">new_short</span><span class="p">,</span> <span class="n">new_long</span> <span class="o">=</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span> <span class="o">*</span> <span class="n">long</span> <span class="o">/</span> <span class="n">short</span><span class="p">)</span>
+            <span class="n">new_w</span><span class="p">,</span> <span class="n">new_h</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_short</span><span class="p">,</span> <span class="n">new_long</span><span class="p">)</span> <span class="k">if</span> <span class="n">width</span> <span class="o">&lt;=</span> <span class="n">height</span> <span class="k">else</span> <span class="p">(</span><span class="n">new_long</span><span class="p">,</span> <span class="n">new_short</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">new_w</span><span class="p">,</span> <span class="n">new_h</span><span class="p">),</span> <span class="n">resample</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, ZJUNLP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>deepke.relation_extraction.multimodal.models.clip.configuration_clip &mdash; DeepKE 0.2.97 documentation</title>
+      <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../../" id="documentation_options" src="../../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../../_static/jquery.js"></script>
+        <script src="../../../../../../_static/underscore.js"></script>
+        <script src="../../../../../../_static/doctools.js"></script>
+        <script src="../../../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../../index.html" class="icon icon-home"> DeepKE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../start.html">Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../deepke.html">DeepKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">DeepKE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
+      <li>deepke.relation_extraction.multimodal.models.clip.configuration_clip</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for deepke.relation_extraction.multimodal.models.clip.configuration_clip</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="c1"># Copyright 2021 The HuggingFace Inc. team. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot; CLIP model configuration&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">from</span> <span class="nn">transformers.configuration_utils</span> <span class="kn">import</span> <span class="n">PretrainedConfig</span>
+<span class="kn">from</span> <span class="nn">transformers.utils</span> <span class="kn">import</span> <span class="n">logging</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">CLIP_PRETRAINED_CONFIG_ARCHIVE_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;openai/clip-vit-base-patch32&quot;</span><span class="p">:</span> <span class="s2">&quot;https://huggingface.co/openai/clip-vit-base-patch32/resolve/main/config.json&quot;</span><span class="p">,</span>
+    <span class="c1"># See all CLIP models at https://huggingface.co/models?filter=clip</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="CLIPTextConfig"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.configuration_clip.CLIPTextConfig">[docs]</a><span class="k">class</span> <span class="nc">CLIPTextConfig</span><span class="p">(</span><span class="n">PretrainedConfig</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is the configuration class to store the configuration of a [`CLIPModel`]. It is used to instantiate an CLIP</span>
+<span class="sd">    model according to the specified arguments, defining the model architecture. Instantiating a configuration with the</span>
+<span class="sd">    defaults will yield a similar configuration to that of the CLIP</span>
+<span class="sd">    [openai/clip-vit-base-patch32](https://huggingface.co/openai/clip-vit-base-patch32) architecture.</span>
+
+<span class="sd">    Configuration objects inherit from [`PretrainedConfig`] and can be used to control the model outputs. Read the</span>
+<span class="sd">    documentation from [`PretrainedConfig`] for more information.</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        vocab_size (`int`, *optional*, defaults to 49408):</span>
+<span class="sd">            Vocabulary size of the CLIP text model. Defines the number of different tokens that can be represented by</span>
+<span class="sd">            the `inputs_ids` passed when calling [`CLIPModel`].</span>
+<span class="sd">        hidden_size (`int`, *optional*, defaults to 512):</span>
+<span class="sd">            Dimensionality of the encoder layers and the pooler layer.</span>
+<span class="sd">        intermediate_size (`int`, *optional*, defaults to 2048):</span>
+<span class="sd">            Dimensionality of the &quot;intermediate&quot; (i.e., feed-forward) layer in the Transformer encoder.</span>
+<span class="sd">        num_hidden_layers (`int`, *optional*, defaults to 12):</span>
+<span class="sd">            Number of hidden layers in the Transformer encoder.</span>
+<span class="sd">        num_attention_heads (`int`, *optional*, defaults to 8):</span>
+<span class="sd">            Number of attention heads for each attention layer in the Transformer encoder.</span>
+<span class="sd">        max_position_embeddings (`int`, *optional*, defaults to 77):</span>
+<span class="sd">            The maximum sequence length that this model might ever be used with. Typically set this to something large</span>
+<span class="sd">            just in case (e.g., 512 or 1024 or 2048).</span>
+<span class="sd">        hidden_act (`str` or `function`, *optional*, defaults to `&quot;quick_gelu&quot;`):</span>
+<span class="sd">            The non-linear activation function (function or string) in the encoder and pooler. If string, `&quot;gelu&quot;`,</span>
+<span class="sd">            `&quot;relu&quot;`, `&quot;selu&quot;` and `&quot;gelu_new&quot;` ``&quot;quick_gelu&quot;` are supported. layer_norm_eps (`float`, *optional*,</span>
+<span class="sd">            defaults to 1e-5): The epsilon used by the layer normalization layers.</span>
+<span class="sd">        attention_dropout (`float`, *optional*, defaults to 0.0):</span>
+<span class="sd">            The dropout ratio for the attention probabilities.</span>
+<span class="sd">        dropout (`float`, *optional*, defaults to 0.0):</span>
+<span class="sd">            The dropout probabilitiy for all fully connected layers in the embeddings, encoder, and pooler.</span>
+<span class="sd">        initializer_range (`float`, *optional*, defaults to 0.02):</span>
+<span class="sd">            The standard deviation of the truncated_normal_initializer for initializing all weight matrices.</span>
+<span class="sd">        initializer_factor (`float``, *optional*, defaults to 1):</span>
+<span class="sd">            A factor for initializing all weight matrices (should be kept to 1, used internally for initialization</span>
+<span class="sd">            testing).</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">    ```python</span>
+<span class="sd">    &gt;&gt;&gt; from transformers import CLIPTextModel, CLIPTextConfig</span>
+
+<span class="sd">    &gt;&gt;&gt; # Initializing a CLIPTextModel with openai/clip-vit-base-patch32 style configuration</span>
+<span class="sd">    &gt;&gt;&gt; configuration = CLIPTextConfig()</span>
+
+<span class="sd">    &gt;&gt;&gt; # Initializing a CLIPTextConfig from the openai/clip-vit-base-patch32 style configuration</span>
+<span class="sd">    &gt;&gt;&gt; model = CLIPTextModel(configuration)</span>
+
+<span class="sd">    &gt;&gt;&gt; # Accessing the model configuration</span>
+<span class="sd">    &gt;&gt;&gt; configuration = model.config</span>
+<span class="sd">    ```&quot;&quot;&quot;</span>
+    <span class="n">model_type</span> <span class="o">=</span> <span class="s2">&quot;clip_text_model&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">vocab_size</span><span class="o">=</span><span class="mi">49408</span><span class="p">,</span>
+        <span class="n">hidden_size</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+        <span class="n">intermediate_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span>
+        <span class="n">num_hidden_layers</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+        <span class="n">num_attention_heads</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+        <span class="n">max_position_embeddings</span><span class="o">=</span><span class="mi">77</span><span class="p">,</span>
+        <span class="n">hidden_act</span><span class="o">=</span><span class="s2">&quot;quick_gelu&quot;</span><span class="p">,</span>
+        <span class="n">layer_norm_eps</span><span class="o">=</span><span class="mf">0.00001</span><span class="p">,</span>
+        <span class="n">dropout</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">attention_dropout</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">initializer_range</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
+        <span class="n">initializer_factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">pad_token_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">bos_token_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">eos_token_id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">pad_token_id</span><span class="o">=</span><span class="n">pad_token_id</span><span class="p">,</span> <span class="n">bos_token_id</span><span class="o">=</span><span class="n">bos_token_id</span><span class="p">,</span> <span class="n">eos_token_id</span><span class="o">=</span><span class="n">eos_token_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">=</span> <span class="n">vocab_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_size</span> <span class="o">=</span> <span class="n">intermediate_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">dropout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_hidden_layers</span> <span class="o">=</span> <span class="n">num_hidden_layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_attention_heads</span> <span class="o">=</span> <span class="n">num_attention_heads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_position_embeddings</span> <span class="o">=</span> <span class="n">max_position_embeddings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer_norm_eps</span> <span class="o">=</span> <span class="n">layer_norm_eps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_act</span> <span class="o">=</span> <span class="n">hidden_act</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initializer_range</span> <span class="o">=</span> <span class="n">initializer_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initializer_factor</span> <span class="o">=</span> <span class="n">initializer_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attention_dropout</span> <span class="o">=</span> <span class="n">attention_dropout</span></div>
+
+
+<div class="viewcode-block" id="CLIPVisionConfig"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.configuration_clip.CLIPVisionConfig">[docs]</a><span class="k">class</span> <span class="nc">CLIPVisionConfig</span><span class="p">(</span><span class="n">PretrainedConfig</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is the configuration class to store the configuration of a [`CLIPModel`]. It is used to instantiate an CLIP</span>
+<span class="sd">    model according to the specified arguments, defining the model architecture. Instantiating a configuration with the</span>
+<span class="sd">    defaults will yield a similar configuration to that of the CLIP</span>
+<span class="sd">    [openai/clip-vit-base-patch32](https://huggingface.co/openai/clip-vit-base-patch32) architecture.</span>
+
+<span class="sd">    Configuration objects inherit from [`PretrainedConfig`] and can be used to control the model outputs. Read the</span>
+<span class="sd">    documentation from [`PretrainedConfig`] for more information.</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        hidden_size (`int`, *optional*, defaults to 768):</span>
+<span class="sd">            Dimensionality of the encoder layers and the pooler layer.</span>
+<span class="sd">        intermediate_size (`int`, *optional*, defaults to 3072):</span>
+<span class="sd">            Dimensionality of the &quot;intermediate&quot; (i.e., feed-forward) layer in the Transformer encoder.</span>
+<span class="sd">        num_hidden_layers (`int`, *optional*, defaults to 12):</span>
+<span class="sd">            Number of hidden layers in the Transformer encoder.</span>
+<span class="sd">        num_attention_heads (`int`, *optional*, defaults to 12):</span>
+<span class="sd">            Number of attention heads for each attention layer in the Transformer encoder.</span>
+<span class="sd">        image_size (`int`, *optional*, defaults to 224):</span>
+<span class="sd">            The size (resolution) of each image.</span>
+<span class="sd">        patch_size (`int`, *optional*, defaults to 32):</span>
+<span class="sd">            The size (resolution) of each patch.</span>
+<span class="sd">        hidden_act (`str` or `function`, *optional*, defaults to `&quot;quick_gelu&quot;`):</span>
+<span class="sd">            The non-linear activation function (function or string) in the encoder and pooler. If string, `&quot;gelu&quot;`,</span>
+<span class="sd">            `&quot;relu&quot;`, `&quot;selu&quot;` and `&quot;gelu_new&quot;` ``&quot;quick_gelu&quot;` are supported. layer_norm_eps (`float`, *optional*,</span>
+<span class="sd">            defaults to 1e-5): The epsilon used by the layer normalization layers.</span>
+<span class="sd">        dropout (`float`, *optional*, defaults to 0.0):</span>
+<span class="sd">            The dropout probabilitiy for all fully connected layers in the embeddings, encoder, and pooler.</span>
+<span class="sd">        attention_dropout (`float`, *optional*, defaults to 0.0):</span>
+<span class="sd">            The dropout ratio for the attention probabilities.</span>
+<span class="sd">        initializer_range (`float`, *optional*, defaults to 0.02):</span>
+<span class="sd">            The standard deviation of the truncated_normal_initializer for initializing all weight matrices.</span>
+<span class="sd">        initializer_factor (`float``, *optional*, defaults to 1):</span>
+<span class="sd">            A factor for initializing all weight matrices (should be kept to 1, used internally for initialization</span>
+<span class="sd">            testing).</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">    ```python</span>
+<span class="sd">    &gt;&gt;&gt; from transformers import CLIPVisionModel, CLIPVisionConfig</span>
+
+<span class="sd">    &gt;&gt;&gt; # Initializing a CLIPVisionModel with openai/clip-vit-base-patch32 style configuration</span>
+<span class="sd">    &gt;&gt;&gt; configuration = CLIPVisionConfig()</span>
+
+<span class="sd">    &gt;&gt;&gt; # Initializing a CLIPVisionModel model from the openai/clip-vit-base-patch32 style configuration</span>
+<span class="sd">    &gt;&gt;&gt; model = CLIPVisionModel(configuration)</span>
+
+<span class="sd">    &gt;&gt;&gt; # Accessing the model configuration</span>
+<span class="sd">    &gt;&gt;&gt; configuration = model.config</span>
+<span class="sd">    ```&quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span> <span class="o">=</span> <span class="s2">&quot;clip_vision_model&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">hidden_size</span><span class="o">=</span><span class="mi">768</span><span class="p">,</span>
+        <span class="n">intermediate_size</span><span class="o">=</span><span class="mi">3072</span><span class="p">,</span>
+        <span class="n">num_hidden_layers</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+        <span class="n">num_attention_heads</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+        <span class="n">image_size</span><span class="o">=</span><span class="mi">224</span><span class="p">,</span>
+        <span class="n">patch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+        <span class="n">hidden_act</span><span class="o">=</span><span class="s2">&quot;quick_gelu&quot;</span><span class="p">,</span>
+        <span class="n">layer_norm_eps</span><span class="o">=</span><span class="mf">0.00001</span><span class="p">,</span>
+        <span class="n">dropout</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">attention_dropout</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">initializer_range</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
+        <span class="n">initializer_factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_size</span> <span class="o">=</span> <span class="n">intermediate_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">dropout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_hidden_layers</span> <span class="o">=</span> <span class="n">num_hidden_layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_attention_heads</span> <span class="o">=</span> <span class="n">num_attention_heads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patch_size</span> <span class="o">=</span> <span class="n">patch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_size</span> <span class="o">=</span> <span class="n">image_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initializer_range</span> <span class="o">=</span> <span class="n">initializer_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initializer_factor</span> <span class="o">=</span> <span class="n">initializer_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attention_dropout</span> <span class="o">=</span> <span class="n">attention_dropout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer_norm_eps</span> <span class="o">=</span> <span class="n">layer_norm_eps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_act</span> <span class="o">=</span> <span class="n">hidden_act</span></div>
+
+
+<div class="viewcode-block" id="CLIPConfig"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.configuration_clip.CLIPConfig">[docs]</a><span class="k">class</span> <span class="nc">CLIPConfig</span><span class="p">(</span><span class="n">PretrainedConfig</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    [`CLIPConfig`] is the configuration class to store the configuration of a [`CLIPModel`]. It is used to instantiate</span>
+<span class="sd">    CLIP model according to the specified arguments, defining the text model and vision model configs.</span>
+
+<span class="sd">    Configuration objects inherit from [`PretrainedConfig`] and can be used to control the model outputs. Read the</span>
+<span class="sd">    documentation from [`PretrainedConfig`] for more information.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text_config_dict (`dict`, *optional*):</span>
+<span class="sd">            Dictionary of configuration options used to initialize [`CLIPTextConfig`].</span>
+<span class="sd">        vision_config_dict (`dict`, *optional*):</span>
+<span class="sd">            Dictionary of configuration options used to initialize [`CLIPVisionConfig`].</span>
+<span class="sd">        projection_dim (`int`, *optional*, defaults to 512):</span>
+<span class="sd">            Dimentionality of text and vision projection layers.</span>
+<span class="sd">        logit_scale_init_value (`float`, *optional*, defaults to 2.6592):</span>
+<span class="sd">            The inital value of the *logit_scale* paramter. Default is used as per the original CLIP implementation.</span>
+<span class="sd">        kwargs (*optional*):</span>
+<span class="sd">            Dictionary of keyword arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_type</span> <span class="o">=</span> <span class="s2">&quot;clip&quot;</span>
+    <span class="n">is_composition</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">text_config_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">vision_config_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">projection_dim</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+        <span class="n">logit_scale_init_value</span><span class="o">=</span><span class="mf">2.6592</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text_config_dict</span><span class="o">=</span><span class="n">text_config_dict</span><span class="p">,</span> <span class="n">vision_config_dict</span><span class="o">=</span><span class="n">vision_config_dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">text_config_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">text_config_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;text_config_dict is None. Initializing the CLIPTextConfig with default values.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">vision_config_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">vision_config_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;vision_config_dict is None. initializing the CLIPVisionConfig with default values.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_config</span> <span class="o">=</span> <span class="n">CLIPTextConfig</span><span class="p">(</span><span class="o">**</span><span class="n">text_config_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vision_config</span> <span class="o">=</span> <span class="n">CLIPVisionConfig</span><span class="p">(</span><span class="o">**</span><span class="n">vision_config_dict</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">projection_dim</span> <span class="o">=</span> <span class="n">projection_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logit_scale_init_value</span> <span class="o">=</span> <span class="n">logit_scale_init_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initializer_factor</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<div class="viewcode-block" id="CLIPConfig.from_text_vision_configs"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.configuration_clip.CLIPConfig.from_text_vision_configs">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_text_vision_configs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">text_config</span><span class="p">:</span> <span class="n">CLIPTextConfig</span><span class="p">,</span> <span class="n">vision_config</span><span class="p">:</span> <span class="n">CLIPVisionConfig</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Instantiate a [`CLIPConfig`] (or a derived class) from clip text model configuration and clip vision model</span>
+<span class="sd">        configuration.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            [`CLIPConfig`]: An instance of a configuration object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">text_config_dict</span><span class="o">=</span><span class="n">text_config</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">vision_config_dict</span><span class="o">=</span><span class="n">vision_config</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CLIPConfig.to_dict"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.configuration_clip.CLIPConfig.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Serializes this instance to a Python dictionary. Override the default [`~PretrainedConfig.to_dict`].</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `Dict[str, any]`: Dictionary of all the attributes that make up this configuration instance,</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;text_config&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_config</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;vision_config&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vision_config</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">model_type</span>
+        <span class="k">return</span> <span class="n">output</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, ZJUNLP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

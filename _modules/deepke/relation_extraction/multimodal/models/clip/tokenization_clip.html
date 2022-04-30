@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>deepke.relation_extraction.multimodal.models.clip.tokenization_clip &mdash; DeepKE 0.2.97 documentation</title>
+      <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../../" id="documentation_options" src="../../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../../_static/jquery.js"></script>
+        <script src="../../../../../../_static/underscore.js"></script>
+        <script src="../../../../../../_static/doctools.js"></script>
+        <script src="../../../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../../index.html" class="icon icon-home"> DeepKE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../start.html">Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../deepke.html">DeepKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">DeepKE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
+      <li>deepke.relation_extraction.multimodal.models.clip.tokenization_clip</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for deepke.relation_extraction.multimodal.models.clip.tokenization_clip</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="c1"># Copyright 2021 The Open AI Team Authors and The HuggingFace Inc. team.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot;Tokenization classes for CLIP.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">regex</span> <span class="k">as</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">BasicTokenizer</span>
+<span class="kn">from</span> <span class="nn">transformers.tokenization_utils</span> <span class="kn">import</span> <span class="n">AddedToken</span><span class="p">,</span> <span class="n">PreTrainedTokenizer</span>
+<span class="kn">from</span> <span class="nn">transformers.utils</span> <span class="kn">import</span> <span class="n">logging</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">VOCAB_FILES_NAMES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;vocab_file&quot;</span><span class="p">:</span> <span class="s2">&quot;vocab.json&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;merges_file&quot;</span><span class="p">:</span> <span class="s2">&quot;merges.txt&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">PRETRAINED_VOCAB_FILES_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;vocab_file&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;openai/clip-vit-base-patch32&quot;</span><span class="p">:</span> <span class="s2">&quot;https://huggingface.co/openai/clip-vit-base-patch32/resolve/main/vocab.json&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;merges_file&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;openai/clip-vit-base-patch32&quot;</span><span class="p">:</span> <span class="s2">&quot;https://huggingface.co/openai/clip-vit-base-patch32/resolve/main/merges.txt&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+<span class="n">PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;openai/clip-vit-base-patch32&quot;</span><span class="p">:</span> <span class="mi">77</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="n">PRETRAINED_INIT_CONFIGURATION</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;openai/clip-vit-base-patch32&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;do_lower_case&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="bytes_to_unicode"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.tokenization_clip.bytes_to_unicode">[docs]</a><span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">bytes_to_unicode</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns list of utf-8 byte and a mapping to unicode strings. We specifically avoids mapping to whitespace/control</span>
+<span class="sd">    characters the bpe code barfs on.</span>
+
+<span class="sd">    The reversible bpe codes work on unicode strings. This means you need a large # of unicode characters in your vocab</span>
+<span class="sd">    if you want to avoid UNKs. When you&#39;re at something like a 10B token dataset you end up needing around 5K for</span>
+<span class="sd">    decent coverage. This is a significant percentage of your normal, say, 32K bpe vocab. To avoid that, we want lookup</span>
+<span class="sd">    tables between utf-8 bytes and unicode strings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bs</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s2">&quot;¡&quot;</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s2">&quot;¬&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s2">&quot;®&quot;</span><span class="p">),</span> <span class="nb">ord</span><span class="p">(</span><span class="s2">&quot;ÿ&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="p">)</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">bs</span><span class="p">[:]</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">8</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">b</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bs</span><span class="p">:</span>
+            <span class="n">bs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="n">cs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">8</span> <span class="o">+</span> <span class="n">n</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">chr</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">cs</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">cs</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="get_pairs"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.tokenization_clip.get_pairs">[docs]</a><span class="k">def</span> <span class="nf">get_pairs</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return set of symbol pairs in a word.</span>
+
+<span class="sd">    Word is represented as tuple of symbols (symbols being variable-length strings).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">prev_char</span> <span class="o">=</span> <span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">word</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">pairs</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">prev_char</span><span class="p">,</span> <span class="n">char</span><span class="p">))</span>
+        <span class="n">prev_char</span> <span class="o">=</span> <span class="n">char</span>
+    <span class="k">return</span> <span class="n">pairs</span></div>
+
+
+<div class="viewcode-block" id="whitespace_clean"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.tokenization_clip.whitespace_clean">[docs]</a><span class="k">def</span> <span class="nf">whitespace_clean</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">text</span></div>
+
+
+<div class="viewcode-block" id="CLIPTokenizer"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.tokenization_clip.CLIPTokenizer">[docs]</a><span class="k">class</span> <span class="nc">CLIPTokenizer</span><span class="p">(</span><span class="n">PreTrainedTokenizer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Construct a CLIP tokenizer. Based on byte-level Byte-Pair-Encoding.</span>
+
+<span class="sd">    This tokenizer has been trained to treat spaces like parts of the tokens (a bit like sentencepiece) so a word will</span>
+<span class="sd">    be encoded differently whether it is at the beginning of the sentence (without space) or not:</span>
+
+
+<span class="sd">    You can get around that behavior by passing `add_prefix_space=True` when instantiating this tokenizer or when you</span>
+<span class="sd">    call it on some text, but since the model was not pretrained this way, it might yield a decrease in performance.</span>
+
+<span class="sd">    &lt;Tip&gt;</span>
+
+<span class="sd">    When used with `is_split_into_words=True`, this tokenizer will add a space before each word (even the first one).</span>
+
+<span class="sd">    &lt;/Tip&gt;</span>
+
+<span class="sd">    This tokenizer inherits from [`PreTrainedTokenizer`] which contains most of the main methods. Users should refer to</span>
+<span class="sd">    this superclass for more information regarding those methods.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        vocab_file (`str`):</span>
+<span class="sd">            Path to the vocabulary file.</span>
+<span class="sd">        merges_file (`str`):</span>
+<span class="sd">            Path to the merges file.</span>
+<span class="sd">        errors (`str`, *optional*, defaults to `&quot;replace&quot;`):</span>
+<span class="sd">            Paradigm to follow when decoding bytes to UTF-8. See</span>
+<span class="sd">            [bytes.decode](https://docs.python.org/3/library/stdtypes.html#bytes.decode) for more information.</span>
+<span class="sd">        unk_token (`str`, *optional*, defaults to `&lt;|endoftext|&gt;`):</span>
+<span class="sd">            The unknown token. A token that is not in the vocabulary cannot be converted to an ID and is set to be this</span>
+<span class="sd">            token instead.</span>
+<span class="sd">        bos_token (`str`, *optional*, defaults to `&lt;|endoftext|&gt;`):</span>
+<span class="sd">            The beginning of sequence token.</span>
+<span class="sd">        eos_token (`str`, *optional*, defaults to `&lt;|endoftext|&gt;`):</span>
+<span class="sd">            The end of sequence token.</span>
+<span class="sd">        add_prefix_space (`bool`, *optional*, defaults to `False`):</span>
+<span class="sd">            Whether or not to add an initial space to the input. This allows to treat the leading word just as any</span>
+<span class="sd">            other word. (CLIP tokenizer detect beginning of words by the preceding space).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">vocab_files_names</span> <span class="o">=</span> <span class="n">VOCAB_FILES_NAMES</span>
+    <span class="n">pretrained_vocab_files_map</span> <span class="o">=</span> <span class="n">PRETRAINED_VOCAB_FILES_MAP</span>
+    <span class="n">max_model_input_sizes</span> <span class="o">=</span> <span class="n">PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES</span>
+    <span class="n">model_input_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">,</span> <span class="s2">&quot;attention_mask&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">vocab_file</span><span class="p">,</span>
+        <span class="n">merges_file</span><span class="p">,</span>
+        <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">,</span>
+        <span class="n">unk_token</span><span class="o">=</span><span class="s2">&quot;&lt;|endoftext|&gt;&quot;</span><span class="p">,</span>
+        <span class="n">bos_token</span><span class="o">=</span><span class="s2">&quot;&lt;|startoftext|&gt;&quot;</span><span class="p">,</span>
+        <span class="n">eos_token</span><span class="o">=</span><span class="s2">&quot;&lt;|endoftext|&gt;&quot;</span><span class="p">,</span>
+        <span class="n">pad_token</span><span class="o">=</span><span class="s2">&quot;&lt;|endoftext|&gt;&quot;</span><span class="p">,</span>  <span class="c1"># hack to enable padding</span>
+        <span class="n">add_prefix_space</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">do_lower_case</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="n">bos_token</span> <span class="o">=</span> <span class="n">AddedToken</span><span class="p">(</span><span class="n">bos_token</span><span class="p">,</span> <span class="n">lstrip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rstrip</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bos_token</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">bos_token</span>
+        <span class="n">eos_token</span> <span class="o">=</span> <span class="n">AddedToken</span><span class="p">(</span><span class="n">eos_token</span><span class="p">,</span> <span class="n">lstrip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rstrip</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">eos_token</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">eos_token</span>
+        <span class="n">unk_token</span> <span class="o">=</span> <span class="n">AddedToken</span><span class="p">(</span><span class="n">unk_token</span><span class="p">,</span> <span class="n">lstrip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rstrip</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">unk_token</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">unk_token</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span>
+            <span class="n">unk_token</span><span class="o">=</span><span class="n">unk_token</span><span class="p">,</span>
+            <span class="n">bos_token</span><span class="o">=</span><span class="n">bos_token</span><span class="p">,</span>
+            <span class="n">eos_token</span><span class="o">=</span><span class="n">eos_token</span><span class="p">,</span>
+            <span class="n">pad_token</span><span class="o">=</span><span class="n">pad_token</span><span class="p">,</span>
+            <span class="n">add_prefix_space</span><span class="o">=</span><span class="n">add_prefix_space</span><span class="p">,</span>
+            <span class="n">do_lower_case</span><span class="o">=</span><span class="n">do_lower_case</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">ftfy</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix_text</span> <span class="o">=</span> <span class="n">ftfy</span><span class="o">.</span><span class="n">fix_text</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;ftfy or spacy is not installed using BERT BasicTokenizer instead of ftfy.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nlp</span> <span class="o">=</span> <span class="n">BasicTokenizer</span><span class="p">(</span><span class="n">do_lower_case</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix_text</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">vocab_file</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">vocab_handle</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">vocab_handle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="n">errors</span>  <span class="c1"># how to handle errors in decoding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">byte_encoder</span> <span class="o">=</span> <span class="n">bytes_to_unicode</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">byte_decoder</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">byte_encoder</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">merges_file</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">merges_handle</span><span class="p">:</span>
+            <span class="n">bpe_merges</span> <span class="o">=</span> <span class="n">merges_handle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">1</span> <span class="p">:</span> <span class="mi">49152</span> <span class="o">-</span> <span class="mi">256</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">bpe_merges</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">merge</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="k">for</span> <span class="n">merge</span> <span class="ow">in</span> <span class="n">bpe_merges</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bpe_ranks</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">bpe_merges</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bpe_merges</span><span class="p">))))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;&lt;|startoftext|&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;|startoftext|&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;|endoftext|&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;|endoftext|&gt;&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_prefix_space</span> <span class="o">=</span> <span class="n">add_prefix_space</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+            <span class="sa">r</span><span class="sd">&quot;&quot;&quot;&lt;\|startoftext\|&gt;|&lt;\|endoftext\|&gt;|&#39;s|&#39;t|&#39;re|&#39;ve|&#39;m|&#39;ll|&#39;d|[\p{L}]+|[\p{N}]|[^\s\p{L}\p{N}]+&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Very ugly hack to enable padding</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pad_token_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        `Optional[int]`: Id of the padding token in the vocabulary. Returns `None` if the token has not been set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vocab_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CLIPTokenizer.get_vocab"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.tokenization_clip.CLIPTokenizer.get_vocab">[docs]</a>    <span class="k">def</span> <span class="nf">get_vocab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">added_tokens_encoder</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CLIPTokenizer.build_inputs_with_special_tokens"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.tokenization_clip.CLIPTokenizer.build_inputs_with_special_tokens">[docs]</a>    <span class="k">def</span> <span class="nf">build_inputs_with_special_tokens</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">token_ids_0</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">token_ids_1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build model inputs from a sequence or a pair of sequence for sequence classification tasks by concatenating and</span>
+<span class="sd">        adding special tokens. A CLIP sequence has the following format:</span>
+
+<span class="sd">        - single sequence: `&lt;|startoftext|&gt; X &lt;|endoftext|&gt;`</span>
+
+<span class="sd">        Pairs of sequences are not the expected use case, but they will be handled without a separator.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            token_ids_0 (`List[int]`):</span>
+<span class="sd">                List of IDs to which the special tokens will be added.</span>
+<span class="sd">            token_ids_1 (`List[int]`, *optional*):</span>
+<span class="sd">                Optional second list of IDs for sequence pairs.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `List[int]`: List of [input IDs](../glossary#input-ids) with the appropriate special tokens.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">token_ids_1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bos_token_id</span><span class="p">]</span> <span class="o">+</span> <span class="n">token_ids_0</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">eos_token_id</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bos_token_id</span><span class="p">]</span> <span class="o">+</span> <span class="n">token_ids_0</span> <span class="o">+</span> <span class="n">token_ids_1</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">eos_token_id</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="CLIPTokenizer.get_special_tokens_mask"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.tokenization_clip.CLIPTokenizer.get_special_tokens_mask">[docs]</a>    <span class="k">def</span> <span class="nf">get_special_tokens_mask</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">token_ids_0</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">token_ids_1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">already_has_special_tokens</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve sequence ids from a token list that has no special tokens added. This method is called when adding</span>
+<span class="sd">        special tokens using the tokenizer `prepare_for_model` method.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            token_ids_0 (`List[int]`):</span>
+<span class="sd">                List of IDs.</span>
+<span class="sd">            token_ids_1 (`List[int]`, *optional*):</span>
+<span class="sd">                Optional second list of IDs for sequence pairs.</span>
+<span class="sd">            already_has_special_tokens (`bool`, *optional*, defaults to `False`):</span>
+<span class="sd">                Whether or not the token list is already formatted with special tokens for the model.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `List[int]`: A list of integers in the range [0, 1]: 1 for a special token, 0 for a sequence token.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">already_has_special_tokens</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_special_tokens_mask</span><span class="p">(</span>
+                <span class="n">token_ids_0</span><span class="o">=</span><span class="n">token_ids_0</span><span class="p">,</span> <span class="n">token_ids_1</span><span class="o">=</span><span class="n">token_ids_1</span><span class="p">,</span> <span class="n">already_has_special_tokens</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">token_ids_1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">token_ids_0</span><span class="p">))</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">token_ids_0</span><span class="p">))</span> <span class="o">+</span> <span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">token_ids_1</span><span class="p">))</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="CLIPTokenizer.bpe"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.tokenization_clip.CLIPTokenizer.bpe">[docs]</a>    <span class="k">def</span> <span class="nf">bpe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">token</span><span class="p">]</span>
+        <span class="n">word</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">token</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="n">token</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;&lt;/w&gt;&quot;</span><span class="p">,)</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="n">get_pairs</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pairs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">token</span> <span class="o">+</span> <span class="s2">&quot;&lt;/w&gt;&quot;</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">bigram</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">pair</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">bpe_ranks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pair</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">bigram</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bpe_ranks</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">first</span><span class="p">,</span> <span class="n">second</span> <span class="o">=</span> <span class="n">bigram</span>
+            <span class="n">new_word</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">j</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="n">new_word</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">:])</span>
+                    <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_word</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="p">])</span>
+                    <span class="n">i</span> <span class="o">=</span> <span class="n">j</span>
+
+                <span class="k">if</span> <span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">first</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">word</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">second</span><span class="p">:</span>
+                    <span class="n">new_word</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">first</span> <span class="o">+</span> <span class="n">second</span><span class="p">)</span>
+                    <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_word</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">new_word</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_word</span><span class="p">)</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="n">new_word</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pairs</span> <span class="o">=</span> <span class="n">get_pairs</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="n">word</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">token</span><span class="p">]</span> <span class="o">=</span> <span class="n">word</span>
+        <span class="k">return</span> <span class="n">word</span></div>
+
+    <span class="k">def</span> <span class="nf">_tokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tokenize a string.&quot;&quot;&quot;</span>
+        <span class="n">bpe_tokens</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fix_text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nlp</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">whitespace_clean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fix_text</span><span class="p">(</span><span class="n">text</span><span class="p">))</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pat</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+            <span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">byte_encoder</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">token</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+            <span class="p">)</span>  <span class="c1"># Maps all our bytes to unicode strings, avoiding control tokens of the BPE (spaces in our case)</span>
+            <span class="n">bpe_tokens</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">bpe_token</span> <span class="k">for</span> <span class="n">bpe_token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bpe</span><span class="p">(</span><span class="n">token</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">bpe_tokens</span>
+
+    <span class="k">def</span> <span class="nf">_convert_token_to_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Converts a token (str) in an id using the vocab.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unk_token</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_convert_id_to_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Converts an index (integer) in a token (str) using the vocab.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CLIPTokenizer.convert_tokens_to_string"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.tokenization_clip.CLIPTokenizer.convert_tokens_to_string">[docs]</a>    <span class="k">def</span> <span class="nf">convert_tokens_to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Converts a sequence of tokens (string) in a single string.&quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">byte_decoder</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">text</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;/w&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">text</span></div>
+
+<div class="viewcode-block" id="CLIPTokenizer.save_vocabulary"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.tokenization_clip.CLIPTokenizer.save_vocabulary">[docs]</a>    <span class="k">def</span> <span class="nf">save_vocabulary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filename_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">save_directory</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Vocabulary path (</span><span class="si">{}</span><span class="s2">) should be a directory&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">save_directory</span><span class="p">))</span>
+            <span class="k">return</span>
+        <span class="n">vocab_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">save_directory</span><span class="p">,</span> <span class="p">(</span><span class="n">filename_prefix</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="k">if</span> <span class="n">filename_prefix</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">VOCAB_FILES_NAMES</span><span class="p">[</span><span class="s2">&quot;vocab_file&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">merge_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">save_directory</span><span class="p">,</span> <span class="p">(</span><span class="n">filename_prefix</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="k">if</span> <span class="n">filename_prefix</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">VOCAB_FILES_NAMES</span><span class="p">[</span><span class="s2">&quot;merges_file&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">vocab_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">merge_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#version: 0.2</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">bpe_tokens</span><span class="p">,</span> <span class="n">token_index</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bpe_ranks</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">kv</span><span class="p">:</span> <span class="n">kv</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="n">token_index</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="s2">&quot;Saving vocabulary to </span><span class="si">{}</span><span class="s2">: BPE merge indices are not consecutive.&quot;</span>
+                        <span class="s2">&quot; Please check that the tokenizer is not corrupted!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">merge_file</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">index</span> <span class="o">=</span> <span class="n">token_index</span>
+                <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">bpe_tokens</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">vocab_file</span><span class="p">,</span> <span class="n">merge_file</span></div>
+
+<div class="viewcode-block" id="CLIPTokenizer.prepare_for_tokenization"><a class="viewcode-back" href="../../../../../../deepke.relation_extraction.multimodal.models.clip.html#deepke.relation_extraction.multimodal.models.clip.tokenization_clip.CLIPTokenizer.prepare_for_tokenization">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_for_tokenization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">is_split_into_words</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">add_prefix_space</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;add_prefix_space&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_prefix_space</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_split_into_words</span> <span class="ow">or</span> <span class="n">add_prefix_space</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">text</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, ZJUNLP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

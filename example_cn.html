@@ -148,6 +148,25 @@ python predict.py
 </pre></div>
 </div>
 </section>
+<section id="multimodal-re">
+<h2>multimodal_re<a class="headerlink" href="#multimodal-re" title="Permalink to this headline">¶</a></h2>
+<p>进入 <code class="docutils literal notranslate"><span class="pre">example/re/multimodal</span></code> 可使用多模态关系抽取模型。</p>
+<p>在 <code class="docutils literal notranslate"><span class="pre">data</span></code> 文件夹下存放数据，模型采用的数据集是 <cite>MNRE</cite> ，可通过运行如下命令下载：</p>
+<blockquote>
+<div><p><cite>wget 120.27.214.45/Data/re/multimodal/data.tar.gz</cite></p>
+<p><cite>tar -xzvf data.tar.gz</cite></p>
+</div></blockquote>
+<p>训练等参数都在 <code class="docutils literal notranslate"><span class="pre">conf</span></code> 文件夹中，可修改使用。</p>
+<p>运行 <cite>python run.py</cite> 即可在MNRE数据集上进行训练，设置 <code class="docutils literal notranslate"><span class="pre">conf/train.yaml</span></code> 中 <cite>load_path</cite> 为上次保存模型的路径即可从上次训练的模型开始训练。</p>
+<p>运行 <cite>python redict.py</cite> 即可进行预测。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> example/re/multimodal
+
+python run.py
+
+python predict.py
+</pre></div>
+</div>
+</section>
 <section id="standard-ae">
 <h2>standard_ae<a class="headerlink" href="#standard-ae" title="Permalink to this headline">¶</a></h2>
 <p>进入 <code class="docutils literal notranslate"><span class="pre">example/ae/standard</span></code> 可使用全监督属性抽取模型。</p>

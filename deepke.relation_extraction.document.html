@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document &mdash; DeepKE 1.0.0 documentation</title>
+  <title>Document &mdash; DeepKE 0.2.97 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -130,7 +130,7 @@ Warning: please ensure <a href="#id7"><span class="problematic" id="id8">Y_</spa
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.losses.ATLoss">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.losses.</span></span><span class="sig-name descname"><span class="pre">ATLoss</span></span><a class="reference internal" href="_modules/deepke/relation_extraction/document/losses.html#ATLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.losses.ATLoss" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.losses.</span></span><span class="sig-name descname"><span class="pre">ATLoss</span></span><a class="reference internal" href="_modules/deepke/relation_extraction/document/losses.html#ATLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.losses.ATLoss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.losses.ATLoss.forward">
@@ -151,6 +151,11 @@ registered hooks while the latter silently ignores them.</p>
 <span class="sig-name descname"><span class="pre">get_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/losses.html#ATLoss.get_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.losses.ATLoss.get_label" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.document.losses.ATLoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.document.losses.ATLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -158,7 +163,7 @@ registered hooks while the latter silently ignores them.</p>
 <span id="deepke-relation-extraction-document-model-module"></span><h2>deepke.relation_extraction.document.model module<a class="headerlink" href="#module-deepke.relation_extraction.document.model" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.model.DocREModel">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.model.</span></span><span class="sig-name descname"><span class="pre">DocREModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emb_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">768</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/model.html#DocREModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.model.DocREModel" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.model.</span></span><span class="sig-name descname"><span class="pre">DocREModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emb_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">768</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/model.html#DocREModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.model.DocREModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.model.DocREModel.encode">
@@ -199,6 +204,11 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.document.model.DocREModel.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.document.model.DocREModel.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -206,7 +216,7 @@ registered hooks while the latter silently ignores them.</p>
 <span id="deepke-relation-extraction-document-module-module"></span><h2>deepke.relation_extraction.document.module module<a class="headerlink" href="#module-deepke.relation_extraction.document.module" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.module.AttentionUNet">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.module.</span></span><span class="sig-name descname"><span class="pre">AttentionUNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_number</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/module.html#AttentionUNet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.module.AttentionUNet" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.module.</span></span><span class="sig-name descname"><span class="pre">AttentionUNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_number</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/module.html#AttentionUNet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.module.AttentionUNet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <p>UNet, down sampling &amp; up sampling for global reasoning</p>
 <dl class="py method">
@@ -217,11 +227,16 @@ registered hooks while the latter silently ignores them.</p>
 :return:</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.document.module.AttentionUNet.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.document.module.AttentionUNet.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.module.DoubleConv">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.module.</span></span><span class="sig-name descname"><span class="pre">DoubleConv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_ch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_ch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/module.html#DoubleConv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.module.DoubleConv" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.module.</span></span><span class="sig-name descname"><span class="pre">DoubleConv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_ch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_ch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/module.html#DoubleConv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.module.DoubleConv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <p>(conv =&gt; [BN] =&gt; ReLU) * 2</p>
 <dl class="py method">
@@ -238,11 +253,16 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.document.module.DoubleConv.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.document.module.DoubleConv.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.module.InConv">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.module.</span></span><span class="sig-name descname"><span class="pre">InConv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_ch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_ch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/module.html#InConv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.module.InConv" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.module.</span></span><span class="sig-name descname"><span class="pre">InConv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_ch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_ch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/module.html#InConv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.module.InConv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.module.InConv.forward">
@@ -258,11 +278,16 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.document.module.InConv.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.document.module.InConv.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.module.DownLayer">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.module.</span></span><span class="sig-name descname"><span class="pre">DownLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_ch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_ch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/module.html#DownLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.module.DownLayer" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.module.</span></span><span class="sig-name descname"><span class="pre">DownLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_ch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_ch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/module.html#DownLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.module.DownLayer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.module.DownLayer.forward">
@@ -278,11 +303,16 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.document.module.DownLayer.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.document.module.DownLayer.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.module.UpLayer">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.module.</span></span><span class="sig-name descname"><span class="pre">UpLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_ch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_ch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bilinear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/module.html#UpLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.module.UpLayer" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.module.</span></span><span class="sig-name descname"><span class="pre">UpLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_ch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_ch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bilinear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/module.html#UpLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.module.UpLayer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.module.UpLayer.forward">
@@ -298,11 +328,16 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.document.module.UpLayer.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.document.module.UpLayer.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.module.OutConv">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.module.</span></span><span class="sig-name descname"><span class="pre">OutConv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_ch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_ch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/module.html#OutConv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.module.OutConv" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.module.</span></span><span class="sig-name descname"><span class="pre">OutConv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_ch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_ch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/module.html#OutConv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.module.OutConv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.module.OutConv.forward">
@@ -317,6 +352,11 @@ instead of this since the former takes care of running the
 registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.document.module.OutConv.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.document.module.OutConv.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -335,11 +375,11 @@ registered hooks while the latter silently ignores them.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.prepro.ReadDataset">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.prepro.</span></span><span class="sig-name descname"><span class="pre">ReadDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_seq_Length</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1024</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transformers</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'bert'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/prepro.html#ReadDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.prepro.ReadDataset" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.prepro.</span></span><span class="sig-name descname"><span class="pre">ReadDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_seq_Length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transformers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bert'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/prepro.html#ReadDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.prepro.ReadDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.prepro.ReadDataset.read">
-<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_in</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/prepro.html#ReadDataset.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.prepro.ReadDataset.read" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/prepro.html#ReadDataset.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.prepro.ReadDataset.read" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

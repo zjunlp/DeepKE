@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lit Models &mdash; DeepKE 1.0.0 documentation</title>
+  <title>Lit Models &mdash; DeepKE 0.2.97 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -102,18 +102,18 @@
 <span id="deepke-relation-extraction-few-shot-lit-models-base-module"></span><h2>deepke.relation_extraction.few_shot.lit_models.base module<a class="headerlink" href="#module-deepke.relation_extraction.few_shot.lit_models.base" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.base.Config">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.base.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/base.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.Config" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.base.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/base.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.Config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.base.</span></span><span class="sig-name descname"><span class="pre">BaseLitModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/base.html#BaseLitModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.base.</span></span><span class="sig-name descname"><span class="pre">BaseLitModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/base.html#BaseLitModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <p>Generic PyTorch-Lightning class that must be initialized with a PyTorch module.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.add_to_argparse">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">add_to_argparse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/base.html#BaseLitModel.add_to_argparse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.add_to_argparse" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_to_argparse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/base.html#BaseLitModel.add_to_argparse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.add_to_argparse" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -152,9 +152,14 @@ registered hooks while the latter silently ignores them.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.num_training_steps">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_training_steps</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></em><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.num_training_steps" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_training_steps</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></em><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.num_training_steps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Total training steps inferred from datamodule and devices.</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -173,7 +178,7 @@ registered hooks while the latter silently ignores them.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.transformer.</span></span><span class="sig-name descname"><span class="pre">BertLitModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.few_shot.lit_models.transformer.</span></span><span class="sig-name descname"><span class="pre">BertLitModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel" title="deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">deepke.relation_extraction.few_shot.lit_models.base.BaseLitModel</span></code></a></p>
 <p>use AutoModelForMaskedLM, and select the output by another layer in the lit model</p>
 <dl class="py method">
@@ -217,7 +222,7 @@ registered hooks while the latter silently ignores them.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.add_to_argparse">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">add_to_argparse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel.add_to_argparse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.add_to_argparse" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_to_argparse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel.add_to_argparse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.add_to_argparse" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -233,6 +238,11 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.configure_optimizers">
 <span class="sig-name descname"><span class="pre">configure_optimizers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/few_shot/lit_models/transformer.html#BertLitModel.configure_optimizers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.configure_optimizers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.few_shot.lit_models.transformer.BertLitModel.training" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

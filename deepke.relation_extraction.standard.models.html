@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Models &mdash; DeepKE 1.0.0 documentation</title>
+  <title>Models &mdash; DeepKE 0.2.97 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -102,7 +102,7 @@
 <span id="deepke-relation-extraction-standard-models-basicmodule-module"></span><h2>deepke.relation_extraction.standard.models.BasicModule module<a class="headerlink" href="#module-deepke.relation_extraction.standard.models.BasicModule" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.BasicModule.BasicModule">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.models.BasicModule.</span></span><span class="sig-name descname"><span class="pre">BasicModule</span></span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/models/BasicModule.html#BasicModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.models.BasicModule.BasicModule" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.models.BasicModule.</span></span><span class="sig-name descname"><span class="pre">BasicModule</span></span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/models/BasicModule.html#BasicModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.models.BasicModule.BasicModule" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <p>Encapsulate nn.module and provide save and load methods</p>
 <dl class="py method">
@@ -117,6 +117,11 @@
 <dd><p>Save the model and use “model name + time” as the file name by default</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.BasicModule.BasicModule.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.standard.models.BasicModule.BasicModule.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -124,7 +129,7 @@
 <span id="deepke-relation-extraction-standard-models-bilstm-module"></span><h2>deepke.relation_extraction.standard.models.BiLSTM module<a class="headerlink" href="#module-deepke.relation_extraction.standard.models.BiLSTM" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.BiLSTM.BiLSTM">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.models.BiLSTM.</span></span><span class="sig-name descname"><span class="pre">BiLSTM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/models/BiLSTM.html#BiLSTM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.models.BiLSTM.BiLSTM" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.models.BiLSTM.</span></span><span class="sig-name descname"><span class="pre">BiLSTM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/models/BiLSTM.html#BiLSTM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.models.BiLSTM.BiLSTM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#deepke.relation_extraction.standard.models.BasicModule.BasicModule" title="deepke.relation_extraction.standard.models.BasicModule.BasicModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">deepke.relation_extraction.standard.models.BasicModule.BasicModule</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.BiLSTM.BiLSTM.forward">
@@ -140,6 +145,11 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.BiLSTM.BiLSTM.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.standard.models.BiLSTM.BiLSTM.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -147,7 +157,7 @@ registered hooks while the latter silently ignores them.</p>
 <span id="deepke-relation-extraction-standard-models-capsule-module"></span><h2>deepke.relation_extraction.standard.models.Capsule module<a class="headerlink" href="#module-deepke.relation_extraction.standard.models.Capsule" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.Capsule.Capsule">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.models.Capsule.</span></span><span class="sig-name descname"><span class="pre">Capsule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/models/Capsule.html#Capsule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.models.Capsule.Capsule" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.models.Capsule.</span></span><span class="sig-name descname"><span class="pre">Capsule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/models/Capsule.html#Capsule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.models.Capsule.Capsule" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#deepke.relation_extraction.standard.models.BasicModule.BasicModule" title="deepke.relation_extraction.standard.models.BasicModule.BasicModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">deepke.relation_extraction.standard.models.BasicModule.BasicModule</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.Capsule.Capsule.forward">
@@ -168,6 +178,11 @@ registered hooks while the latter silently ignores them.</p>
 <span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/models/Capsule.html#Capsule.loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.models.Capsule.Capsule.loss" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.Capsule.Capsule.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.standard.models.Capsule.Capsule.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -175,7 +190,7 @@ registered hooks while the latter silently ignores them.</p>
 <span id="deepke-relation-extraction-standard-models-gcn-module"></span><h2>deepke.relation_extraction.standard.models.GCN module<a class="headerlink" href="#module-deepke.relation_extraction.standard.models.GCN" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.GCN.GCN">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.models.GCN.</span></span><span class="sig-name descname"><span class="pre">GCN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/models/GCN.html#GCN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.models.GCN.GCN" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.models.GCN.</span></span><span class="sig-name descname"><span class="pre">GCN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/models/GCN.html#GCN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.models.GCN.GCN" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#deepke.relation_extraction.standard.models.BasicModule.BasicModule" title="deepke.relation_extraction.standard.models.BasicModule.BasicModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">deepke.relation_extraction.standard.models.BasicModule.BasicModule</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.GCN.GCN.forward">
@@ -191,6 +206,11 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.GCN.GCN.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.standard.models.GCN.GCN.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -198,7 +218,7 @@ registered hooks while the latter silently ignores them.</p>
 <span id="deepke-relation-extraction-standard-models-lm-module"></span><h2>deepke.relation_extraction.standard.models.LM module<a class="headerlink" href="#module-deepke.relation_extraction.standard.models.LM" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.LM.LM">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.models.LM.</span></span><span class="sig-name descname"><span class="pre">LM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/models/LM.html#LM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.models.LM.LM" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.models.LM.</span></span><span class="sig-name descname"><span class="pre">LM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/models/LM.html#LM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.models.LM.LM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#deepke.relation_extraction.standard.models.BasicModule.BasicModule" title="deepke.relation_extraction.standard.models.BasicModule.BasicModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">deepke.relation_extraction.standard.models.BasicModule.BasicModule</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.LM.LM.forward">
@@ -214,6 +234,11 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.LM.LM.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.standard.models.LM.LM.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -221,7 +246,7 @@ registered hooks while the latter silently ignores them.</p>
 <span id="deepke-relation-extraction-standard-models-pcnn-module"></span><h2>deepke.relation_extraction.standard.models.PCNN module<a class="headerlink" href="#module-deepke.relation_extraction.standard.models.PCNN" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.PCNN.PCNN">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.models.PCNN.</span></span><span class="sig-name descname"><span class="pre">PCNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/models/PCNN.html#PCNN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.models.PCNN.PCNN" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.models.PCNN.</span></span><span class="sig-name descname"><span class="pre">PCNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/models/PCNN.html#PCNN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.models.PCNN.PCNN" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#deepke.relation_extraction.standard.models.BasicModule.BasicModule" title="deepke.relation_extraction.standard.models.BasicModule.BasicModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">deepke.relation_extraction.standard.models.BasicModule.BasicModule</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.PCNN.PCNN.forward">
@@ -237,6 +262,11 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.PCNN.PCNN.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.standard.models.PCNN.PCNN.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -244,7 +274,7 @@ registered hooks while the latter silently ignores them.</p>
 <span id="deepke-relation-extraction-standard-models-transformer-module"></span><h2>deepke.relation_extraction.standard.models.Transformer module<a class="headerlink" href="#module-deepke.relation_extraction.standard.models.Transformer" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.Transformer.Transformer">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.models.Transformer.</span></span><span class="sig-name descname"><span class="pre">Transformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/models/Transformer.html#Transformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.models.Transformer.Transformer" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.models.Transformer.</span></span><span class="sig-name descname"><span class="pre">Transformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/models/Transformer.html#Transformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.models.Transformer.Transformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#deepke.relation_extraction.standard.models.BasicModule.BasicModule" title="deepke.relation_extraction.standard.models.BasicModule.BasicModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">deepke.relation_extraction.standard.models.BasicModule.BasicModule</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.Transformer.Transformer.forward">
@@ -259,6 +289,11 @@ instead of this since the former takes care of running the
 registered hooks while the latter silently ignores them.</p>
 </div>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.models.Transformer.Transformer.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.standard.models.Transformer.Transformer.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 

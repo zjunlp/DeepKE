@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Start &mdash; DeepKE 1.0.0 documentation</title>
+  <title>Start &mdash; DeepKE 0.2.97 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -86,10 +86,10 @@
 <h1>Start<a class="headerlink" href="#start" title="Permalink to this headline">¶</a></h1>
 <section id="model-framework">
 <h2>Model Framework<a class="headerlink" href="#model-framework" title="Permalink to this headline">¶</a></h2>
-<img alt="_images/architectures.png" src="_images/architectures.png" height="60%" width="60%"/>
+<img alt="_images/architectures.png" src="_images/architectures.png" />
 <p>DeepKE contains three modules for named entity recognition, relation extraction and attribute extraction, the three tasks respectively.</p>
-<p>Each module has its own submodules. For example, there are standard, document-level and few-shot submodules in the attribute extraction modular.</p>
-<p>Each submodule compose of three parts: a collection of tools, which can function as tokenizer, dataloader, preprocessor and the like, a encoder and a part for training and prediction</p>
+<p>Each module has its own submodules. For example, there are standard, few-shot, document-level and multimodal submodules in the relation extraction modular.</p>
+<p>Each submodule compose of three parts: a collection of tools, which can function as tokenizer, dataloader, preprocessor and the like, a encoder and a part for training and prediction.</p>
 </section>
 <section id="dataset">
 <h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline">¶</a></h2>
@@ -131,7 +131,7 @@
 </tr>
 <tr class="row-odd"><td><p>ATIS</p></td>
 </tr>
-<tr class="row-even"><td rowspan="13"><p>Relation Extraction</p></td>
+<tr class="row-even"><td rowspan="14"><p>Relation Extraction</p></td>
 <td rowspan="6"><p>Standard</p></td>
 <td rowspan="6"><p>DuIE</p></td>
 <td rowspan="6"><p>Chinese</p></td>
@@ -167,22 +167,27 @@
 </tr>
 <tr class="row-even"><td><p>GDA</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="6"><p>Attribute Extraction</p></td>
+<tr class="row-odd"><td><p>Multimodal</p></td>
+<td><p>MNRE</p></td>
+<td><p>English</p></td>
+<td><p>IFAformer</p></td>
+</tr>
+<tr class="row-even"><td rowspan="6"><p>Attribute Extraction</p></td>
 <td rowspan="6"><p>Standard</p></td>
 <td rowspan="6"><p>Triplet Extraction
 Dataset</p></td>
 <td rowspan="6"><p>Chinese</p></td>
 <td><p>CNN</p></td>
 </tr>
-<tr class="row-even"><td><p>RNN</p></td>
+<tr class="row-odd"><td><p>RNN</p></td>
 </tr>
-<tr class="row-odd"><td><p>Capsule</p></td>
+<tr class="row-even"><td><p>Capsule</p></td>
 </tr>
-<tr class="row-even"><td><p>GCN</p></td>
+<tr class="row-odd"><td><p>GCN</p></td>
 </tr>
-<tr class="row-odd"><td><p>Transformer</p></td>
+<tr class="row-even"><td><p>Transformer</p></td>
 </tr>
-<tr class="row-even"><td><p>BERT</p></td>
+<tr class="row-odd"><td><p>BERT</p></td>
 </tr>
 </tbody>
 </table>
