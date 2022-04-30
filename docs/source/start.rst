@@ -10,9 +10,9 @@ Model Framework
 
 DeepKE contains three modules for named entity recognition, relation extraction and attribute extraction, the three tasks respectively.
 
-Each module has its own submodules. For example, there are standard, document-level and few-shot submodules in the attribute extraction modular.
+Each module has its own submodules. For example, there are standard, few-shot, document-level and multimodal submodules in the relation extraction modular.
 
-Each submodule compose of three parts: a collection of tools, which can function as tokenizer, dataloader, preprocessor and the like, a encoder and a part for training and prediction
+Each submodule compose of three parts: a collection of tools, which can function as tokenizer, dataloader, preprocessor and the like, a encoder and a part for training and prediction.
 
 Dataset
 -------
@@ -59,6 +59,8 @@ We use the following datasets in our experiments:
 |                          | Document  | CDR              | English  | DocuNet    |
 |                          |           +------------------+          |            |
 |                          |           | GDA              |          |            |
+|                          +-----------+------------------+----------+------------+
+|                          | Multimodal| MNRE             | English  | IFAformer  |
 +--------------------------+-----------+------------------+----------+------------+   
 |                          |           |                  |          | CNN        |
 |                          |           |                  |          +------------+
@@ -72,25 +74,6 @@ We use the following datasets in our experiments:
 |                          |           |                  |          +------------+
 |                          |           |                  |          | BERT       |
 +--------------------------+-----------+------------------+----------+------------+
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 Get Start
