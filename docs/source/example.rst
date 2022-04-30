@@ -285,6 +285,62 @@ Predict:
 
     python predict.py
 
+Multimodal RE
+-------------
+This module is in the multimodal scenario.
+
+**Step 1**
+
+Enter ``DeepKE/example/re/multimodal`` .
+
+**Step 2**
+
+Get data:
+
+    `wget 120.27.214.45/Data/re/multimodal/data.tar.gz`
+
+    `tar -xzvf data.tar.gz`
+
+The dataset and parameters can be customized in the ``data`` folder and ``conf`` folder respectively.
+
+Textual dataset needs to be input as ``TXT`` file and ``JSON`` file. Visual dataset is recommended to be input as ``JPG`` or ``PNG`` file.
+
+The `data's format` of file needs to comply with the following：
+
+{'token': ['The', 'latest', 'Arkham', 'Horror', 'LCG', 'deluxe', 'expansion', 'the', 'Circle', 'Undone', 'has', 'been', 'released', ':'], 'h': {'name': 'Circle Undone', 'pos': [8, 10]}, 't': {'name': 'Arkham Horror LCG', 'pos': [2, 5]}, 'img_id': 'twitter_19_31_16_6.jpg', 'relation': '/misc/misc/part_of'}
+
+The relation's format of file needs to comply with the following：
+
+{"None":0,"/per/per/parent":1,"/per/per/siblings":2...}
+
+Instead of inputting the original images as visual datas directly, you can use a `Visual Grounding toolkit <https://github.com/zyang-ur/onestage_grounding>`_ to locate visual objects based on entities and entity types.
+
+**Step 3**
+
+Train:
+
+    `python run.py`
+
+Start with the model trained last time: modify `load_path` in ``conf/train.yaml`` as the path where the model trained last time was saved. And the path saving logs generated in training can be customized by ``log_dir``.
+
+**Step 4**
+
+Predict:
+
+    `python predict.py`
+
+.. code-block:: bash
+
+    cd example/re/multimodal
+
+    wget 120.27.214.45/Data/re/multimodal/data.tar.gz
+
+    tar -xzvf data.tar.gz
+
+    python run.py
+    
+    python predict.py
+
 Standard AE
 -----------
 The standard module is implemented by common deep learning models, including CNN, RNN, Capsule, GCN, Transformer and the pretrained model.

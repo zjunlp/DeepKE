@@ -23,7 +23,7 @@ copyright = '2021, ZJUNLP'
 author = 'tlk'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0.0'
+release = '0.2.97'
 
 
 # -- General configuration ---------------------------------------------------

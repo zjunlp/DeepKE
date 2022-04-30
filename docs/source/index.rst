@@ -8,8 +8,24 @@ Introduction
 
 .. image:: ./_static/logo.png
 
-DeepKE is a knowledge extraction toolkit supporting low-resource and document-level scenarios. It provides three functions based PyTorch, including Named Entity Recognition, Relation Extraciton and Attribute Extraction.
+DeepKE is a knowledge extraction toolkit supporting low-resource and document-level scenarios. 
+It provides three functions based `PyTorch <https://pytorch.org/>`_, including Named Entity Recognition, Relation Extraciton and Attribute Extraction. 
+DeepKE implements various information extraction tasks, including named entity recognition, relation extraction and attribute extraction. 
+With a unified framework, DeepKE allows developers and researchers to customize datasets and models to extract information from unstructured texts according to their requirements.
+Specifically, DeepKE not only provides various functional modules and model implementation for different functions and scenarios but also organizes all components by consistent frameworks to maintain sufficient modularity and extensibility. 
+Moreover, DeepKE has quipped with comprehensive documents as well as Google Colab tutorials for beginners. 
+Users can install DeepKE via 'pip install deepke'. We will provide maintenance to meet new requests, add new tasks, and fix bugs in the future.
 
+If you find OpenPrompt useful, please kindly cite our `paper <http://arxiv.org/abs/2201.03335>`_.
+
+.. code-block:: bibtex
+
+   @article{Zhang_DeepKE_A_Deep_2022,
+   author = {Zhang, Ningyu and Xu, Xin and Tao, Liankuan and Yu, Haiyang and Ye, Hongbin and Xie, Xin and Chen, Xiang and Li, Zhoubo and Li, Lei and Liang, Xiaozhuan and Yao, Yunzhi and Deng, Shumin and Zhang, Zhenru and Tan, Chuanqi and Huang, Fei and Zheng, Guozhou and Chen, Huajun},
+   journal = {http://arxiv.org/abs/2201.03335},
+   title = {{DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population}},
+   year = {2022}
+   }  
 
 .. image:: ./_static/demo.gif
 
