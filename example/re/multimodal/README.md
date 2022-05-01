@@ -42,7 +42,7 @@ cd DeepKE/example/re/multimodal
 
   - The dataset [MRE](https://github.com/thecharm/Mega) with detected visual objects is stored in `data`:
     - `img_detect`：Detected objects using RCNN
-    - `img_vg`：Detected objects using visual grouding
+    - `img_vg`：Detected objects using visual grounding
 
     - `img_org`： Original images
 
@@ -51,6 +51,7 @@ cd DeepKE/example/re/multimodal
     - `vg_data`：Bounding image and `img_vg`
 
     - `ours_rel2id.json` Relation set
+  - We use RCNN detected objects and visual grounding objects as visual local information, where RCNN via[faster_rcnn](https://github.com/pytorch/vision/blob/main/torchvision/models/detection/faster_rcnn.py) and visual grounding via[onestage_grounding](https://github.com/zyang-ur/onestage_grounding).
 
 - Training
 
