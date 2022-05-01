@@ -33,7 +33,7 @@ cd DeepKE/example/re/multimodal
 - MRE包含以下数据：
 
     - `img_detect`：使用RCNN检测的实体
-    - `img_vg`：使用visual grouding检测的实体
+    - `img_vg`：使用visual grounding检测的实体
 
     - `img_org`： 原图像
 
@@ -42,6 +42,9 @@ cd DeepKE/example/re/multimodal
     - `vg_data`：绑定原图和`img_vg`
 
     - `ours_rel2id.json` 关系集合
+    
+- 我们使用RCNN检测的实体和visual grounding检测的实体作为视觉局部信息，其中，RCNN检测可以通过[faster_rcnn](https://github.com/pytorch/vision/blob/main/torchvision/models/detection/faster_rcnn.py)完成，visual grounding可以通过[onestage_grounding
+](https://github.com/zyang-ur/onestage_grounding)完成。
 
 - 开始训练：模型加载和保存位置以及配置可以在conf的`.yaml`文件中修改
   
