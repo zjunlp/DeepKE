@@ -3,7 +3,7 @@ import os
 from PIL import Image
 from torch.utils.data import Dataset
 from transformers import BertTokenizer
-from models.clip.processing_clip import CLIPProcessor
+from ..models.clip.processing_clip import CLIPProcessor
 
 import logging
 logger = logging.getLogger(__name__)
