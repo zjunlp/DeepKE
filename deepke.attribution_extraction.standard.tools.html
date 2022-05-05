@@ -61,7 +61,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_recognition.html">Name Entity Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_re.html">Name Entity Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deepke.relation_extraction.html">Relation Extraction</a></li>
 </ul>
 </li>
@@ -107,7 +107,7 @@
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.dataset.CustomDataset">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.tools.dataset.</span></span><span class="sig-name descname"><span class="pre">CustomDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/dataset.html#CustomDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.dataset.CustomDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.dataset.Dataset</span></code></p>
-<p>Use List to store data by default.</p>
+<p>默认使用 List 存储数据</p>
 </dd></dl>
 
 </section>
@@ -148,19 +148,19 @@ This is called at the end of each epoch.
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.metrics.PRMetric.reset">
 <span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/metrics.html#PRMetric.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.metrics.PRMetric.reset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reset to 0</p>
+<dd><p>重置为0</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.metrics.PRMetric.update">
 <span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/metrics.html#PRMetric.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.metrics.PRMetric.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update tensor,keep the value, and cancel the original gradient.</p>
+<dd><p>更新tensor，保留值，取消原有梯度</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.metrics.PRMetric.compute">
 <span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/metrics.html#PRMetric.compute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.metrics.PRMetric.compute" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate acc,p,r,f1.</p>
+<dd><p>计算acc,p,r,f1并返回</p>
 </dd></dl>
 
 </dd></dl>
@@ -183,17 +183,14 @@ This is called at the end of each epoch.
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.serializer.Serializer.serialize">
 <span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">never_split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><span class="pre">List</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/serializer.html#Serializer.serialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.serializer.Serializer.serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Split a piece of text into a vocabulary list according to the established splitting rules
-:param text: Text for spliting
-:type text: String
-:param never_split: Words not to be split, empty by default
-:type never_split: List</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Results after spliting</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>output_tokens (List)</p>
+<dd><p>将一段文本按照制定拆分规则，拆分成一个词汇List
+Args :</p>
+<blockquote>
+<div><p>text (String) : 所需拆分文本
+never_split (List) : 不拆分的词，默认为空</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Rerurn :</dt><dd><p>output_tokens (List): 拆分后的结果</p>
 </dd>
 </dl>
 </dd></dl>
@@ -201,14 +198,13 @@ This is called at the end of each epoch.
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.serializer.Serializer.is_control">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/serializer.html#Serializer.is_control"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.serializer.Serializer.is_control" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine whether the character is a control character
-:param char: Character</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Result</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd><p>判断字符是否为控制字符
+Arg :</p>
+<blockquote>
+<div><p>char : 字符</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return :</dt><dd><p>bool : 判断结果</p>
 </dd>
 </dl>
 </dd></dl>
@@ -216,14 +212,13 @@ This is called at the end of each epoch.
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.serializer.Serializer.is_whitespace">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_whitespace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/serializer.html#Serializer.is_whitespace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.serializer.Serializer.is_whitespace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine whether the character is a whitespace character
-:param char: Character</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Result</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd><p>判断字符是否为空白字符
+Arg :</p>
+<blockquote>
+<div><p>char : 字符</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return :</dt><dd><p>bool : 判断结果</p>
 </dd>
 </dl>
 </dd></dl>
@@ -231,16 +226,13 @@ This is called at the end of each epoch.
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.serializer.Serializer.is_chinese_char">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_chinese_char</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/serializer.html#Serializer.is_chinese_char"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.serializer.Serializer.is_chinese_char" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine whether the character is a chinese character</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>cp</strong> (<em>char</em>) – Character</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Result</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd><p>判断字符是否为中文字符
+Arg :</p>
+<blockquote>
+<div><p>cp (char): 字符</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return :</dt><dd><p>bool : 判断结果</p>
 </dd>
 </dl>
 </dd></dl>
@@ -248,14 +240,13 @@ This is called at the end of each epoch.
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.serializer.Serializer.is_punctuation">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_punctuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/serializer.html#Serializer.is_punctuation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.serializer.Serializer.is_punctuation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine whether the character is a punctuation character
-:param char: Character</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Result</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd><p>判断字符是否为标点字符
+Arg :</p>
+<blockquote>
+<div><p>char : 字符</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return :</dt><dd><p>bool : 判断结果</p>
 </dd>
 </dl>
 </dd></dl>
@@ -279,7 +270,7 @@ device (torch.device): device of training.
 writer (class): output to tensorboard.
 cfg: configutation of training.</p>
 </dd>
-<dt>Returns:</dt><dd><p>losses[-1] : the loss of training</p>
+<dt>Return:</dt><dd><p>losses[-1] : the loss of training</p>
 </dd>
 </dl>
 </dd>
@@ -298,7 +289,7 @@ criterion (Callable): loss criterion of validating.
 device (torch.device): device of validating.
 cfg: configutation of validating.</p>
 </dd>
-<dt>Returns:</dt><dd><p>f1 : f1 score
+<dt>Return:</dt><dd><p>f1 : f1 score
 loss : the loss of validating</p>
 </dd>
 </dl>
@@ -313,22 +304,24 @@ loss : the loss of validating</p>
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.vocab.Vocab">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.tools.vocab.</span></span><span class="sig-name descname"><span class="pre">Vocab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'basic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><span class="pre">Sequence</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'bos_token':</span> <span class="pre">'[BOS]',</span> <span class="pre">'cls_token':</span> <span class="pre">'[CLS]',</span> <span class="pre">'eos_token':</span> <span class="pre">'[EOS]',</span> <span class="pre">'head_token':</span> <span class="pre">'HEAD',</span> <span class="pre">'mask_token':</span> <span class="pre">'[MASK]',</span> <span class="pre">'pad_token':</span> <span class="pre">'[PAD]',</span> <span class="pre">'sep_token':</span> <span class="pre">'[SEP]',</span> <span class="pre">'tail_token':</span> <span class="pre">'TAIL',</span> <span class="pre">'unk_token':</span> <span class="pre">'[UNK]'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/vocab.html#Vocab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.vocab.Vocab" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Build vocabulary, add vocabulary,and delete low-frequency vocabulary</p>
+<p>构建词汇表,增加词汇，删除低频词汇</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.vocab.Vocab.add_words">
 <span class="sig-name descname"><span class="pre">add_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><span class="pre">Sequence</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/vocab.html#Vocab.add_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.vocab.Vocab.add_words" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add words
-:param words: List of words
-:type words: List</p>
+<dd><p>通过数组增加词汇
+Arg :</p>
+<blockquote>
+<div><p>words (List) : 增加的词汇组</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.tools.vocab.Vocab.trim">
 <span class="sig-name descname"><span class="pre">trim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/tools/vocab.html#Vocab.trim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.tools.vocab.Vocab.trim" title="Permalink to this definition">¶</a></dt>
-<dd><p>When the word frequency of word is lower than min_freq, delete from the thesaurus
-:param min_freq: Minimum word frequency
+<dd><p>当 word 词频低于 min_freq 时，从词库中删除
+:param min_freq: 最低词频
 :type min_freq: int
-:param verbose: Whether to print log
+:param verbose: 是否打印日志
 :type verbose: bool</p>
 </dd></dl>
 

@@ -100,12 +100,12 @@
 
 <div class="viewcode-block" id="load_pkl"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.utils.html#deepke.relation_extraction.standard.utils.ioUtils.load_pkl">[docs]</a><span class="k">def</span> <span class="nf">load_pkl</span><span class="p">(</span><span class="n">fp</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Read from pkl file</span>
-<span class="sd">    Args:</span>
-<span class="sd">        fp (String) : Address of data</span>
-<span class="sd">        verbose (bool) : Whether to print log</span>
-<span class="sd">    Returns: </span>
-<span class="sd">        data (Any) : Data after reading</span>
+<span class="sd">    读取文件</span>
+<span class="sd">    Args :</span>
+<span class="sd">        fp (String) : 读取数据地址</span>
+<span class="sd">        verbose (bool) : 是否打印日志</span>
+<span class="sd">    Return : </span>
+<span class="sd">        data (Any) : 读取的数据</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;load data from </span><span class="si">{</span><span class="n">fp</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -117,11 +117,11 @@
 
 <div class="viewcode-block" id="save_pkl"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.utils.html#deepke.relation_extraction.standard.utils.ioUtils.save_pkl">[docs]</a><span class="k">def</span> <span class="nf">save_pkl</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">fp</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Save as pkl file</span>
-<span class="sd">    Args:</span>
-<span class="sd">        data (Any) : Data to save</span>
-<span class="sd">        fp (String) : Address of data</span>
-<span class="sd">        verbose (bool) : Whether to print log</span>
+<span class="sd">    保存文件</span>
+<span class="sd">    Args :</span>
+<span class="sd">        data (Any) : 数据</span>
+<span class="sd">        fp (String) :保存的地址</span>
+<span class="sd">        verbose (bool) : 是否打印日志</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;save data in </span><span class="si">{</span><span class="n">fp</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -132,13 +132,13 @@
 
 <div class="viewcode-block" id="load_csv"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.utils.html#deepke.relation_extraction.standard.utils.ioUtils.load_csv">[docs]</a><span class="k">def</span> <span class="nf">load_csv</span><span class="p">(</span><span class="n">fp</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">is_tsv</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Read from csv file</span>
-<span class="sd">    Args:</span>
-<span class="sd">        fp (String) : Address of data</span>
-<span class="sd">        is_tsv (bool) : Whether it is in excel-tab format</span>
-<span class="sd">        verbose (bool) : Whether to print log</span>
-<span class="sd">    Returns:</span>
-<span class="sd">        list(reader) (List): List data after reading</span>
+<span class="sd">    读取csv格式文件</span>
+<span class="sd">    Args :</span>
+<span class="sd">        fp (String) : 保存地址</span>
+<span class="sd">        is_tsv (bool) : 是否为excel-tab格式</span>
+<span class="sd">        verbose (bool) : 是否打印日志</span>
+<span class="sd">    Return :</span>
+<span class="sd">        list(reader) (List): 读取的List数据</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;load csv from </span><span class="si">{</span><span class="n">fp</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -151,13 +151,13 @@
 
 <div class="viewcode-block" id="save_csv"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.utils.html#deepke.relation_extraction.standard.utils.ioUtils.save_csv">[docs]</a><span class="k">def</span> <span class="nf">save_csv</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">fp</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">save_in_tsv</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="n">write_head</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Save as csv file</span>
-<span class="sd">    Args:</span>
-<span class="sd">        data (List) : List data for saving</span>
-<span class="sd">        fp (String) : Address of data</span>
-<span class="sd">        save_in_tsv (bool) : Whether it is in excel-tab format</span>
-<span class="sd">        write_head (bool) : Whether to write head</span>
-<span class="sd">        verbose (bool) : Whether to print log</span>
+<span class="sd">    保存csv格式文件</span>
+<span class="sd">    Args :</span>
+<span class="sd">        data (List) : 所需保存的List数据</span>
+<span class="sd">        fp (String) : 保存地址</span>
+<span class="sd">        save_in_tsv (bool) : 是否保存为excel-tab格式</span>
+<span class="sd">        write_head (bool) : 是否写表头</span>
+<span class="sd">        verbose (bool) : 是否打印日志</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;save csv file in: </span><span class="si">{</span><span class="n">fp</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -174,12 +174,12 @@
 <div class="viewcode-block" id="load_jsonld"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.utils.html#deepke.relation_extraction.standard.utils.ioUtils.load_jsonld">[docs]</a><span class="k">def</span> <span class="nf">load_jsonld</span><span class="p">(</span><span class="n">fp</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
    
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Read from jsonld file</span>
+<span class="sd">    读取jsonld文件</span>
 <span class="sd">    Args:</span>
-<span class="sd">        fp (String): Address of data</span>
-<span class="sd">        verbose (bool): Whether to print log</span>
-<span class="sd">    Returns: </span>
-<span class="sd">        datas (List) : List data after reading</span>
+<span class="sd">        fp (String): jsonld 文件地址</span>
+<span class="sd">        verbose (bool): 是否打印日志</span>
+<span class="sd">    Return: </span>
+<span class="sd">        datas (List) : 读取后的List</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;load jsonld from </span><span class="si">{</span><span class="n">fp</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -196,19 +196,19 @@
 
 <div class="viewcode-block" id="save_jsonld"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.utils.html#deepke.relation_extraction.standard.utils.ioUtils.save_jsonld">[docs]</a><span class="k">def</span> <span class="nf">save_jsonld</span><span class="p">(</span><span class="n">fp</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Save as jsonld file</span>
+<span class="sd">    保存jsonld格式文件</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="jsonld2csv"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.utils.html#deepke.relation_extraction.standard.utils.ioUtils.jsonld2csv">[docs]</a><span class="k">def</span> <span class="nf">jsonld2csv</span><span class="p">(</span><span class="n">fp</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Transfor json file to csv file </span>
+<span class="sd">    读入 jsonld 文件，存储在同位置同名的 csv 文件</span>
 <span class="sd">    Args:</span>
-<span class="sd">        fp (String): Address of jsonld file</span>
-<span class="sd">        verbose (bool): Whether to print log</span>
-<span class="sd">    Returns: </span>
-<span class="sd">        fp_new (String): Address of new file</span>
+<span class="sd">        fp (String): jsonld 文件地址</span>
+<span class="sd">        verbose (bool): 是否打印日志</span>
+<span class="sd">    Return: </span>
+<span class="sd">        fp_new (String):文件地址</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">root</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
@@ -233,12 +233,12 @@
 
 <div class="viewcode-block" id="csv2jsonld"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.utils.html#deepke.relation_extraction.standard.utils.ioUtils.csv2jsonld">[docs]</a><span class="k">def</span> <span class="nf">csv2jsonld</span><span class="p">(</span><span class="n">fp</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Transfor csv file to jsonld file </span>
+<span class="sd">    读入 csv 文件，存储在同位置同名的 jsonld 文件</span>
 <span class="sd">    Args:</span>
-<span class="sd">        fp (String): Address of csv file</span>
-<span class="sd">        verbose (bool): Whether to print</span>
-<span class="sd">    Returns: </span>
-<span class="sd">        fp_new (String): Address of new file </span>
+<span class="sd">        fp (String): csv 文件地址</span>
+<span class="sd">        verbose (bool): 是否打印日志</span>
+<span class="sd">    Return: </span>
+<span class="sd">        fp_new (String):文件地址</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">root</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>

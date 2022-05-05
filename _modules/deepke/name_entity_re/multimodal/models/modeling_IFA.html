@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>deepke.name_entity_re.multimodal.models.modeling_IFA &mdash; DeepKE 0.2.97 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> DeepKE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../start.html">Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../deepke.html">DeepKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">DeepKE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      <li>deepke.name_entity_re.multimodal.models.modeling_IFA</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for deepke.name_entity_re.multimodal.models.modeling_IFA</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">device</span>
+
+<span class="kn">from</span> <span class="nn">transformers.activations</span> <span class="kn">import</span> <span class="n">ACT2FN</span>
+<span class="kn">from</span> <span class="nn">transformers.modeling_utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">PreTrainedModel</span><span class="p">,</span>
+    <span class="n">apply_chunking_to_forward</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">transformers.configuration_utils</span> <span class="kn">import</span> <span class="n">PretrainedConfig</span>
+<span class="kn">from</span> <span class="nn">transformers.modeling_outputs</span> <span class="kn">import</span> <span class="n">BaseModelOutput</span><span class="p">,</span> <span class="n">BaseModelOutputWithPooling</span>
+
+<span class="c1"># some function</span>
+<div class="viewcode-block" id="get_extended_attention_mask"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.get_extended_attention_mask">[docs]</a><span class="k">def</span> <span class="nf">get_extended_attention_mask</span><span class="p">(</span><span class="n">attention_mask</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">device</span><span class="p">:</span> <span class="n">device</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Makes broadcastable attention and causal masks so that future and masked tokens are ignored.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            attention_mask (:obj:`torch.Tensor`):</span>
+<span class="sd">                Mask with ones indicating tokens to attend to, zeros for tokens to ignore.</span>
+<span class="sd">            input_shape (:obj:`Tuple[int]`):</span>
+<span class="sd">                The shape of the input to the model.</span>
+<span class="sd">            device: (:obj:`torch.device`):</span>
+<span class="sd">                The device of the input to the model.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            :obj:`torch.Tensor` The extended attention mask, with a the same dtype as :obj:`attention_mask.dtype`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># We can provide a self-attention mask of dimensions [batch_size, from_seq_length, to_seq_length]</span>
+        <span class="c1"># ourselves in which case we just need to make it broadcastable to all heads.</span>
+        <span class="k">if</span> <span class="n">attention_mask</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">extended_attention_mask</span> <span class="o">=</span> <span class="n">attention_mask</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+        <span class="k">elif</span> <span class="n">attention_mask</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># Provided a padding mask of dimensions [batch_size, seq_length]</span>
+            <span class="c1"># - if the model is a decoder, apply a causal mask in addition to the padding mask</span>
+            <span class="c1"># - if the model is an encoder, make the mask broadcastable to [batch_size, num_heads, seq_length, seq_length]</span>
+            <span class="n">extended_attention_mask</span> <span class="o">=</span> <span class="n">attention_mask</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Wrong shape for input_ids (shape </span><span class="si">{</span><span class="n">input_shape</span><span class="si">}</span><span class="s2">) or attention_mask (shape </span><span class="si">{</span><span class="n">attention_mask</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Since attention_mask is 1.0 for positions we want to attend and 0.0 for</span>
+        <span class="c1"># masked positions, this operation will create a tensor which is 0.0 for</span>
+        <span class="c1"># positions we want to attend and -10000.0 for masked positions.</span>
+        <span class="c1"># Since we are adding it to the raw scores before the softmax, this is</span>
+        <span class="c1"># effectively the same as removing these entirely.</span>
+        <span class="n">extended_attention_mask</span> <span class="o">=</span> <span class="n">extended_attention_mask</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>  <span class="c1"># fp16 compatibility</span>
+        <span class="n">extended_attention_mask</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">extended_attention_mask</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="mf">10000.0</span>
+        <span class="k">return</span> <span class="n">extended_attention_mask</span></div>
+
+
+<div class="viewcode-block" id="get_head_mask"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.get_head_mask">[docs]</a><span class="k">def</span> <span class="nf">get_head_mask</span><span class="p">(</span>
+        <span class="n">head_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">num_hidden_layers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">is_attention_chunked</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prepare the head mask if needed.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            head_mask (:obj:`torch.Tensor` with shape :obj:`[num_heads]` or :obj:`[num_hidden_layers x num_heads]`, `optional`):</span>
+<span class="sd">                The mask indicating if we should keep the heads or not (1.0 for keep, 0.0 for discard).</span>
+<span class="sd">            num_hidden_layers (:obj:`int`):</span>
+<span class="sd">                The number of hidden layers in the model.</span>
+<span class="sd">            is_attention_chunked: (:obj:`bool`, `optional`, defaults to :obj:`False`):</span>
+<span class="sd">                Whether or not the attentions scores are computed by chunks or not.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            :obj:`torch.Tensor` with shape :obj:`[num_hidden_layers x batch x num_heads x seq_length x seq_length]` or</span>
+<span class="sd">            list with :obj:`[None]` for each layer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">head_mask</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_hidden_layers</span>
+
+        <span class="k">return</span> <span class="n">head_mask</span></div>
+
+
+<span class="c1"># models</span>
+<div class="viewcode-block" id="IFAConfig"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.IFAConfig">[docs]</a><span class="k">class</span> <span class="nc">IFAConfig</span><span class="p">(</span><span class="n">PretrainedConfig</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="IFAPreTrainedModel"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.IFAPreTrainedModel">[docs]</a><span class="k">class</span> <span class="nc">IFAPreTrainedModel</span><span class="p">(</span><span class="n">PreTrainedModel</span><span class="p">):</span>
+    <span class="n">config_class</span> <span class="o">=</span> <span class="n">IFAConfig</span>
+    <span class="n">base_model_prefix</span> <span class="o">=</span> <span class="s2">&quot;clip&quot;</span>
+    <span class="n">supports_gradient_checkpointing</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">_keys_to_ignore_on_load_missing</span> <span class="o">=</span> <span class="p">[</span><span class="sa">r</span><span class="s2">&quot;position_ids&quot;</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="nf">__init_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="CLIPVisionEmbeddings"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.CLIPVisionEmbeddings">[docs]</a><span class="k">class</span> <span class="nc">CLIPVisionEmbeddings</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">image_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patch_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">patch_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">class_embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">patch_embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span>
+            <span class="n">in_channels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">patch_size</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">patch_size</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_patches</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_size</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">patch_size</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_patches</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position_embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_positions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;position_ids&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_positions</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">aux_position_embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;aux_position_ids&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">48</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rcnn_position_embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;rcnn_position_ids&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+
+<div class="viewcode-block" id="CLIPVisionEmbeddings.forward"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.CLIPVisionEmbeddings.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pixel_values</span><span class="p">,</span> <span class="n">aux_embeddings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rcnn_embeddings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">batch_size</span> <span class="o">=</span> <span class="n">pixel_values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">class_embeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_embedding</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">embeddings</span> <span class="o">=</span> <span class="n">class_embeds</span>
+
+        <span class="k">if</span> <span class="n">aux_embeddings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">aux_embeds</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">aux_embedding</span> <span class="ow">in</span> <span class="n">aux_embeddings</span><span class="p">:</span>
+                <span class="n">aux_embed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patch_embedding</span><span class="p">(</span><span class="n">aux_embedding</span><span class="p">)</span>
+                <span class="n">aux_embed</span> <span class="o">=</span> <span class="n">aux_embed</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>    <span class="c1"># 3*16, 768 3个子图</span>
+                <span class="n">aux_embeds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aux_embed</span><span class="p">)</span>
+            <span class="n">aux_embeds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">aux_embeds</span><span class="p">)</span> <span class="c1"># bsz, 48, 768</span>
+            <span class="n">aux_embeds</span> <span class="o">=</span> <span class="n">aux_embeds</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">aux_position_embedding</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aux_position_ids</span><span class="p">)</span>
+            <span class="n">embeddings</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">aux_embeds</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">rcnn_embeddings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rcnn_embeds</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">rcnn_embedding</span> <span class="ow">in</span> <span class="n">rcnn_embeddings</span><span class="p">:</span>
+                <span class="n">rcnn_embed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patch_embedding</span><span class="p">(</span><span class="n">rcnn_embedding</span><span class="p">)</span>
+                <span class="n">rcnn_embed</span> <span class="o">=</span> <span class="n">rcnn_embed</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>    <span class="c1"># 3*4, 768 3个子图</span>
+                <span class="n">rcnn_embeds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rcnn_embed</span><span class="p">)</span>
+            <span class="n">rcnn_embeds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">rcnn_embeds</span><span class="p">)</span> <span class="c1"># bsz, 12, 768</span>
+            <span class="n">rcnn_embeds</span> <span class="o">=</span> <span class="n">rcnn_embeds</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">rcnn_position_embedding</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rcnn_position_ids</span><span class="p">)</span>
+            <span class="n">embeddings</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">rcnn_embeds</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">embeddings</span></div></div>
+
+
+<div class="viewcode-block" id="BertEmbeddings"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertEmbeddings">[docs]</a><span class="k">class</span> <span class="nc">BertEmbeddings</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Construct the embeddings from word, position and token_type embeddings.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">word_embeddings</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">padding_idx</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">pad_token_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position_embeddings</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">max_position_embeddings</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token_type_embeddings</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">type_vocab_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+
+        <span class="c1"># self.LayerNorm is not snake-cased to stick with TensorFlow model variable name and be able to load</span>
+        <span class="c1"># any TensorFlow checkpoint file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LayerNorm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">layer_norm_eps</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_dropout_prob</span><span class="p">)</span>
+        <span class="c1"># position_ids (1, len position emb) is contiguous in memory and exported when serialized</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position_embedding_type</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;position_embedding_type&quot;</span><span class="p">,</span> <span class="s2">&quot;absolute&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;position_ids&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">max_position_embeddings</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+
+<div class="viewcode-block" id="BertEmbeddings.forward"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertEmbeddings.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">input_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">token_type_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">position_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inputs_embeds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">past_key_values_length</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">input_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">input_shape</span> <span class="o">=</span> <span class="n">input_ids</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">input_shape</span> <span class="o">=</span> <span class="n">inputs_embeds</span><span class="o">.</span><span class="n">size</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">seq_length</span> <span class="o">=</span> <span class="n">input_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">position_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">position_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">position_ids</span><span class="p">[:,</span> <span class="n">past_key_values_length</span> <span class="p">:</span> <span class="n">seq_length</span> <span class="o">+</span> <span class="n">past_key_values_length</span><span class="p">]</span>
+
+        <span class="c1"># Setting the token_type_ids to the registered buffer in constructor where it is all zeros, which usually occurs</span>
+        <span class="c1"># when its auto-generated, registered buffer helps users when tracing the model without passing token_type_ids, solves</span>
+        <span class="c1"># issue #5664</span>
+        <span class="k">if</span> <span class="n">token_type_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;token_type_ids&quot;</span><span class="p">):</span>
+                <span class="n">buffered_token_type_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token_type_ids</span><span class="p">[:,</span> <span class="p">:</span><span class="n">seq_length</span><span class="p">]</span>
+                <span class="n">buffered_token_type_ids_expanded</span> <span class="o">=</span> <span class="n">buffered_token_type_ids</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">input_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">seq_length</span><span class="p">)</span>
+                <span class="n">token_type_ids</span> <span class="o">=</span> <span class="n">buffered_token_type_ids_expanded</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">token_type_ids</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">input_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">position_ids</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">inputs_embeds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">inputs_embeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">word_embeddings</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+        <span class="n">token_type_embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token_type_embeddings</span><span class="p">(</span><span class="n">token_type_ids</span><span class="p">)</span>
+
+        <span class="n">embeddings</span> <span class="o">=</span> <span class="n">inputs_embeds</span> <span class="o">+</span> <span class="n">token_type_embeddings</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">position_embedding_type</span> <span class="o">==</span> <span class="s2">&quot;absolute&quot;</span><span class="p">:</span>
+            <span class="n">position_embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">position_embeddings</span><span class="p">(</span><span class="n">position_ids</span><span class="p">)</span>
+            <span class="n">embeddings</span> <span class="o">+=</span> <span class="n">position_embeddings</span>
+        <span class="n">embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">embeddings</span><span class="p">)</span>
+        <span class="n">embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">embeddings</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">embeddings</span></div></div>
+
+
+<div class="viewcode-block" id="CLIPAttention"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.CLIPAttention">[docs]</a><span class="k">class</span> <span class="nc">CLIPAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Multi-headed attention from &#39;Attention Is All You Need&#39; paper&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;embed_dim must be divisible by num_heads (got `embed_dim`: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="si">}</span><span class="s2"> and `num_heads`: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="si">}</span><span class="s2">).&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">attention_dropout</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">bsz</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">tensor</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+
+<div class="viewcode-block" id="CLIPAttention.forward"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.CLIPAttention.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">hidden_states</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">past_key_values</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">current_layer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_qks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]]:</span>
+        <span class="sd">&quot;&quot;&quot;Input shape: Batch x Time x Channel&quot;&quot;&quot;</span>
+
+        <span class="n">bsz</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">embed_dim</span> <span class="o">=</span> <span class="n">hidden_states</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+
+        <span class="c1"># get query proj</span>
+        <span class="n">query_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_proj</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span>
+        <span class="n">key_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k_proj</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">bsz</span><span class="p">)</span>
+        <span class="n">value_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_proj</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">bsz</span><span class="p">)</span>
+        <span class="n">qks</span> <span class="o">=</span> <span class="p">(</span><span class="n">key_states</span><span class="p">,</span> <span class="n">value_states</span><span class="p">)</span> <span class="k">if</span> <span class="n">output_qks</span> <span class="k">else</span> <span class="kc">None</span>
+
+
+        <span class="k">if</span> <span class="n">past_key_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">key_states</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">past_key_values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">key_states</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">value_states</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">past_key_values</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">value_states</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">proj_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">bsz</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">)</span>
+        <span class="n">query_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">(</span><span class="n">query_states</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">bsz</span><span class="p">)</span>
+
+        <span class="n">query_states</span> <span class="o">=</span> <span class="n">query_states</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">*</span><span class="n">proj_shape</span><span class="p">)</span>
+        <span class="n">key_states</span> <span class="o">=</span> <span class="n">key_states</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">*</span><span class="n">proj_shape</span><span class="p">)</span>
+        <span class="n">value_states</span> <span class="o">=</span> <span class="n">value_states</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">*</span><span class="n">proj_shape</span><span class="p">)</span>
+        
+        <span class="n">src_len</span> <span class="o">=</span> <span class="n">key_states</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">query_states</span><span class="p">,</span> <span class="n">key_states</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">attn_weights</span><span class="o">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="p">(</span><span class="n">bsz</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Attention weights should be of size </span><span class="si">{</span><span class="p">(</span><span class="n">bsz</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">)</span><span class="si">}</span><span class="s2">, but is </span><span class="si">{</span><span class="n">attn_weights</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>       
+        <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">attn_weights</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">output_attentions</span><span class="p">:</span>
+            <span class="c1"># this operation is a bit akward, but it&#39;s required to</span>
+            <span class="c1"># make sure that attn_weights keeps its gradient.</span>
+            <span class="c1"># In order to do so, attn_weights have to reshaped</span>
+            <span class="c1"># twice and have to be reused in the following</span>
+            <span class="n">attn_weights_reshaped</span> <span class="o">=</span> <span class="n">attn_weights</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">)</span>
+            <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">attn_weights_reshaped</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attn_weights_reshaped</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">attn_probs</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">attn_weights</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">)</span>
+
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">attn_probs</span><span class="p">,</span> <span class="n">value_states</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">attn_output</span><span class="o">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="p">(</span><span class="n">bsz</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;`attn_output` should be of size </span><span class="si">{</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">)</span><span class="si">}</span><span class="s2">, but is </span><span class="si">{</span><span class="n">attn_output</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="n">attn_output</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">)</span>
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="n">attn_output</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="n">attn_output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">)</span>
+
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_proj</span><span class="p">(</span><span class="n">attn_output</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">attn_output</span><span class="p">,</span> <span class="n">attn_weights_reshaped</span><span class="p">,</span> <span class="n">qks</span></div></div>
+
+<div class="viewcode-block" id="quick_gelu"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.quick_gelu">[docs]</a><span class="k">def</span> <span class="nf">quick_gelu</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="mf">1.702</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CLIPMLP"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.CLIPMLP">[docs]</a><span class="k">class</span> <span class="nc">CLIPMLP</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation_fn</span> <span class="o">=</span> <span class="n">quick_gelu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CLIPMLP.forward"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.CLIPMLP.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_states</span><span class="p">):</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_fn</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hidden_states</span></div></div>
+
+
+<div class="viewcode-block" id="BertSelfAttention"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertSelfAttention">[docs]</a><span class="k">class</span> <span class="nc">BertSelfAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_attention_heads</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span>   <span class="c1"># 12</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attention_head_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">/</span> <span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span><span class="p">)</span> <span class="c1"># 64</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_head_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_attention_heads</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">attention_head_size</span>    <span class="c1"># 768</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_head_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_head_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_head_size</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">attention_probs_dropout_prob</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BertSelfAttention.transpose_for_scores"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertSelfAttention.transpose_for_scores">[docs]</a>    <span class="k">def</span> <span class="nf">transpose_for_scores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">new_x_shape</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_attention_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attention_head_size</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">*</span><span class="n">new_x_shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BertSelfAttention.forward"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertSelfAttention.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">hidden_states</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">head_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">visual_hidden_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_qks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">current_layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">past_key_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">mixed_query_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+
+        <span class="c1"># If this is instantiated as a cross-attention module, the keys</span>
+        <span class="c1"># and values come from an encoder; the attention mask needs to be</span>
+        <span class="c1"># such that the encoder&#39;s padding tokens are not attended to.</span>
+        <span class="n">key_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transpose_for_scores</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">))</span>
+        <span class="n">value_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transpose_for_scores</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">))</span>
+        <span class="n">query_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transpose_for_scores</span><span class="p">(</span><span class="n">mixed_query_layer</span><span class="p">)</span>
+
+        <span class="n">qks</span> <span class="o">=</span> <span class="p">(</span><span class="n">key_layer</span><span class="p">,</span> <span class="n">value_layer</span><span class="p">)</span> <span class="k">if</span> <span class="n">output_qks</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">past_key_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">key_layer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">past_key_values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">key_layer</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">value_layer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">past_key_values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">value_layer</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># Take the dot product between &quot;query&quot; and &quot;key&quot; to get the raw attention scores.</span>
+        <span class="n">attention_scores</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">query_layer</span><span class="p">,</span> <span class="n">key_layer</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">attention_scores</span> <span class="o">=</span> <span class="n">attention_scores</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attention_head_size</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">attention_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Apply the attention mask is (precomputed for all layers in BertModel forward() function)</span>
+            <span class="n">bsz</span><span class="p">,</span> <span class="n">nheads</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">dsize</span> <span class="o">=</span> <span class="n">past_key_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+            <span class="n">visual_attention_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">bsz</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">attention_mask</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>  <span class="c1"># bsz, 12, len, 64</span>
+            <span class="n">attention_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">visual_attention_mask</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">attention_scores</span> <span class="o">=</span> <span class="n">attention_scores</span> <span class="o">+</span> <span class="n">attention_mask</span>
+        <span class="c1"># Normalize the attention scores to probabilities.</span>
+        <span class="n">attention_probs</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Softmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)(</span><span class="n">attention_scores</span><span class="p">)</span>
+
+        <span class="c1"># This is actually dropping out entire tokens to attend to, which might</span>
+        <span class="c1"># seem a bit unusual, but is taken from the original Transformer paper.</span>
+        <span class="n">attention_probs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">)</span>
+
+        <span class="c1"># Mask heads if we want to</span>
+        <span class="k">if</span> <span class="n">head_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">attention_probs</span> <span class="o">=</span> <span class="n">attention_probs</span> <span class="o">*</span> <span class="n">head_mask</span>
+        <span class="n">context_layer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">attention_probs</span><span class="p">,</span> <span class="n">value_layer</span><span class="p">)</span>
+
+        <span class="n">context_layer</span> <span class="o">=</span> <span class="n">context_layer</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+        <span class="n">new_context_layer_shape</span> <span class="o">=</span> <span class="n">context_layer</span><span class="o">.</span><span class="n">size</span><span class="p">()[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_head_size</span><span class="p">,)</span>
+        <span class="n">context_layer</span> <span class="o">=</span> <span class="n">context_layer</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">*</span><span class="n">new_context_layer_shape</span><span class="p">)</span>    <span class="c1"># bsz, 128, 768</span>
+        
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">(</span><span class="n">context_layer</span><span class="p">,</span> <span class="n">attention_probs</span><span class="p">)</span> <span class="k">if</span> <span class="n">output_attentions</span> <span class="k">else</span> <span class="p">(</span><span class="n">context_layer</span><span class="p">,)</span>
+
+        <span class="k">return</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">qks</span></div></div>
+
+
+<div class="viewcode-block" id="BertSelfOutput"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertSelfOutput">[docs]</a><span class="k">class</span> <span class="nc">BertSelfOutput</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dense</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LayerNorm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">layer_norm_eps</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_dropout_prob</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BertSelfOutput.forward"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertSelfOutput.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_states</span><span class="p">,</span> <span class="n">input_tensor</span><span class="p">):</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">hidden_states</span> <span class="o">+</span> <span class="n">input_tensor</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hidden_states</span></div></div>
+
+<div class="viewcode-block" id="BertAttention"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertAttention">[docs]</a><span class="k">class</span> <span class="nc">BertAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">self</span> <span class="o">=</span> <span class="n">BertSelfAttention</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">BertSelfOutput</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pruned_heads</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<div class="viewcode-block" id="BertAttention.forward"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertAttention.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">hidden_states</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">head_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">visual_hidden_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_qks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">current_layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">past_key_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">self_outputs</span><span class="p">,</span> <span class="n">qks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">self</span><span class="p">(</span>
+            <span class="n">hidden_states</span><span class="p">,</span>
+            <span class="n">attention_mask</span><span class="p">,</span>
+            <span class="n">head_mask</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">visual_hidden_state</span><span class="p">,</span>
+            <span class="n">output_qks</span><span class="p">,</span>
+            <span class="n">current_layer</span><span class="p">,</span>
+            <span class="n">past_key_values</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">attention_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">self_outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">(</span><span class="n">attention_output</span><span class="p">,)</span> <span class="o">+</span> <span class="n">self_outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>  <span class="c1"># add attentions if we output them</span>
+        <span class="k">return</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">qks</span></div></div>
+
+
+<div class="viewcode-block" id="BertIntermediate"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertIntermediate">[docs]</a><span class="k">class</span> <span class="nc">BertIntermediate</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dense</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_act</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_act_fn</span> <span class="o">=</span> <span class="n">ACT2FN</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_act</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_act_fn</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_act</span>
+
+<div class="viewcode-block" id="BertIntermediate.forward"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertIntermediate.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_states</span><span class="p">):</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_act_fn</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hidden_states</span></div></div>
+
+
+<div class="viewcode-block" id="BertOutput"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertOutput">[docs]</a><span class="k">class</span> <span class="nc">BertOutput</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dense</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LayerNorm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">layer_norm_eps</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_dropout_prob</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BertOutput.forward"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertOutput.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_states</span><span class="p">,</span> <span class="n">input_tensor</span><span class="p">):</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">hidden_states</span> <span class="o">+</span> <span class="n">input_tensor</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hidden_states</span></div></div>
+
+
+<div class="viewcode-block" id="CLIPEncoderLayer"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.CLIPEncoderLayer">[docs]</a><span class="k">class</span> <span class="nc">CLIPEncoderLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">self_attn</span> <span class="o">=</span> <span class="n">CLIPAttention</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer_norm1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span> <span class="o">=</span> <span class="n">CLIPMLP</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer_norm2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CLIPEncoderLayer.forward"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.CLIPEncoderLayer.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">hidden_states</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">past_key_values</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">current_layer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_qks</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            hidden_states (:obj:`torch.FloatTensor`): input to the layer of shape :obj:`(seq_len, batch, embed_dim)`</span>
+<span class="sd">            attention_mask (:obj:`torch.FloatTensor`): attention mask of size</span>
+<span class="sd">                :obj:`(batch, 1, tgt_len, src_len)` where padding elements are indicated by very large negative values.</span>
+<span class="sd">            layer_head_mask (:obj:`torch.FloatTensor`): mask for attention heads in a given layer of size</span>
+<span class="sd">                :obj:`(config.encoder_attention_heads,)`.</span>
+<span class="sd">            output_attentions (:obj:`bool`, `optional`):</span>
+<span class="sd">                Whether or not to return the attentions tensors of all attention layers. See ``attentions`` under</span>
+<span class="sd">                returned tensors for more detail.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">hidden_states</span>
+
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_norm1</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span><span class="p">,</span> <span class="n">attn_weights</span><span class="p">,</span> <span class="n">qks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">self_attn</span><span class="p">(</span>
+            <span class="n">hidden_states</span><span class="o">=</span><span class="n">hidden_states</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">past_key_values</span><span class="o">=</span><span class="n">past_key_values</span><span class="p">,</span>
+            <span class="n">output_qks</span><span class="o">=</span><span class="n">output_qks</span><span class="p">,</span>
+            <span class="n">current_layer</span><span class="o">=</span><span class="n">current_layer</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="n">residual</span> <span class="o">+</span> <span class="n">hidden_states</span>
+
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">hidden_states</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_norm2</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="n">residual</span> <span class="o">+</span> <span class="n">hidden_states</span>
+
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">(</span><span class="n">hidden_states</span><span class="p">,)</span>
+
+        <span class="k">if</span> <span class="n">output_attentions</span><span class="p">:</span>
+            <span class="n">outputs</span> <span class="o">+=</span> <span class="p">(</span><span class="n">attn_weights</span><span class="p">,)</span>
+        
+        <span class="k">if</span> <span class="n">output_qks</span><span class="p">:</span>
+            <span class="n">outputs</span> <span class="o">+=</span> <span class="p">(</span><span class="n">qks</span><span class="p">,</span> <span class="p">)</span>
+    
+        <span class="k">return</span> <span class="n">outputs</span></div></div>
+
+
+<div class="viewcode-block" id="BertLayer"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertLayer">[docs]</a><span class="k">class</span> <span class="nc">BertLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size_feed_forward</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">chunk_size_feed_forward</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seq_len_dim</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attention</span> <span class="o">=</span> <span class="n">BertAttention</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_cross_attention</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">add_cross_attention</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate</span> <span class="o">=</span> <span class="n">BertIntermediate</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">BertOutput</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BertLayer.forward"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertLayer.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">hidden_states</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">head_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">visual_hidden_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_qks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">current_layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">past_key_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># decoder uni-directional self-attention cached key/values tuple is at positions 1,2</span>
+        <span class="c1"># self_attn_past_key_value = past_key_value[:2] if past_key_value is not None else None</span>
+        <span class="n">self_attention_outputs</span><span class="p">,</span> <span class="n">qks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attention</span><span class="p">(</span>
+            <span class="n">hidden_states</span><span class="p">,</span>
+            <span class="n">attention_mask</span><span class="p">,</span>
+            <span class="n">head_mask</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">visual_hidden_state</span><span class="o">=</span><span class="n">visual_hidden_state</span><span class="p">,</span>
+            <span class="n">output_qks</span><span class="o">=</span><span class="n">output_qks</span><span class="p">,</span>
+            <span class="n">current_layer</span><span class="o">=</span><span class="n">current_layer</span><span class="p">,</span>
+            <span class="n">past_key_values</span><span class="o">=</span><span class="n">past_key_values</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">attention_output</span> <span class="o">=</span> <span class="n">self_attention_outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">self_attention_outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>  <span class="c1"># add self attentions if we output attention weights</span>
+
+        <span class="n">layer_output</span> <span class="o">=</span> <span class="n">apply_chunking_to_forward</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">feed_forward_chunk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size_feed_forward</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">seq_len_dim</span><span class="p">,</span> <span class="n">attention_output</span>
+        <span class="p">)</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">(</span><span class="n">layer_output</span><span class="p">,)</span> <span class="o">+</span> <span class="n">outputs</span>
+        <span class="k">if</span> <span class="n">output_qks</span><span class="p">:</span> 
+            <span class="n">outputs</span> <span class="o">+=</span> <span class="p">(</span><span class="n">qks</span><span class="p">,)</span>
+
+        <span class="k">return</span> <span class="n">outputs</span></div>
+
+<div class="viewcode-block" id="BertLayer.feed_forward_chunk"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertLayer.feed_forward_chunk">[docs]</a>    <span class="k">def</span> <span class="nf">feed_forward_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attention_output</span><span class="p">):</span>
+        <span class="n">intermediate_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intermediate</span><span class="p">(</span><span class="n">attention_output</span><span class="p">)</span>
+        <span class="n">layer_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">intermediate_output</span><span class="p">,</span> <span class="n">attention_output</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">layer_output</span></div></div>
+
+
+<div class="viewcode-block" id="IFAEncoder"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.IFAEncoder">[docs]</a><span class="k">class</span> <span class="nc">IFAEncoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vision_config</span><span class="p">,</span> <span class="n">text_config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vision_config</span> <span class="o">=</span> <span class="n">vision_config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_config</span> <span class="o">=</span> <span class="n">text_config</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">vision_layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span><span class="n">CLIPEncoderLayer</span><span class="p">(</span><span class="n">vision_config</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">vision_config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span><span class="n">BertLayer</span><span class="p">(</span><span class="n">text_config</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">text_config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">)])</span>
+    
+<div class="viewcode-block" id="IFAEncoder.forward"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.IFAEncoder.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">vision_embeds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">text_embeds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">head_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_hidden_states</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">return_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">vision_config</span><span class="o">.</span><span class="n">num_hidden_layers</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_config</span><span class="o">.</span><span class="n">num_hidden_layers</span>
+
+        <span class="n">all_vision_hidden_states</span> <span class="o">=</span> <span class="p">()</span> <span class="k">if</span> <span class="n">output_hidden_states</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">all_text_hidden_states</span> <span class="o">=</span> <span class="p">()</span> <span class="k">if</span> <span class="n">output_hidden_states</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">all_vision_attentions</span> <span class="o">=</span> <span class="p">()</span> <span class="k">if</span> <span class="n">output_attentions</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">all_text_attentions</span> <span class="o">=</span> <span class="p">()</span> <span class="k">if</span> <span class="n">output_attentions</span> <span class="k">else</span> <span class="kc">None</span>
+        
+        <span class="n">vision_hidden_states</span> <span class="o">=</span> <span class="n">vision_embeds</span>
+        <span class="n">text_hidden_states</span> <span class="o">=</span> <span class="n">text_embeds</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vision_config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">output_hidden_states</span><span class="p">:</span>
+                <span class="n">all_vision_hidden_states</span> <span class="o">=</span> <span class="n">all_vision_hidden_states</span> <span class="o">+</span> <span class="p">(</span><span class="n">vision_hidden_states</span><span class="p">,</span> <span class="p">)</span>
+                <span class="n">all_text_hidden_states</span> <span class="o">=</span> <span class="n">all_text_hidden_states</span> <span class="o">+</span> <span class="p">(</span><span class="n">text_hidden_states</span><span class="p">,</span> <span class="p">)</span>
+            
+            <span class="c1"># vision</span>
+            <span class="c1"># TODO: 9-12 layers past text as pkv to vision</span>
+            <span class="n">output_qks</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">bsz</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">dsize</span> <span class="o">=</span> <span class="n">text_embeds</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+                <span class="n">visual_past_key_values</span> <span class="o">=</span> <span class="p">(</span><span class="n">text_embeds</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">dsize</span><span class="o">//</span><span class="mi">12</span><span class="p">),</span>
+                                          <span class="n">text_embeds</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">dsize</span><span class="o">//</span><span class="mi">12</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">visual_past_key_values</span> <span class="o">=</span> <span class="n">text_layer_output</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">vision_layer_module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vision_layers</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">vision_layer_output</span> <span class="o">=</span> <span class="n">vision_layer_module</span><span class="p">(</span>
+                    <span class="n">vision_hidden_states</span><span class="p">,</span>
+                    <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+                    <span class="n">past_key_values</span><span class="o">=</span><span class="n">visual_past_key_values</span><span class="p">,</span>
+                    <span class="n">current_layer</span><span class="o">=</span><span class="n">idx</span><span class="p">,</span>
+                    <span class="n">output_qks</span><span class="o">=</span><span class="n">output_qks</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">vision_hidden_states</span> <span class="o">=</span> <span class="n">vision_layer_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="c1"># text</span>
+            <span class="c1"># TODO: 9-12 layers past vison qks to text</span>
+            <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">bsz</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">dsize</span> <span class="o">=</span> <span class="n">vision_embeds</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+                <span class="n">text_past_key_values</span> <span class="o">=</span> <span class="p">(</span><span class="n">vision_embeds</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">dsize</span><span class="o">//</span><span class="mi">12</span><span class="p">),</span>
+                                          <span class="n">vision_embeds</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">dsize</span><span class="o">//</span><span class="mi">12</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">text_past_key_values</span> <span class="o">=</span> <span class="n">vision_layer_output</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="n">layer_head_mask</span> <span class="o">=</span> <span class="n">head_mask</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">if</span> <span class="n">head_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">text_layer_module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_layer</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">text_layer_output</span> <span class="o">=</span> <span class="n">text_layer_module</span><span class="p">(</span>
+                    <span class="n">text_hidden_states</span><span class="p">,</span>
+                    <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span>
+                    <span class="n">head_mask</span><span class="o">=</span><span class="n">layer_head_mask</span><span class="p">,</span>
+                    <span class="n">visual_hidden_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">past_key_values</span><span class="o">=</span><span class="n">text_past_key_values</span><span class="p">,</span>
+                    <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+                    <span class="n">output_qks</span><span class="o">=</span><span class="n">output_qks</span><span class="p">,</span>
+                    <span class="n">current_layer</span><span class="o">=</span><span class="n">idx</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">text_hidden_states</span> <span class="o">=</span> <span class="n">text_layer_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">output_attentions</span><span class="p">:</span>
+                <span class="n">all_vision_attentions</span> <span class="o">=</span> <span class="n">all_vision_attentions</span> <span class="o">+</span> <span class="p">(</span><span class="n">vision_layer_output</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">)</span>
+                <span class="n">all_text_attentions</span> <span class="o">=</span> <span class="n">all_text_attentions</span> <span class="o">+</span> <span class="p">(</span><span class="n">text_layer_output</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">output_hidden_states</span><span class="p">:</span>
+                <span class="n">all_vision_hidden_states</span> <span class="o">=</span> <span class="n">all_vision_hidden_states</span> <span class="o">+</span> <span class="p">(</span><span class="n">vision_hidden_states</span><span class="p">,</span> <span class="p">)</span>
+                <span class="n">all_text_hidden_states</span> <span class="o">=</span> <span class="n">all_text_hidden_states</span> <span class="o">+</span> <span class="p">(</span><span class="n">text_hidden_states</span><span class="p">,</span> <span class="p">)</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">return_dict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
+                <span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span>
+                    <span class="n">text_hidden_states</span><span class="p">,</span>
+                    <span class="n">all_text_hidden_states</span><span class="p">,</span>
+                    <span class="n">all_text_attentions</span><span class="p">,</span>
+                <span class="p">]</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">BaseModelOutput</span><span class="p">(</span>
+            <span class="n">last_hidden_state</span><span class="o">=</span><span class="n">text_hidden_states</span><span class="p">,</span> <span class="n">hidden_states</span><span class="o">=</span><span class="n">all_text_hidden_states</span><span class="p">,</span> <span class="n">attentions</span><span class="o">=</span><span class="n">all_text_attentions</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="BertPooler"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertPooler">[docs]</a><span class="k">class</span> <span class="nc">BertPooler</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dense</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">()</span>
+
+<div class="viewcode-block" id="BertPooler.forward"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.BertPooler.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_states</span><span class="p">):</span>
+        <span class="c1"># We &quot;pool&quot; the model by simply taking the hidden state corresponding</span>
+        <span class="c1"># to the first token.</span>
+        <span class="n">first_token_tensor</span> <span class="o">=</span> <span class="n">hidden_states</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">pooled_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">first_token_tensor</span><span class="p">)</span>
+        <span class="n">pooled_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="n">pooled_output</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pooled_output</span></div></div>
+
+
+<div class="viewcode-block" id="IFAModel"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.IFAModel">[docs]</a><span class="k">class</span> <span class="nc">IFAModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vision_config</span><span class="p">,</span> <span class="n">text_config</span><span class="p">,</span> <span class="n">add_pooling_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">IFAModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># vision model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vision_config</span> <span class="o">=</span> <span class="n">vision_config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vision_embeddings</span> <span class="o">=</span> <span class="n">CLIPVisionEmbeddings</span><span class="p">(</span><span class="n">vision_config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vision_pre_layrnorm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">vision_config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vision_post_layernorm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">vision_config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+
+        <span class="c1"># text model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_config</span> <span class="o">=</span> <span class="n">text_config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_embeddings</span> <span class="o">=</span> <span class="n">BertEmbeddings</span><span class="p">(</span><span class="n">text_config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_pooler</span> <span class="o">=</span> <span class="n">BertPooler</span><span class="p">(</span><span class="n">text_config</span><span class="p">)</span> <span class="k">if</span> <span class="n">add_pooling_layer</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="c1"># all</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">IFAEncoder</span><span class="p">(</span><span class="n">vision_config</span><span class="p">,</span> <span class="n">text_config</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">vision_config</span><span class="o">.</span><span class="n">device</span>
+
+<div class="viewcode-block" id="IFAModel.forward"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.IFAModel.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">token_type_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">position_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">head_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        
+        <span class="n">pixel_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">aux_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+        <span class="n">rcnn_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_hidden_states</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">return_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># pre vision</span>
+        <span class="n">vision_embedding_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vision_embeddings</span><span class="p">(</span><span class="n">pixel_values</span><span class="p">,</span> <span class="n">aux_values</span><span class="p">,</span> <span class="n">rcnn_values</span><span class="p">)</span>
+        <span class="n">vision_embedding_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vision_pre_layrnorm</span><span class="p">(</span><span class="n">vision_embedding_output</span><span class="p">)</span>
+
+        <span class="c1"># pre text</span>
+        <span class="n">input_shape</span> <span class="o">=</span> <span class="n">input_ids</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+        <span class="n">batch_size</span><span class="p">,</span> <span class="n">seq_length</span> <span class="o">=</span> <span class="n">input_shape</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">input_ids</span><span class="o">.</span><span class="n">device</span>
+        <span class="k">if</span> <span class="n">attention_mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">attention_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">seq_length</span><span class="p">)),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">token_type_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;token_type_ids is None!&quot;</span><span class="p">)</span>
+
+        <span class="n">extended_attention_mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">get_extended_attention_mask</span><span class="p">(</span><span class="n">attention_mask</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+        <span class="n">head_mask</span> <span class="o">=</span> <span class="n">get_head_mask</span><span class="p">(</span><span class="n">head_mask</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">)</span>    <span class="c1"># [None]*12</span>
+
+        <span class="n">text_embedding_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_embeddings</span><span class="p">(</span>
+            <span class="n">input_ids</span><span class="o">=</span><span class="n">input_ids</span><span class="p">,</span>
+            <span class="n">position_ids</span><span class="o">=</span><span class="n">position_ids</span><span class="p">,</span>
+            <span class="n">token_type_ids</span><span class="o">=</span><span class="n">token_type_ids</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># all encoder</span>
+        <span class="n">encoder_outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span>
+            <span class="n">vision_embeds</span><span class="o">=</span><span class="n">vision_embedding_output</span><span class="p">,</span>
+            <span class="n">text_embeds</span><span class="o">=</span><span class="n">text_embedding_output</span><span class="p">,</span>
+            <span class="n">attention_mask</span><span class="o">=</span><span class="n">extended_attention_mask</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">output_hidden_states</span><span class="o">=</span><span class="n">output_hidden_states</span><span class="p">,</span>
+            <span class="n">return_dict</span><span class="o">=</span><span class="n">return_dict</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">sequence_output</span> <span class="o">=</span> <span class="n">encoder_outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">pooled_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_pooler</span><span class="p">(</span><span class="n">sequence_output</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_pooler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">return_dict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">sequence_output</span><span class="p">,</span> <span class="n">pooled_output</span><span class="p">)</span> <span class="o">+</span> <span class="n">encoder_outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="k">return</span> <span class="n">BaseModelOutputWithPooling</span><span class="p">(</span>
+            <span class="n">last_hidden_state</span><span class="o">=</span><span class="n">sequence_output</span><span class="p">,</span>
+            <span class="n">pooler_output</span><span class="o">=</span><span class="n">pooled_output</span><span class="p">,</span>
+            <span class="n">hidden_states</span><span class="o">=</span><span class="n">encoder_outputs</span><span class="o">.</span><span class="n">hidden_states</span><span class="p">,</span>
+            <span class="n">attentions</span><span class="o">=</span><span class="n">encoder_outputs</span><span class="o">.</span><span class="n">attentions</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_init_text_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the weights&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">):</span>
+            <span class="c1"># Slightly different from the TF version which uses truncated_normal for initialization</span>
+            <span class="c1"># cf https://github.com/pytorch/pytorch/pull/5617</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">text_config</span><span class="o">.</span><span class="n">initializer_range</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">bias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">module</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">):</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">text_config</span><span class="o">.</span><span class="n">initializer_range</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">padding_idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">module</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">module</span><span class="o">.</span><span class="n">padding_idx</span><span class="p">]</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">):</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+
+<div class="viewcode-block" id="IFAModel.get_input_embeddings"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.IFAModel.get_input_embeddings">[docs]</a>    <span class="k">def</span> <span class="nf">get_input_embeddings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_embeddings</span><span class="o">.</span><span class="n">word_embeddings</span></div>
+
+<div class="viewcode-block" id="IFAModel.set_input_embeddings"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.IFAModel.set_input_embeddings">[docs]</a>    <span class="k">def</span> <span class="nf">set_input_embeddings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_embeddings</span><span class="o">.</span><span class="n">word_embeddings</span> <span class="o">=</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="IFAModel.resize_token_embeddings"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.multimodal.models.html#deepke.name_entity_re.multimodal.models.modeling_IFA.IFAModel.resize_token_embeddings">[docs]</a>    <span class="k">def</span> <span class="nf">resize_token_embeddings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_num_tokens</span><span class="p">):</span>
+        <span class="n">old_embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_embeddings</span><span class="p">()</span>
+        <span class="n">new_embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_resized_embeddings</span><span class="p">(</span><span class="n">old_embeddings</span><span class="p">,</span> <span class="n">new_num_tokens</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_input_embeddings</span><span class="p">(</span><span class="n">new_embeddings</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_resized_embeddings</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">old_embeddings</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">,</span> <span class="n">new_num_tokens</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build a resized Embedding Module from a provided token Embedding Module. Increasing the size will add newly</span>
+<span class="sd">        initialized vectors at the end. Reducing the size will remove vectors from the end</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            old_embeddings (:obj:`torch.nn.Embedding`):</span>
+<span class="sd">                Old embeddings to be resized.</span>
+<span class="sd">            new_num_tokens (:obj:`int`, `optional`):</span>
+<span class="sd">                New number of tokens in the embedding matrix.</span>
+
+<span class="sd">                Increasing the size will add newly initialized vectors at the end. Reducing the size will remove</span>
+<span class="sd">                vectors from the end. If not provided or :obj:`None`, just returns a pointer to the input tokens</span>
+<span class="sd">                :obj:`torch.nn.Embedding`` module of the model without doing anything.</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            :obj:`torch.nn.Embedding`: Pointer to the resized Embedding Module or the old Embedding Module if</span>
+<span class="sd">            :obj:`new_num_tokens` is :obj:`None`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_num_tokens</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">old_embeddings</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">old_num_tokens</span><span class="p">,</span> <span class="n">old_embedding_dim</span> <span class="o">=</span> <span class="n">old_embeddings</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">old_num_tokens</span> <span class="o">==</span> <span class="n">new_num_tokens</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">old_embeddings</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">old_embeddings</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Old embeddings are of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">old_embeddings</span><span class="p">)</span><span class="si">}</span><span class="s2">, which is not an instance of </span><span class="si">{</span><span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;You should either use a different resize function or make sure that `old_embeddings` are an instance of </span><span class="si">{</span><span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Build new embeddings</span>
+        <span class="n">new_embeddings</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">new_num_tokens</span><span class="p">,</span> <span class="n">old_embedding_dim</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">old_embeddings</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># initialize all new embeddings (in particular added tokens)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_text_weights</span><span class="p">(</span><span class="n">new_embeddings</span><span class="p">)</span>
+
+        <span class="c1"># Copy token embeddings from the previous weights</span>
+
+        <span class="c1"># numbers of tokens to copy</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">old_num_tokens</span><span class="p">,</span> <span class="n">new_num_tokens</span><span class="p">)</span>
+        <span class="n">new_embeddings</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">old_embeddings</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="k">return</span> <span class="n">new_embeddings</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, ZJUNLP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

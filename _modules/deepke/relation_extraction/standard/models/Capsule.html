@@ -109,9 +109,10 @@
         <span class="n">mask</span> <span class="o">=</span> <span class="n">seq_len_to_mask</span><span class="p">(</span><span class="n">lens</span><span class="p">)</span>
         <span class="n">inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">head_pos</span><span class="p">,</span> <span class="n">tail_pos</span><span class="p">)</span>
 
-        <span class="n">primary</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cnn</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>  
+        <span class="n">primary</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cnn</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>  <span class="c1"># 由于长度改变，无法定向mask，不mask可可以，毕竟primary capsule 就是粗粒度的信息</span>
         <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capsule</span><span class="p">(</span><span class="n">primary</span><span class="p">)</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> 
+        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># 求得模长再返回值</span>
+
         <span class="k">return</span> <span class="n">output</span>  <span class="c1"># [B, N]</span></div>
 
 <div class="viewcode-block" id="Capsule.loss"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.models.html#deepke.relation_extraction.standard.models.Capsule.Capsule.loss">[docs]</a>    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">):</span>
@@ -126,6 +127,7 @@
         <span class="k">if</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">&#39;sum&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">loss</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># 默认情况为求平均</span>
             <span class="k">return</span> <span class="n">loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span></div></div>
 </pre></div>
 

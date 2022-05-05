@@ -22,7 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Name Entity Recognition" href="deepke.name_entity_recognition.html" />
+    <link rel="next" title="Name Entity Recognition" href="deepke.name_entity_re.html" />
     <link rel="prev" title="Tools" href="deepke.attribution_extraction.standard.tools.html" /> 
 </head>
 
@@ -61,7 +61,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_recognition.html">Name Entity Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_re.html">Name Entity Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deepke.relation_extraction.html">Relation Extraction</a></li>
 </ul>
 </li>
@@ -101,17 +101,14 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.utils.ioUtils.load_pkl">
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.ioUtils.</span></span><span class="sig-name descname"><span class="pre">load_pkl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a></span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/ioUtils.html#load_pkl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.ioUtils.load_pkl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read from pkl file
-:param fp: Address of data
-:type fp: String
-:param verbose: Whether to print log
-:type verbose: bool</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Data after reading</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>data (Any)</p>
+<dd><p>读取文件
+Args :</p>
+<blockquote>
+<div><p>fp (String) : 读取数据地址
+verbose (bool) : 是否打印日志</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return :</dt><dd><p>data (Any) : 读取的数据</p>
 </dd>
 </dl>
 </dd></dl>
@@ -119,31 +116,27 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.utils.ioUtils.save_pkl">
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.ioUtils.</span></span><span class="sig-name descname"><span class="pre">save_pkl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/ioUtils.html#save_pkl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.ioUtils.save_pkl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save as pkl file
-:param data: Data to save
-:type data: Any
-:param fp: Address of data
-:type fp: String
-:param verbose: Whether to print log
-:type verbose: bool</p>
+<dd><p>保存文件
+Args :</p>
+<blockquote>
+<div><p>data (Any) : 数据
+fp (String) :保存的地址
+verbose (bool) : 是否打印日志</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.utils.ioUtils.load_csv">
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.ioUtils.</span></span><span class="sig-name descname"><span class="pre">load_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_tsv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><span class="pre">List</span></a></span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/ioUtils.html#load_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.ioUtils.load_csv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read from csv file
-:param fp: Address of data
-:type fp: String
-:param is_tsv: Whether it is in excel-tab format
-:type is_tsv: bool
-:param verbose: Whether to print log
-:type verbose: bool</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>List data after reading</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a>(reader) (List)</p>
+<dd><p>读取csv格式文件
+Args :</p>
+<blockquote>
+<div><p>fp (String) : 保存地址
+is_tsv (bool) : 是否为excel-tab格式
+verbose (bool) : 是否打印日志</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return :</dt><dd><p>list(reader) (List): 读取的List数据</p>
 </dd>
 </dl>
 </dd></dl>
@@ -151,30 +144,28 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.utils.ioUtils.save_csv">
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.ioUtils.</span></span><span class="sig-name descname"><span class="pre">save_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><span class="pre">Dict</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_in_tsv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="k"><span class="pre">False</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_head</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/ioUtils.html#save_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.ioUtils.save_csv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save as csv file
-:param data: List data for saving
-:type data: List
-:param fp: Address of data
-:type fp: String
-:param save_in_tsv: Whether it is in excel-tab format
-:type save_in_tsv: bool
-:param write_head: Whether to write head
-:type write_head: bool
-:param verbose: Whether to print log
-:type verbose: bool</p>
+<dd><p>保存csv格式文件
+Args :</p>
+<blockquote>
+<div><p>data (List) : 所需保存的List数据
+fp (String) : 保存地址
+save_in_tsv (bool) : 是否保存为excel-tab格式
+write_head (bool) : 是否写表头
+verbose (bool) : 是否打印日志</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.utils.ioUtils.load_jsonld">
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.ioUtils.</span></span><span class="sig-name descname"><span class="pre">load_jsonld</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><span class="pre">List</span></a></span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/ioUtils.html#load_jsonld"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.ioUtils.load_jsonld" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read from jsonld file
-:param fp: Address of data
+<dd><p>读取jsonld文件
+:param fp: jsonld 文件地址
 :type fp: String
-:param verbose: Whether to print log
+:param verbose: 是否打印日志
 :type verbose: bool</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>List data after reading</p>
+<dd class="field-odd"><p>读取后的List</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>datas (List)</p>
@@ -185,20 +176,20 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.utils.ioUtils.save_jsonld">
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.ioUtils.</span></span><span class="sig-name descname"><span class="pre">save_jsonld</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/ioUtils.html#save_jsonld"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.ioUtils.save_jsonld" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save as jsonld file</p>
+<dd><p>保存jsonld格式文件</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.utils.ioUtils.jsonld2csv">
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.ioUtils.</span></span><span class="sig-name descname"><span class="pre">jsonld2csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/ioUtils.html#jsonld2csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.ioUtils.jsonld2csv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transfor json file to csv file
-:param fp: Address of jsonld file
+<dd><p>读入 jsonld 文件，存储在同位置同名的 csv 文件
+:param fp: jsonld 文件地址
 :type fp: String
-:param verbose: Whether to print log
+:param verbose: 是否打印日志
 :type verbose: bool</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Address of new file</p>
+<dd class="field-odd"><p>文件地址</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>fp_new (String)</p>
@@ -209,14 +200,14 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.utils.ioUtils.csv2jsonld">
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.ioUtils.</span></span><span class="sig-name descname"><span class="pre">csv2jsonld</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/ioUtils.html#csv2jsonld"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.ioUtils.csv2jsonld" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transfor csv file to jsonld file
-:param fp: Address of csv file
+<dd><p>读入 csv 文件，存储在同位置同名的 jsonld 文件
+:param fp: csv 文件地址
 :type fp: String
-:param verbose: Whether to print
+:param verbose: 是否打印日志
 :type verbose: bool</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Address of new file</p>
+<dd class="field-odd"><p>文件地址</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>fp_new (String)</p>
@@ -230,28 +221,25 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.utils.nnUtils.manual_seed">
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.nnUtils.</span></span><span class="sig-name descname"><span class="pre">manual_seed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/nnUtils.html#manual_seed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.nnUtils.manual_seed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set seeds
-:param seed: The number of setting
-:type seed: int</p>
+<dd><p>设置seed。</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="deepke.attribution_extraction.standard.utils.nnUtils.seq_len_to_mask">
 <span class="sig-prename descclassname"><span class="pre">deepke.attribution_extraction.standard.utils.nnUtils.</span></span><span class="sig-name descname"><span class="pre">seq_len_to_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_len</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><span class="pre">List</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_pos_to_true</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/attribution_extraction/standard/utils/nnUtils.html#seq_len_to_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.attribution_extraction.standard.utils.nnUtils.seq_len_to_mask" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert a one-dimensional array representing sequence length to a two-dimensional mask, the default position of the pad is 1.
-Convert 1-d seq_len to 2-d mask.</p>
+<dd><p>将一个表示sequence length的一维数组转换为二维的mask，默认pad的位置为1。
+转变 1-d seq_len到2-d mask。</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>seq_len (list, np.ndarray, torch.LongTensor) : shape将是(B,)
+max_len (int): 将长度pad到这个长度。默认(None)使用的是seq_len中最长的长度。但在nn.DataParallel的场景下可能不同卡的seq_len会有区别，所以需要传入一个max_len使得mask的长度是pad到该长度。</p>
+</dd>
+</dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>seq_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>np.ndarray</em><em>, </em><em>torch.LongTensor</em>) – shape will be (B,)</p></li>
-<li><p><strong>max_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Pad the length to this length. The default (None) uses the longest length in seq_len. But in the scenario of nn.DataParallel, the seq_len of different cards may be different, so you need to pass in a max_len so that the length of the mask is from pad to that length.</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>shape将是(B, max_length)， 元素类似为bool或torch.uint8</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>shape will be (B, max_length),the element is similar to bool or torch.uint8</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>mask (np.ndarray, torch.Tensor)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>mask (np.ndarray, torch.Tensor)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -262,12 +250,12 @@ Convert 1-d seq_len to 2-d mask.</p>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>torch.Tensor</em>) – [B] ,is generally the value of target</p></li>
-<li><p><strong>length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – L ,is generally the relationship tree.</p></li>
+<li><p><strong>x</strong> (<em>torch.Tensor</em>) – [B] , 一般是 target 的值</p></li>
+<li><p><strong>length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – L ,一般是关系种类树</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>[B, L] ,In each row, only the corresponding position is 1, and the rest are 0.</p>
+<dd class="field-even"><p>[B, L]  每一行，只有对应位置为1，其余为0</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>x_one_hot.to(device=x.device) (torch.Tensor)</p>
@@ -283,7 +271,7 @@ Convert 1-d seq_len to 2-d mask.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="deepke.attribution_extraction.standard.tools.html" class="btn btn-neutral float-left" title="Tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="deepke.name_entity_recognition.html" class="btn btn-neutral float-right" title="Name Entity Recognition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="deepke.name_entity_re.html" class="btn btn-neutral float-right" title="Name Entity Recognition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>deepke.name_entity_re.multimodal.models.clip.modeling_clip &mdash; DeepKE 0.2.97 documentation</title>
+      <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../../" id="documentation_options" src="../../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../../_static/jquery.js"></script>
+        <script src="../../../../../../_static/underscore.js"></script>
+        <script src="../../../../../../_static/doctools.js"></script>
+        <script src="../../../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../../index.html" class="icon icon-home"> DeepKE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../start.html">Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../deepke.html">DeepKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">DeepKE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../../../index.html">Module code</a> &raquo;</li>
+      <li>deepke.name_entity_re.multimodal.models.clip.modeling_clip</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for deepke.name_entity_re.multimodal.models.clip.modeling_clip</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="c1"># Copyright 2021 The OpenAI Team Authors and The HuggingFace Team. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot; PyTorch CLIP model. &quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.utils.checkpoint</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+
+<span class="kn">from</span> <span class="nn">transformers.activations</span> <span class="kn">import</span> <span class="n">ACT2FN</span>
+<span class="kn">from</span> <span class="nn">transformers.file_utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ModelOutput</span><span class="p">,</span>
+    <span class="n">add_start_docstrings</span><span class="p">,</span>
+    <span class="n">replace_return_docstrings</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">transformers.file_utils</span> <span class="kn">import</span> <span class="n">ModelOutput</span>
+<span class="kn">from</span> <span class="nn">transformers.modeling_outputs</span> <span class="kn">import</span> <span class="n">BaseModelOutput</span><span class="p">,</span> <span class="n">BaseModelOutputWithPooling</span>
+<span class="kn">from</span> <span class="nn">transformers.modeling_utils</span> <span class="kn">import</span> <span class="n">PreTrainedModel</span>
+<span class="kn">from</span> <span class="nn">transformers.utils</span> <span class="kn">import</span> <span class="n">logging</span>
+<span class="kn">from</span> <span class="nn">.configuration_clip</span> <span class="kn">import</span> <span class="n">CLIPConfig</span><span class="p">,</span> <span class="n">CLIPTextConfig</span><span class="p">,</span> <span class="n">CLIPVisionConfig</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">_CHECKPOINT_FOR_DOC</span> <span class="o">=</span> <span class="s2">&quot;openai/clip-vit-base-patch32&quot;</span>
+
+<span class="n">CLIP_PRETRAINED_MODEL_ARCHIVE_LIST</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;openai/clip-vit-base-patch32&quot;</span><span class="p">,</span>
+    <span class="c1"># See all CLIP models at https://huggingface.co/models?filter=clip</span>
+<span class="p">]</span>
+
+
+<span class="c1"># Copied from transformers.models.bart.modeling_bart._expand_mask</span>
+<span class="k">def</span> <span class="nf">_expand_mask</span><span class="p">(</span><span class="n">mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Expands attention_mask from `[bsz, seq_len]` to `[bsz, 1, tgt_seq_len, src_seq_len]`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bsz</span><span class="p">,</span> <span class="n">src_len</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+    <span class="n">tgt_len</span> <span class="o">=</span> <span class="n">tgt_len</span> <span class="k">if</span> <span class="n">tgt_len</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">src_len</span>
+
+    <span class="n">expanded_mask</span> <span class="o">=</span> <span class="n">mask</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="n">inverted_mask</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">expanded_mask</span>
+
+    <span class="k">return</span> <span class="n">inverted_mask</span><span class="o">.</span><span class="n">masked_fill</span><span class="p">(</span><span class="n">inverted_mask</span><span class="o">.</span><span class="n">bool</span><span class="p">(),</span> <span class="n">torch</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">)</span>
+
+
+<span class="c1"># contrastive loss function, adapted from</span>
+<span class="c1"># https://sachinruk.github.io/blog/pytorch/pytorch%20lightning/loss%20function/gpu/2021/03/07/CLIP.html</span>
+<div class="viewcode-block" id="contrastive_loss"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.contrastive_loss">[docs]</a><span class="k">def</span> <span class="nf">contrastive_loss</span><span class="p">(</span><span class="n">logits</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">logits</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">logits</span><span class="o">.</span><span class="n">device</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="clip_loss"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.clip_loss">[docs]</a><span class="k">def</span> <span class="nf">clip_loss</span><span class="p">(</span><span class="n">similarity</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+    <span class="n">caption_loss</span> <span class="o">=</span> <span class="n">contrastive_loss</span><span class="p">(</span><span class="n">similarity</span><span class="p">)</span>
+    <span class="n">image_loss</span> <span class="o">=</span> <span class="n">contrastive_loss</span><span class="p">(</span><span class="n">similarity</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">caption_loss</span> <span class="o">+</span> <span class="n">image_loss</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span></div>
+
+
+<div class="viewcode-block" id="CLIPBaseModelOutput"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPBaseModelOutput">[docs]</a><span class="k">class</span> <span class="nc">CLIPBaseModelOutput</span><span class="p">(</span><span class="n">ModelOutput</span><span class="p">):</span>
+    <span class="n">last_hidden_state</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">hidden_states</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">attentions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">qks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="CLIPBaseModelOutputWithPooling"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPBaseModelOutputWithPooling">[docs]</a><span class="k">class</span> <span class="nc">CLIPBaseModelOutputWithPooling</span><span class="p">(</span><span class="n">ModelOutput</span><span class="p">):</span>
+    <span class="n">last_hidden_state</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">pooler_output</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">hidden_states</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">attentions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">qks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="CLIPOutput"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPOutput">[docs]</a><span class="k">class</span> <span class="nc">CLIPOutput</span><span class="p">(</span><span class="n">ModelOutput</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Args:</span>
+<span class="sd">        loss (:obj:`torch.FloatTensor` of shape :obj:`(1,)`, `optional`, returned when :obj:`return_loss` is :obj:`True`):</span>
+<span class="sd">            Contrastive loss for image-text similarity.</span>
+<span class="sd">        logits_per_image:(:obj:`torch.FloatTensor` of shape :obj:`(image_batch_size, text_batch_size)`):</span>
+<span class="sd">            The scaled dot product scores between :obj:`image_embeds` and :obj:`text_embeds`. This represents the</span>
+<span class="sd">            image-text similarity scores.</span>
+<span class="sd">        logits_per_text:(:obj:`torch.FloatTensor` of shape :obj:`(text_batch_size, image_batch_size)`):</span>
+<span class="sd">            The scaled dot product scores between :obj:`text_embeds` and :obj:`image_embeds`. This represents the</span>
+<span class="sd">            text-image similarity scores.</span>
+<span class="sd">        text_embeds(:obj:`torch.FloatTensor` of shape :obj:`(batch_size, output_dim`):</span>
+<span class="sd">            The text embeddings obtained by applying the projection layer to the pooled output of</span>
+<span class="sd">            :class:`~transformers.CLIPTextModel`.</span>
+<span class="sd">        image_embeds(:obj:`torch.FloatTensor` of shape :obj:`(batch_size, output_dim`):</span>
+<span class="sd">            The image embeddings obtained by applying the projection layer to the pooled output of</span>
+<span class="sd">            :class:`~transformers.CLIPVisionModel`.</span>
+<span class="sd">        text_model_output(:obj:`BaseModelOutputWithPooling`):</span>
+<span class="sd">            The output of the :class:`~transformers.CLIPTextModel`.</span>
+<span class="sd">        vision_model_output(:obj:`BaseModelOutputWithPooling`):</span>
+<span class="sd">            The output of the :class:`~transformers.CLIPVisionModel`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">logits_per_image</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">logits_per_text</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">text_embeds</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">image_embeds</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">text_model_output</span><span class="p">:</span> <span class="n">BaseModelOutputWithPooling</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">vision_model_output</span><span class="p">:</span> <span class="n">BaseModelOutputWithPooling</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="CLIPOutput.to_tuple"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPOutput.to_tuple">[docs]</a>    <span class="k">def</span> <span class="nf">to_tuple</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;text_model_output&quot;</span><span class="p">,</span> <span class="s2">&quot;vision_model_output&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">to_tuple</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CLIPVisionEmbeddings"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPVisionEmbeddings">[docs]</a><span class="k">class</span> <span class="nc">CLIPVisionEmbeddings</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">CLIPVisionConfig</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">image_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patch_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">patch_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">class_embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">patch_embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span>
+            <span class="n">in_channels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">patch_size</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">patch_size</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_patches</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_size</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">patch_size</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_patches</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position_embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_positions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;position_ids&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_positions</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">aux_position_embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;aux_position_ids&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">48</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rcnn_position_embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;rcnn_position_ids&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+
+<div class="viewcode-block" id="CLIPVisionEmbeddings.forward"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPVisionEmbeddings.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pixel_values</span><span class="p">,</span> <span class="n">aux_embeddings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rcnn_embeddings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">batch_size</span> <span class="o">=</span> <span class="n">pixel_values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">class_embeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_embedding</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">embeddings</span> <span class="o">=</span> <span class="n">class_embeds</span>
+
+        <span class="k">if</span> <span class="n">aux_embeddings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">aux_embeds</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">aux_embedding</span> <span class="ow">in</span> <span class="n">aux_embeddings</span><span class="p">:</span>
+                <span class="n">aux_embed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patch_embedding</span><span class="p">(</span><span class="n">aux_embedding</span><span class="p">)</span>
+                <span class="n">aux_embed</span> <span class="o">=</span> <span class="n">aux_embed</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>    <span class="c1"># 3*16, 768 3个子图</span>
+                <span class="n">aux_embeds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aux_embed</span><span class="p">)</span>
+            <span class="n">aux_embeds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">aux_embeds</span><span class="p">)</span> <span class="c1"># bsz, 48, 768</span>
+            <span class="n">aux_embeds</span> <span class="o">=</span> <span class="n">aux_embeds</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">aux_position_embedding</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aux_position_ids</span><span class="p">)</span>
+            <span class="n">embeddings</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">aux_embeds</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">rcnn_embeddings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rcnn_embeds</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">rcnn_embedding</span> <span class="ow">in</span> <span class="n">rcnn_embeddings</span><span class="p">:</span>
+                <span class="n">rcnn_embed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patch_embedding</span><span class="p">(</span><span class="n">rcnn_embedding</span><span class="p">)</span>
+                <span class="n">rcnn_embed</span> <span class="o">=</span> <span class="n">rcnn_embed</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>    <span class="c1"># 3*4, 768 3个子图</span>
+                <span class="n">rcnn_embeds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rcnn_embed</span><span class="p">)</span>
+            <span class="n">rcnn_embeds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">rcnn_embeds</span><span class="p">)</span> <span class="c1"># bsz, 12, 768</span>
+            <span class="n">rcnn_embeds</span> <span class="o">=</span> <span class="n">rcnn_embeds</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">rcnn_position_embedding</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rcnn_position_ids</span><span class="p">)</span>
+            <span class="n">embeddings</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">rcnn_embeds</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">embeddings</span></div></div>
+
+
+<div class="viewcode-block" id="CLIPTextEmbeddings"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPTextEmbeddings">[docs]</a><span class="k">class</span> <span class="nc">CLIPTextEmbeddings</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">CLIPTextConfig</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="n">embed_dim</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">token_embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position_embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">max_position_embeddings</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">)</span>
+
+        <span class="c1"># position_ids (1, len position emb) is contiguous in memory and exported when serialized</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;position_ids&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">max_position_embeddings</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+
+<div class="viewcode-block" id="CLIPTextEmbeddings.forward"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPTextEmbeddings.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">position_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inputs_embeds</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">seq_length</span> <span class="o">=</span> <span class="n">input_ids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">input_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">inputs_embeds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">position_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">position_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">position_ids</span><span class="p">[:,</span> <span class="p">:</span><span class="n">seq_length</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">inputs_embeds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">inputs_embeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token_embedding</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+
+        <span class="n">position_embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">position_embedding</span><span class="p">(</span><span class="n">position_ids</span><span class="p">)</span>
+        <span class="n">embeddings</span> <span class="o">=</span> <span class="n">inputs_embeds</span> <span class="o">+</span> <span class="n">position_embeddings</span>
+
+        <span class="k">return</span> <span class="n">embeddings</span></div></div>
+
+
+<div class="viewcode-block" id="CLIPAttention"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPAttention">[docs]</a><span class="k">class</span> <span class="nc">CLIPAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Multi-headed attention from &#39;Attention Is All You Need&#39; paper&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;embed_dim must be divisible by num_heads (got `embed_dim`: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="si">}</span><span class="s2"> and `num_heads`: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="si">}</span><span class="s2">).&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">attention_dropout</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">bsz</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">tensor</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+
+<div class="viewcode-block" id="CLIPAttention.forward"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPAttention.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">hidden_states</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">causal_attention_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">output_qks</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]]:</span>
+        <span class="sd">&quot;&quot;&quot;Input shape: Batch x Time x Channel&quot;&quot;&quot;</span>
+
+        <span class="n">bsz</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">embed_dim</span> <span class="o">=</span> <span class="n">hidden_states</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+
+        <span class="c1"># get query proj</span>
+        <span class="n">query_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_proj</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span>
+        <span class="n">key_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k_proj</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">bsz</span><span class="p">)</span>
+        <span class="n">value_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_proj</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">bsz</span><span class="p">)</span>
+
+        <span class="n">proj_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">bsz</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">)</span>
+        <span class="n">query_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">(</span><span class="n">query_states</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">bsz</span><span class="p">)</span>
+
+        <span class="n">qks</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">output_qks</span><span class="p">:</span>
+            <span class="n">qks</span> <span class="o">=</span> <span class="p">(</span><span class="n">query_states</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">:,</span> <span class="p">:],</span> <span class="n">key_states</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">:,</span> <span class="p">:])</span> <span class="c1"># 去掉cls</span>
+
+        <span class="n">query_states</span> <span class="o">=</span> <span class="n">query_states</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">*</span><span class="n">proj_shape</span><span class="p">)</span>
+        <span class="n">key_states</span> <span class="o">=</span> <span class="n">key_states</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">*</span><span class="n">proj_shape</span><span class="p">)</span>
+        <span class="n">value_states</span> <span class="o">=</span> <span class="n">value_states</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">*</span><span class="n">proj_shape</span><span class="p">)</span>
+        
+        <span class="n">src_len</span> <span class="o">=</span> <span class="n">key_states</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">query_states</span><span class="p">,</span> <span class="n">key_states</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">attn_weights</span><span class="o">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="p">(</span><span class="n">bsz</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Attention weights should be of size </span><span class="si">{</span><span class="p">(</span><span class="n">bsz</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">)</span><span class="si">}</span><span class="s2">, but is </span><span class="si">{</span><span class="n">attn_weights</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># apply the causal_attention_mask first</span>
+        <span class="k">if</span> <span class="n">causal_attention_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">causal_attention_mask</span><span class="o">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Attention mask should be of size </span><span class="si">{</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">)</span><span class="si">}</span><span class="s2">, but is </span><span class="si">{</span><span class="n">causal_attention_mask</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">attn_weights</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">)</span> <span class="o">+</span> <span class="n">causal_attention_mask</span>
+            <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">attn_weights</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">attention_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">attention_mask</span><span class="o">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Attention mask should be of size </span><span class="si">{</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">)</span><span class="si">}</span><span class="s2">, but is </span><span class="si">{</span><span class="n">attention_mask</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">attn_weights</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">)</span> <span class="o">+</span> <span class="n">attention_mask</span>
+            <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">attn_weights</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">)</span>
+
+        <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">attn_weights</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">output_attentions</span><span class="p">:</span>
+            <span class="c1"># this operation is a bit akward, but it&#39;s required to</span>
+            <span class="c1"># make sure that attn_weights keeps its gradient.</span>
+            <span class="c1"># In order to do so, attn_weights have to reshaped</span>
+            <span class="c1"># twice and have to be reused in the following</span>
+            <span class="n">attn_weights_reshaped</span> <span class="o">=</span> <span class="n">attn_weights</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">)</span>
+            <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">attn_weights_reshaped</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">src_len</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attn_weights_reshaped</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">attn_probs</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">attn_weights</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">)</span>
+
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">attn_probs</span><span class="p">,</span> <span class="n">value_states</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">attn_output</span><span class="o">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="p">(</span><span class="n">bsz</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;`attn_output` should be of size </span><span class="si">{</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">)</span><span class="si">}</span><span class="s2">, but is </span><span class="si">{</span><span class="n">attn_output</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="n">attn_output</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">)</span>
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="n">attn_output</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="n">attn_output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="n">tgt_len</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">)</span>
+
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_proj</span><span class="p">(</span><span class="n">attn_output</span><span class="p">)</span>
+
+        <span class="c1"># return attn_output, attn_weights_reshaped</span>
+        <span class="k">return</span> <span class="n">attn_output</span><span class="p">,</span> <span class="n">attn_output</span><span class="p">,</span> <span class="n">qks</span></div></div>
+
+<div class="viewcode-block" id="quick_gelu"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.quick_gelu">[docs]</a><span class="k">def</span> <span class="nf">quick_gelu</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="mf">1.702</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CLIPMLP"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPMLP">[docs]</a><span class="k">class</span> <span class="nc">CLIPMLP</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation_fn</span> <span class="o">=</span> <span class="n">quick_gelu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CLIPMLP.forward"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPMLP.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_states</span><span class="p">):</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_fn</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hidden_states</span></div></div>
+
+
+<div class="viewcode-block" id="CLIPEncoderLayer"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPEncoderLayer">[docs]</a><span class="k">class</span> <span class="nc">CLIPEncoderLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">CLIPConfig</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">self_attn</span> <span class="o">=</span> <span class="n">CLIPAttention</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer_norm1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span> <span class="o">=</span> <span class="n">CLIPMLP</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer_norm2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embed_dim</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CLIPEncoderLayer.forward"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPEncoderLayer.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">hidden_states</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">causal_attention_mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">output_qks</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            hidden_states (:obj:`torch.FloatTensor`): input to the layer of shape :obj:`(seq_len, batch, embed_dim)`</span>
+<span class="sd">            attention_mask (:obj:`torch.FloatTensor`): attention mask of size</span>
+<span class="sd">                :obj:`(batch, 1, tgt_len, src_len)` where padding elements are indicated by very large negative values.</span>
+<span class="sd">            layer_head_mask (:obj:`torch.FloatTensor`): mask for attention heads in a given layer of size</span>
+<span class="sd">                :obj:`(config.encoder_attention_heads,)`.</span>
+<span class="sd">            output_attentions (:obj:`bool`, `optional`):</span>
+<span class="sd">                Whether or not to return the attentions tensors of all attention layers. See ``attentions`` under</span>
+<span class="sd">                returned tensors for more detail.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">hidden_states</span>
+
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_norm1</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span><span class="p">,</span> <span class="n">attn_weights</span><span class="p">,</span> <span class="n">qks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">self_attn</span><span class="p">(</span>
+            <span class="n">hidden_states</span><span class="o">=</span><span class="n">hidden_states</span><span class="p">,</span>
+            <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span>
+            <span class="n">causal_attention_mask</span><span class="o">=</span><span class="n">causal_attention_mask</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">output_qks</span><span class="o">=</span><span class="n">output_qks</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="n">residual</span> <span class="o">+</span> <span class="n">hidden_states</span>
+
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">hidden_states</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_norm2</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="n">residual</span> <span class="o">+</span> <span class="n">hidden_states</span>
+
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">(</span><span class="n">hidden_states</span><span class="p">,)</span>
+
+        <span class="k">if</span> <span class="n">output_attentions</span><span class="p">:</span>
+            <span class="n">outputs</span> <span class="o">+=</span> <span class="p">(</span><span class="n">attn_weights</span><span class="p">,)</span>
+        
+        <span class="k">if</span> <span class="n">output_qks</span><span class="p">:</span>
+            <span class="n">outputs</span> <span class="o">+=</span> <span class="p">(</span><span class="n">qks</span><span class="p">,)</span>
+
+        <span class="k">return</span> <span class="n">outputs</span></div></div>
+
+
+<div class="viewcode-block" id="CLIPPreTrainedModel"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPPreTrainedModel">[docs]</a><span class="k">class</span> <span class="nc">CLIPPreTrainedModel</span><span class="p">(</span><span class="n">PreTrainedModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An abstract class to handle weights initialization and a simple interface for downloading and loading pretrained</span>
+<span class="sd">    models.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">config_class</span> <span class="o">=</span> <span class="n">CLIPConfig</span>
+    <span class="n">base_model_prefix</span> <span class="o">=</span> <span class="s2">&quot;clip&quot;</span>
+    <span class="n">supports_gradient_checkpointing</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">_keys_to_ignore_on_load_missing</span> <span class="o">=</span> <span class="p">[</span><span class="sa">r</span><span class="s2">&quot;position_ids&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_init_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the weights&quot;&quot;&quot;</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">initializer_factor</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">CLIPTextEmbeddings</span><span class="p">):</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">token_embedding</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">factor</span> <span class="o">*</span> <span class="mf">0.02</span><span class="p">)</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">position_embedding</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">factor</span> <span class="o">*</span> <span class="mf">0.02</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">CLIPVisionEmbeddings</span><span class="p">):</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">initializer_factor</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">class_embedding</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">module</span><span class="o">.</span><span class="n">embed_dim</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">factor</span><span class="p">)</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">patch_embedding</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">module</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">initializer_range</span> <span class="o">*</span> <span class="n">factor</span><span class="p">)</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">position_embedding</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">module</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">initializer_range</span> <span class="o">*</span> <span class="n">factor</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">CLIPAttention</span><span class="p">):</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">initializer_factor</span>
+            <span class="n">in_proj_std</span> <span class="o">=</span> <span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">embed_dim</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">module</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">)</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">factor</span>
+            <span class="n">out_proj_std</span> <span class="o">=</span> <span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">embed_dim</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">factor</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">q_proj</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">in_proj_std</span><span class="p">)</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">k_proj</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">in_proj_std</span><span class="p">)</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">v_proj</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">in_proj_std</span><span class="p">)</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">out_proj</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">out_proj_std</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">CLIPMLP</span><span class="p">):</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">initializer_factor</span>
+            <span class="n">in_proj_std</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">module</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">)</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">factor</span>
+            <span class="p">)</span>
+            <span class="n">fc_std</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">module</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">factor</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">fc1</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">fc_std</span><span class="p">)</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">fc2</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">in_proj_std</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">CLIPModel</span><span class="p">):</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span>
+                <span class="n">module</span><span class="o">.</span><span class="n">text_projection</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span>
+                <span class="n">std</span><span class="o">=</span><span class="n">module</span><span class="o">.</span><span class="n">text_embed_dim</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">initializer_factor</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span>
+                <span class="n">module</span><span class="o">.</span><span class="n">visual_projection</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span>
+                <span class="n">std</span><span class="o">=</span><span class="n">module</span><span class="o">.</span><span class="n">vision_embed_dim</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">initializer_factor</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">):</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">)</span> <span class="ow">and</span> <span class="n">module</span><span class="o">.</span><span class="n">bias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_set_gradient_checkpointing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">CLIPEncoder</span><span class="p">):</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">gradient_checkpointing</span> <span class="o">=</span> <span class="n">value</span></div>
+
+
+<span class="n">CLIP_START_DOCSTRING</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    This model is a PyTorch `torch.nn.Module &lt;https://pytorch.org/docs/stable/nn.html#torch.nn.Module&gt;`_ subclass. Use</span>
+<span class="s2">    it as a regular PyTorch Module and refer to the PyTorch documentation for all matter related to general usage and</span>
+<span class="s2">    behavior.</span>
+
+<span class="s2">    Parameters:</span>
+<span class="s2">        config (:class:`~transformers.CLIPConfig`): Model configuration class with all the parameters of the model.</span>
+<span class="s2">            Initializing with a config file does not load the weights associated with the model, only the</span>
+<span class="s2">            configuration. Check out the :meth:`~transformers.PreTrainedModel.from_pretrained` method to load the model</span>
+<span class="s2">            weights.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">CLIP_TEXT_INPUTS_DOCSTRING</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Args:</span>
+<span class="s2">        input_ids (:obj:`torch.LongTensor` of shape :obj:`(batch_size, sequence_length)`):</span>
+<span class="s2">            Indices of input sequence tokens in the vocabulary. Padding will be ignored by default should you provide</span>
+<span class="s2">            it.</span>
+
+<span class="s2">            Indices can be obtained using :class:`~transformers.CLIPTokenizer`. See</span>
+<span class="s2">            :meth:`transformers.PreTrainedTokenizer.encode` and :meth:`transformers.PreTrainedTokenizer.__call__` for</span>
+<span class="s2">            details.</span>
+
+<span class="s2">            `What are input IDs? &lt;../glossary.html#input-ids&gt;`__</span>
+<span class="s2">        attention_mask (:obj:`torch.Tensor` of shape :obj:`(batch_size, sequence_length)`, `optional`):</span>
+<span class="s2">            Mask to avoid performing attention on padding token indices. Mask values selected in ``[0, 1]``:</span>
+
+<span class="s2">            - 1 for tokens that are **not masked**,</span>
+<span class="s2">            - 0 for tokens that are **masked**.</span>
+
+<span class="s2">            `What are attention masks? &lt;../glossary.html#attention-mask&gt;`__</span>
+<span class="s2">        position_ids (:obj:`torch.LongTensor` of shape :obj:`(batch_size, sequence_length)`, `optional`):</span>
+<span class="s2">            Indices of positions of each input sequence tokens in the position embeddings. Selected in the range ``[0,</span>
+<span class="s2">            config.max_position_embeddings - 1]``.</span>
+
+<span class="s2">            `What are position IDs? &lt;../glossary.html#position-ids&gt;`_</span>
+<span class="s2">        output_attentions (:obj:`bool`, `optional`):</span>
+<span class="s2">            Whether or not to return the attentions tensors of all attention layers. See ``attentions`` under returned</span>
+<span class="s2">            tensors for more detail.</span>
+<span class="s2">        output_hidden_states (:obj:`bool`, `optional`):</span>
+<span class="s2">            Whether or not to return the hidden states of all layers. See ``hidden_states`` under returned tensors for</span>
+<span class="s2">            more detail.</span>
+<span class="s2">        return_dict (:obj:`bool`, `optional`):</span>
+<span class="s2">            Whether or not to return a :class:`~transformers.file_utils.ModelOutput` instead of a plain tuple.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">CLIP_VISION_INPUTS_DOCSTRING</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Args:</span>
+<span class="s2">        pixel_values (:obj:`torch.FloatTensor` of shape :obj:`(batch_size, num_channels, height, width)`):</span>
+<span class="s2">            Pixel values. Padding will be ignored by default should you provide it. Pixel values can be obtained using</span>
+<span class="s2">            :class:`~transformers.CLIPFeatureExtractor`. See :meth:`transformers.CLIPFeatureExtractor.__call__` for</span>
+<span class="s2">            details.</span>
+<span class="s2">        output_attentions (:obj:`bool`, `optional`):</span>
+<span class="s2">            Whether or not to return the attentions tensors of all attention layers. See ``attentions`` under returned</span>
+<span class="s2">            tensors for more detail.</span>
+<span class="s2">        output_hidden_states (:obj:`bool`, `optional`):</span>
+<span class="s2">            Whether or not to return the hidden states of all layers. See ``hidden_states`` under returned tensors for</span>
+<span class="s2">            more detail.</span>
+<span class="s2">        return_dict (:obj:`bool`, `optional`):</span>
+<span class="s2">            Whether or not to return a :class:`~transformers.file_utils.ModelOutput` instead of a plain tuple.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">CLIP_INPUTS_DOCSTRING</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Args:</span>
+<span class="s2">        input_ids (:obj:`torch.LongTensor` of shape :obj:`(batch_size, sequence_length)`):</span>
+<span class="s2">            Indices of input sequence tokens in the vocabulary. Padding will be ignored by default should you provide</span>
+<span class="s2">            it.</span>
+
+<span class="s2">            Indices can be obtained using :class:`~transformers.CLIPTokenizer`. See</span>
+<span class="s2">            :meth:`transformers.PreTrainedTokenizer.encode` and :meth:`transformers.PreTrainedTokenizer.__call__` for</span>
+<span class="s2">            details.</span>
+
+<span class="s2">            `What are input IDs? &lt;../glossary.html#input-ids&gt;`__</span>
+<span class="s2">        attention_mask (:obj:`torch.Tensor` of shape :obj:`(batch_size, sequence_length)`, `optional`):</span>
+<span class="s2">            Mask to avoid performing attention on padding token indices. Mask values selected in ``[0, 1]``:</span>
+
+<span class="s2">            - 1 for tokens that are **not masked**,</span>
+<span class="s2">            - 0 for tokens that are **masked**.</span>
+
+<span class="s2">            `What are attention masks? &lt;../glossary.html#attention-mask&gt;`__</span>
+<span class="s2">        position_ids (:obj:`torch.LongTensor` of shape :obj:`(batch_size, sequence_length)`, `optional`):</span>
+<span class="s2">            Indices of positions of each input sequence tokens in the position embeddings. Selected in the range ``[0,</span>
+<span class="s2">            config.max_position_embeddings - 1]``.</span>
+
+<span class="s2">            `What are position IDs? &lt;../glossary.html#position-ids&gt;`_</span>
+<span class="s2">        pixel_values (:obj:`torch.FloatTensor` of shape :obj:`(batch_size, num_channels, height, width)`):</span>
+<span class="s2">            Pixel values. Padding will be ignored by default should you provide it. Pixel values can be obtained using</span>
+<span class="s2">            :class:`~transformers.CLIPFeatureExtractor`. See :meth:`transformers.CLIPFeatureExtractor.__call__` for</span>
+<span class="s2">            details.</span>
+<span class="s2">        return_loss (:obj:`bool`, `optional`):</span>
+<span class="s2">            Whether or not to return the contrastive loss.</span>
+<span class="s2">        output_attentions (:obj:`bool`, `optional`):</span>
+<span class="s2">            Whether or not to return the attentions tensors of all attention layers. See ``attentions`` under returned</span>
+<span class="s2">            tensors for more detail.</span>
+<span class="s2">        output_hidden_states (:obj:`bool`, `optional`):</span>
+<span class="s2">            Whether or not to return the hidden states of all layers. See ``hidden_states`` under returned tensors for</span>
+<span class="s2">            more detail.</span>
+<span class="s2">        return_dict (:obj:`bool`, `optional`):</span>
+<span class="s2">            Whether or not to return a :class:`~transformers.file_utils.ModelOutput` instead of a plain tuple.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="CLIPEncoder"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPEncoder">[docs]</a><span class="k">class</span> <span class="nc">CLIPEncoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transformer encoder consisting of :obj:`config.num_hidden_layers` self attention layers. Each layer is a</span>
+<span class="sd">    :class:`~transformers.CLIPEncoderLayer`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config: CLIPConfig</span>
+<span class="sd">        embed_tokens (nn.Embedding): output embedding</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">CLIPConfig</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span><span class="n">CLIPEncoderLayer</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradient_checkpointing</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="CLIPEncoder.forward"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPEncoder.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">inputs_embeds</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">causal_attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_hidden_states</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">return_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_qks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            inputs_embeds (:obj:`torch.FloatTensor` of shape :obj:`(batch_size, sequence_length, hidden_size)`, `optional`):</span>
+<span class="sd">                Optionally, instead of passing :obj:`input_ids` you can choose to directly pass an embedded</span>
+<span class="sd">                representation. This is useful if you want more control over how to convert :obj:`input_ids` indices</span>
+<span class="sd">                into associated vectors than the model&#39;s internal embedding lookup matrix.</span>
+<span class="sd">            attention_mask (:obj:`torch.Tensor` of shape :obj:`(batch_size, sequence_length)`, `optional`):</span>
+<span class="sd">                Mask to avoid performing attention on padding token indices. Mask values selected in ``[0, 1]``:</span>
+
+<span class="sd">                - 1 for tokens that are **not masked**,</span>
+<span class="sd">                - 0 for tokens that are **masked**.</span>
+
+<span class="sd">                `What are attention masks? &lt;../glossary.html#attention-mask&gt;`__</span>
+<span class="sd">            causal_attention_mask (:obj:`torch.Tensor` of shape :obj:`(batch_size, sequence_length)`, `optional`):</span>
+<span class="sd">                Causal mask for the text model. Mask values selected in ``[0, 1]``:</span>
+
+<span class="sd">                - 1 for tokens that are **not masked**,</span>
+<span class="sd">                - 0 for tokens that are **masked**.</span>
+
+<span class="sd">                `What are attention masks? &lt;../glossary.html#attention-mask&gt;`__</span>
+<span class="sd">            output_attentions (:obj:`bool`, `optional`):</span>
+<span class="sd">                Whether or not to return the attentions tensors of all attention layers. See ``attentions`` under</span>
+<span class="sd">                returned tensors for more detail.</span>
+<span class="sd">            output_hidden_states (:obj:`bool`, `optional`):</span>
+<span class="sd">                Whether or not to return the hidden states of all layers. See ``hidden_states`` under returned tensors</span>
+<span class="sd">                for more detail.</span>
+<span class="sd">            return_dict (:obj:`bool`, `optional`):</span>
+<span class="sd">                Whether or not to return a :class:`~transformers.file_utils.ModelOutput` instead of a plain tuple.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output_attentions</span> <span class="o">=</span> <span class="n">output_attentions</span> <span class="k">if</span> <span class="n">output_attentions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">output_attentions</span>
+        <span class="n">output_hidden_states</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">output_hidden_states</span> <span class="k">if</span> <span class="n">output_hidden_states</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">output_hidden_states</span>
+        <span class="p">)</span>
+        <span class="n">return_dict</span> <span class="o">=</span> <span class="n">return_dict</span> <span class="k">if</span> <span class="n">return_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">use_return_dict</span>
+
+        <span class="n">encoder_states</span> <span class="o">=</span> <span class="p">()</span> <span class="k">if</span> <span class="n">output_hidden_states</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">all_attentions</span> <span class="o">=</span> <span class="p">()</span> <span class="k">if</span> <span class="n">output_attentions</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">all_qks</span> <span class="o">=</span> <span class="p">()</span>        <span class="k">if</span> <span class="n">output_qks</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="n">inputs_embeds</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">encoder_layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">output_hidden_states</span><span class="p">:</span>
+                <span class="n">encoder_states</span> <span class="o">=</span> <span class="n">encoder_states</span> <span class="o">+</span> <span class="p">(</span><span class="n">hidden_states</span><span class="p">,)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient_checkpointing</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">:</span>
+
+                <span class="k">def</span> <span class="nf">create_custom_forward</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
+                    <span class="k">def</span> <span class="nf">custom_forward</span><span class="p">(</span><span class="o">*</span><span class="n">inputs</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="n">module</span><span class="p">(</span><span class="o">*</span><span class="n">inputs</span><span class="p">,</span> <span class="n">output_attentions</span><span class="p">)</span>
+
+                    <span class="k">return</span> <span class="n">custom_forward</span>
+
+                <span class="n">layer_outputs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">checkpoint</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span>
+                    <span class="n">create_custom_forward</span><span class="p">(</span><span class="n">encoder_layer</span><span class="p">),</span>
+                    <span class="n">hidden_states</span><span class="p">,</span>
+                    <span class="n">attention_mask</span><span class="p">,</span>
+                    <span class="n">causal_attention_mask</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">layer_outputs</span> <span class="o">=</span> <span class="n">encoder_layer</span><span class="p">(</span>
+                    <span class="n">hidden_states</span><span class="p">,</span>
+                    <span class="n">attention_mask</span><span class="p">,</span>
+                    <span class="n">causal_attention_mask</span><span class="p">,</span>
+                    <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+                    <span class="n">output_qks</span><span class="o">=</span><span class="n">output_qks</span>
+                <span class="p">)</span>
+
+                <span class="n">hidden_states</span> <span class="o">=</span> <span class="n">layer_outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">output_attentions</span><span class="p">:</span>
+                <span class="n">all_attentions</span> <span class="o">=</span> <span class="n">all_attentions</span> <span class="o">+</span> <span class="p">(</span><span class="n">layer_outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">],)</span>
+            <span class="k">if</span> <span class="n">output_qks</span><span class="p">:</span>
+                <span class="n">all_qks</span> <span class="o">=</span> <span class="n">all_qks</span> <span class="o">+</span> <span class="p">(</span><span class="n">layer_outputs</span><span class="p">[</span><span class="mi">2</span><span class="p">],)</span>
+
+        <span class="k">if</span> <span class="n">output_hidden_states</span><span class="p">:</span>
+            <span class="n">encoder_states</span> <span class="o">=</span> <span class="n">encoder_states</span> <span class="o">+</span> <span class="p">(</span><span class="n">hidden_states</span><span class="p">,)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">return_dict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="n">hidden_states</span><span class="p">,</span> <span class="n">encoder_states</span><span class="p">,</span> <span class="n">all_attentions</span><span class="p">]</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">CLIPBaseModelOutput</span><span class="p">(</span>
+            <span class="n">last_hidden_state</span><span class="o">=</span><span class="n">hidden_states</span><span class="p">,</span> <span class="n">hidden_states</span><span class="o">=</span><span class="n">encoder_states</span><span class="p">,</span> <span class="n">attentions</span><span class="o">=</span><span class="n">all_attentions</span><span class="p">,</span> <span class="n">qks</span><span class="o">=</span><span class="n">all_qks</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CLIPTextTransformer"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPTextTransformer">[docs]</a><span class="k">class</span> <span class="nc">CLIPTextTransformer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">CLIPTextConfig</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="n">embed_dim</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span> <span class="o">=</span> <span class="n">CLIPTextEmbeddings</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">CLIPEncoder</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">final_layer_norm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">embed_dim</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CLIPTextTransformer.forward"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPTextTransformer.forward">[docs]</a>    <span class="nd">@replace_return_docstrings</span><span class="p">(</span><span class="n">output_type</span><span class="o">=</span><span class="n">BaseModelOutputWithPooling</span><span class="p">,</span> <span class="n">config_class</span><span class="o">=</span><span class="n">CLIPTextConfig</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">position_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_hidden_states</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">return_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output_attentions</span> <span class="o">=</span> <span class="n">output_attentions</span> <span class="k">if</span> <span class="n">output_attentions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">output_attentions</span>
+        <span class="n">output_hidden_states</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">output_hidden_states</span> <span class="k">if</span> <span class="n">output_hidden_states</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">output_hidden_states</span>
+        <span class="p">)</span>
+        <span class="n">return_dict</span> <span class="o">=</span> <span class="n">return_dict</span> <span class="k">if</span> <span class="n">return_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">use_return_dict</span>
+
+        <span class="k">if</span> <span class="n">input_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You have to specify either input_ids&quot;</span><span class="p">)</span>
+
+        <span class="n">input_shape</span> <span class="o">=</span> <span class="n">input_ids</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+        <span class="n">input_ids</span> <span class="o">=</span> <span class="n">input_ids</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span><span class="p">(</span><span class="n">input_ids</span><span class="o">=</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">position_ids</span><span class="o">=</span><span class="n">position_ids</span><span class="p">)</span>
+
+        <span class="n">bsz</span><span class="p">,</span> <span class="n">seq_len</span> <span class="o">=</span> <span class="n">input_shape</span>
+        <span class="c1"># CLIP&#39;s text model uses causal mask, prepare it here.</span>
+        <span class="c1"># https://github.com/openai/CLIP/blob/cfcffb90e69f37bf2ff1e988237a0fbe41f33c04/clip/model.py#L324</span>
+        <span class="n">causal_attention_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_causal_attention_mask</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">hidden_states</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="c1"># expand attention_mask</span>
+        <span class="k">if</span> <span class="n">attention_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># [bsz, seq_len] -&gt; [bsz, 1, tgt_seq_len, src_seq_len]</span>
+            <span class="n">attention_mask</span> <span class="o">=</span> <span class="n">_expand_mask</span><span class="p">(</span><span class="n">attention_mask</span><span class="p">,</span> <span class="n">hidden_states</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="n">encoder_outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span>
+            <span class="n">inputs_embeds</span><span class="o">=</span><span class="n">hidden_states</span><span class="p">,</span>
+            <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span>
+            <span class="n">causal_attention_mask</span><span class="o">=</span><span class="n">causal_attention_mask</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">output_hidden_states</span><span class="o">=</span><span class="n">output_hidden_states</span><span class="p">,</span>
+            <span class="n">return_dict</span><span class="o">=</span><span class="n">return_dict</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">last_hidden_state</span> <span class="o">=</span> <span class="n">encoder_outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">last_hidden_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_layer_norm</span><span class="p">(</span><span class="n">last_hidden_state</span><span class="p">)</span>
+
+        <span class="c1"># text_embeds.shape = [batch_size, n_ctx, transformer.width]</span>
+        <span class="c1"># take features from the eot embedding (eot_token is the highest number in each sequence)</span>
+        <span class="n">pooled_output</span> <span class="o">=</span> <span class="n">last_hidden_state</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">last_hidden_state</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">input_ids</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">return_dict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">last_hidden_state</span><span class="p">,</span> <span class="n">pooled_output</span><span class="p">)</span> <span class="o">+</span> <span class="n">encoder_outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="k">return</span> <span class="n">BaseModelOutputWithPooling</span><span class="p">(</span>
+            <span class="n">last_hidden_state</span><span class="o">=</span><span class="n">last_hidden_state</span><span class="p">,</span>
+            <span class="n">pooler_output</span><span class="o">=</span><span class="n">pooled_output</span><span class="p">,</span>
+            <span class="n">hidden_states</span><span class="o">=</span><span class="n">encoder_outputs</span><span class="o">.</span><span class="n">hidden_states</span><span class="p">,</span>
+            <span class="n">attentions</span><span class="o">=</span><span class="n">encoder_outputs</span><span class="o">.</span><span class="n">attentions</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_build_causal_attention_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bsz</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">):</span>
+        <span class="c1"># lazily create causal attention mask, with full attention between the vision tokens</span>
+        <span class="c1"># pytorch uses additive attention mask; fill with -inf</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">)</span>
+        <span class="n">mask</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;-inf&quot;</span><span class="p">))</span>
+        <span class="n">mask</span><span class="o">.</span><span class="n">triu_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># zero out the lower diagonal</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># expand mask</span>
+        <span class="k">return</span> <span class="n">mask</span></div>
+
+
+<div class="viewcode-block" id="CLIPTextModel"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPTextModel">[docs]</a><span class="k">class</span> <span class="nc">CLIPTextModel</span><span class="p">(</span><span class="n">CLIPPreTrainedModel</span><span class="p">):</span>
+    <span class="n">config_class</span> <span class="o">=</span> <span class="n">CLIPTextConfig</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">CLIPTextConfig</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_model</span> <span class="o">=</span> <span class="n">CLIPTextTransformer</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_weights</span><span class="p">()</span>
+
+<div class="viewcode-block" id="CLIPTextModel.get_input_embeddings"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPTextModel.get_input_embeddings">[docs]</a>    <span class="k">def</span> <span class="nf">get_input_embeddings</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_model</span><span class="o">.</span><span class="n">embeddings</span><span class="o">.</span><span class="n">token_embedding</span></div>
+
+<div class="viewcode-block" id="CLIPTextModel.set_input_embeddings"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPTextModel.set_input_embeddings">[docs]</a>    <span class="k">def</span> <span class="nf">set_input_embeddings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_model</span><span class="o">.</span><span class="n">embeddings</span><span class="o">.</span><span class="n">token_embedding</span> <span class="o">=</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="CLIPTextModel.forward"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPTextModel.forward">[docs]</a>    <span class="nd">@replace_return_docstrings</span><span class="p">(</span><span class="n">output_type</span><span class="o">=</span><span class="n">BaseModelOutputWithPooling</span><span class="p">,</span> <span class="n">config_class</span><span class="o">=</span><span class="n">CLIPTextConfig</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">position_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_hidden_states</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">return_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_qks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+
+<span class="sd">        Examples::</span>
+
+<span class="sd">            &gt;&gt;&gt; from transformers import CLIPTokenizer, CLIPTextModel</span>
+
+<span class="sd">            &gt;&gt;&gt; model = CLIPTextModel.from_pretrained(&quot;openai/clip-vit-base-patch32&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; tokenizer = CLIPTokenizer.from_pretrained(&quot;openai/clip-vit-base-patch32&quot;)</span>
+
+<span class="sd">            &gt;&gt;&gt; inputs = tokenizer([&quot;a photo of a cat&quot;, &quot;a photo of a dog&quot;],  padding=True, return_tensors=&quot;pt&quot;)</span>
+
+<span class="sd">            &gt;&gt;&gt; outputs = model(**inputs)</span>
+<span class="sd">            &gt;&gt;&gt; last_hidden_state = outputs.last_hidden_state</span>
+<span class="sd">            &gt;&gt;&gt; pooled_output = outputs.pooled_output # pooled (EOS token) states</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_model</span><span class="p">(</span>
+            <span class="n">input_ids</span><span class="o">=</span><span class="n">input_ids</span><span class="p">,</span>
+            <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span>
+            <span class="n">position_ids</span><span class="o">=</span><span class="n">position_ids</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">output_hidden_states</span><span class="o">=</span><span class="n">output_hidden_states</span><span class="p">,</span>
+            <span class="n">return_dict</span><span class="o">=</span><span class="n">return_dict</span><span class="p">,</span>
+            <span class="n">output_qks</span><span class="o">=</span><span class="n">output_qks</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CLIPVisionTransformer"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPVisionTransformer">[docs]</a><span class="k">class</span> <span class="nc">CLIPVisionTransformer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">CLIPVisionConfig</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="n">embed_dim</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span> <span class="o">=</span> <span class="n">CLIPVisionEmbeddings</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_layrnorm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">CLIPEncoder</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post_layernorm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">embed_dim</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CLIPVisionTransformer.forward"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPVisionTransformer.forward">[docs]</a>    <span class="nd">@replace_return_docstrings</span><span class="p">(</span><span class="n">output_type</span><span class="o">=</span><span class="n">BaseModelOutputWithPooling</span><span class="p">,</span> <span class="n">config_class</span><span class="o">=</span><span class="n">CLIPVisionConfig</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">pixel_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_hidden_states</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">return_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">aux_embeddings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">rcnn_embeddings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_qks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output_attentions</span> <span class="o">=</span> <span class="n">output_attentions</span> <span class="k">if</span> <span class="n">output_attentions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">output_attentions</span>
+        <span class="n">output_hidden_states</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">output_hidden_states</span> <span class="k">if</span> <span class="n">output_hidden_states</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">output_hidden_states</span>
+        <span class="p">)</span>
+        <span class="n">return_dict</span> <span class="o">=</span> <span class="n">return_dict</span> <span class="k">if</span> <span class="n">return_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">use_return_dict</span>
+
+        <span class="k">if</span> <span class="n">pixel_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You have to specify pixel_values&quot;</span><span class="p">)</span>
+
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span><span class="p">(</span><span class="n">pixel_values</span><span class="p">,</span> <span class="n">aux_embeddings</span><span class="p">,</span> <span class="n">rcnn_embeddings</span><span class="p">)</span>
+        <span class="n">hidden_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_layrnorm</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>
+
+        <span class="n">encoder_outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span>
+            <span class="n">inputs_embeds</span><span class="o">=</span><span class="n">hidden_states</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">output_hidden_states</span><span class="o">=</span><span class="n">output_hidden_states</span><span class="p">,</span>
+            <span class="n">return_dict</span><span class="o">=</span><span class="n">return_dict</span><span class="p">,</span>
+            <span class="n">output_qks</span><span class="o">=</span><span class="n">output_qks</span>
+        <span class="p">)</span>
+
+        <span class="n">last_hidden_state</span> <span class="o">=</span> <span class="n">encoder_outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">pooled_output</span> <span class="o">=</span> <span class="n">last_hidden_state</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">pooled_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_layernorm</span><span class="p">(</span><span class="n">pooled_output</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">return_dict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">last_hidden_state</span><span class="p">,</span> <span class="n">pooled_output</span><span class="p">)</span> <span class="o">+</span> <span class="n">encoder_outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="n">CLIPBaseModelOutputWithPooling</span><span class="p">(</span>
+            <span class="n">last_hidden_state</span><span class="o">=</span><span class="n">last_hidden_state</span><span class="p">,</span>
+            <span class="n">pooler_output</span><span class="o">=</span><span class="n">pooled_output</span><span class="p">,</span>
+            <span class="n">hidden_states</span><span class="o">=</span><span class="n">encoder_outputs</span><span class="o">.</span><span class="n">hidden_states</span><span class="p">,</span>
+            <span class="n">attentions</span><span class="o">=</span><span class="n">encoder_outputs</span><span class="o">.</span><span class="n">attentions</span><span class="p">,</span>
+            <span class="n">qks</span><span class="o">=</span><span class="n">encoder_outputs</span><span class="o">.</span><span class="n">qks</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CLIPVisionModel"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPVisionModel">[docs]</a><span class="k">class</span> <span class="nc">CLIPVisionModel</span><span class="p">(</span><span class="n">CLIPPreTrainedModel</span><span class="p">):</span>
+    <span class="n">config_class</span> <span class="o">=</span> <span class="n">CLIPVisionConfig</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">CLIPVisionConfig</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vision_model</span> <span class="o">=</span> <span class="n">CLIPVisionTransformer</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_weights</span><span class="p">()</span>
+
+<div class="viewcode-block" id="CLIPVisionModel.get_input_embeddings"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPVisionModel.get_input_embeddings">[docs]</a>    <span class="k">def</span> <span class="nf">get_input_embeddings</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vision_model</span><span class="o">.</span><span class="n">embeddings</span><span class="o">.</span><span class="n">patch_embedding</span></div>
+
+<div class="viewcode-block" id="CLIPVisionModel.forward"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPVisionModel.forward">[docs]</a>    <span class="nd">@replace_return_docstrings</span><span class="p">(</span><span class="n">output_type</span><span class="o">=</span><span class="n">BaseModelOutputWithPooling</span><span class="p">,</span> <span class="n">config_class</span><span class="o">=</span><span class="n">CLIPVisionConfig</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">pixel_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_hidden_states</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">return_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+
+<span class="sd">        Examples::</span>
+
+<span class="sd">            &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">            &gt;&gt;&gt; import requests</span>
+<span class="sd">            &gt;&gt;&gt; from transformers import CLIPProcessor, CLIPVisionModel</span>
+
+<span class="sd">            &gt;&gt;&gt; model = CLIPVisionModel.from_pretrained(&quot;openai/clip-vit-base-patch32&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; processor = CLIPProcessor.from_pretrained(&quot;openai/clip-vit-base-patch32&quot;)</span>
+
+<span class="sd">            &gt;&gt;&gt; url = &quot;http://images.cocodataset.org/val2017/000000039769.jpg&quot;</span>
+<span class="sd">            &gt;&gt;&gt; image = Image.open(requests.get(url, stream=True).raw)</span>
+
+<span class="sd">            &gt;&gt;&gt; inputs = processor(images=image, return_tensors=&quot;pt&quot;)</span>
+
+<span class="sd">            &gt;&gt;&gt; outputs = model(**inputs)</span>
+<span class="sd">            &gt;&gt;&gt; last_hidden_state = outputs.last_hidden_state</span>
+<span class="sd">            &gt;&gt;&gt; pooled_output = outputs.pooled_output # pooled CLS states</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vision_model</span><span class="p">(</span>
+            <span class="n">pixel_values</span><span class="o">=</span><span class="n">pixel_values</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">output_hidden_states</span><span class="o">=</span><span class="n">output_hidden_states</span><span class="p">,</span>
+            <span class="n">return_dict</span><span class="o">=</span><span class="n">return_dict</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CLIPModel"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPModel">[docs]</a><span class="nd">@add_start_docstrings</span><span class="p">(</span><span class="n">CLIP_START_DOCSTRING</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">CLIPModel</span><span class="p">(</span><span class="n">CLIPPreTrainedModel</span><span class="p">):</span>
+    <span class="n">config_class</span> <span class="o">=</span> <span class="n">CLIPConfig</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">CLIPConfig</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">text_config</span><span class="p">,</span> <span class="n">CLIPTextConfig</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;config.text_config is expected to be of type CLIPTextConfig but is of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">text_config</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="p">,</span> <span class="n">CLIPVisionConfig</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;config.vision_config is expected to be of type CLIPVisionConfig but is of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">text_config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">text_config</span>
+        <span class="n">vision_config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">vision_config</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">projection_dim</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">projection_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_embed_dim</span> <span class="o">=</span> <span class="n">text_config</span><span class="o">.</span><span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vision_embed_dim</span> <span class="o">=</span> <span class="n">vision_config</span><span class="o">.</span><span class="n">hidden_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_model</span> <span class="o">=</span> <span class="n">CLIPTextTransformer</span><span class="p">(</span><span class="n">text_config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vision_model</span> <span class="o">=</span> <span class="n">CLIPVisionTransformer</span><span class="p">(</span><span class="n">vision_config</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">visual_projection</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vision_embed_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection_dim</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_projection</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_embed_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection_dim</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logit_scale</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">([])</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">logit_scale_init_value</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_weights</span><span class="p">()</span>
+
+<div class="viewcode-block" id="CLIPModel.get_text_features"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPModel.get_text_features">[docs]</a>    <span class="k">def</span> <span class="nf">get_text_features</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">position_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_hidden_states</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">return_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            text_features (:obj:`torch.FloatTensor` of shape :obj:`(batch_size, output_dim`): The text embeddings</span>
+<span class="sd">            obtained by applying the projection layer to the pooled output of :class:`~transformers.CLIPTextModel`.</span>
+
+<span class="sd">        Examples::</span>
+
+<span class="sd">            &gt;&gt;&gt; from transformers import CLIPTokenizer, CLIPModel</span>
+
+<span class="sd">            &gt;&gt;&gt; model = CLIPModel.from_pretrained(&quot;openai/clip-vit-base-patch32&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; tokenizer = CLIPTokenizer.from_pretrained(&quot;openai/clip-vit-base-patch32&quot;)</span>
+
+<span class="sd">            &gt;&gt;&gt; inputs = tokenizer([&quot;a photo of a cat&quot;, &quot;a photo of a dog&quot;],  padding=True, return_tensors=&quot;pt&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; text_features = model.get_text_features(**inputs)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text_outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_model</span><span class="p">(</span>
+            <span class="n">input_ids</span><span class="o">=</span><span class="n">input_ids</span><span class="p">,</span>
+            <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span>
+            <span class="n">position_ids</span><span class="o">=</span><span class="n">position_ids</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">output_hidden_states</span><span class="o">=</span><span class="n">output_hidden_states</span><span class="p">,</span>
+            <span class="n">return_dict</span><span class="o">=</span><span class="n">return_dict</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">pooled_output</span> <span class="o">=</span> <span class="n">text_outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">text_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_projection</span><span class="p">(</span><span class="n">pooled_output</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">text_features</span></div>
+
+<div class="viewcode-block" id="CLIPModel.get_image_features"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPModel.get_image_features">[docs]</a>    <span class="k">def</span> <span class="nf">get_image_features</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">pixel_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_hidden_states</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">return_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            image_features (:obj:`torch.FloatTensor` of shape :obj:`(batch_size, output_dim`): The image embeddings</span>
+<span class="sd">            obtained by applying the projection layer to the pooled output of :class:`~transformers.CLIPVisionModel`.</span>
+
+<span class="sd">        Examples::</span>
+
+<span class="sd">            &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">            &gt;&gt;&gt; import requests</span>
+<span class="sd">            &gt;&gt;&gt; from transformers import CLIPProcessor, CLIPModel</span>
+
+<span class="sd">            &gt;&gt;&gt; model = CLIPModel.from_pretrained(&quot;openai/clip-vit-base-patch32&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; processor = CLIPProcessor.from_pretrained(&quot;openai/clip-vit-base-patch32&quot;)</span>
+
+<span class="sd">            &gt;&gt;&gt; url = &quot;http://images.cocodataset.org/val2017/000000039769.jpg&quot;</span>
+<span class="sd">            &gt;&gt;&gt; image = Image.open(requests.get(url, stream=True).raw)</span>
+
+<span class="sd">            &gt;&gt;&gt; inputs = processor(images=image, return_tensors=&quot;pt&quot;)</span>
+
+<span class="sd">            &gt;&gt;&gt; image_features = model.get_image_features(**inputs)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vision_outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vision_model</span><span class="p">(</span>
+            <span class="n">pixel_values</span><span class="o">=</span><span class="n">pixel_values</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">output_hidden_states</span><span class="o">=</span><span class="n">output_hidden_states</span><span class="p">,</span>
+            <span class="n">return_dict</span><span class="o">=</span><span class="n">return_dict</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">pooled_output</span> <span class="o">=</span> <span class="n">vision_outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># pooled_output</span>
+        <span class="n">image_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visual_projection</span><span class="p">(</span><span class="n">pooled_output</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">image_features</span></div>
+
+<div class="viewcode-block" id="CLIPModel.forward"><a class="viewcode-back" href="../../../../../../deepke.name_entity_re.multimodal.models.clip.html#deepke.name_entity_re.multimodal.models.clip.modeling_clip.CLIPModel.forward">[docs]</a>    <span class="nd">@replace_return_docstrings</span><span class="p">(</span><span class="n">output_type</span><span class="o">=</span><span class="n">CLIPOutput</span><span class="p">,</span> <span class="n">config_class</span><span class="o">=</span><span class="n">CLIPConfig</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">pixel_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">attention_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">position_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">return_loss</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_attentions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_hidden_states</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">return_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+
+<span class="sd">        Examples::</span>
+
+<span class="sd">            &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">            &gt;&gt;&gt; import requests</span>
+<span class="sd">            &gt;&gt;&gt; from transformers import CLIPProcessor, CLIPModel</span>
+
+<span class="sd">            &gt;&gt;&gt; model = CLIPModel.from_pretrained(&quot;openai/clip-vit-base-patch32&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; processor = CLIPProcessor.from_pretrained(&quot;openai/clip-vit-base-patch32&quot;)</span>
+
+<span class="sd">            &gt;&gt;&gt; url = &quot;http://images.cocodataset.org/val2017/000000039769.jpg&quot;</span>
+<span class="sd">            &gt;&gt;&gt; image = Image.open(requests.get(url, stream=True).raw)</span>
+
+<span class="sd">            &gt;&gt;&gt; inputs = processor(text=[&quot;a photo of a cat&quot;, &quot;a photo of a dog&quot;], images=image, return_tensors=&quot;pt&quot;, padding=True)</span>
+
+<span class="sd">            &gt;&gt;&gt; outputs = model(**inputs)</span>
+<span class="sd">            &gt;&gt;&gt; logits_per_image = outputs.logits_per_image # this is the image-text similarity score</span>
+<span class="sd">            &gt;&gt;&gt; probs = logits_per_image.softmax(dim=1) # we can take the softmax to get the label probabilities</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">return_dict</span> <span class="o">=</span> <span class="n">return_dict</span> <span class="k">if</span> <span class="n">return_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">return_dict</span>
+        <span class="n">vision_outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vision_model</span><span class="p">(</span>
+            <span class="n">pixel_values</span><span class="o">=</span><span class="n">pixel_values</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">output_hidden_states</span><span class="o">=</span><span class="n">output_hidden_states</span><span class="p">,</span>
+            <span class="n">return_dict</span><span class="o">=</span><span class="n">return_dict</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">text_outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_model</span><span class="p">(</span>
+            <span class="n">input_ids</span><span class="o">=</span><span class="n">input_ids</span><span class="p">,</span>
+            <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span>
+            <span class="n">position_ids</span><span class="o">=</span><span class="n">position_ids</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">output_hidden_states</span><span class="o">=</span><span class="n">output_hidden_states</span><span class="p">,</span>
+            <span class="n">return_dict</span><span class="o">=</span><span class="n">return_dict</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">image_embeds</span> <span class="o">=</span> <span class="n">vision_outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">image_embeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visual_projection</span><span class="p">(</span><span class="n">image_embeds</span><span class="p">)</span>
+
+        <span class="n">text_embeds</span> <span class="o">=</span> <span class="n">text_outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">text_embeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_projection</span><span class="p">(</span><span class="n">text_embeds</span><span class="p">)</span>
+
+        <span class="c1"># normalized features</span>
+        <span class="n">image_embeds</span> <span class="o">=</span> <span class="n">image_embeds</span> <span class="o">/</span> <span class="n">image_embeds</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">text_embeds</span> <span class="o">=</span> <span class="n">text_embeds</span> <span class="o">/</span> <span class="n">text_embeds</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># cosine similarity as logits</span>
+        <span class="n">logit_scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logit_scale</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span>
+        <span class="n">logits_per_text</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">text_embeds</span><span class="p">,</span> <span class="n">image_embeds</span><span class="o">.</span><span class="n">t</span><span class="p">())</span> <span class="o">*</span> <span class="n">logit_scale</span>
+        <span class="n">logits_per_image</span> <span class="o">=</span> <span class="n">logits_per_text</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="n">loss</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">return_loss</span><span class="p">:</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">clip_loss</span><span class="p">(</span><span class="n">logits_per_text</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">return_dict</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="p">(</span><span class="n">logits_per_image</span><span class="p">,</span> <span class="n">logits_per_text</span><span class="p">,</span> <span class="n">text_embeds</span><span class="p">,</span> <span class="n">image_embeds</span><span class="p">,</span> <span class="n">text_outputs</span><span class="p">,</span> <span class="n">vision_outputs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">((</span><span class="n">loss</span><span class="p">,)</span> <span class="o">+</span> <span class="n">output</span><span class="p">)</span> <span class="k">if</span> <span class="n">loss</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">output</span>
+
+        <span class="k">return</span> <span class="n">CLIPOutput</span><span class="p">(</span>
+            <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
+            <span class="n">logits_per_image</span><span class="o">=</span><span class="n">logits_per_image</span><span class="p">,</span>
+            <span class="n">logits_per_text</span><span class="o">=</span><span class="n">logits_per_text</span><span class="p">,</span>
+            <span class="n">text_embeds</span><span class="o">=</span><span class="n">text_embeds</span><span class="p">,</span>
+            <span class="n">image_embeds</span><span class="o">=</span><span class="n">image_embeds</span><span class="p">,</span>
+            <span class="n">text_model_output</span><span class="o">=</span><span class="n">text_outputs</span><span class="p">,</span>
+            <span class="n">vision_model_output</span><span class="o">=</span><span class="n">vision_outputs</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, ZJUNLP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -92,9 +92,7 @@
 
 <div class="viewcode-block" id="manual_seed"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.utils.html#deepke.relation_extraction.standard.utils.nnUtils.manual_seed">[docs]</a><span class="k">def</span> <span class="nf">manual_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set seeds</span>
-<span class="sd">        Args: </span>
-<span class="sd">            seed(int): The number of setting</span>
+<span class="sd">        设置seed。</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
@@ -109,13 +107,14 @@
 
 <div class="viewcode-block" id="seq_len_to_mask"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.utils.html#deepke.relation_extraction.standard.utils.nnUtils.seq_len_to_mask">[docs]</a><span class="k">def</span> <span class="nf">seq_len_to_mask</span><span class="p">(</span><span class="n">seq_len</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">max_len</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mask_pos_to_true</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert a one-dimensional array representing sequence length to a two-dimensional mask, the default position of the pad is 1.</span>
-<span class="sd">    Convert 1-d seq_len to 2-d mask.</span>
-<span class="sd">    Args:</span>
-<span class="sd">        seq_len (list, np.ndarray, torch.LongTensor) : shape will be (B,)</span>
-<span class="sd">        max_len (int): Pad the length to this length. The default (None) uses the longest length in seq_len. But in the scenario of nn.DataParallel, the seq_len of different cards may be different, so you need to pass in a max_len so that the length of the mask is from pad to that length.</span>
-<span class="sd">    Returns: </span>
-<span class="sd">        mask (np.ndarray, torch.Tensor) : shape will be (B, max_length),the element is similar to bool or torch.uint8</span>
+<span class="sd">    将一个表示sequence length的一维数组转换为二维的mask，默认pad的位置为1。</span>
+<span class="sd">    转变 1-d seq_len到2-d mask。</span>
+
+<span class="sd">    Args :</span>
+<span class="sd">        seq_len (list, np.ndarray, torch.LongTensor) : shape将是(B,)</span>
+<span class="sd">        max_len (int): 将长度pad到这个长度。默认(None)使用的是seq_len中最长的长度。但在nn.DataParallel的场景下可能不同卡的seq_len会有区别，所以需要传入一个max_len使得mask的长度是pad到该长度。</span>
+<span class="sd">    Return: </span>
+<span class="sd">        mask (np.ndarray, torch.Tensor) : shape将是(B, max_length)， 元素类似为bool或torch.uint8</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">seq_len</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">seq_len</span><span class="p">)</span>
@@ -141,10 +140,10 @@
 <div class="viewcode-block" id="to_one_hot"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.utils.html#deepke.relation_extraction.standard.utils.nnUtils.to_one_hot">[docs]</a><span class="k">def</span> <span class="nf">to_one_hot</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Args:</span>
-<span class="sd">        x (torch.Tensor):[B] ,is generally the value of target</span>
-<span class="sd">        length (int) : L ,is generally the relationship tree.</span>
-<span class="sd">    Returns:</span>
-<span class="sd">        x_one_hot.to(device=x.device) (torch.Tensor) : [B, L] ,In each row, only the corresponding position is 1, and the rest are 0.</span>
+<span class="sd">        x (torch.Tensor):[B] , 一般是 target 的值</span>
+<span class="sd">        length (int) : L ,一般是关系种类树</span>
+<span class="sd">    Return:</span>
+<span class="sd">        x_one_hot.to(device=x.device) (torch.Tensor) : [B, L]  每一行，只有对应位置为1，其余为0</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">B</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">x_one_hot</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>

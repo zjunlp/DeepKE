@@ -52,7 +52,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="deepke.html">DeepKE</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="deepke.attribution_extraction.html">Attribution Extraction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_recognition.html">Name Entity Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_re.html">Name Entity Recognition</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="deepke.relation_extraction.html">Relation Extraction</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="deepke.relation_extraction.document.html">Document</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deepke.relation_extraction.few_shot.html">Few Shot</a></li>
@@ -63,6 +63,7 @@
 <li class="toctree-l4"><a class="reference internal" href="deepke.relation_extraction.standard.utils.html">Utils</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="deepke.relation_extraction.multimodal.html">MultiModal</a></li>
 </ul>
 </li>
 </ul>
@@ -109,44 +110,16 @@
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.dataset.CustomDataset">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.dataset.</span></span><span class="sig-name descname"><span class="pre">CustomDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/dataset.html#CustomDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.dataset.CustomDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.dataset.Dataset</span></code></p>
-<p>Use List to store data by default</p>
+<p>默认使用 List 存储数据</p>
 </dd></dl>
 
 </section>
 <section id="module-deepke.relation_extraction.standard.tools.loss">
 <span id="deepke-relation-extraction-standard-tools-loss-module"></span><h2>deepke.relation_extraction.standard.tools.loss module<a class="headerlink" href="#module-deepke.relation_extraction.standard.tools.loss" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.FocalLoss">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.loss.</span></span><span class="sig-name descname"><span class="pre">FocalLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#FocalLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.FocalLoss" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
-<p>Focal Loss : [1] Lin T Y ,  Goyal P ,  Girshick R , et al. Focal Loss for Dense Object Detection[J]. IEEE Transactions on Pattern Analysis &amp; Machine Intelligence, 2017, PP(99):2999-3007.
-In this work, authors identify class imbalance as the primary obstacle preventing one-stage object detectors from surpassing top-performing, two-stage methods, such as Faster R-CNN variants. To address this, we propose the focal loss which applies a modulating term to the cross entropy loss in order to focus learning on hard examples and down-weight the numerous easy negatives</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.FocalLoss.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#FocalLoss.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.FocalLoss.forward" title="Permalink to this definition">¶</a></dt>
-<dd><p>Defines the computation performed at every call.</p>
-<p>Should be overridden by all subclasses.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Although the recipe for forward pass needs to be defined within
-this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
-instead of this since the former takes care of running the
-registered hooks while the latter silently ignores them.</p>
-</div>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.FocalLoss.training">
-<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.FocalLoss.training" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.LabelSmoothSoftmaxCEV1">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.loss.</span></span><span class="sig-name descname"><span class="pre">LabelSmoothSoftmaxCEV1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lb_smooth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#LabelSmoothSoftmaxCEV1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.LabelSmoothSoftmaxCEV1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
-<p>Label Smooth Softmax</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.LabelSmoothSoftmaxCEV1.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#LabelSmoothSoftmaxCEV1.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.LabelSmoothSoftmaxCEV1.forward" title="Permalink to this definition">¶</a></dt>
@@ -202,16 +175,39 @@ registered hooks while the latter silently ignores them.</p>
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.TaylorCrossEntropyLossV1">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.loss.</span></span><span class="sig-name descname"><span class="pre">TaylorCrossEntropyLossV1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#TaylorCrossEntropyLossV1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.TaylorCrossEntropyLossV1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
-<p>TaylorCrossEntropyLoss : [1] Banerjee K ,  Vishak P C ,  RR  Gupta, et al. Exploring Alternatives to Softmax Function[J].  2020.
-In this work, author investigate Taylor softmax, soft-margin softmax and our proposed SM-Taylor softmax as alternatives to softmax function</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.TaylorCrossEntropyLossV1.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#TaylorCrossEntropyLossV1.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.TaylorCrossEntropyLossV1.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.TaylorCrossEntropyLossV1.training">
 <span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.TaylorCrossEntropyLossV1.training" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.FocalLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.loss.</span></span><span class="sig-name descname"><span class="pre">FocalLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#FocalLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.FocalLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.FocalLoss.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.FocalLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
-<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.TaylorCrossEntropyLossV1.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#TaylorCrossEntropyLossV1.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.TaylorCrossEntropyLossV1.forward" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.loss.FocalLoss.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/loss.html#FocalLoss.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.loss.FocalLoss.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -263,19 +259,19 @@ This is called at the end of each epoch.
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.metrics.PRMetric.reset">
 <span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/metrics.html#PRMetric.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.metrics.PRMetric.reset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reset to 0.</p>
+<dd><p>重置为0</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.metrics.PRMetric.update">
 <span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/metrics.html#PRMetric.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.metrics.PRMetric.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update tensor,keep the value, and cancel the original gradient.</p>
+<dd><p>更新tensor，保留值，取消原有梯度</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.metrics.PRMetric.compute">
 <span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/metrics.html#PRMetric.compute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.metrics.PRMetric.compute" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate acc,p,r,f1.</p>
+<dd><p>计算acc,p,r,f1并返回</p>
 </dd></dl>
 
 </dd></dl>
@@ -286,7 +282,7 @@ This is called at the end of each epoch.
 <dl class="py function">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.preprocess.preprocess">
 <span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.preprocess.</span></span><span class="sig-name descname"><span class="pre">preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/preprocess.html#preprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.preprocess.preprocess" title="Permalink to this definition">¶</a></dt>
-<dd><p>Preprocess data</p>
+<dd><p>数据预处理阶段</p>
 </dd></dl>
 
 </section>
@@ -299,13 +295,14 @@ This is called at the end of each epoch.
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.serializer.Serializer.serialize">
 <span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">never_split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><span class="pre">List</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/serializer.html#Serializer.serialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.serializer.Serializer.serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Split a piece of text into a vocabulary list according to the established splitting rules
-:param text: Text for spliting
-:type text: String
-:param never_split: Words not to be split, empty by default
-:type never_split: List</p>
+<dd><p>将一段文本按照制定拆分规则，拆分成一个词汇List
+Args :</p>
+<blockquote>
+<div><p>text (String) : 所需拆分文本
+never_split (List) : 不拆分的词，默认为空</p>
+</div></blockquote>
 <dl class="simple">
-<dt>Rerurns:</dt><dd><p>output_tokens (List): Results after spliting</p>
+<dt>Rerurn :</dt><dd><p>output_tokens (List): 拆分后的结果</p>
 </dd>
 </dl>
 </dd></dl>
@@ -313,14 +310,13 @@ This is called at the end of each epoch.
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.serializer.Serializer.is_control">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/serializer.html#Serializer.is_control"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.serializer.Serializer.is_control" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine whether the character is a control character
-:param char: Character</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Result</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd><p>判断字符是否为控制字符
+Arg :</p>
+<blockquote>
+<div><p>char : 字符</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return :</dt><dd><p>bool : 判断结果</p>
 </dd>
 </dl>
 </dd></dl>
@@ -328,14 +324,13 @@ This is called at the end of each epoch.
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.serializer.Serializer.is_whitespace">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_whitespace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/serializer.html#Serializer.is_whitespace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.serializer.Serializer.is_whitespace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine whether the character is a whitespace character
-:param char: Character</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Result</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd><p>判断字符是否为空白字符
+Arg :</p>
+<blockquote>
+<div><p>char : 字符</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return :</dt><dd><p>bool : 判断结果</p>
 </dd>
 </dl>
 </dd></dl>
@@ -343,15 +338,13 @@ This is called at the end of each epoch.
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.serializer.Serializer.is_chinese_char">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_chinese_char</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/serializer.html#Serializer.is_chinese_char"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.serializer.Serializer.is_chinese_char" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine whether the character is a chinese character
-:param cp: Character
-:type cp: char</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Result</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd><p>判断字符是否为中文字符
+Arg :</p>
+<blockquote>
+<div><p>cp (char): 字符</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return :</dt><dd><p>bool : 判断结果</p>
 </dd>
 </dl>
 </dd></dl>
@@ -359,14 +352,13 @@ This is called at the end of each epoch.
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.serializer.Serializer.is_punctuation">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_punctuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/serializer.html#Serializer.is_punctuation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.serializer.Serializer.is_punctuation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine whether the character is a punctuation character
-:param char: Character</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Result</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd><p>判断字符是否为标点字符
+Arg :</p>
+<blockquote>
+<div><p>char : 字符</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Return :</dt><dd><p>bool : 判断结果</p>
 </dd>
 </dl>
 </dd></dl>
@@ -390,7 +382,7 @@ device (torch.device): device of training.
 writer (class): output to tensorboard.
 cfg: configutation of training.</p>
 </dd>
-<dt>Returns:</dt><dd><p>losses[-1] : the loss of training</p>
+<dt>Return:</dt><dd><p>losses[-1] : the loss of training</p>
 </dd>
 </dl>
 </dd>
@@ -409,7 +401,7 @@ criterion (Callable): loss criterion of validating.
 device (torch.device): device of validating.
 cfg: configutation of validating.</p>
 </dd>
-<dt>Returns:</dt><dd><p>f1 : f1 score
+<dt>Return:</dt><dd><p>f1 : f1 score
 loss : the loss of validating</p>
 </dd>
 </dl>
@@ -424,22 +416,24 @@ loss : the loss of validating</p>
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.vocab.Vocab">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.standard.tools.vocab.</span></span><span class="sig-name descname"><span class="pre">Vocab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'basic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><span class="pre">Sequence</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'bos_token':</span> <span class="pre">'[BOS]',</span> <span class="pre">'cls_token':</span> <span class="pre">'[CLS]',</span> <span class="pre">'eos_token':</span> <span class="pre">'[EOS]',</span> <span class="pre">'head_token':</span> <span class="pre">'HEAD',</span> <span class="pre">'mask_token':</span> <span class="pre">'[MASK]',</span> <span class="pre">'pad_token':</span> <span class="pre">'[PAD]',</span> <span class="pre">'sep_token':</span> <span class="pre">'[SEP]',</span> <span class="pre">'tail_token':</span> <span class="pre">'TAIL',</span> <span class="pre">'unk_token':</span> <span class="pre">'[UNK]'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/vocab.html#Vocab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.vocab.Vocab" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Build vocabulary, add vocabulary,and delete low-frequency vocabulary</p>
+<p>构建词汇表,增加词汇，删除低频词汇</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.vocab.Vocab.add_words">
 <span class="sig-name descname"><span class="pre">add_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><span class="pre">Sequence</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/vocab.html#Vocab.add_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.vocab.Vocab.add_words" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add words
-:param words: List of words
-:type words: List</p>
+<dd><p>通过数组增加词汇
+Arg :</p>
+<blockquote>
+<div><p>words (List) : 增加的词汇组</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="deepke.relation_extraction.standard.tools.vocab.Vocab.trim">
 <span class="sig-name descname"><span class="pre">trim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/standard/tools/vocab.html#Vocab.trim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.standard.tools.vocab.Vocab.trim" title="Permalink to this definition">¶</a></dt>
-<dd><p>When the word frequency of word is lower than min_freq, delete from the thesaurus
-:param min_freq: Minimum word frequency
+<dd><p>当 word 词频低于 min_freq 时，从词库中删除
+:param min_freq: 最低词频
 :type min_freq: int
-:param verbose: Whether to print log
+:param verbose: 是否打印日志
 :type verbose: bool</p>
 </dd></dl>
 

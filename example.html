@@ -48,6 +48,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Example</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#standard-ner">Standard NER</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#few-shot-ner">Few-shot NER</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multimodal-ner">Multimodal NER</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#standard-re">Standard RE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#few-shot-re">Few-shot RE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#document-re">Document RE</a></li>
@@ -168,6 +169,58 @@ lamb    O ‘\n’
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> example/ner/few-shot
 
 wget <span class="m">120</span>.27.214.45/Data/ner/few_shot/data.tar.gz
+
+tar -xzvf data.tar.gz
+
+python run.py
+
+python predict.py
+</pre></div>
+</div>
+</section>
+<section id="multimodal-ner">
+<h2>Multimodal NER<a class="headerlink" href="#multimodal-ner" title="Permalink to this headline">¶</a></h2>
+<p>This module is in the multimodal scenario.</p>
+<p><strong>Step 1</strong></p>
+<p>Enter the <code class="docutils literal notranslate"><span class="pre">DeepKE/example/ner/multimodal</span></code> folder.</p>
+<p><strong>Step 2</strong></p>
+<p>Get data:</p>
+<blockquote>
+<div><p><cite>wget 120.27.214.45/Data/ner/multimodal/data.tar.gz</cite></p>
+<p><cite>tar -xzvf data.tar.gz</cite></p>
+</div></blockquote>
+<p>The dataset and parameters can be customized in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder and <code class="docutils literal notranslate"><span class="pre">conf</span></code> folder respectively.</p>
+<p>Textual dataset needs to be input as <code class="docutils literal notranslate"><span class="pre">TXT</span></code> file. Visual dataset is recommended to be input as <code class="docutils literal notranslate"><span class="pre">JPG</span></code> or <code class="docutils literal notranslate"><span class="pre">PNG</span></code> file.</p>
+<p>The <cite>data’s format</cite> of file needs to comply with the following：</p>
+<p>IMGID:213820 ‘\n’
+RT      O ‘\n’
+&#64;JonMatthewsDS  O ‘\n’
+:       O ‘\n’
+Driving I-ORG ‘\n’
+test    O ‘\n’
+Leicester       B-ORG ‘\n’
+Jon     I-ORG ‘\n’
+Matthews        I-ORG ‘\n’
+Driving I-ORG ‘\n’
+School  I-ORG ‘\n’
+:       O ‘\n’
+http://t.co/Zf0tOasjUE  O ‘\n’
+http://t.co/IXiIgDVmPu  O ‘\n’</p>
+<p>Instead of inputting the original images as visual datas directly, you can use a <a class="reference external" href="https://github.com/zyang-ur/onestage_grounding">Visual Grounding toolkit</a> to locate visual objects.</p>
+<p><strong>Step 3</strong></p>
+<p>Train:</p>
+<blockquote>
+<div><p><cite>python run.py</cite></p>
+</div></blockquote>
+<p>Start with the model trained last time: modify <cite>load_path</cite> in <code class="docutils literal notranslate"><span class="pre">conf/train.yaml</span></code> as the path where the model trained last time was saved. And the path saving logs generated in training can be customized by <code class="docutils literal notranslate"><span class="pre">log_dir</span></code>.</p>
+<p><strong>Step 4</strong></p>
+<p>Predict:</p>
+<blockquote>
+<div><p><cite>python predict.py</cite></p>
+</div></blockquote>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> example/ner/multimodal
+
+wget <span class="m">120</span>.27.214.45/Data/ner/multimodal/data.tar.gz
 
 tar -xzvf data.tar.gz
 

@@ -102,7 +102,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">vision_config</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">device</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">IFAModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vision_config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_config</span><span class="p">)</span>
 
-        <span class="c1"># load pretrained parameters:</span>
+        <span class="c1"># load:</span>
         <span class="n">vision_names</span><span class="p">,</span> <span class="n">text_names</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
         <span class="n">model_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">model_dict</span><span class="p">:</span>

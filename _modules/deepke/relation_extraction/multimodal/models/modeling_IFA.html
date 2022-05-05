@@ -201,7 +201,6 @@
         <span class="n">class_embeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_embedding</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">embeddings</span> <span class="o">=</span> <span class="n">class_embeds</span>
 
-        <span class="c1"># objects based on Visual Grouding </span>
         <span class="k">if</span> <span class="n">aux_embeddings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">aux_embeds</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">aux_embedding</span> <span class="ow">in</span> <span class="n">aux_embeddings</span><span class="p">:</span>
@@ -212,7 +211,6 @@
             <span class="n">aux_embeds</span> <span class="o">=</span> <span class="n">aux_embeds</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">aux_position_embedding</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aux_position_ids</span><span class="p">)</span>
             <span class="n">embeddings</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">aux_embeds</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="c1"># objects based on RCNN</span>
         <span class="k">if</span> <span class="n">rcnn_embeddings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">rcnn_embeds</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">rcnn_embedding</span> <span class="ow">in</span> <span class="n">rcnn_embeddings</span><span class="p">:</span>
@@ -676,6 +674,7 @@
                 <span class="n">all_text_hidden_states</span> <span class="o">=</span> <span class="n">all_text_hidden_states</span> <span class="o">+</span> <span class="p">(</span><span class="n">text_hidden_states</span><span class="p">,</span> <span class="p">)</span>
             
             <span class="c1"># vision</span>
+            <span class="c1"># TODO: 9-12 layers past text as pkv to vision</span>
             <span class="n">output_qks</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">bsz</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">dsize</span> <span class="o">=</span> <span class="n">text_embeds</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
@@ -694,6 +693,7 @@
             <span class="n">vision_hidden_states</span> <span class="o">=</span> <span class="n">vision_layer_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
             <span class="c1"># text</span>
+            <span class="c1"># TODO: 9-12 layers past vison qks to text</span>
             <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">bsz</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">dsize</span> <span class="o">=</span> <span class="n">vision_embeds</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
                 <span class="n">text_past_key_values</span> <span class="o">=</span> <span class="p">(</span><span class="n">vision_embeds</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bsz</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">dsize</span><span class="o">//</span><span class="mi">12</span><span class="p">),</span>

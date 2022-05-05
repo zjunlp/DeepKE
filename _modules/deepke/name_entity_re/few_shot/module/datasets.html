@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>deepke.name_entity_re.few_shot.module.datasets &mdash; DeepKE 0.2.97 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> DeepKE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../start.html">Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../deepke.html">DeepKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">DeepKE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      <li>deepke.name_entity_re.few_shot.module.datasets</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for deepke.name_entity_re.few_shot.module.datasets</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">torch.nn.utils.rnn</span> <span class="kn">import</span> <span class="n">pad_sequence</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">BartTokenizer</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="c1"># load file and process bio</span>
+<div class="viewcode-block" id="ConllNERProcessor"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.few_shot.module.html#deepke.name_entity_re.few_shot.module.datasets.ConllNERProcessor">[docs]</a><span class="k">class</span> <span class="nc">ConllNERProcessor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">bart_name</span><span class="p">,</span> <span class="n">learn_weights</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">=</span> <span class="n">data_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">BartTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">bart_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span> <span class="o">=</span> <span class="n">mapping</span>  <span class="c1"># 记录的是原始tag与转换后的tag的str的匹配关系</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_token_nums</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">vocab_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learn_weights</span> <span class="o">=</span> <span class="n">learn_weights</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_tags_to_tokens</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ConllNERProcessor.load_from_file"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.few_shot.module.html#deepke.name_entity_re.few_shot.module.datasets.ConllNERProcessor.load_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;load conll ner from file</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            mode (str, optional): train/test/dev. Defaults to &#39;train&#39;.</span>
+<span class="sd">        Return:</span>
+<span class="sd">            outputs (dict)</span>
+<span class="sd">            raw_words: [&#39;EU&#39;, &#39;rejects&#39;, &#39;German&#39;, &#39;call&#39;, &#39;to&#39;, &#39;boycott&#39;, &#39;British&#39;, &#39;lamb&#39;, &#39;.&#39;]</span>
+<span class="sd">            raw_targets: [&#39;B-ORG&#39;, &#39;O&#39;, &#39;B-MISC&#39;, &#39;O&#39;, &#39;O&#39;, &#39;O&#39;, &#39;B-MISC&#39;, &#39;O&#39;, &#39;O&#39;]</span>
+<span class="sd">            entities: [[&#39;EU&#39;], [&#39;German&#39;], [&#39;British&#39;]]</span>
+<span class="sd">            entity_tags: [&#39;org&#39;, &#39;misc&#39;, &#39;misc&#39;]</span>
+<span class="sd">            entity_spans: [[0, 1], [2, 3], [6, 7]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">load_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading data from </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">load_file</span><span class="p">))</span>
+
+        <span class="c1"># extract bio</span>
+        <span class="n">split_c</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="s1">&#39;conll&#39;</span> <span class="ow">in</span> <span class="n">load_file</span>  <span class="k">else</span> <span class="s1">&#39; &#39;</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;raw_words&#39;</span><span class="p">:[],</span> <span class="s1">&#39;raw_targets&#39;</span><span class="p">:[],</span> <span class="s1">&#39;entities&#39;</span><span class="p">:[],</span> <span class="s1">&#39;entity_tags&#39;</span><span class="p">:[],</span> <span class="s1">&#39;entity_spans&#39;</span><span class="p">:[]}</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">load_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">raw_words</span><span class="p">,</span> <span class="n">raw_targets</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+            <span class="n">raw_word</span><span class="p">,</span> <span class="n">raw_target</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+                    <span class="n">raw_word</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">split_c</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">raw_target</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">split_c</span><span class="p">)[</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">raw_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">raw_word</span><span class="p">)</span>
+                    <span class="n">raw_targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">raw_target</span><span class="p">)</span>
+                    <span class="n">raw_word</span><span class="p">,</span> <span class="n">raw_target</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">words</span><span class="p">,</span> <span class="n">targets</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">raw_words</span><span class="p">,</span> <span class="n">raw_targets</span><span class="p">):</span>
+            <span class="n">entities</span><span class="p">,</span> <span class="n">entity_tags</span><span class="p">,</span> <span class="n">entity_spans</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+            <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">start_flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">False</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">targets</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;B-&#39;</span><span class="p">):</span>    <span class="c1"># 一个实体开头 另一个实体（I-）结束</span>
+                    <span class="n">end</span> <span class="o">=</span> <span class="n">idx</span>
+                    <span class="k">if</span> <span class="n">start_flag</span><span class="p">:</span>  <span class="c1"># 另一个实体以I-结束，紧接着当前实体B-出现</span>
+                        <span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">])</span>
+                        <span class="n">entity_tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">targets</span><span class="p">[</span><span class="n">start</span><span class="p">][</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+                        <span class="n">entity_spans</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">])</span>
+                        <span class="n">start_flag</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">start</span> <span class="o">=</span> <span class="n">idx</span>
+                    <span class="n">start_flag</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;I-&#39;</span><span class="p">):</span>  <span class="c1"># 实体中间，不是开头也不是结束，end+1即可</span>
+                    <span class="n">end</span> <span class="o">=</span> <span class="n">idx</span>
+                <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;O&#39;</span><span class="p">):</span>  <span class="c1"># 无实体，可能是上一个实体的结束</span>
+                    <span class="n">end</span> <span class="o">=</span> <span class="n">idx</span>
+                    <span class="k">if</span> <span class="n">start_flag</span><span class="p">:</span>  <span class="c1"># 上一个实体结束</span>
+                        <span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">])</span>
+                        <span class="n">entity_tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">targets</span><span class="p">[</span><span class="n">start</span><span class="p">][</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+                        <span class="n">entity_spans</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">])</span>
+                        <span class="n">start_flag</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">start_flag</span><span class="p">:</span>  <span class="c1"># 句子以实体I-结束，未被添加</span>
+                <span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">entity_tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">targets</span><span class="p">[</span><span class="n">start</span><span class="p">][</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+                <span class="n">entity_spans</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">start_flag</span> <span class="o">=</span> <span class="kc">False</span>
+    
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">entities</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;raw_words&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+                <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;raw_targets&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span>
+                <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;entities&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entities</span><span class="p">)</span>
+                <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;entity_tags&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity_tags</span><span class="p">)</span>
+                <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;entity_spans&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity_spans</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">outputs</span></div>
+
+<div class="viewcode-block" id="ConllNERProcessor.process"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.few_shot.module.html#deepke.name_entity_re.few_shot.module.datasets.ConllNERProcessor.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
+        <span class="n">target_shift</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> 
+        <span class="k">def</span> <span class="nf">prepare_target</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+            <span class="n">raw_word</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;raw_word&#39;</span><span class="p">]</span>
+            <span class="n">word_bpes</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">bos_token_id</span><span class="p">]]</span> 
+            <span class="n">first</span> <span class="o">=</span> <span class="p">[]</span> 
+            <span class="n">cur_bpe_len</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">raw_word</span><span class="p">:</span>
+                <span class="n">bpes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">add_prefix_space</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">bpes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">convert_tokens_to_ids</span><span class="p">(</span><span class="n">bpes</span><span class="p">)</span>
+                <span class="n">first</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_bpe_len</span><span class="p">)</span>
+                <span class="n">cur_bpe_len</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bpes</span><span class="p">)</span>
+                <span class="n">word_bpes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bpes</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">first</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">bpes</span><span class="p">)</span> <span class="o">==</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="n">word_bpes</span><span class="p">))</span>
+            <span class="n">word_bpes</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span><span class="p">])</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">first</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_word</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">word_bpes</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span>
+
+            <span class="n">lens</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="n">word_bpes</span><span class="p">))</span> 
+            <span class="n">cum_lens</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">lens</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>   
+
+            <span class="n">entity_spans</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;entity_span&#39;</span><span class="p">]</span>  <span class="c1"># [(s1, e1, s2, e2), ()]</span>
+            <span class="n">entity_tags</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;entity_tag&#39;</span><span class="p">]</span>  <span class="c1"># [tag1, tag2...]</span>
+            <span class="n">entities</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span>  <span class="c1"># [[ent1, ent2,], [ent1, ent2]]</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="n">first</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">cum_lens</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">entity_spans</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">entity_tags</span><span class="p">)</span>                <span class="c1">#</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">entity_spans</span><span class="p">,</span> <span class="n">entity_tags</span><span class="p">)):</span>
+                <span class="n">cur_pair</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">num_ent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_ent</span><span class="p">):</span>
+                    <span class="n">start</span> <span class="o">=</span> <span class="n">entity</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span><span class="p">]</span>
+                    <span class="n">end</span> <span class="o">=</span> <span class="n">entity</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="n">cur_pair_</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">cur_pair_</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">cum_lens</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">))])</span>
+                    <span class="n">cur_pair</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">p</span> <span class="o">+</span> <span class="n">target_shift</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">cur_pair_</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">word_idx</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">((</span><span class="n">cur_pair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cur_pair</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))):</span>
+                    <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="n">target_shift</span>
+                <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">cur_pair</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">cum_lens</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">target_shift</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cur_pair</span><span class="p">))])</span>
+
+                <span class="n">cur_pair</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping2targetid</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> 
+                <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">cur_pair</span><span class="p">])</span>
+            <span class="n">target</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">pairs</span><span class="p">)))</span>
+            <span class="n">target</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> 
+
+            <span class="n">word_bpes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">word_bpes</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">word_bpes</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">500</span>
+
+            <span class="nb">dict</span>  <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;tgt_tokens&#39;</span><span class="p">:</span> <span class="n">target</span><span class="p">,</span> <span class="s1">&#39;target_span&#39;</span><span class="p">:</span> <span class="n">pairs</span><span class="p">,</span> <span class="s1">&#39;src_tokens&#39;</span><span class="p">:</span> <span class="n">word_bpes</span><span class="p">,</span>
+                    <span class="s1">&#39;first&#39;</span><span class="p">:</span> <span class="n">first</span><span class="p">,</span> <span class="s1">&#39;src_seq_len&#39;</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">word_bpes</span><span class="p">),</span> <span class="s1">&#39;tgt_seq_len&#39;</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">)}</span>
+            <span class="k">return</span> <span class="nb">dict</span>
+        
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Process data...&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">raw_word</span><span class="p">,</span> <span class="n">raw_target</span><span class="p">,</span> <span class="n">entity</span><span class="p">,</span> <span class="n">entity_tag</span><span class="p">,</span> <span class="n">entity_span</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;raw_words&#39;</span><span class="p">],</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;raw_targets&#39;</span><span class="p">],</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;entities&#39;</span><span class="p">],</span> 
+                                                                                <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;entity_tags&#39;</span><span class="p">],</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;entity_spans&#39;</span><span class="p">]),</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;raw_words&#39;</span><span class="p">]),</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Processing&#39;</span><span class="p">):</span>
+            <span class="n">item_dict</span> <span class="o">=</span> <span class="n">prepare_target</span><span class="p">({</span><span class="s1">&#39;raw_word&#39;</span><span class="p">:</span> <span class="n">raw_word</span><span class="p">,</span> <span class="s1">&#39;raw_target&#39;</span><span class="p">:</span><span class="n">raw_target</span><span class="p">,</span> <span class="s1">&#39;entity&#39;</span><span class="p">:</span> <span class="n">entity</span><span class="p">,</span> <span class="s1">&#39;entity_tag&#39;</span><span class="p">:</span> <span class="n">entity_tag</span><span class="p">,</span> <span class="s1">&#39;entity_span&#39;</span><span class="p">:</span> <span class="n">entity_span</span><span class="p">})</span>
+            <span class="c1"># add item_dict to data_dict</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">item_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="p">:</span>
+                    <span class="n">data_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">data_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">data_dict</span></div>
+
+    <span class="k">def</span> <span class="nf">_add_tags_to_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">learn_weights</span><span class="p">:</span>  <span class="c1"># add extra tokens to huggingface tokenizer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mapping2id</span> <span class="o">=</span> <span class="p">{}</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">mapping2targetid</span> <span class="o">=</span> <span class="p">{}</span> 
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">key_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">convert_tokens_to_ids</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">add_prefix_space</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mapping2id</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_id</span>  <span class="c1"># may be list</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mapping2targetid</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping2targetid</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tokens_to_add</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mapping</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># </span>
+            <span class="n">unique_no_split_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">unique_no_split_tokens</span>                      <span class="c1"># no split</span>
+            <span class="n">sorted_add_tokens</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">tokens_to_add</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">tok</span> <span class="ow">in</span> <span class="n">sorted_add_tokens</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">convert_tokens_to_ids</span><span class="p">([</span><span class="n">tok</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">unk_token_id</span>    <span class="c1"># </span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">unique_no_split_tokens</span> <span class="o">=</span> <span class="n">unique_no_split_tokens</span> <span class="o">+</span> <span class="n">sorted_add_tokens</span>          <span class="c1"># add to no_split_tokens</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">add_tokens</span><span class="p">(</span><span class="n">sorted_add_tokens</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mapping2id</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># tag to id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mapping2targetid</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># tag to number</span>
+
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">key_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">convert_tokens_to_ids</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">key_id</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">value</span>
+                <span class="k">assert</span> <span class="n">key_id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_token_nums</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mapping2id</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1">#</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mapping2targetid</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping2targetid</span><span class="p">)</span></div>
+        
+
+<div class="viewcode-block" id="ConllNERDataset"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.few_shot.module.html#deepke.name_entity_re.few_shot.module.datasets.ConllNERDataset">[docs]</a><span class="k">class</span> <span class="nc">ConllNERDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_processor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_processor</span> <span class="o">=</span> <span class="n">data_processor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_dict</span> <span class="o">=</span> <span class="n">data_processor</span><span class="o">.</span><span class="n">load_from_file</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">complet_data</span> <span class="o">=</span> <span class="n">data_processor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">complet_data</span><span class="p">[</span><span class="s1">&#39;src_tokens&#39;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">complet_data</span><span class="p">[</span><span class="s1">&#39;src_tokens&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]),</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">complet_data</span><span class="p">[</span><span class="s1">&#39;src_seq_len&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]),</span> \
+                    <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">complet_data</span><span class="p">[</span><span class="s1">&#39;first&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">complet_data</span><span class="p">[</span><span class="s1">&#39;raw_words&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">complet_data</span><span class="p">[</span><span class="s1">&#39;src_tokens&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]),</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">complet_data</span><span class="p">[</span><span class="s1">&#39;tgt_tokens&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]),</span> \
+                    <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">complet_data</span><span class="p">[</span><span class="s1">&#39;src_seq_len&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]),</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">complet_data</span><span class="p">[</span><span class="s1">&#39;tgt_seq_len&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]),</span> \
+                    <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">complet_data</span><span class="p">[</span><span class="s1">&#39;first&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">complet_data</span><span class="p">[</span><span class="s1">&#39;target_span&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="ConllNERDataset.collate_fn"><a class="viewcode-back" href="../../../../../deepke.name_entity_re.few_shot.module.html#deepke.name_entity_re.few_shot.module.datasets.ConllNERDataset.collate_fn">[docs]</a>    <span class="k">def</span> <span class="nf">collate_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+        <span class="n">src_tokens</span><span class="p">,</span> <span class="n">src_seq_len</span><span class="p">,</span> <span class="n">first</span>  <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="n">tgt_tokens</span><span class="p">,</span> <span class="n">tgt_seq_len</span><span class="p">,</span> <span class="n">target_span</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;test&quot;</span><span class="p">:</span>
+            <span class="n">raw_words</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">:</span>
+                <span class="n">src_tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">src_seq_len</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">first</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                <span class="n">raw_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="n">src_tokens</span> <span class="o">=</span> <span class="n">pad_sequence</span><span class="p">(</span><span class="n">src_tokens</span><span class="p">,</span> <span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padding_value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_processor</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token_id</span><span class="p">)</span>
+            <span class="n">first</span> <span class="o">=</span> <span class="n">pad_sequence</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padding_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">src_tokens</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">src_seq_len</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">first</span><span class="p">,</span> <span class="n">raw_words</span>
+
+        <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">:</span>
+            <span class="n">src_tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">tgt_tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">src_seq_len</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">tgt_seq_len</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="n">first</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+            <span class="n">target_span</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        <span class="n">src_tokens</span> <span class="o">=</span> <span class="n">pad_sequence</span><span class="p">(</span><span class="n">src_tokens</span><span class="p">,</span> <span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padding_value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_processor</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token_id</span><span class="p">)</span>
+        <span class="n">tgt_tokens</span> <span class="o">=</span> <span class="n">pad_sequence</span><span class="p">(</span><span class="n">tgt_tokens</span><span class="p">,</span> <span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padding_value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="n">pad_sequence</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padding_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">src_tokens</span><span class="p">,</span> <span class="n">tgt_tokens</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">src_seq_len</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">tgt_seq_len</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">first</span><span class="p">,</span> <span class="n">target_span</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">data_path</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;train&#39;</span><span class="p">:</span><span class="s1">&#39;data/conll2003/train.txt&#39;</span><span class="p">}</span>
+    <span class="n">bart_name</span> <span class="o">=</span> <span class="s1">&#39;../BARTNER-AMAX/facebook/&#39;</span>
+    <span class="n">conll_processor</span> <span class="o">=</span> <span class="n">ConllNERProcessor</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">bart_name</span><span class="p">)</span>
+    <span class="n">conll_datasets</span> <span class="o">=</span> <span class="n">ConllNERDataset</span><span class="p">(</span><span class="n">conll_processor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+    <span class="n">conll_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">conll_datasets</span><span class="p">,</span> <span class="n">collate_fn</span><span class="o">=</span><span class="n">conll_datasets</span><span class="o">.</span><span class="n">collate_fn</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">conll_dataloader</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">break</span>
+    
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, ZJUNLP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

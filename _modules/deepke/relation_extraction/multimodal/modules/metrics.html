@@ -76,8 +76,6 @@
              
   <h1>Source code for deepke.relation_extraction.multimodal.modules.metrics</h1><div class="highlight"><pre>
 <div class="viewcode-block" id="eval_result"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.multimodal.modules.html#deepke.relation_extraction.multimodal.modules.metrics.eval_result">[docs]</a><span></span><span class="k">def</span> <span class="nf">eval_result</span><span class="p">(</span><span class="n">true_labels</span><span class="p">,</span> <span class="n">pred_result</span><span class="p">,</span> <span class="n">rel2id</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">use_name</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;calculate the micro-average of p r f1&quot;&quot;&quot;</span>
-
     <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">true_labels</span><span class="p">)</span>
     <span class="n">correct_positive</span> <span class="o">=</span> <span class="mi">0</span>

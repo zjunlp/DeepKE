@@ -86,12 +86,12 @@
     
     <span class="k">def</span> <span class="nf">collate_fn_intra</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Args: </span>
-<span class="sd">            batch () : Data</span>
-<span class="sd">        Returns : </span>
-<span class="sd">            x (dict) : key is the words，and value is its length.</span>
-<span class="sd">            y (List) : Collection of key-values pairs.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">    Arg : </span>
+<span class="sd">        batch () : 数据集</span>
+<span class="sd">    Returna : </span>
+<span class="sd">        x (dict) : key为词，value为长度</span>
+<span class="sd">        y (List) : 关系对应值的集合</span>
+<span class="sd">    &quot;&quot;&quot;</span>
         <span class="n">batch</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">data</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;seq_len&#39;</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="n">max_len</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;seq_len&#39;</span><span class="p">]</span>
@@ -136,7 +136,7 @@
 
 <div class="viewcode-block" id="CustomDataset"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.tools.html#deepke.relation_extraction.standard.tools.dataset.CustomDataset">[docs]</a><span class="k">class</span> <span class="nc">CustomDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Use List to store data by default</span>
+<span class="sd">    默认使用 List 存储数据</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">load_pkl</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>

@@ -15,7 +15,6 @@
         <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
         <script src="../../../../../_static/jquery.js"></script>
         <script src="../../../../../_static/underscore.js"></script>
-        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../../_static/doctools.js"></script>
         <script src="../../../../../_static/clipboard.min.js"></script>
         <script src="../../../../../_static/copybutton.js"></script>
@@ -84,7 +83,7 @@
 
 <div class="viewcode-block" id="BasicModule"><a class="viewcode-back" href="../../../../../deepke.attribution_extraction.standard.models.html#deepke.attribution_extraction.standard.models.BasicModule.BasicModule">[docs]</a><span class="k">class</span> <span class="nc">BasicModule</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Encapsulate nn.module and provide save and load methods</span>
+<span class="sd">    封装nn.Module, 提供 save 和 load 方法</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BasicModule</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -92,14 +91,14 @@
 
 <div class="viewcode-block" id="BasicModule.load"><a class="viewcode-back" href="../../../../../deepke.attribution_extraction.standard.models.html#deepke.attribution_extraction.standard.models.BasicModule.BasicModule.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Load the specified path model </span>
+<span class="sd">        加载指定路径的模型</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">device</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="BasicModule.save"><a class="viewcode-back" href="../../../../../deepke.attribution_extraction.standard.models.html#deepke.attribution_extraction.standard.models.BasicModule.BasicModule.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epoch</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cfg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Save the model and use &quot;model name + time&quot; as the file name by default</span>
+<span class="sd">        保存模型，默认使用“模型名字+时间”作为文件名</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">time_prefix</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">_%H-%M-%S&#39;</span><span class="p">)</span>
         <span class="n">prefix</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">cwd</span><span class="p">,</span> <span class="s1">&#39;checkpoints&#39;</span><span class="p">,</span><span class="n">time_prefix</span><span class="p">)</span>

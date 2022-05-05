@@ -52,7 +52,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="deepke.html">DeepKE</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="deepke.attribution_extraction.html">Attribution Extraction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_recognition.html">Name Entity Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepke.name_entity_re.html">Name Entity Recognition</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="deepke.relation_extraction.html">Relation Extraction</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Document</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#module-deepke.relation_extraction.document.evaluation">deepke.relation_extraction.document.evaluation module</a></li>
@@ -65,6 +65,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="deepke.relation_extraction.few_shot.html">Few Shot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deepke.relation_extraction.standard.html">Standard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deepke.relation_extraction.multimodal.html">MultiModal</a></li>
 </ul>
 </li>
 </ul>
@@ -123,9 +124,17 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="deepke.relation_extraction.document.losses.multilabel_categorical_crossentropy">
 <span class="sig-prename descclassname"><span class="pre">deepke.relation_extraction.document.losses.</span></span><span class="sig-name descname"><span class="pre">multilabel_categorical_crossentropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deepke/relation_extraction/document/losses.html#multilabel_categorical_crossentropy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deepke.relation_extraction.document.losses.multilabel_categorical_crossentropy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Multilabel categorical crossentroy
-Description: <a href="#id1"><span class="problematic" id="id2">y_</span></a> True and <a href="#id3"><span class="problematic" id="id4">Y_</span></a> The shape of PRED is consistent, <a href="#id5"><span class="problematic" id="id6">y_</span></a> The element of true is either 0 or 1,1 indicates that the corresponding class is the target class, and 0 indicates that the corresponding class is a non target class.
-Warning: please ensure <a href="#id7"><span class="problematic" id="id8">Y_</span></a> The value range of PRED is all real numbers, in other words, in general, <a href="#id9"><span class="problematic" id="id10">y_</span></a> pred.Do not add activation functions, especially sigmoid or softmax! forecast.Phase outputs <a href="#id11"><span class="problematic" id="id12">y_</span></a> Classes with PRED greater than 0. If you have any questions, please read and understand them carefully this paper.</p>
+<dd><p>多标签分类的交叉熵
+说明：y_true和y_pred的shape一致，y_true的元素非0即1，</p>
+<blockquote>
+<div><p>1表示对应的类为目标类，0表示对应的类为非目标类。</p>
+</div></blockquote>
+<dl class="simple">
+<dt>警告：请保证y_pred的值域是全体实数，换言之一般情况下y_pred</dt><dd><p>不用加激活函数，尤其是不能加sigmoid或者softmax！预测
+阶段则输出y_pred大于0的类。如有疑问，请仔细阅读并理解
+本文。</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py class">

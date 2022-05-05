@@ -81,10 +81,13 @@
 
 
 <div class="viewcode-block" id="multilabel_categorical_crossentropy"><a class="viewcode-back" href="../../../../deepke.relation_extraction.document.html#deepke.relation_extraction.document.losses.multilabel_categorical_crossentropy">[docs]</a><span class="k">def</span> <span class="nf">multilabel_categorical_crossentropy</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Multilabel categorical crossentroy</span>
-<span class="sd">    Description: y_ True and Y_ The shape of PRED is consistent, y_ The element of true is either 0 or 1,1 indicates that the corresponding class is the target class, and 0 indicates that the corresponding class is a non target class.</span>
-<span class="sd">    Warning: please ensure Y_ The value range of PRED is all real numbers, in other words, in general, y_ pred.Do not add activation functions, especially sigmoid or softmax! forecast.Phase outputs y_ Classes with PRED greater than 0. If you have any questions, please read and understand them carefully this paper.</span>
+    <span class="sd">&quot;&quot;&quot;多标签分类的交叉熵</span>
+<span class="sd">    说明：y_true和y_pred的shape一致，y_true的元素非0即1，</span>
+<span class="sd">         1表示对应的类为目标类，0表示对应的类为非目标类。</span>
+<span class="sd">    警告：请保证y_pred的值域是全体实数，换言之一般情况下y_pred</span>
+<span class="sd">         不用加激活函数，尤其是不能加sigmoid或者softmax！预测</span>
+<span class="sd">         阶段则输出y_pred大于0的类。如有疑问，请仔细阅读并理解</span>
+<span class="sd">         本文。</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">y_pred</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y_true</span><span class="p">)</span> <span class="o">*</span> <span class="n">y_pred</span>
     <span class="n">y_pred_neg</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">-</span> <span class="n">y_true</span> <span class="o">*</span> <span class="mf">1e30</span>

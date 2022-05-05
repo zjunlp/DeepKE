@@ -100,12 +100,13 @@
 <span class="p">]</span>
 <span class="k">def</span> <span class="nf">_handle_pos_limit</span><span class="p">(</span><span class="n">pos</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Handle sentence length,and set sentence length limit.</span>
-<span class="sd">    Args:</span>
-<span class="sd">        pos (List[int]) : List of sentence</span>
-<span class="sd">        limit (int) : Limit number</span>
-<span class="sd">    Returns:</span>
-<span class="sd">        [p + limit + 1 for p in pos] (List[int]) : Results after handling</span>
+<span class="sd">    处理句子长度，设定句长限制</span>
+<span class="sd">    Args :</span>
+<span class="sd">        pos (List[int]) : 句子对应的List</span>
+<span class="sd">        limit (int) : 限制的数</span>
+<span class="sd">    Return :</span>
+<span class="sd">        [p + limit + 1 for p in pos] (List[int]) : 处理后的结果</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">p</span> <span class="o">&gt;</span> <span class="n">limit</span><span class="p">:</span>
@@ -117,10 +118,10 @@
 
 <span class="k">def</span> <span class="nf">_add_pos_seq</span><span class="p">(</span><span class="n">train_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">cfg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Add position sequence</span>
-<span class="sd">    Args: </span>
-<span class="sd">        train_data (List[Dict]) : Training data</span>
-<span class="sd">        cfg : Config file</span>
+<span class="sd">    增加位置序列</span>
+<span class="sd">    Args : </span>
+<span class="sd">        train_data (List[Dict]) : 数据集合</span>
+<span class="sd">        cfg : 配置文件</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">:</span>
         <span class="n">entities_idx</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;head_idx&#39;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;tail_idx&#39;</span><span class="p">]</span>
@@ -134,16 +135,18 @@
 
         <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">model_name</span> <span class="o">==</span> <span class="s1">&#39;cnn&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">use_pcnn</span><span class="p">:</span>
+                <span class="c1"># 当句子无法分隔成三段时，无法使用PCNN</span>
+                <span class="c1"># 比如： [head, ... tail] or [... head, tail, ...] 无法使用统一方式 mask 分段</span>
                 <span class="n">d</span><span class="p">[</span><span class="s1">&#39;entities_pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">entities_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">entities_idx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">entities_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span>\
                                     <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;seq_len&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">entities_idx</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 
 <span class="k">def</span> <span class="nf">_convert_tokens_into_index</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">vocab</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert tokens to index </span>
-<span class="sd">    Args: </span>
-<span class="sd">        data (List[Dict]) : Data</span>
-<span class="sd">        vocab (Class) : Vocabulary </span>
+<span class="sd">    将tokens转换成index值</span>
+<span class="sd">    Args : </span>
+<span class="sd">        data (List[Dict]) : 数据集合</span>
+<span class="sd">        vocab (Class) : 词汇表</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">unk_str</span> <span class="o">=</span> <span class="s1">&#39;[UNK]&#39;</span>
     <span class="n">unk_idx</span> <span class="o">=</span> <span class="n">vocab</span><span class="o">.</span><span class="n">word2idx</span><span class="p">[</span><span class="n">unk_str</span><span class="p">]</span>
@@ -155,15 +158,18 @@
 
 <span class="k">def</span> <span class="nf">_serialize_sentence</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">serial</span><span class="p">,</span> <span class="n">cfg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Sentence to tokens</span>
-<span class="sd">    Args: </span>
-<span class="sd">        data (List[Dict]) : Data </span>
-<span class="sd">        serial (Class): Serializer class</span>
-<span class="sd">        cfg : Config file</span>
+<span class="sd">    将句子分词</span>
+<span class="sd">    Args : </span>
+<span class="sd">        data (List[Dict]) : 数据集合</span>
+<span class="sd">        serial (Class): Serializer类</span>
+<span class="sd">        cfg : 配置文件</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
         <span class="n">sent</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;sentence&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="n">sent</span> <span class="o">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;head&#39;</span><span class="p">],</span> <span class="s1">&#39; head &#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;tail&#39;</span><span class="p">],</span> <span class="s1">&#39; tail &#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;head&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;tail&#39;</span><span class="p">]:</span>
+            <span class="n">sent</span> <span class="o">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;tail&#39;</span><span class="p">],</span> <span class="s1">&#39; tail &#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;head&#39;</span><span class="p">],</span> <span class="s1">&#39; head &#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sent</span> <span class="o">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;head&#39;</span><span class="p">],</span> <span class="s1">&#39; head &#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;tail&#39;</span><span class="p">],</span> <span class="s1">&#39; tail &#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">d</span><span class="p">[</span><span class="s1">&#39;tokens&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">serial</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">never_split</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;head&#39;</span><span class="p">,</span> <span class="s1">&#39;tail&#39;</span><span class="p">])</span>
         <span class="n">head_idx</span><span class="p">,</span> <span class="n">tail_idx</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;tokens&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;head&#39;</span><span class="p">),</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;tokens&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;tail&#39;</span><span class="p">)</span>
         <span class="n">d</span><span class="p">[</span><span class="s1">&#39;head_idx&#39;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;tail_idx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">head_idx</span><span class="p">,</span> <span class="n">tail_idx</span>
@@ -182,10 +188,10 @@
 
 <span class="k">def</span> <span class="nf">_lm_serialize</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">cfg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    LM model to serialize</span>
-<span class="sd">    Args:</span>
-<span class="sd">        data (List[Dict]) : Data</span>
-<span class="sd">        cfg : Config file</span>
+<span class="sd">    lm模型分词</span>
+<span class="sd">    Args : </span>
+<span class="sd">        data (List[Dict]) : 数据集合</span>
+<span class="sd">        cfg : 配置文件</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;use bert tokenizer...&#39;</span><span class="p">)</span>
     <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">BertTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">lm_file</span><span class="p">)</span>
@@ -199,10 +205,10 @@
 
 <span class="k">def</span> <span class="nf">_add_relation_data</span><span class="p">(</span><span class="n">rels</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Add relation data</span>
-<span class="sd">    Args:</span>
-<span class="sd">        rels (Dict) : Relation Dict</span>
-<span class="sd">        data (List) : Data to add relation</span>
+<span class="sd">    增加关系数据</span>
+<span class="sd">    Args :</span>
+<span class="sd">        rels (Dict) : 关系字典集合</span>
+<span class="sd">        data (List) : 所需增加的关系数据</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
         <span class="n">d</span><span class="p">[</span><span class="s1">&#39;rel2idx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rels</span><span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;relation&#39;</span><span class="p">]][</span><span class="s1">&#39;index&#39;</span><span class="p">]</span>
@@ -212,11 +218,11 @@
 
 <span class="k">def</span> <span class="nf">_handle_relation_data</span><span class="p">(</span><span class="n">relation_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Handle relation data </span>
+<span class="sd">    处理关系数据，每一个关系有index，head_type,tail_type三个属性</span>
 <span class="sd">    Args: </span>
-<span class="sd">        relation_data (List[Dict]) : Data</span>
-<span class="sd">    Returns:</span>
-<span class="sd">        rels (Dict) : Results after handling</span>
+<span class="sd">        relation_data (List[Dict]) : 所需要处理的关系数据</span>
+<span class="sd">    Return :</span>
+<span class="sd">        rels (Dict) : 处理之后的结果</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">rels</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
     <span class="n">relation_data</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">relation_data</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]))</span>
@@ -229,9 +235,26 @@
 
     <span class="k">return</span> <span class="n">rels</span>
 
+<span class="k">def</span> <span class="nf">_clean_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    清洗数据，去除一些头尾实体不存在的句子</span>
+<span class="sd">    Args: </span>
+<span class="sd">        data((List[Dict])): 需要处理的数据</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        clean_data : 处理后的数据</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">clean_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">sent</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;sentence&#39;</span><span class="p">]</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;head&#39;</span><span class="p">]</span>
+        <span class="n">tail</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;tail&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">head</span> <span class="ow">in</span> <span class="n">sent</span> <span class="ow">and</span> <span class="n">tail</span> <span class="ow">in</span> <span class="n">sent</span><span class="p">:</span>
+            <span class="n">clean_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">clean_data</span>
+
 <div class="viewcode-block" id="preprocess"><a class="viewcode-back" href="../../../../../deepke.relation_extraction.standard.tools.html#deepke.relation_extraction.standard.tools.preprocess.preprocess">[docs]</a><span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="n">cfg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Preprocess data</span>
+<span class="sd">    数据预处理阶段</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;===== start preprocess data =====&#39;</span><span class="p">)</span>
     <span class="n">train_fp</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">cwd</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;train.csv&#39;</span><span class="p">)</span>
@@ -244,6 +267,11 @@
     <span class="n">valid_data</span> <span class="o">=</span> <span class="n">load_csv</span><span class="p">(</span><span class="n">valid_fp</span><span class="p">)</span>
     <span class="n">test_data</span> <span class="o">=</span> <span class="n">load_csv</span><span class="p">(</span><span class="n">test_fp</span><span class="p">)</span>
     <span class="n">relation_data</span> <span class="o">=</span> <span class="n">load_csv</span><span class="p">(</span><span class="n">relation_fp</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;clean data...&#39;</span><span class="p">)</span>
+    <span class="n">train_data</span> <span class="o">=</span> <span class="n">_clean_data</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+    <span class="n">valid_data</span> <span class="o">=</span> <span class="n">_clean_data</span><span class="p">(</span><span class="n">valid_data</span><span class="p">)</span>
+    <span class="n">test_data</span> <span class="o">=</span> <span class="n">_clean_data</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;convert relation into index...&#39;</span><span class="p">)</span>
     <span class="n">rels</span> <span class="o">=</span> <span class="n">_handle_relation_data</span><span class="p">(</span><span class="n">relation_data</span><span class="p">)</span>

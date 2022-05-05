@@ -93,12 +93,12 @@
 
 <div class="viewcode-block" id="Serializer.serialize"><a class="viewcode-back" href="../../../../../deepke.attribution_extraction.standard.tools.html#deepke.attribution_extraction.standard.tools.serializer.Serializer.serialize">[docs]</a>    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">never_split</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Split a piece of text into a vocabulary list according to the established splitting rules</span>
-<span class="sd">        Args:</span>
-<span class="sd">            text (String) : Text for spliting</span>
-<span class="sd">            never_split (List) : Words not to be split, empty by default</span>
-<span class="sd">        Returns: </span>
-<span class="sd">            output_tokens (List): Results after spliting</span>
+<span class="sd">        将一段文本按照制定拆分规则，拆分成一个词汇List</span>
+<span class="sd">        Args :</span>
+<span class="sd">            text (String) : 所需拆分文本</span>
+<span class="sd">            never_split (List) : 不拆分的词，默认为空</span>
+<span class="sd">        Rerurn : </span>
+<span class="sd">            output_tokens (List): 拆分后的结果 </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">never_split</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">never_split</span> <span class="o">+</span> <span class="p">(</span><span class="n">never_split</span> <span class="k">if</span> <span class="n">never_split</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[])</span>
         <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clean_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
@@ -122,11 +122,11 @@
 
     <span class="k">def</span> <span class="nf">_clean_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Delete invalid characters and blank characters in the text</span>
-<span class="sd">        Args:</span>
-<span class="sd">            text (String) : Text to be deleted</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            &quot;&quot;.join(output) (String) : Text after deleted</span>
+<span class="sd">        删除文本中无效字符以及空白字符</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            text (String) : 所需删除的文本</span>
+<span class="sd">        Return :</span>
+<span class="sd">            &quot;&quot;.join(output) (String) : 删除后的文本</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
@@ -141,12 +141,12 @@
 
     <span class="k">def</span> <span class="nf">_use_jieba_cut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">never_split</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Use jieba</span>
-<span class="sd">        Args:</span>
-<span class="sd">            text (String) : Text to be splited</span>
-<span class="sd">            never_split (List) : Words not to be split</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            tokens (List) : Text after splited</span>
+<span class="sd">        使用jieba分词</span>
+<span class="sd">        Args :</span>
+<span class="sd">            text (String) : 所需拆分文本</span>
+<span class="sd">            never_split (List) : 不拆分的词</span>
+<span class="sd">        Return :</span>
+<span class="sd">            tokens (List) : 拆分完的结果</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">never_split</span><span class="p">:</span>
             <span class="n">jieba</span><span class="o">.</span><span class="n">suggest_freq</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
@@ -161,11 +161,11 @@
 
     <span class="k">def</span> <span class="nf">_tokenize_chinese_chars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add spaces around CJK characters</span>
-<span class="sd">        Args:</span>
-<span class="sd">            text (String) : Text to be added</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            &quot;&quot;.join(output) (String) : Text after added</span>
+<span class="sd">        在CJK字符周围添加空格</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            text (String) : 所需拆分文本</span>
+<span class="sd">        Return :</span>
+<span class="sd">            &quot;&quot;.join(output) (String) : 添加完后的文本</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
@@ -180,16 +180,16 @@
 
     <span class="k">def</span> <span class="nf">_orig_tokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Split text on white space and some punctuation marks (such as commas or periods)</span>
-<span class="sd">        Args:</span>
-<span class="sd">            text (String) : Text to be splited</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            tokens (List) : Text after splited</span>
+<span class="sd">        在空白和一些标点符号（如逗号或句点）上拆分文本</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            text (String) : 所需拆分文本</span>
+<span class="sd">        Return :</span>
+<span class="sd">            tokens (List) : 分词完的结果</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
-        
+        <span class="c1"># 常见的断句标点</span>
         <span class="n">punc</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;,.?!;: 、｜，。？！；：《》「」【】/&lt;&gt;|\“ ”‘ ’&quot;&quot;&quot;</span>
         <span class="n">punc_re</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">punc</span><span class="p">)</span>
         <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">punc_re</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">x</span><span class="o">.</span><span class="n">group</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
@@ -198,11 +198,11 @@
 
     <span class="k">def</span> <span class="nf">_whitespace_tokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Perform basic whitespace cleaning and segmentation</span>
-<span class="sd">        Args:</span>
-<span class="sd">            text (String) : Text to be splited</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            tokens (List) : Text after splited</span>
+<span class="sd">        进行基本的空白字符清理和分割</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            text (String) : 所需拆分文本</span>
+<span class="sd">        Return :</span>
+<span class="sd">            tokens (List) : 分词完的结果</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
@@ -212,11 +212,11 @@
 
     <span class="k">def</span> <span class="nf">_run_strip_accents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Delete accent marks from text</span>
-<span class="sd">        Args:</span>
-<span class="sd">            text (String) : Text to be deleted</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            &quot;&quot;.join(output) (String) : Text to after deleted</span>
+<span class="sd">        从文本中去除重音符号</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            text (String) : 所需拆分文本</span>
+<span class="sd">        Return :</span>
+<span class="sd">            &quot;&quot;.join(output) (String) : 去除后的文本</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s2">&quot;NFD&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
@@ -230,12 +230,12 @@
 
     <span class="k">def</span> <span class="nf">_run_split_on_punc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">never_split</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Split text by punctuation</span>
-<span class="sd">        Args:</span>
-<span class="sd">            text (String) : Text to be splited</span>
-<span class="sd">            never_split (List) : Words not to be split, empty by default</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            [&quot;&quot;.join(x) for x in output] (List) : Text to after splited</span>
+<span class="sd">        通过标点符号拆分文本</span>
+<span class="sd">        Args :</span>
+<span class="sd">            text (String) : 所需拆分文本</span>
+<span class="sd">            never_split (List) : 不拆分的词，默认为空</span>
+<span class="sd">        Return :</span>
+<span class="sd">            [&quot;&quot;.join(x) for x in output] (List) : 拆分完的结果</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="k">if</span> <span class="n">never_split</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">never_split</span><span class="p">:</span>
@@ -261,11 +261,11 @@
 <div class="viewcode-block" id="Serializer.is_control"><a class="viewcode-back" href="../../../../../deepke.attribution_extraction.standard.tools.html#deepke.attribution_extraction.standard.tools.serializer.Serializer.is_control">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">is_control</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Determine whether the character is a control character</span>
-<span class="sd">        Args:</span>
-<span class="sd">            char : Character</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            bool : Result</span>
+<span class="sd">        判断字符是否为控制字符</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            char : 字符</span>
+<span class="sd">        Return :</span>
+<span class="sd">            bool : 判断结果</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># These are technically control characters but we count them as whitespace</span>
         <span class="c1"># characters.</span>
@@ -279,11 +279,11 @@
 <div class="viewcode-block" id="Serializer.is_whitespace"><a class="viewcode-back" href="../../../../../deepke.attribution_extraction.standard.tools.html#deepke.attribution_extraction.standard.tools.serializer.Serializer.is_whitespace">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">is_whitespace</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Determine whether the character is a whitespace character</span>
-<span class="sd">        Args:</span>
-<span class="sd">            char : Character</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            bool : Result</span>
+<span class="sd">        判断字符是否为空白字符</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            char : 字符</span>
+<span class="sd">        Return :</span>
+<span class="sd">            bool : 判断结果</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># \t, \n, and \r are technically contorl characters but we treat them</span>
         <span class="c1"># as whitespace since they are generally considered as such.</span>
@@ -298,12 +298,11 @@
     <span class="k">def</span> <span class="nf">is_chinese_char</span><span class="p">(</span><span class="n">cp</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        </span>
-<span class="sd">        Determine whether the character is a chinese character</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            cp (char): Character</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            bool : Result</span>
+<span class="sd">        判断字符是否为中文字符</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            cp (char): 字符</span>
+<span class="sd">        Return :</span>
+<span class="sd">            bool : 判断结果</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># This defines a &quot;chinese character&quot; as anything in the CJK Unicode block:</span>
@@ -328,11 +327,11 @@
 <div class="viewcode-block" id="Serializer.is_punctuation"><a class="viewcode-back" href="../../../../../deepke.attribution_extraction.standard.tools.html#deepke.attribution_extraction.standard.tools.serializer.Serializer.is_punctuation">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">is_punctuation</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Determine whether the character is a punctuation character</span>
-<span class="sd">        Args:</span>
-<span class="sd">            char : Character</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            bool : Result</span>
+<span class="sd">        判断字符是否为标点字符</span>
+<span class="sd">        Arg :</span>
+<span class="sd">            char : 字符</span>
+<span class="sd">        Return :</span>
+<span class="sd">            bool : 判断结果</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cp</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
         <span class="c1"># We treat all non-letter/number ASCII as punctuation.</span>
