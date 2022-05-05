@@ -5,6 +5,6 @@ DeepKE
    :maxdepth: 5
 
    deepke.attribution_extraction
-   deepke.name_entity_recognition
+   deepke.name_entity_re
    deepke.relation_extraction
 

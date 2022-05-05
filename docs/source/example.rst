@@ -112,6 +112,71 @@ Predict:
     
     python predict.py
 
+Multimodal NER
+--------------
+This module is in the multimodal scenario.
+
+**Step 1**
+
+Enter the ``DeepKE/example/ner/multimodal`` folder.
+
+**Step 2**
+
+Get data:
+
+    `wget 120.27.214.45/Data/ner/multimodal/data.tar.gz`
+
+    `tar -xzvf data.tar.gz`
+
+The dataset and parameters can be customized in the ``data`` folder and ``conf`` folder respectively.
+
+Textual dataset needs to be input as ``TXT`` file. Visual dataset is recommended to be input as ``JPG`` or ``PNG`` file.
+
+The `data's format` of file needs to comply with the following：
+
+IMGID:213820 '\\n'
+RT	O '\\n'
+@JonMatthewsDS	O '\\n'
+:	O '\\n'
+Driving	I-ORG '\\n'
+test	O '\\n'
+Leicester	B-ORG '\\n'
+Jon	I-ORG '\\n'
+Matthews	I-ORG '\\n'
+Driving	I-ORG '\\n'
+School	I-ORG '\\n'
+:	O '\\n'
+http://t.co/Zf0tOasjUE	O '\\n'
+http://t.co/IXiIgDVmPu	O '\\n'
+
+Instead of inputting the original images as visual datas directly, you can use a `Visual Grounding toolkit <https://github.com/zyang-ur/onestage_grounding>`_ to locate visual objects.
+
+**Step 3**
+
+Train:
+
+    `python run.py`
+
+Start with the model trained last time: modify `load_path` in ``conf/train.yaml`` as the path where the model trained last time was saved. And the path saving logs generated in training can be customized by ``log_dir``.
+
+**Step 4**
+
+Predict:
+
+    `python predict.py`
+
+.. code-block:: bash
+    
+    cd example/ner/multimodal
+
+    wget 120.27.214.45/Data/ner/multimodal/data.tar.gz
+
+    tar -xzvf data.tar.gz
+
+    python run.py
+    
+    python predict.py
+
 Standard RE
 -----------
 The standard module is implemented by common deep learning models, including CNN, RNN, Capsule, GCN, Transformer and the pretrained model.
