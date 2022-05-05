@@ -18,10 +18,10 @@ class MMPNERProcessor(object):
         self.aux_processor.feature_extractor.size, self.aux_processor.feature_extractor.crop_size = args.aux_size, args.aux_size
         self.rcnn_processor = CLIPProcessor.from_pretrained(args.vit_name)
         self.rcnn_processor.feature_extractor.size, self.rcnn_processor.feature_extractor.crop_size = args.rcnn_size, args.rcnn_size
-
+        self.cwd = args.cwd
 
     def load_from_file(self, mode="train"):
-        load_file = self.data_path[mode]
+        load_file = os.path.join(self.cwd,self.data_path[mode])
         logger.info("Loading data from {}".format(load_file))
         with open(load_file, "r", encoding="utf-8") as f:
             lines = f.readlines()
@@ -47,16 +47,16 @@ class MMPNERProcessor(object):
         assert len(raw_words) == len(raw_targets) == len(imgs), "{}, {}, {}".format(len(raw_words), len(raw_targets), len(imgs))
         aux_imgs = None
         # if not self.use_clip_vit:
-        aux_path = self.data_path[mode+"_auximgs"]
+        aux_path = os.path.join(self.cwd,self.data_path[mode+"_auximgs"])
         aux_imgs = torch.load(aux_path)
 
-        rcnn_imgs = torch.load(self.data_path['img2crop'])
+        rcnn_imgs = torch.load(os.path.join(self.cwd,self.data_path['train_auximgs']))
 
         return {"words": raw_words, "targets": raw_targets, "imgs": imgs, "aux_imgs":aux_imgs, "rcnn_imgs":rcnn_imgs}
 
 
 class MMPNERDataset(Dataset):
-    def __init__(self, processor, label_mapping, img_path=None, aux_path=None, rcnn_img_path=None, max_seq=40, ignore_idx=-100, aux_size=128, rcnn_size=64, mode='train') -> None:
+    def __init__(self, processor, label_mapping, img_path=None, aux_path=None, rcnn_img_path=None, max_seq=40, ignore_idx=-100, aux_size=128, rcnn_size=64, mode='train',cwd='') -> None:
         self.processor = processor
         self.data_dict = processor.load_from_file(mode)
         self.tokenizer = processor.tokenizer
@@ -72,6 +72,7 @@ class MMPNERDataset(Dataset):
         self.rcnn_processor = self.processor.rcnn_processor
         self.aux_size = aux_size
         self.rcnn_size = rcnn_size
+        self.cwd = cwd
     
     def __len__(self):
         return len(self.data_dict['words'])
@@ -96,7 +97,9 @@ class MMPNERDataset(Dataset):
         input_ids, token_type_ids, attention_mask = encode_dict['input_ids'], encode_dict['token_type_ids'], encode_dict['attention_mask']
         labels = [self.label_mapping["[CLS]"]] + labels + [self.label_mapping["[SEP]"]] + [self.ignore_idx]*(self.max_seq-len(labels)-2)
 
+        
         if self.img_path is not None:
+            self.img_path = os.path.join(self.cwd,self.img_path)
             # image process
             try:
                 img_path = os.path.join(self.img_path, img)
@@ -114,7 +117,7 @@ class MMPNERDataset(Dataset):
                     aux_img_paths  = self.data_dict['aux_imgs'][img]
                     aux_img_paths = [os.path.join(self.aux_img_path, path) for path in aux_img_paths]
                 for i in range(min(3, len(aux_img_paths))):
-                    aux_img = Image.open(aux_img_paths[i]).convert('RGB')
+                    aux_img = Image.open(os.path.join(self.cwd,aux_img_paths[i])).convert('RGB')
                     aux_img = self.aux_processor(images=aux_img, return_tensors='pt')['pixel_values'].squeeze()
                     aux_imgs.append(aux_img)
 
