@@ -28,7 +28,8 @@ setup(
         'opt-einsum==3.3.0',
         'wandb==0.12.7',
         "ujson",
-        "huggingface_hub==0.2.1"
+        "huggingface_hub==0.2.1",
+        "pytorch-crf==0.7.2"
     ], 
     classifiers=[
         "Programming Language :: Python :: 3",
