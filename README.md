@@ -85,7 +85,7 @@ There is a demonstration of prediction.<br>
 
 
 - DeepKE contains a unified framework for **named entity recognition**, **relation extraction** and **attribute extraction**, the three  knowledge extraction functions.
-- Each task can be implemented in different scenarios. For example, we can achieve relation extraction in **standard**, **low-resource (few-shot)** and **document-level** settings.
+- Each task can be implemented in different scenarios. For example, we can achieve relation extraction in **standard**, **low-resource (few-shot)**, **document-level** and **multimodal** settings.
 - Each application scenario comprises of three components: **Data** including Tokenizer, Preprocessor and Loader, **Model** including Module, Encoder and Forwarder, **Core** including Training, Evaluation and Prediction. 
 
 <br>
@@ -238,6 +238,33 @@ python predict.py
     python predict.py
     ```
 
+  - **[MULTIMODAL](https://github.com/zjunlp/DeepKE/tree/main/example/ner/multimodal)**
+
+    **Step1** Enter  `DeepKE/example/ner/multimodal`.  Download the dataset.
+
+    ```bash
+    wget 120.27.214.45/Data/ner/multimodal/data.tar.gz
+    
+    tar -xzvf data.tar.gz
+    ```
+
+    We use RCNN detected objects and visual grounding objects from original images as visual local information, where RCNN via [faster_rcnn](https://github.com/pytorch/vision/blob/main/torchvision/models/detection/faster_rcnn.py) and visual grounding via [onestage_grounding](https://github.com/zyang-ur/onestage_grounding).
+
+    **Step2** Training in the multimodal setting <br>
+
+    - The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.
+    - Start with the model trained last time: modify `load_path` in `conf/train.yaml`as the path where the model trained last time was saved. And the path saving logs generated in training can be customized by `log_dir`.
+
+    ```bash
+    python run.py
+    ```
+
+    **Step3** Prediction
+
+    ```bash
+    python predict.py
+    ```
+
 ### 2. Relation Extraction
 
 - Relationship extraction is the task of extracting semantic relations between entities from a unstructured text.
@@ -326,6 +353,33 @@ python predict.py
     python predict.py
     ```
 
+  - **[MULTIMODAL](https://github.com/zjunlp/DeepKE/tree/main/example/re/multimodal)**
+
+    **Step1** Enter  `DeepKE/example/re/multimodal`.  Download the dataset.
+
+    ```bash
+    wget 120.27.214.45/Data/re/multimodal/data.tar.gz
+    
+    tar -xzvf data.tar.gz
+    ```
+
+    We use RCNN detected objects and visual grounding objects from original images as visual local information, where RCNN via [faster_rcnn](https://github.com/pytorch/vision/blob/main/torchvision/models/detection/faster_rcnn.py) and visual grounding via [onestage_grounding](https://github.com/zyang-ur/onestage_grounding).
+
+    **Step2** Training<br>
+
+    - The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.
+    - Start with the model trained last time: modify `load_path` in `conf/train.yaml`as the path where the model trained last time was saved. And the path saving logs generated in training can be customized by `log_dir`.
+
+    ```bash
+    python run.py
+    ```
+
+    **Step3** Prediction
+
+    ```bash
+    python predict.py
+    ```
+
 ### 3. Attribute Extraction
 
 - Attribute extraction is to extract attributes for entities in a unstructed text.
@@ -399,6 +453,16 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
   [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/document/document_re_tutorial.ipynb)
 
   [RE Colab](https://colab.research.google.com/drive/1RGUBbbOBHlWJ1NXQLtP_YEUktntHtROa?usp=sharing)
+
+- Multimodal<br>
+
+  [NER Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/multimodal/multimodal_ner_tutorial.ipynb)
+
+  [NER Colab](https://colab.research.google.com/drive/1zOVZcn2v6xfCq39N80lbbHTdAfc7eGHb?usp=sharing)
+
+  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/multimodal/multimodal_re_tutorial.ipynb)
+
+  [RE Colab](https://colab.research.google.com/drive/1ZRqqXMSDWoPpAKL7h9w9pq-SY-2gjc-u?usp=sharing)
   
 
 <br>
