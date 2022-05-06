@@ -84,7 +84,7 @@ Deepke的架构图如下所示
 </h3>
 
 - DeepKE为三个知识抽取功能（命名实体识别、关系抽取和属性抽取）设计了一个统一的框架
-- 可以在不同场景下实现不同功能。比如，可以在标准全监督、低资源少样本和文档级设定下进行关系抽取
+- 可以在不同场景下实现不同功能。比如，可以在标准全监督、低资源少样本、文档级和多模态设定下进行关系抽取
 - 每一个应用场景由三个部分组成：Data部分包含Tokenizer、Preprocessor和Loader，Model部分包含Module、Encoder和Forwarder，Core部分包含Training、Evaluation和Prediction
 
 
@@ -228,6 +228,33 @@ python predict.py
     python predict.py
     ```
 
+  - **[多模态](https://github.com/zjunlp/DeepKE/tree/main/example/ner/multimodal)**
+
+    **Step1**: 进入 `DeepKE/example/ner/multimodal`， 下载数据集
+
+    ```bash
+    wget 120.27.214.45/Data/ner/multimodal/data.tar.gz
+    
+    tar -xzvf data.tar.gz
+    ```
+
+    我们在原始图像上分别使用[faster_rcnn](https://github.com/pytorch/vision/blob/main/torchvision/models/detection/faster_rcnn.py)和[visual grounding工具](https://github.com/zyang-ur/onestage_grounding)分别抽取RCNN objects和visual grounding objects来作为局部视觉信息
+
+    **Step2** 多模态场景下训练模型 <br>
+
+    - 数据集和参数配置可以分别进入`data`和`conf`文件夹中修改
+    - 如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`load_path`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置
+
+    ```bash
+    python run.py
+    ```
+
+    **Step3** 模型预测
+
+    ```bash
+    python predict.py
+    ```
+
 ### 2. 关系抽取RE
 
 - 关系抽取是从非结构化的文本中抽取出实体之间的关系，以下为几个样式范例，数据为csv文件：
@@ -313,6 +340,33 @@ python predict.py
     python predict.py
     ```
 
+  - **[多模态](https://github.com/zjunlp/DeepKE/tree/main/example/re/multimodal)**
+
+    **Step1**: 进入 `DeepKE/example/re/multimodal`， 下载数据集
+
+    ```bash
+    wget 120.27.214.45/Data/re/multimodal/data.tar.gz
+    
+    tar -xzvf data.tar.gz
+    ```
+
+    我们在原始图像上分别使用[faster_rcnn](https://github.com/pytorch/vision/blob/main/torchvision/models/detection/faster_rcnn.py)和[visual grounding工具](https://github.com/zyang-ur/onestage_grounding)分别抽取RCNN objects和visual grounding objects来作为局部视觉信息
+
+    **Step2** 模型训练 <br>
+
+    - 数据集和参数配置可以分别进入`data`和`conf`文件夹中修改
+    - 如需从上次训练的模型开始训练：设置`conf/train.yaml`中的`load_path`为上次保存模型的路径，每次训练的日志默认保存在根目录，可用`log_dir`来配置
+
+    ```bash
+    python run.py
+    ```
+
+    **Step3** 模型预测
+
+    ```bash
+    python predict.py
+    ```
+
 ### 3. 属性抽取AE
 
 - 数据为csv文件，样式范例为：
@@ -383,6 +437,16 @@ python predict.py
     [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/document/document_re_tutorial.ipynb)
     
     [关系抽取Colab](https://colab.research.google.com/drive/1RGUBbbOBHlWJ1NXQLtP_YEUktntHtROa?usp=sharing)
+
+- 多模态：
+
+    [命名实体识别Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/multimodal/multimodal_ner_tutorial.ipynb)
+
+    [命名实体识别Colab](https://colab.research.google.com/drive/1zOVZcn2v6xfCq39N80lbbHTdAfc7eGHb?usp=sharing)
+
+    [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/multimodal/multimodal_re_tutorial.ipynb)
+
+    [关系抽取Colab](https://colab.research.google.com/drive/1ZRqqXMSDWoPpAKL7h9w9pq-SY-2gjc-u?usp=sharing)
 
 <br>
 
