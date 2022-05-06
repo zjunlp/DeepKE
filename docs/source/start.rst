@@ -34,7 +34,9 @@ We use the following datasets in our experiments:
 |                          |           +------------------+          |            |
 |                          |           | ATIS             |          |            |  
 |                          +-----------+------------------+----------+------------+
-|                          | Multimodal| Twitter15        | English  | IFAformer  |
+|                          |           | Twitter15        |          |            |
+|                          | Multimodal+------------------+ English  | IFAformer  |
+|                          |           | Twitter17        |          |            |
 +--------------------------+-----------+------------------+----------+------------+
 |                          |           |                  |          | CNN        |
 |                          |           |                  |          +------------+
