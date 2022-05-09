@@ -1,4 +1,4 @@
-MultiModal
+Multimodal
 ==========
 
 
