@@ -53,7 +53,8 @@ DeepKE is a knowledge extraction toolkit supporting **low-resource** and **docum
 <br>
 
 # What's New
-
+## May, 2022
+* In [NER](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/README.md) and [RE](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/README.md) tasks,we have released some models trained from DUIE.
 ## Jan, 2022
 * We have released a paper [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)
 ## Dec, 2021

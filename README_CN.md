@@ -50,6 +50,9 @@ DeepKE 是由[浙江大学知识图谱创新团队](http://zjukg.org)提供的�
 
 # 新版特性
 
+## 2022年5月
+
+- 针对[RE](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README.md)和[NER](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/README.md)任务，我们使用DUIE数据集训练了一些模型。
 ## 2022年1月
 
 - 发布论文 [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)
