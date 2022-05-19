@@ -51,6 +51,10 @@ cd DeepKE/example/ner/standard
 - 进行预测 ```python predict.py```
 
 
+## 直接使用模型
+我们使用[DUIE数据集](https://ai.baidu.com/broad/download?dataset=dureader)，并将其关系类型与实体类型与Cnschema对齐。在这之上基于`chinese-bert-wwm`和`chinese-roberta-wwm-ext`训练了两个模型。模型所使用的超参数为所给的参数。
+
+使用者可以直接下载 [模型及使用数据集](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg) 只需将下载文件夹命名为`checkpoints`，即可直接进行预测使用。
 
 ### 模型内容
 

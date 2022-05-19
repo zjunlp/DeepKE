@@ -48,6 +48,11 @@ cd DeepKE/example/re/standard
 
 - 进行预测 ```python predict.py```
 
+## 直接使用模型
+我们使用[DUIE数据集](https://ai.baidu.com/broad/download?dataset=dureader)，并将其关系类型与实体类型与Cnschema对齐。在这之上基于`chinese-bert-wwm`和`chinese-roberta-wwm-ext`训练了两个模型。模型所使用的超参数为所给的参数。
+
+
+使用者可以直接下载 [模型及修改后的数据集](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv) 只需修改 `predict.yaml`中的参数fp为下载文件的路径，即可直接进行预测使用。
 
 ## 模型内容
 1、CNN

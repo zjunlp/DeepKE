@@ -62,6 +62,18 @@ cd DeepKE/example/re/standard
   python predict.py
   ```
 
+## Use models quickly
+
+
+We align the relationship type and the entity type of [DUIE](https://ai.baidu.com/broad/download?dataset=dureader) with the cnschema
+
+On this basis, two models are trained based on 'Chinese Bert WwM' and 'Chinese Roberta WwM ext'. The super parameters used in the model are the given parameters.
+
+You can download the [model](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv) directly for experiments.You just need to modify the model path in `predict.yaml`,and then you can run you `predict.py` easily.
+
+
+
+
 ## Models
 
 1. CNN
