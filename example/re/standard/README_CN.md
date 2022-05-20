@@ -49,10 +49,14 @@ cd DeepKE/example/re/standard
 - 进行预测 ```python predict.py```
 
 ## 直接使用模型
-我们使用[DUIE数据集](https://ai.baidu.com/broad/download?dataset=dureader)，并将其关系类型与实体类型与Cnschema对齐。在这之上基于`chinese-bert-wwm`和`chinese-roberta-wwm-ext`训练了两个模型。模型所使用的超参数为所给的参数。
+我们使用[DUIE数据集](https://ai.baidu.com/broad/download?dataset=dureader)，并将其关系类型与实体类型与cnschema对齐。在这之上基于`chinese-bert-wwm`和`chinese-roberta-wwm-ext`训练了两个模型。模型所使用的超参数为所给的参数。
 
 
 使用者可以直接下载 [模型及修改后的数据集](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv) 只需修改 `predict.yaml`中的参数fp为下载文件的路径，即可直接进行预测使用。
+
+举个例子，输入的句子为“东眼山森林游乐区位于桃园县与台北县交界的山林间，因山形酷似“向东眺望的大眼睛”而得名，海拔高度在650~1212公尺之间，面积916公顷，是台湾北部面积最大的森林游乐区”，给定的实体对为“东眼山”和“1212公尺”，最终抽取出的关系为经过cnschema对齐后的“海拔高度”。
+
+
 
 ## 模型内容
 1、CNN
