@@ -56,6 +56,9 @@ cd DeepKE/example/ner/standard
 
 使用者可以直接下载 [模型及使用数据集](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg) 只需将下载文件夹命名为`checkpoints`，即可直接进行预测使用。
 
+举个例子，输入的句子为“《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽”，，最终抽取出的“星空黑夜传奇”实体类型为经过cnschema对齐后的“网络小说”，“起点中文网”为“网站”。
+
+
 ### 模型内容
 
 BERT
