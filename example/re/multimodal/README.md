@@ -4,6 +4,80 @@
     <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/re/multimodal/README_CN.md">简体中文</a> </b>
 </p>
 
+## Model
+
+**IFAformer** is a novel dual Multimodal Transformer model with implicit feature alignment, which utilizes the Transformer structure uniformly in the visual and textual without explicitly designing modal alignment structure.
+
+<div align=center>
+<img src="mre_model.png" width="75%" height="75%"/>
+</div>
+
+## Experiment
+
+The overall experimental results on IFAformer for Multi-Modal RE task can be seen as follows:
+
+<table>
+	<tr>
+		<th></th>
+		<th>Methods</th>
+		<th>Acc</th>
+		<th>Precision</th>
+		<th>Recall</th>
+		<th>F1</th>
+	</tr>
+	<tr>
+		<td rowspan="3">text</td>
+		<td>PCNN</td>
+		<td>73.36</td>
+		<td>69.14</td>
+		<td>43.75</td>
+		<td>53.59</td>
+	</tr>
+	<tr>
+		<td>BERT</td>
+		<td>71.13</td>
+		<td>58.51</td>
+		<td>60.16</td>
+		<td>59.32</td>
+	</tr>
+	<tr>
+		<td>MTB</td>
+		<td>75.34</td>
+		<td>63.28</td>
+		<td>65.16</td>
+		<td>64.20</td>
+	</tr>
+	<tr>
+		<td rowspan="4">text+image</td>
+		<td>BERT+SG</td>
+		<td>74.09</td>
+		<td>62.95</td>
+		<td>62.65</td>
+		<td>62.80</td>
+	</tr>
+	<tr>
+		<td>BERT+SG+Att</td>
+		<td>74.59</td>
+		<td>60.97</td>
+		<td>66.56</td>
+		<td>63.64</td>
+	</tr>
+	<tr>
+		<td>MEGA</td>
+		<td>76.15</td>
+		<td>64.51</td>
+		<td>68.44</td>
+		<td>66.41</td>
+	</tr>
+	<tr>
+		<td><b>IFAformer</b></td>
+		<td><b>92.38</b></td>
+		<td><b>82.59</b></td>
+		<td><b>80.78</b></td>
+		<td><b>81.67</b></td>
+	</tr>
+</table>
+
 ## Requirements
 
 > python == 3.8
@@ -28,58 +102,44 @@ cd DeepKE/example/re/multimodal
 ## Train and Predict
 
 - Dataset
-
+  
   - Download the dataset to this directory.
-
-    The MRE dataset comes from [https://github.com/thecharm/Mega](https://github.com/thecharm/Mega), many thanks.
-
-    You can download the MRE dataset with detected visual objects using folloing command:
-
+    
+    The MNRE dataset comes from [https://github.com/thecharm/Mega](https://github.com/thecharm/Mega), many thanks.
+    
+    You can download the MNRE dataset with detected visual objects using folloing command:
+    
     ```bash
     wget 120.27.214.45/Data/re/multimodal/data.tar.gz
     tar -xzvf data.tar.gz
     ```
-
-  - The dataset [MRE](https://github.com/thecharm/Mega) with detected visual objects is stored in `data`:
+  - The dataset [MNRE](https://github.com/thecharm/Mega) with detected visual objects is stored in `data`:
+    
     - `img_detect`：Detected objects using RCNN
     - `img_vg`：Detected objects using visual grounding
-
     - `img_org`： Original images
-
     - `txt`: Text set
-
     - `vg_data`：Bounding image and `img_vg`
-
     - `ours_rel2id.json` Relation set
   - We use RCNN detected objects and visual grounding objects as visual local information, where RCNN via [faster_rcnn](https://github.com/pytorch/vision/blob/main/torchvision/models/detection/faster_rcnn.py) and visual grounding via [onestage_grounding](https://github.com/zyang-ur/onestage_grounding).
-
 - Training
-
+  
   - Parameters, model paths and configuration for training are in the `conf` folder and users can modify them before training.
-
-  - Training on MRE
-
+  - Training on MNRE
+    
     ```bash
     python run.py
     ```
-
   - The trained model is stored in the `checkpoint` directory by default and you can change it by modifying "save_path" in `train.yaml`.
-
-  - Start to train from last-trained model<br>
-
+  - Start to train from last-trained model `<br>`
+    
     modify `load_path` in `train.yaml` as the path of the last-trained model
-
   - Logs for training are stored in the current directory by default and the path can be configured by modifying `log_dir` in `.yaml`
-
 - Prediction
   
-  Modify "load_path" in `predict.yaml` to the trained model path.
+  Modify "load_path" in `predict.yaml` to the trained model path.  **In addition, we provide [the model trained on MNRE dataset](https://drive.google.com/drive/folders/11T0t1NHSMq5GzORBKv2Rjm2Bbq_RNLrc?usp=sharing) for users to predict directly.**
+  
   ```bash
   python predict.py
   ```
 
-## Model
-
-
-IFAformer is a novel dual Multimodal Transformer model
-with implicit feature alignment for the RE task, which utilizes the Transformer structure uniformly in the visual and textual without explicitly designing modal alignment structure
