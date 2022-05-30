@@ -52,9 +52,43 @@ cd DeepKE/example/ner/standard
 
 
 ## 直接使用模型
-我们使用[DUIE数据集](https://ai.baidu.com/broad/download?dataset=dureader)，并将其关系类型与实体类型与Cnschema对齐。在这之上基于`chinese-bert-wwm`和`chinese-roberta-wwm-ext`训练了两个模型。模型所使用的超参数为所给的参数。
+我们使用[DUIE数据集](https://ai.baidu.com/broad/download?dataset=dureader)，并将其关系类型与实体类型与Cnschema对齐。在这之上基于`chinese-bert-wwm`和`chinese-roberta-wwm-ext`训练了两个模型。模型所使用的超参数为所给的参数。最终经过训练后可以得到如下表的效果
 
-使用者可以直接下载 [模型及使用数据集](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg) 只需将下载文件夹命名为`checkpoints`，即可直接进行预测使用。
+<table>
+	<tr>
+		<th>模型</th>
+		<th>P</th>
+		<th>R</th>
+		<th>F1</th>
+	</tr>
+	<tr>
+		<td>chinese-roberta-wwm-ext(micro)</td>
+		<td>0.8028</td>
+		<td>0.8612</td>
+		<td>0.8310</td>
+	</tr>
+  <tr>
+		<td>chinese-roberta-wwm-ext(macro)</td>
+		<td>0.6990</td>
+		<td>0.7295</td>
+		<td>0.7021</td>
+	</tr>
+  <tr>
+		<td>chinese-bert-wwm(micro)</td>
+		<td>0.7841</td>
+		<td>0.8587</td>
+		<td>0.8197</td>
+	</tr>
+  <tr>
+		<td>chinese-bert-wwm(macro)</td>
+		<td>0.6921</td>
+		<td>0.7393</td>
+		<td>0.7078</td>
+	</tr>
+	
+</table>
+
+使用者可以直接下载[模型](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg),只需将下载文件夹命名为`checkpoints`，运行```python predict.py```即可直接进行预测使用。如果需要使用其他模型进行训练，也可先现在[数据集](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg)，将其重命名为`data`，将`conf`文件夹中的`train.yaml`中的`bert_model`修改为指定模型，运行```python run.py```即可进行训练。
 
 举个例子，输入的句子为“《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽”，，最终抽取出的“星空黑夜传奇”实体类型为经过cnschema对齐后的“网络小说”，“起点中文网”为“网站”。
 
