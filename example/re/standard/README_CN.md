@@ -49,7 +49,16 @@ cd DeepKE/example/re/standard
 - 进行预测 ```python predict.py```
 
 ## 直接使用模型
-我们使用[DUIE数据集](https://ai.baidu.com/broad/download?dataset=dureader)，并将其关系类型与实体类型与cnschema对齐。在这之上基于`chinese-bert-wwm`和`chinese-roberta-wwm-ext`训练了两个模型。模型所使用的超参数为所给的参数。最终经过训练后可以得到如下表的效果
+
+我们使用[DUIE数据集](https://ai.baidu.com/broad/download?dataset=dureader)，并将其关系类型与实体类型与[cnSchema](https://github.com/OpenKG-ORG/cnSchema)对齐。cnSchema是面向中文信息处理，利用先进的知识图谱、自然语言处理和机器学习技术，融合结构化与文本数据，支持快速领域知识建模，支持跨数据源、跨领域、跨语言的开放数据自动化处理，为智能机器人、语义搜索、智能计算等新兴应用市场提供schema层面的支持与服务。
+
+cnSchema基于的原则
+* 完全开放，源自schema.org，OpenKG自主发布的Web Schema
+* 立足中文，对接世界
+* 面向应用，支持开放数据生态
+* 社区共识，知识图谱专家指导
+
+在这之上使用`chinese-bert-wwm`和`chinese-roberta-wwm-ext`为基础训练了DeepKE-cnschema(RE)模型。模型所使用的超参数为所给的参数。最终经过训练后可以得到如下表的效果
 
 <table>
 	<tr>
@@ -74,10 +83,10 @@ cd DeepKE/example/re/standard
 </table>
 
 
-使用者可以直接下载[模型](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv),只需修改 `predict.yaml`中的参数fp为下载文件的路径，运行```python predict.py```即可直接进行预测使用。如果需要使用其他模型进行训练，也可先现在[数据集](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)，将其重命名为`data`，将`conf`文件夹中的`lm.yaml`中的`lm_file`修改为指定模型，运行```python run.py```即可进行训练。
+使用者可以直接下载[模型](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv),只需修改 `predict.yaml`中的参数fp为下载文件的路径，运行```python predict.py```即可直接进行预测使用。如果需要使用其他模型进行训练，也可先下载[数据集](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)，将其重命名为`data`，将`conf`文件夹中的`lm.yaml`中的`lm_file`修改为指定模型，运行```python run.py```即可进行训练。
 
 
-举个例子，输入的句子为“东眼山森林游乐区位于桃园县与台北县交界的山林间，因山形酷似“向东眺望的大眼睛”而得名，海拔高度在650~1212公尺之间，面积916公顷，是台湾北部面积最大的森林游乐区”，给定的实体对为“东眼山”和“1212公尺”，最终抽取出的关系为经过cnschema对齐后的“海拔高度”。
+举个例子，输入的句子为“东眼山森林游乐区位于桃园县与台北县交界的山林间，因山形酷似“向东眺望的大眼睛”而得名，海拔高度在650~1212公尺之间，面积916公顷，是台湾北部面积最大的森林游乐区”，给定的实体对为“东眼山”和“1212公尺”，最终抽取出的关系为经过cnschema对齐后的“海拔”。
 
 
 

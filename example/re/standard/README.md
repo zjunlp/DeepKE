@@ -72,7 +72,7 @@ On this basis, two models are trained based on 'Chinese Bert WwM' and 'Chinese R
 You can download the [model](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv) directly for experiments.You just need to modify the model path in `predict.yaml`,and then you can run you `predict.py` easily.
 
 
-For example,input a sentence '东眼山森林游乐区位于桃园县与台北县交界的山林间，因山形酷似“向东眺望的大眼睛”而得名，海拔高度在650~1212公尺之间，面积916公顷，是台湾北部面积最大的森林游乐区' and entities '东眼山','1212公尺', DeepKE-chschema will output '海拔高度' aligning with cnschema.
+For example,input a sentence '东眼山森林游乐区位于桃园县与台北县交界的山林间，因山形酷似“向东眺望的大眼睛”而得名，海拔高度在650~1212公尺之间，面积916公顷，是台湾北部面积最大的森林游乐区' and entities '东眼山','1212公尺', DeepKE-chschema will output '海拔' aligning with cnschema.
 
 ## Models
 
