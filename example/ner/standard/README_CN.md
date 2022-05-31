@@ -52,7 +52,15 @@ cd DeepKE/example/ner/standard
 
 
 ## 直接使用模型
-我们使用[DUIE数据集](https://ai.baidu.com/broad/download?dataset=dureader)，并将其关系类型与实体类型与Cnschema对齐。在这之上基于`chinese-bert-wwm`和`chinese-roberta-wwm-ext`训练了两个模型。模型所使用的超参数为所给的参数。最终经过训练后可以得到如下表的效果
+我们使用[DUIE数据集](https://ai.baidu.com/broad/download?dataset=dureader)，并将其关系类型与实体类型与[cnSchema](https://github.com/OpenKG-ORG/cnSchema)对齐。cnSchema是面向中文信息处理，利用先进的知识图谱、自然语言处理和机器学习技术，融合结构化与文本数据，支持快速领域知识建模，支持跨数据源、跨领域、跨语言的开放数据自动化处理，为智能机器人、语义搜索、智能计算等新兴应用市场提供schema层面的支持与服务。
+
+cnSchema基于的原则
+* 完全开放，源自schema.org，OpenKG自主发布的Web Schema
+* 立足中文，对接世界
+* 面向应用，支持开放数据生态
+* 社区共识，知识图谱专家指导
+
+在这之上使用`chinese-bert-wwm`和`chinese-roberta-wwm-ext`为基础训练了DeepKE-cnschema(NER)模型。模型所使用的超参数为所给的参数。最终经过训练后可以得到如下表的效果
 
 <table>
 	<tr>
@@ -88,7 +96,7 @@ cd DeepKE/example/ner/standard
 	
 </table>
 
-使用者可以直接下载[模型](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg),只需将下载文件夹命名为`checkpoints`，运行```python predict.py```即可直接进行预测使用。如果需要使用其他模型进行训练，也可先现在[数据集](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg)，将其重命名为`data`，将`conf`文件夹中的`train.yaml`中的`bert_model`修改为指定模型，运行```python run.py```即可进行训练。
+使用者可以直接下载[模型](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg),只需将下载文件夹命名为`checkpoints`，运行```python predict.py```即可直接进行预测使用。如果需要使用其他模型进行训练，也可先下载[数据集](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg)，将其放入命名为`data`的文件夹中，将`conf`文件夹中的`train.yaml`中的`bert_model`修改为指定模型，运行```python run.py```即可进行训练。
 
 举个例子，输入的句子为“《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽”，，最终抽取出的“星空黑夜传奇”实体类型为经过cnschema对齐后的“网络小说”，“起点中文网”为“网站”。
 
