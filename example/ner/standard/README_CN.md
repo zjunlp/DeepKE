@@ -96,9 +96,23 @@ cnSchema基于的原则
 	
 </table>
 
-使用者可以直接下载[模型](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg),只需将下载文件夹命名为`checkpoints`，只需修改 `predict.yaml`中的参数`text`为需要预测的文本，运行```python predict.py```即可直接进行预测使用。
+使用者可以直接下载[模型](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg)进行预测，步骤如下：
 
-如果需要使用其他模型进行训练，也可先下载[数据集](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg)，将其放入命名为`data`的文件夹中，将`conf`文件夹中的`train.yaml`中的`bert_model`修改为指定模型，运行```python run.py```即可进行训练。
+1、只需将下载文件夹命名为`checkpoints`
+
+2、只需修改 `predict.yaml`中的参数`text`为需要预测的文本
+
+3、运行```python predict.py```即可直接进行预测使用。
+
+如果需要使用其他模型进行训练，步骤如下：
+
+1、也可先下载[数据集](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg)，将其放入命名为`data`的文件夹中
+
+2、将`conf`文件夹中的`train.yaml`中的`bert_model`修改为指定模型
+
+3、修改[源码](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/tools/preprocess.py)中的get_labels函数，返回的标签为所给`type.txt`中所用到的标签
+
+4、再运行```python run.py```即可进行训练。
 
 使用训练好的模型，只需输入句子“《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽”，运行```python predict.py```后可得到结果，结果显示“星空黑夜传奇”实体类型为经过cnschema对齐后的“网络小说”，“起点中文网”为“网站”。
 
