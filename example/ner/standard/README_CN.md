@@ -110,7 +110,7 @@ cnSchema基于的原则
 
 2、将`conf`文件夹中的`train.yaml`中的`bert_model`修改为指定模型
 
-3、修改[源码](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/tools/preprocess.py)中的get_labels函数，返回的标签为所给`type.txt`中所用到的标签
+3、修改[源码](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/tools/preprocess.py)中的get_labels函数，返回的标签为所给`type.txt`中所用到的标签(这一步需要通过python setup.py install方式安装才能生效)
 
 4、再运行```python run.py```即可进行训练。
 
