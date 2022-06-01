@@ -83,9 +83,19 @@ cnSchema基于的原则
 </table>
 
 
-使用者可以直接下载[模型](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv),只需修改 `predict.yaml`中的参数`fp`为下载文件的路径，运行```python predict.py```即可直接进行预测使用。需要预测的文本及实体对通过终端返回给程序。
+使用者可以直接下载[模型](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)使用,步骤如下：
 
-如果需要使用其他模型进行训练，也可先下载[数据集](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)，将其重命名为`data`，将`conf`文件夹中的`lm.yaml`中的`lm_file`修改为指定模型，运行```python run.py```即可进行训练。
+1、修改 `predict.yaml`中的参数`fp`为下载文件的路径，`embedding.yaml`中`num_relations`为51
+
+2、运行```python predict.py```即可直接进行预测使用。需要预测的文本及实体对通过终端返回给程序。
+
+如果需要使用其他模型进行训练，步骤如下：
+
+1、也可先下载[数据集](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)，将其重命名为`data`
+
+2、将`conf`文件夹中的`train.yaml`为`lm`,`lm.yaml`中的`lm_file`修改为指定预训练模型，`embedding.yaml`中`num_relations`为51
+
+3、运行```python run.py```即可进行训练。
 
 
 使用训练好的模型，运行```python predict.py```后，只需输入的句子为“东眼山森林游乐区位于桃园县与台北县交界的山林间，因山形酷似“向东眺望的大眼睛”而得名，海拔高度在650~1212公尺之间，面积916公顷，是台湾北部面积最大的森林游乐区”，给定的实体对为“东眼山”和“1212公尺”，可得到结果，最终抽取出的关系为经过cnschema对齐后的“海拔”。
