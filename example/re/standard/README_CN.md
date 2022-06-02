@@ -49,6 +49,7 @@ cd DeepKE/example/re/standard
 - 进行预测 ```python predict.py```
 
 
+
 ## 模型内容
 1、CNN
 
