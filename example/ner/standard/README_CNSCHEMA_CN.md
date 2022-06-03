@@ -2,7 +2,7 @@
 
 
 
-
+# cnSchema
 
 我们预先处理数据集，并将其关系类型与实体类型与[cnSchema](https://github.com/OpenKG-ORG/cnSchema)对齐。cnSchema是面向中文信息处理，利用先进的知识图谱、自然语言处理和机器学习技术，融合结构化与文本数据，支持快速领域知识建模，支持跨数据源、跨领域、跨语言的开放数据自动化处理，为智能机器人、语义搜索、智能计算等新兴应用市场提供schema层面的支持与服务。
 
@@ -11,6 +11,8 @@ cnSchema基于的原则
 * 立足中文，对接世界
 * 面向应用，支持开放数据生态
 * 社区共识，知识图谱专家指导
+
+# 实体类型
 
 经过对齐后数据集中所拥有的实体类型如下
 
@@ -68,13 +70,20 @@ cnSchema基于的原则
 	
 </table>
 
+# 预测
+
 使用者可以直接下载[模型](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg)进行预测，步骤如下：
 
 1、只需将下载文件夹命名为`checkpoints`
 
 2、只需修改 `predict.yaml`中的参数`text`为需要预测的文本
 
-3、运行```python predict.py```即可直接进行预测使用。
+3、进行预测。需要预测的文本及实体对通过终端返回给程序。
+
+```bash
+python predict.py
+```
+# 训练
 
 如果需要使用其他模型进行训练，步骤如下：
 
@@ -84,10 +93,30 @@ cnSchema基于的原则
 
 3、修改[源码](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/tools/preprocess.py)中的get_labels函数，返回的标签为所给`type.txt`中所用到的标签
 
-4、再运行```python run.py```即可进行训练。
-
+4、进行训练。
+```bash
+python run.py
+```
+# 样例
 
 使用训练好的模型，只需输入句子“《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽”，运行```python predict.py```后可得到结果，结果显示“星空黑夜传奇”实体类型为经过cnschema对齐后的“网络小说”，“起点中文网”为“网站”，“啤酒的罪孽”为“人物。
+
+## 代码部分
+
+修改 `predict.yaml`中的参数`text`为需要预测的文本
+```bash
+text=“《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽”
+```
+
+最终输出结果
+
+```bash
+NER句子：
+《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽
+NER结果：
+[('星','B-UER'),('空','I-UER'),('黑','I-UER'),('夜','I-UER'),('传','I-UER'),('奇','I-UER'),('起','B-ZFM'),('点','I-ZFM'),('中','I-ZFM'),('文','I-ZFM'),('网','I-ZFM'),('啤','B-YAS'),('酒','I-YAS'),('的','I-YAS'),('罪','I-YAS'),('孽','I-YAS')]
+```
+## 演示gif
 
 具体流程如下gif所示：
 
