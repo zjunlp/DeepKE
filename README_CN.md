@@ -186,7 +186,9 @@ python predict.py
   | 秦始皇兵马俑位于陕西省西安市，1961年被国务院公布为第一批全国重点文物保护单位，是世界八大奇迹之一。 |           秦始皇           | 陕西省，西安市 |             国务院             |
 
 - 具体流程请进入详细的README中
-  - **[常规全监督STANDARD](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard)** 
+  - **[常规全监督STANDARD](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard)**  
+  
+     ***我们还提供了开箱即用的[DeepKE-cnSchema特别版](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md)，无需训练即可抽取支持cnSchema的实体***
   
      **Step1**: 进入`DeepKE/example/ner/standard`，下载数据集
      
@@ -273,6 +275,9 @@ python predict.py
   |     提起杭州的美景，西湖总是第一个映入脑海的词语。     | 所在城市 |    西湖    |      8      |    杭州    |      2      |
 
 - 具体流程请进入详细的README中，RE包括了以下三个子功能
+  - **[常规全监督STANDARD](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard)**  
+
+     ***我们还提供了开箱即用的[DeepKE-cnSchema特别版](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md)，无需训练即可抽取支持cnSchema的关系***
   - **[常规全监督STANDARD](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard)**  
 
     **Step1**：进入`DeepKE/example/re/standard`，下载数据集
