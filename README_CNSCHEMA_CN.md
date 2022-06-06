@@ -48,7 +48,7 @@ DeepKE 是一个开源的知识图谱抽取与构建工具，支持<b>低资源�
 
 DeepKE 是一个开源的知识图谱抽取与构建工具，支持低资源、长篇章、多模态的知识抽取工具，可以基于PyTorch实现命名实体识别、关系抽取和属性抽取功能。同时为初学者提供了详尽的文档，Google Colab教程和在线演示。
 
-为了促进中文领域的知识图谱构建，DeepKE提供了预训练好的支持cnSchema的开箱即用的抽取特别版DeepKE-cnSchema，支持开箱即用的中文实体识别和关系预测功能。该版本支持抽取包含了50种不同的关系类型以及28种不同的实体类型，其中实体类型包含了通用的人物、地点、城市、机构等类型，关系类型包括了常见的祖籍、出生地、国籍、朝代等类型。
+为了促进中文领域的知识图谱构建，DeepKE提供了预训练好的支持[cnSchema](https://github.com/OpenKG-ORG/cnSchema)的开箱即用的抽取特别版DeepKE-cnSchema，支持开箱即用的中文实体识别和关系预测功能。该版本支持抽取包含了50种不同的关系类型以及28种不同的实体类型，其中实体类型包含了通用的人物、地点、城市、机构等类型，关系类型包括了常见的祖籍、出生地、国籍、朝代等类型。
 
 ## 中文模型下载
 本目录中主要包含base模型，故我们不在模型简称中标注`base`字样。
@@ -58,8 +58,10 @@ DeepKE 是一个开源的知识图谱抽取与构建工具，支持低资源、�
 
 | 模型简称 | 功能 | Google下载 | 百度网盘下载 |
 | :------- | :--------- | :---------: | :---------: |
-| **`DeepKE(NER), RoBERTa-wwm-ext, Chinese`** | **EXT数据<sup>[1]</sup>** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码u022）](https://pan.baidu.com/s/1hb9XEbK4x5fIyco4DgZZfg)** |
-
+| **`DeepKE(NER), RoBERTa-wwm-ext, Chinese`** | **实体抽取<sup>[1]</sup>** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码u022）](https://pan.baidu.com/s/1hb9XEbK4x5fIyco4DgZZfg)** |
+| **`DeepKE(NER), BERT-wwm, Chinese`** | **实体抽取<sup>[1]</sup>** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码u022）](https://pan.baidu.com/s/1hb9XEbK4x5fIyco4DgZZfg)** |
+| **`DeepKE(RE), RoBERTa-wwm-ext, Chinese`** | **关系抽取<sup>[1]</sup>** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码u022）](https://pan.baidu.com/s/1hb9XEbK4x5fIyco4DgZZfg)** |
+| **`DeepKE(RE), BERT-wwm, Chinese`** | **关系抽取<sup>[1]</sup>** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码u022）](https://pan.baidu.com/s/1hb9XEbK4x5fIyco4DgZZfg)** |
 
 ### 使用说明
 
@@ -108,7 +110,7 @@ model = BertModel.from_pretrained("MODEL_NAME")
 
 ### 简体中文阅读理解：CMRC 2018
 
-[cnSchema](https://github.com/OpenKG-ORG/cnSchema)
+
 
 [**CMRC 2018数据集**](https://github.com/ymcui/cmrc2018)是哈工大讯飞联合实验室发布的中文机器阅读理解数据。
 根据给定问题，系统需要从篇章中抽取出片段作为答案，形式与SQuAD相同。
