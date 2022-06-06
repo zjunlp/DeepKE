@@ -23,7 +23,7 @@
     <p>开源中文知识图谱抽取框架开箱即用特别版DeepKE-cnSchema</p>
 </h1>
 
-DeepKE 是一个开源的知识图谱抽取与构建工具，支持<b>低资源、长篇章、多模态</b>的知识抽取工具，可以基于<b>PyTorch</b>实现<b>命名实体识别</b>、<b>关系抽取</b>和<b>属性抽取</b>功能。同时为初学者提供了详尽的[文档](https://zjunlp.github.io/DeepKE/)，[Google Colab教程](https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing)和[在线演示](http://deepke.zjukg.cn/CN/index.html)。
+DeepKE 是一个开源的知识图谱抽取与构建工具，支持<b>低资源、长篇章、多模态</b>的知识抽取工具，可以基于<b>PyTorch</b>实现<b>命名实体识别</b>、<b>关系抽取</b>和<b>属性抽取</b>功能。此版本DeepKE-cnSchema为开箱即用版本，用户下载模型即可实现支持cnSchema的实体和关系知识抽取。
 
 ----
 
@@ -35,7 +35,6 @@ DeepKE 是一个开源的知识图谱抽取与构建工具，支持<b>低资源�
 | [中文模型下载](#中文模型下载)           | 提供了DeepKE-cnSchema的下载地址           |
 | [数据集及中文模型效果](#数据集及中文基线系统效果) | 提供了中文数据集以及中文模型效果                  |
 | [快速加载](#快速加载)               | 介绍了如何使用DeepKE-cnSchema进行实体识别、关系抽取 |
-| [使用建议](#使用建议)               | 提供了若干使用中文预训练模型的建议                 |
 | [自定义模型](#自定义模型)             | 提供了使用自定义数据训练模型的说明                 |
 | [FAQ](#FAQ)                 | 常见问题答疑                            |
 | [引用](#引用)                   | 本目录的技术报告                          |
@@ -291,7 +290,7 @@ def _get_predict_instance(cfg):
 “男人的爱”和“人生长路”在句中关系为“所属专辑”，置信度为0.99
 ```
 
-## 自定义模型（高级用户）
+## 自定义模型
 
 ### 实体识别任务（NER）
 
@@ -320,7 +319,6 @@ python run.py
 ```bash
 python run.py
 ```
-
 ## FAQ
 
 **Q: 这个模型怎么用？**  
