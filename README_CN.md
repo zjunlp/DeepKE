@@ -52,7 +52,7 @@ DeepKE 是一个开源的知识图谱抽取与构建工具，支持<b>低资源�
 
 ## 2022年5月
 
-- 发布模型[DeepKE-cnschema(RE)](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README.md)和[DeepKE-cnschema(NER)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/README.md)模型。
+- 发布模型[DeepKE-cnschema(RE)](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README_CNSCHEMA_CN.md)和[DeepKE-cnschema(NER)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/README_CNSCHEMA_CN.md)模型。
 ## 2022年1月
 
 - 发布论文 [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)
