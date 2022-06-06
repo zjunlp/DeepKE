@@ -97,14 +97,14 @@ DeepKE使用[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1OLx5tjE
         <th>F1</th>
     </tr>
     <tr>
-        <td>**`DeepKE(NER), RoBERTa-wwm-ext, Chinese`**</td>
+        <td><b>DeepKE(NER), RoBERTa-wwm-ext, Chinese</b></td>
         <td>0.8028</td>
         <td>0.8612</td>
         <td>0.8310</td>
     </tr>
 
   <tr>
-        <td>**`DeepKE(NER), BERT-wwm, Chinese`**</td>
+        <td><b>DeepKE(NER), BERT-wwm, Chinese</b></td>
         <td>0.7841</td>
         <td>0.8587</td>
         <td>0.8197</td>
@@ -125,13 +125,13 @@ DeepKE使用[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1wb_QIZd
         <th>F1</th>
     </tr>
   <tr>
-        <td>**`DeepKE(RE), RoBERTa-wwm-ext, Chinese`**</td>
+        <td><b>DeepKE(RE), RoBERTa-wwm-ext, Chinese</b></td>
         <td>0.8761</td>
         <td>0.8598</td>
         <td>0.8665</td>
     </tr>
   <tr>
-        <td>**`DeepKE(RE), BERT-wwm, Chinese`** </td>
+        <td><b>DeepKE(RE), BERT-wwm, Chinese</b></td>
         <td>0.8742</td>
         <td>0.8582</td>
         <td>0.8639</td>
