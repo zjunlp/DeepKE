@@ -50,6 +50,10 @@ DeepKE 是一个开源的知识图谱抽取与构建工具，支持<b>低资源�
 
 # 新版特性
 
+## 2022年6月
+
+- 新增支持多模态场景的[实体抽取](https://github.com/zjunlp/DeepKE/tree/main/example/ner/multimodal)、[关系抽取](https://github.com/zjunlp/DeepKE/tree/main/example/re/multimodal)功能。
+
 ## 2022年5月
 
 - 发布[DeepKE-cnschema](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md)特别版模型，支持基于cnSchema的开箱即用的中文实体识别和关系抽取。
