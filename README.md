@@ -53,8 +53,10 @@ DeepKE is a knowledge extraction toolkit supporting **low-resource** and **docum
 <br>
 
 # What's New
+## June, 2022
+* We have added multimodal support for [entity](https://github.com/zjunlp/DeepKE/tree/main/example/ner/multimodal) and [relation extraction](https://github.com/zjunlp/DeepKE/tree/main/example/re/multimodal).
 ## May, 2022
-* We have released [DeepKE-cnschema (NER)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/README_CNSCHEMA_CN.md) and [DeepKE-cnschema (RE)](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README_CNSCHEMA_CN.md) models.
+* We have released [DeepKE-cnschema](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA.md) with off-the-shelf knowledge extraction models.
 ## Jan, 2022
 * We have released a paper [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)
 ## Dec, 2021
