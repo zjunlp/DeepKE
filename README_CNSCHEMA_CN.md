@@ -52,10 +52,10 @@ DeepKE 是一个开源的知识图谱抽取与构建工具，支持低资源、�
 
 | 模型简称                                        | 功能                     | Google下载                                                                          | 百度网盘下载                                                                 |
 |:------------------------------------------- |:---------------------- |:---------------------------------------------------------------------------------:|:----------------------------------------------------------------------:|
-| **`DeepKE(NER), RoBERTa-wwm-ext, Chinese`** | **实体抽取<sup>[1]</sup>** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码u022）](https://pan.baidu.com/s/1hb9XEbK4x5fIyco4DgZZfg)** |
-| **`DeepKE(NER), BERT-wwm, Chinese`**        | **实体抽取<sup>[1]</sup>** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码nmiv）](https://pan.baidu.com/s/1oi2K6vtOr8b87FkCTIkQsA)** |
-| **`DeepKE(RE), RoBERTa-wwm-ext, Chinese`**  | **关系抽取<sup>[1]</sup>** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码29oe）](https://pan.baidu.com/s/1kPoihfHzVtxKLavUMCDLJw)** |
-| **`DeepKE(RE), BERT-wwm, Chinese`**         | **关系抽取<sup>[1]</sup>** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码e7e9）](https://pan.baidu.com/s/1pLzOizjBgVT-GD1yNvn8dg)** |
+| **`DeepKE(NER), RoBERTa-wwm-ext, Chinese`** | **实体抽取<sup></sup>** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码u022）](https://pan.baidu.com/s/1hb9XEbK4x5fIyco4DgZZfg)** |
+| **`DeepKE(NER), BERT-wwm, Chinese`**        | **实体抽取<sup></sup>** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码nmiv）](https://pan.baidu.com/s/1oi2K6vtOr8b87FkCTIkQsA)** |
+| **`DeepKE(RE), RoBERTa-wwm-ext, Chinese`**  | **关系抽取<sup></sup>** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码29oe）](https://pan.baidu.com/s/1kPoihfHzVtxKLavUMCDLJw)** |
+| **`DeepKE(RE), BERT-wwm, Chinese`**         | **关系抽取<sup></sup>** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码e7e9）](https://pan.baidu.com/s/1pLzOizjBgVT-GD1yNvn8dg)** |
 
 ### 使用说明
 
