@@ -43,7 +43,8 @@ DeepKE 是一个开源的知识图谱抽取与构建工具，支持<b>低资源�
 
 DeepKE 是一个开源的知识图谱抽取与构建工具，支持低资源、长篇章、多模态的知识抽取工具，可以基于PyTorch实现命名实体识别、关系抽取和属性抽取功能。同时为初学者提供了详尽的文档，Google Colab教程和在线演示。
 
-为了促进中文领域的知识图谱构建，DeepKE提供了预训练好的支持[cnSchema](https://github.com/OpenKG-ORG/cnSchema)的开箱即用的抽取特别版DeepKE-cnSchema，支持开箱即用的中文实体识别和关系预测功能。该版本支持抽取包含了50种不同的关系类型以及28种不同的实体类型，其中实体类型包含了通用的人物、地点、城市、机构等类型，关系类型包括了常见的祖籍、出生地、国籍、朝代等类型。
+为促进中文领域的知识图谱构建和方便用户使用，DeepKE提供了预训练好的支持[cnSchema](https://github.com/OpenKG-ORG/cnSchema)的特别版DeepKE-cnSchema，支持开箱即用的中文实体抽取和关系抽取等任务，可抽取50种关系类型和28种实体类型，其中实体类型包含了通用的人物、地点、城市、机构等类型，关系类型包括了常见的祖籍、出生地、国籍、朝代等类型。
+
 
 ## 中文模型下载
 
@@ -140,7 +141,7 @@ DeepKE使用[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1wb_QIZd
 
 ### 支持知识Schema类型
 
-DeepKE(cnSchema) 特别版为支持中文领域知识图谱构建退出的开箱即用知识抽取模型。 [cnSchema](https://github.com/OpenKG-ORG/cnSchema)是面向中文信息处理，利用先进的知识图谱、自然语言处理和机器学习技术，融合结构化与文本数据，支持快速领域知识建模，支持跨数据源、跨领域、跨语言的开放数据自动化处理，为智能机器人、语义搜索、智能计算等新兴应用市场提供schema层面的支持与服务。目前，DeepKE(cnSchema) 支持的Schema类型如下所示：
+DeepKE-cnSchema特别版为支持中文领域知识图谱构建推出的开箱即用版本。 [cnSchema](https://github.com/OpenKG-ORG/cnSchema)是面向中文信息处理，利用先进的知识图谱、自然语言处理和机器学习技术，融合结构化与文本数据，支持快速领域知识建模，支持跨数据源、跨领域、跨语言的开放数据自动化处理，为智能机器人、语义搜索、智能计算等新兴应用市场提供schema层面的支持与服务。目前，DeepKE-cnSchema支持的Schema类型如下表所示：
 
 #### 实体Schema
 
@@ -208,7 +209,7 @@ def get_labels(self):
 
 3、修改 `predict.yaml`中的参数`text`为需要预测的文本
 
-4、进行预测。需要预测的文本及实体对通过终端返回给程序。
+4、进行预测。需要预测的文本及实体对通过终端输入给程序。
 
 ```bash
 python predict.py
@@ -235,9 +236,9 @@ NER结果：
 
 使用者可以直接下载[模型](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)使用,步骤如下：
 
-1、修改 `predict.yaml`中的参数`fp`为下载文件的路径，`embedding.yaml`中`num_relations`为51
+1、修改 `predict.yaml`中的参数`fp`为下载文件的路径，`embedding.yaml`中`num_relations`为51（关系个数）
 
-2、进行预测。需要预测的文本及实体对通过终端返回给程序。
+2、进行预测。需要预测的文本及实体对通过终端输入给程序。
 
 ```bash
 python predict.py
@@ -245,7 +246,7 @@ python predict.py
 
 使用训练好的模型，运行```python predict.py```后，只需输入的句子为“歌曲《人生长路》出自刘德华国语专辑《男人的爱》，由李泉作词作曲，2001年出行发版”，给定的实体对为“男人的爱”和“人生长路”，可得到结果，最终抽取出的关系为经过cnschema对齐后的“所属专辑”。
 
-将predict.py的_get_predict_instance函数修改成如下或不使用范例，即可修改文本进行预测
+将predict.py的_get_predict_instance函数修改成如下范例，即可修改文本进行预测
 
 ```python
 def _get_predict_instance(cfg):
