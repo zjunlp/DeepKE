@@ -77,7 +77,9 @@ checkpoints_robert
 其中`config.json`和`vocab.txt`与谷歌原版`RoBERTa-wwm-ext, Chinese`完全一致。
 PyTorch版本则包含`pytorch_model.bin`, `config.json`, `vocab.txt`文件。
 
-关系抽取模型中，以Pytorch版`DeepKE(RE), RoBERTa-wwm-ext, Chinese`为例，下载后为pth文件，即为可直接使用的模型。
+关系抽取模型中，以Pytorch版`DeepKE(RE), RoBERTa-wwm-ext, Chinese`为例，下载后为pth文件。
+
+**下载模型后，用户即可直接[快速加载](#快速加载)模型进行实体关系抽取。**
 
 ## 数据集及中文基线系统效果
 
