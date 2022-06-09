@@ -21,10 +21,10 @@
 </p>
 
 <h1 align="center">
-    <p>Out-of-the-box Special Edition for Chinese Knowledge Extraction Toolkit——DeepKE-cnSchema</p>
+    <p>Off-the-shelf Special Edition for Chinese Knowledge Extraction Toolkit——DeepKE-cnSchema</p>
 </h1>
 
-DeepKE is a knowledge extraction toolkit based on PyTorch,  supporting **low-resource**, **document-level** and **multimodal** scenarios for **entity**, **relation** and **attribute** extraction. DeepKE-cnSchema is an out-of-the-box version. Users can download the model to realize entity and relation knowledge extraction directly which supports cnSchema.
+DeepKE is a knowledge extraction toolkit based on PyTorch,  supporting **low-resource**, **document-level** and **multimodal** scenarios for **entity**, **relation** and **attribute** extraction. DeepKE-cnSchema is an off-the-shelf version. Users can download the model to realize entity and relation knowledge extraction directly which supports cnSchema.
 
 ---
 
@@ -33,10 +33,10 @@ DeepKE is a knowledge extraction toolkit based on PyTorch,  supporting **low-res
 | Chapter                                           | Description                                                |
 | ---------------------------------------------- | --------------------------------------------------- |
 | [Introduction](#Introduction)                                     | Introduce the basic principles of DeepKE-cnSchema                        |
-| [Chinese Model Download](#Chinese_Model_Download)                     | Provide the download address of DeepKE-cnSchema                     |
-| [Datasets and Chinese Baseline Performance](#Datasets_and_Chinese_Baseline_Performance) | Provide Chinese datasets and Chinese model performance                    |
-| [Quick Load](#Quick_Load)                             | Introduce how to use DeepKE-cnSchema to realize entity recognition and relation extraction |
-| [User-defined Model](#User-defined_Model)                         | Provide instructions for training models with customized dataset                  |
+| [Chinese Model Download](#Chinese-Model-Download)                     | Provide the download address of DeepKE-cnSchema                     |
+| [Datasets and Chinese Baseline Performance](#Datasets-and-Chinese-Baseline-Performance) | Provide Chinese datasets and Chinese model performance                    |
+| [Quick Load](#Quick-Load)                             | Introduce how to use DeepKE-cnSchema to realize entity recognition and relation extraction |
+| [User-defined Model](#User-defined-Model)                         | Provide instructions for training models with customized dataset                  |
 | [FAQ](#FAQ)                                       | FAQ                                        |
 | [Citation](#Citation)                                     | Technical report of this catalogue                                    |
 
@@ -44,7 +44,7 @@ DeepKE is a knowledge extraction toolkit based on PyTorch,  supporting **low-res
 
 DeepKE is a knowledge extraction toolkit supporting **low-resource**, **document-level** and **multimodal** scenarios for *entity*, *relation* and *attribute* extraction. We provide [comprehensive documents](https://zjunlp.github.io/DeepKE/), [Google Colab tutorials](https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing), and [online demo](http://deepke.zjukg.cn/) for beginners.
 
-In order to promote the Chinese knowledge graph construction and make it user friendly, we provide DeepKE-cnSchema, a special version of DeepKE, containing pretrained models which support [cnSchema](https://github.com/OpenKG-ORG/cnSchema). DeepKE-cnSchema supports out-of-the-box tasks such as Chinese entity extraction and relation extraction. It can extract 50 relation types and 28 entity types, of which the entity types are common ones such as person, location, city, institution, etc and the relation types include ancestral home, birthplace, nationality and other types.
+In order to promote the Chinese knowledge graph construction and make it user friendly, we provide DeepKE-cnSchema, a special version of DeepKE, containing pretrained models which support [cnSchema](https://github.com/OpenKG-ORG/cnSchema). DeepKE-cnSchema supports off-the-shelf tasks such as Chinese entity extraction and relation extraction. It can extract 50 relation types and 28 entity types, of which the entity types are common ones such as person, location, city, institution, etc and the relation types include ancestral home, birthplace, nationality and other types.
 
 ## Chinese Model Download
 
@@ -79,7 +79,7 @@ where `config.json` and `vocab.txt` is completely consistent with the original G
 
 As for the relation extraction model, take pytoch version `DeepKE(RE), RoBERTa-wwm-ext, Chinese` as an example. The model is pth file after downloading.
 
-**After downloading the model, users can directly [quick-load](#Quick_Load) it to extract entity and relation.**
+**After downloading the model, users can directly [quick-load](#Quick-Load) it to extract entity and relation.**
 
 ## Datasets and Chinese Baseline Performance
 
@@ -139,7 +139,7 @@ DeepKE leverages[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1wb_
 
 ### Support Knowledge Schema Type
 
-DeepKE-cnSchema is an out-of-the-box version that supports the Chinese knowledge graphs construction. cnschema is oriented to Chinese information processing which uses advanced knowledge graphs, natural language processing and machine learning technologies, integrates structured text data, supports rapid domain knowledge modeling, supports open data automatic processing across data sources, domains and languages, and provides schema level support and services for emerging application markets such as intelligent robots, semantic search and intelligent computing. Currently, the Schema types supported by Deepke-cnSchema are as follows:
+DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge graphs construction. cnschema is oriented to Chinese information processing which uses advanced knowledge graphs, natural language processing and machine learning technologies, integrates structured text data, supports rapid domain knowledge modeling, supports open data automatic processing across data sources, domains and languages, and provides schema level support and services for emerging application markets such as intelligent robots, semantic search and intelligent computing. Currently, the Schema types supported by Deepke-cnSchema are as follows:
 
 #### Entity Schema
 
@@ -322,7 +322,7 @@ python run.py
 ## FAQ
 
 **Q: How to use this model?**
-A: It is out-of-the-box. After downloading the model, follow the instructions and you can extract the knowledge contained in the predefined cnSchema.
+A: It is off-the-shelf. After downloading the model, follow the instructions and you can extract the knowledge contained in the predefined cnSchema.
 **If you want to extract knowledge other than cnSchema, you can use the advanced version of customized data for training**
 
 **Q: Is there any other cnSchema extraction model available?**
