@@ -116,28 +116,28 @@ class InferNer:
         for word, (label, confidence) in zip(words, labels):
             if label!='O':
                 result.append((word,label))
-        tmp = []
-        tag = OrderedDict()
-        tag['PER'] = []
-        tag['LOC'] = []
-        tag['ORG'] = []
+        # tmp = []
+        # tag = OrderedDict()
+        # tag['PER'] = []
+        # tag['LOC'] = []
+        # tag['ORG'] = []
         
-        for i, (word, label) in enumerate(result):
-            if label=='B-PER' or label=='B-LOC' or label=='B-ORG':
-                if i==0:
-                    tmp.append(word)
-                else:
-                    wordstype = result[i-1][1][2:]
-                    tag[wordstype].append(''.join(tmp))
-                    tmp.clear()
-                    tmp.append(word)
-            else:
-                tmp.append(word)
+        # for i, (word, label) in enumerate(result):
+        #     if label=='B-PER' or label=='B-LOC' or label=='B-ORG':
+        #         if i==0:
+        #             tmp.append(word)
+        #         else:
+        #             wordstype = result[i-1][1][2:]
+        #             tag[wordstype].append(''.join(tmp))
+        #             tmp.clear()
+        #             tmp.append(word)
+        #     else:
+        #         tmp.append(word)
                 
-            if i==len(result)-1:
-                if label=='B-PER' or label=='B-LOC' or label=='B-ORG':
-                    tmp.append(word)
-                wordstype = result[i][1][2:]
-                tag[wordstype].append(''.join(tmp))
+        #     if i==len(result)-1:
+        #         if label=='B-PER' or label=='B-LOC' or label=='B-ORG':
+        #             tmp.append(word)
+        #         wordstype = result[i][1][2:]
+        #         tag[wordstype].append(''.join(tmp))
 
-        return tag
+        return result
