@@ -12,15 +12,16 @@ def main(cfg):
     print('NER结果:')
 
     result = model.predict(text)
-    for k,v in result.items():
-        if v:
-            print(v,end=': ')
-            if k=='PER':
-                print('Person')
-            elif k=='LOC':
-                print('Location')
-            elif k=='ORG':
-                print('Organization')
+    print(result)
+    # for k,v in result.items():
+    #     if v:
+    #         print(v,end=': ')
+    #         if k=='PER':
+    #             print('Person')
+    #         elif k=='LOC':
+    #             print('Location')
+    #         elif k=='ORG':
+    #             print('Organization')
    
     
 if __name__ == "__main__":
