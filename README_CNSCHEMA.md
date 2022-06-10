@@ -234,7 +234,7 @@ NER结果：
 
 Users can directly download the [model](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv) to use. The details are as follows：
 
-1、Modify the parameter `fp`in `predict.yaml`to the path of downloaded file and `num_relations`in `embedding.yaml`to 51(relation nums)
+1、Modify the parameter `fp`in `predict.yaml`to the path of downloaded file, `num_relations`in `embedding.yaml`to 51(relation nums) and `model` in `config.yaml`to lm
 
 2、Predict. The text and entity pairs to be predicted are input to the program through the terminal
 
