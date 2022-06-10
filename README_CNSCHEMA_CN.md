@@ -236,7 +236,7 @@ NER结果：
 
 使用者可以直接下载[模型](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)使用,步骤如下：
 
-1、修改 `predict.yaml`中的参数`fp`为下载文件的路径，`embedding.yaml`中`num_relations`为51（关系个数）
+1、修改 `predict.yaml`中的参数`fp`为下载文件的路径，`embedding.yaml`中`num_relations`为51（关系个数）,`config.yaml`中的参数model为`lm`
 
 2、进行预测。需要预测的文本及实体对通过终端输入给程序。
 
