@@ -53,8 +53,8 @@ DeepKE 是一个开源的知识图谱抽取与构建工具，支持低资源、�
 |:------------------------------------------- |:---------------------- |:---------------------------------------------------------------------------------:|:----------------------------------------------------------------------:|
 | **`DeepKE(NER), RoBERTa-wwm-ext, Chinese`** | **实体抽取** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码u022）](https://pan.baidu.com/s/1hb9XEbK4x5fIyco4DgZZfg)** |
 | **`DeepKE(NER), BERT-wwm, Chinese`**        | **实体抽取** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码nmiv）](https://pan.baidu.com/s/1oi2K6vtOr8b87FkCTIkQsA)** |
-| **`DeepKE(RE), RoBERTa-wwm-ext, Chinese`**  | **关系抽取** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码29oe）](https://pan.baidu.com/s/1kPoihfHzVtxKLavUMCDLJw)** |
-| **`DeepKE(RE), BERT-wwm, Chinese`**         | **关系抽取** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码e7e9）](https://pan.baidu.com/s/1pLzOizjBgVT-GD1yNvn8dg)** |
+| **`DeepKE(RE), RoBERTa-wwm-ext, Chinese(待更新）`**  | **关系抽取** | **[PyTorch]()** | **[Pytorch]()** |
+| **`DeepKE(RE), BERT-wwm, Chinese(待更新)`**         | **关系抽取** | **[PyTorch]()** | **[Pytorch]()** |
 
 ### 使用说明
 
@@ -115,7 +115,7 @@ DeepKE使用[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1OLx5tjE
 
 ### 关系抽取（RE）
 
-DeepKE使用[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)和[`chinese-roberta-wwm-ext`](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)为基础得到了DeepKE-cnschema(RE)模型。模型所使用的超参数均为预定义的参数。最终经过训练后可以得到如下表的效果
+DeepKE使用[`chinese-bert-wwm`]()和[`chinese-roberta-wwm-ext`]()为基础得到了DeepKE-cnschema(RE)模型。模型所使用的超参数均为预定义的参数。最终经过训练后可以得到如下表的效果
 
 <table>
     <tr>
