@@ -54,7 +54,7 @@ DeepKE 是一个开源的知识图谱抽取与构建工具，支持低资源、�
 | **`DeepKE(NER), RoBERTa-wwm-ext, Chinese`** | **实体抽取** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码u022）](https://pan.baidu.com/s/1hb9XEbK4x5fIyco4DgZZfg)** |
 | **`DeepKE(NER), BERT-wwm, Chinese`**        | **实体抽取** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码nmiv）](https://pan.baidu.com/s/1oi2K6vtOr8b87FkCTIkQsA)** |
 | **`DeepKE(RE), RoBERTa-wwm-ext, Chinese`**  | **关系抽取** | **[PyTorch](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)** | **[Pytorch（密码u022）]( https://pan.baidu.com/s/1hb9XEbK4x5fIyco4DgZZfg)** |
-| **`DeepKE(RE), BERT-wwm, Chinese`**         | **关系抽取** | **[PyTorch](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)** | **[Pytorch（密码e7e9）](https://pan.baidu.com/s/1pLzOizjBgVT-GD1yNvn8dg)** |
+| **`DeepKE(RE), BERT-wwm, Chinese`**         | **关系抽取** | **[PyTorch](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)** | **[Pytorch（密码6psm）](https://pan.baidu.com/s/1ngvTwg_ZXaenxhOeadWoCA)** |
 
 ### 使用说明
 
@@ -132,9 +132,9 @@ DeepKE使用[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1wb_QIZd
     </tr>
   <tr>
         <td><b>DeepKE(RE), BERT-wwm, Chinese</b></td>
-        <td>0.8742</td>
-        <td>0.8582</td>
-        <td>0.8639</td>
+        <td>0.7861</td>
+        <td>0.7506</td>
+        <td>0.7473</td>
     </tr>
 
 </table>
