@@ -46,17 +46,17 @@ def _get_predict_instance(cfg):
     flag = input('是否使用范例[y/n]，退出请输入: exit .... ')
     flag = flag.strip().lower()
     if flag == 'y' or flag == 'yes':
-        sentence = '《乡村爱情》是一部由知名导演赵本山在1985年所拍摄的农村青春偶像剧。'
-        head = '乡村爱情'
-        tail = '赵本山'
-        head_type = '电视剧'
-        tail_type = '人物'
+        sentence = '歌曲《人生长路》出自刘德华国语专辑《男人的爱》，由李泉作词作曲，2001年出行发版'
+        head = '男人的爱'
+        tail = '人生长路'
+        head_type = '所属专辑'
+        tail_type = '歌曲'
     elif flag == 'n' or flag == 'no':
         sentence = input('请输入句子：')
         head = input('请输入句中需要预测关系的头实体：')
-        head_type = input('请输入头实体类型（可以为空，按enter跳过）：')
+        head_type = input('请输入头实体类型：')
         tail = input('请输入句中需要预测关系的尾实体：')
-        tail_type = input('请输入尾实体类型（可以为空，按enter跳过）：')
+        tail_type = input('请输入尾实体类型：')
     elif flag == 'exit':
         sys.exit(0)
     else:

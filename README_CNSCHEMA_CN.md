@@ -115,7 +115,7 @@ DeepKE使用[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1OLx5tjE
 
 ### 关系抽取（RE）
 
-DeepKE使用[`chinese-bert-wwm`]()和[`chinese-roberta-wwm-ext`]()为基础得到了DeepKE-cnschema(RE)模型。模型所使用的超参数均为预定义的参数。最终经过训练后可以得到如下表的效果
+DeepKE使用[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)和[`chinese-roberta-wwm-ext`](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)为基础得到了DeepKE-cnschema(RE)模型。模型所使用的超参数均为预定义的参数。最终经过训练后可以得到如下表的效果
 
 <table>
     <tr>
@@ -256,14 +256,14 @@ def _get_predict_instance(cfg):
         sentence = '歌曲《人生长路》出自刘德华国语专辑《男人的爱》，由李泉作词作曲，2001年出行发版'
         head = '男人的爱'
         tail = '人生长路'
-        head_type = ''
-        tail_type = ''
+        head_type = '所属专辑'
+        tail_type = '歌曲'
     elif flag == 'n' or flag == 'no':
         sentence = input('请输入句子：')
         head = input('请输入句中需要预测关系的头实体：')
-        head_type = input('请输入头实体类型（可以为空，按enter跳过）：')
+        head_type = input('请输入头实体类型：')
         tail = input('请输入句中需要预测关系的尾实体：')
-        tail_type = input('请输入尾实体类型（可以为空，按enter跳过）：')
+        tail_type = input('请输入尾实体类型：')
     elif flag == 'exit':
         sys.exit(0)
     else:
