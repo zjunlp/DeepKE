@@ -86,7 +86,7 @@ PyTorch版本则包含`pytorch_model.bin`, `config.json`, `vocab.txt`文件。
 
 我们在中文实体识别和关系抽取数据集上进行了实验，实验结果如下
 
-### 实体识别（NER任务）
+### 实体识别（NER）
 
 DeepKE使用[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1OLx5tjEriMyzbv0iv_s9lihtXWIjB6OS)和[`chinese-roberta-wwm-ext`](https://drive.google.com/drive/folders/1T3xf_MXRaVqLV-ST4VqvKoaQqQgRpp67)为基础训练得到了DeepKE-cnSchema(NER)模型。模型所使用的超参数均为预定义的参数。最终经过训练后可以得到如下表的效果
 
