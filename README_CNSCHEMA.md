@@ -54,8 +54,8 @@ For entity extraction and relation extraction tasks, we provide models based on 
 | :-------------------------------------------------- | :---------------------------- | :----------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------: |
 | **`DeepKE(NER), RoBERTa-wwm-ext, Chinese`** | **entity extraction**   | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（password:u022）](https://pan.baidu.com/s/1hb9XEbK4x5fIyco4DgZZfg)** |
 | **`DeepKE(NER), BERT-wwm, Chinese`**        | **entity extraction**   | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（password:nmiv）](https://pan.baidu.com/s/1oi2K6vtOr8b87FkCTIkQsA)** |
-| **`DeepKE(RE), RoBERTa-wwm-ext, Chinese（will be released soon.）`**  | **relation extraction** | **[PyTorch]()** | **[Pytorch]()** |
-| **`DeepKE(RE), BERT-wwm, Chinese （will be released soon.）`**         | **relation extraction** | **[PyTorch]()** | **[Pytorch]()** |
+| **`DeepKE(RE), RoBERTa-wwm-ext, Chinese`**  | **relation extraction** | **[PyTorch](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)** | **[Pytorch（password:ggnu）](https://pan.baidu.com/s/1qfiTfRTdbIiAahwPVa4MkA)** |
+| **`DeepKE(RE), BERT-wwm, Chinese`**         | **relation extraction** | **[PyTorch](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)** | **[Pytorch（password:6psm）](https://pan.baidu.com/s/1ngvTwg_ZXaenxhOeadWoCA)** |
 
 ### Instructions
 
@@ -125,15 +125,15 @@ DeepKE leverages[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1wb_
     </tr>
   <tr>
         <td><b>DeepKE(RE), RoBERTa-wwm-ext, Chinese</b></td>
-        <td>0.8761</td>
-        <td>0.8598</td>
-        <td>0.8665</td>
+        <td>0.7890</td>
+        <td>0.7370</td>
+        <td>0.7327</td>
     </tr>
   <tr>
         <td><b>DeepKE(RE), BERT-wwm, Chinese</b></td>
-        <td>0.8742</td>
-        <td>0.8582</td>
-        <td>0.8639</td>
+        <td>0.7861</td>
+        <td>0.7506</td>
+        <td>0.7473</td>
     </tr>
 </table>
 
@@ -143,52 +143,53 @@ DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge 
 
 #### Entity Schema
 
-| Serial Number | Entity Type | ID | Serial Number | Entity Type | ID |
-| ------------- | :---------- | :-: | ------------- | :---------- | :-: |
-| 1             | 人物        | YAS | 2             | 影视作品    | TOJ |
-| 3             | 目          | NGS | 4             | 生物        | QCV |
-| 5             | Number      | OKB | 6             | Date        | BQF |
-| 7             | 国家        | CAR | 8             | 网站        | ZFM |
-| 9             | 网络小说    | EMT | 10            | 图书作品    | UER |
-| 11            | 歌曲        | QEE | 12            | 地点        | UFT |
-| 13            | 气候        | GJS | 14            | 行政区      | SVA |
-| 15            | TEXT        | ANO | 16            | 历史人物    | KEJ |
-| 17            | 学校        | ZDI | 18            | 企业        | CAT |
-| 19            | 出版社      | GCK | 20            | 书籍        | FQK |
-| 21            | 音乐专辑    | BAK | 22            | 城市        | RET |
-| 23            | 经典        | QZP | 24            | 电视综艺    | QAQ |
-| 25            | 机构        | ZRE | 26            | 作品        | TDZ |
-| 27            | 语言        | CVC | 28            | 学科专业    | PMN |
+| Serial Number | Entity Type | Serial Number | Entity Type | 
+| ------------- | :---------- | ------------- | :---------- | 
+| 1   | cns:人物      | 2   | cns:影视作品 | 
+| 3   | cns:目        | 4   | cns:生物   | 
+| 5   | cns:Number   | 6   | cns:Date | 
+| 7   | cns:国家       | 8   | cns:网站   | 
+| 9   | cns:网络小说     | 10  | cns:图书作品 | 
+| 11  | cns:歌曲       | 12  | cns:地点   | 
+| 13  | cns:气候       | 14  | cns:行政区  | 
+| 15  | cns:TEXT     | 16  | cns:历史人物 | 
+| 17  | cns:学校       | 18  | cns:企业   | 
+| 19  | cns:出版社      | 20  | cns:书籍   | 
+| 21  | cns:音乐专辑     | 22  | cns:城市   | 
+| 23  | cns:景点       | 24  | cns:电视综艺 | 
+| 25  | cns:机构       | 26  | cns:作品   | 
+| 27  | cns:语言       | 28  | cns:学科专业 | 
 
 #### Relation Schema
 
 | Serial Number | Head Entity Type | Tail Entity Type | Relation | Serial Number | Head Entity Type | Tail Entity Type | Relation |
 | ------------- | :--------------- | :--------------: | -------- | ------------- | :--------------- | :--------------: | -------- |
-| 1             | 地点             |       人物       | 祖籍     | 2             | 人物             |       人物       | 父亲     |
-| 3             | 地点             |       企业       | 总部地点 | 4             | 地点             |       人物       | 出生地   |
-| 5             | 目               |       生物       | 目       | 6             | Number           |      行政区      | 面积     |
-| 7             | Text             |       机构       | 简称     | 8             | Date             |     影视作品     | 上映时间 |
-| 9             | 人物             |       人物       | 妻子     | 10            | 音乐专辑         |       歌曲       | 所属专辑 |
-| 11            | Number           |       企业       | 注册资本 | 12            | 城市             |       国家       | 首都     |
-| 13            | 人物             |     影视作品     | 导演     | 14            | Text             |     历史人物     | 字       |
-| 15            | Number           |       人物       | 身高     | 16            | 企业             |     影视作品     | 出品公司 |
-| 17            | Number           |     学科专业     | 修业年限 | 18            | Date             |       人物       | 出生日期 |
-| 19            | 人物             |     影视作品     | 制片人   | 20            | 人物             |       人物       | 母亲     |
-| 21            | 人物             |     影视作品     | 编辑     | 22            | 国家             |       人物       | 国籍     |
-| 23            | 人物             |     影视作品     | 编剧     | 24            | 网站             |     网站小说     | 连载网络 |
-| 25            | 人物             |       人物       | 丈夫     | 26            | Text             |     历史人物     | 朝代     |
-| 27            | Text             |       人物       | 民族     | 28            | Text             |     历史人物     | 朝代     |
-| 29            | 出版社           |       书籍       | 出版社   | 30            | 人物             |     电视综艺     | 主持人   |
-| 31            | Text             |     学科专业     | 专业代码 | 32            | 人物             |       歌曲       | 歌手     |
-| 33            | 人物             |       歌曲       | 作曲     | 34            | 人物             |     网络小说     | 主角     |
-| 35            | 人物             |       企业       | 董事长   | 36            | Date             |       机构       | 成立时间 |
-| 37            | 学校             |       人物       | 毕业院校 | 38            | Number           |       机构       | 占地面积 |
-| 39            | 语言             |       国家       | 官方语言 | 40            | Text             |      行政区      | 人口数量 |
-| 41            | Number           |      行政区      | 人口数量 | 42            | 城市             |       景点       | 所在城市 |
-| 43            | 人物             |     图书作品     | 作者     | 44            | Date             |       企业       | 成立时间 |
-| 45            | 人物             |       歌曲       | 作曲     | 46            | 人物             |      行政区      | 气候     |
-| 47            | 人物             |     电视综艺     | 嘉宾     | 48            | 人物             |     影视作品     | 主演     |
-| 49            | 作品             |     影视作品     | 改编自   | 50            | 人物             |       企业       | 创始人   |
+| 1   | cns:地点     | cns:人物    | cns:祖籍   | 2   | cns:人物     | cns:人物    | cns:父亲   |
+| 3   | cns:地点     | cns:企业    | cns:总部地点 | 4   | cns:地点     | cns:人物    | cns:出生地  |
+| 5   | cns:目      | cns:生物    | cns:目    | 6   | cns:Number | cns:行政区   | cns:面积   |
+| 7   | cns:Text   | cns:机构    | cns:简称   | 8   | cns:Date   | cns:影视作品  | cns:上映时间 |
+| 9   | cns:人物     | cns:人物    | cns:妻子   | 10  | cns:音乐专辑   | cns:歌曲    | cns:所属专辑 |
+| 11  | cns:Number | cns:企业    | cns:注册资本 | 12  | cns:城市     | cns:国家    | cns:首都   |
+| 13  | cns:人物     | cns:影视作品  | cns:导演   | 14  | cns:Text   | cns:历史人物  | cns:字    |
+| 15  | cns:Number | cns:人物    | cns:身高   | 16  | cns:企业     | cns:影视作品  | cns:出品公司 |
+| 17  | cns:Number | cns:学科专业  | cns:修业年限 | 18  | cns:Date   | cns:人物    | cns:出生日期 |
+| 19  | cns:人物     | cns:影视作品  | cns:制片人  | 20  | cns:人物     | cns:人物    | cns:母亲   |
+| 21  | cns:人物     | cns:影视作品  | cns:编辑   | 22  | cns:国家     | cns:人物    | cns:国籍   |
+| 23  | cns:人物     | cns:影视作品  | cns:编剧   | 24  | cns:网站     | cns:网站小说  | cns:连载网络 |
+| 25  | cns:人物     | cns:人物    | cns:丈夫   | 26  | cns:Text   | cns:历史人物  | cns:朝代   |
+| 27  | cns:Text   | cns:人物    | cns:民族   | 28  | cns:Text   | cns:历史人物  | cns:朝代   |
+| 29  | cns:出版社    | cns:书籍    | cns:出版社  | 30  | cns:人物     | cns:电视综艺  | cns:主持人  |
+| 31  | cns:Text   | cns:学科专业  | cns:专业代码 | 32  | cns:人物     | cns:歌曲    | cns:歌手   |
+| 33  | cns:人物     | cns:歌曲    | cns:作曲   | 34  | cns:人物     | cns:网络小说  | cns:主角   |
+| 35  | cns:人物     | cns:企业    | cns:董事长  | 36  | cns:Date   | cns:机构    | cns:成立时间 |
+| 37  | cns:学校     | cns:人物    | cns:毕业院校 | 38  | cns:Number | cns:机构    | cns:占地面积 |
+| 39  | cns:语言     | cns:国家    | cns:官方语言 | 40  | cns:Text   | cns:行政区   | cns:人口数量 |
+| 41  | cns:Number | cns:行政区   | cns:人口数量 | 42  | cns:城市     | cns:景点    | cns:所在城市 |
+| 43  | cns:人物     | cns:图书作品  | cns:作者   | 44  | cns:Date   | cns:企业    | cns:成立时间 |
+| 45  | cns:人物     | cns:歌曲    | cns:作曲   | 46  | cns:人物     | cns:行政区   | cns:气候   |
+| 47  | cns:人物     | cns:电视综艺  | cns:嘉宾   | 48  | cns:人物     | cns:影视作品  | cns:主演   |
+| 49  | cns:作品     | cns:影视作品  | cns:改编自  | 50  | cns:人物     | cns:企业    | cns:创始人  |
+
 
 ## Quick Load
 
@@ -232,7 +233,7 @@ NER结果：
 
 ### Relation Extraction(RE)
 
-Users can directly download the [model]() to use. The details are as follows：
+Users can directly download the [model](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv) to use. The details are as follows：
 
 1、Modify the parameter `fp`in `predict.yaml`to the path of downloaded file, `num_relations`in `embedding.yaml`to 51(relation nums) and `model` in `config.yaml`to lm
 
@@ -254,8 +255,8 @@ def _get_predict_instance(cfg):
         sentence = '歌曲《人生长路》出自刘德华国语专辑《男人的爱》，由李泉作词作曲，2001年出行发版'
         head = '男人的爱'
         tail = '人生长路'
-        head_type = ''
-        tail_type = ''
+        head_type = '所属专辑'
+        tail_type = '歌曲'
     elif flag == 'n' or flag == 'no':
         sentence = input('请输入句子：')
         head = input('请输入句中需要预测关系的头实体：')
