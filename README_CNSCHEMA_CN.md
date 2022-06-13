@@ -53,8 +53,8 @@ DeepKE 是一个开源的知识图谱抽取与构建工具，支持低资源、�
 |:------------------------------------------- |:---------------------- |:---------------------------------------------------------------------------------:|:----------------------------------------------------------------------:|
 | **`DeepKE(NER), RoBERTa-wwm-ext, Chinese`** | **实体抽取** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码u022）](https://pan.baidu.com/s/1hb9XEbK4x5fIyco4DgZZfg)** |
 | **`DeepKE(NER), BERT-wwm, Chinese`**        | **实体抽取** | **[PyTorch](https://drive.google.com/open?id=1eHM3l4fMo6DsQYGmey7UZGiTmQquHw25)** | **[Pytorch（密码nmiv）](https://pan.baidu.com/s/1oi2K6vtOr8b87FkCTIkQsA)** |
-| **`DeepKE(RE), RoBERTa-wwm-ext, Chinese(待更新）`**  | **关系抽取** | **[PyTorch]()** | **[Pytorch]()** |
-| **`DeepKE(RE), BERT-wwm, Chinese(待更新)`**         | **关系抽取** | **[PyTorch]()** | **[Pytorch]()** |
+| **`DeepKE(RE), RoBERTa-wwm-ext, Chinese`**  | **关系抽取** | **[PyTorch](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)** | **[Pytorch（密码u022）]( https://pan.baidu.com/s/1hb9XEbK4x5fIyco4DgZZfg)** |
+| **`DeepKE(RE), BERT-wwm, Chinese`**         | **关系抽取** | **[PyTorch](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)** | **[Pytorch（密码e7e9）](https://pan.baidu.com/s/1pLzOizjBgVT-GD1yNvn8dg)** |
 
 ### 使用说明
 
@@ -158,7 +158,7 @@ DeepKE-cnSchema特别版为支持中文领域知识图谱构建推出的开箱�
 | 17  | 学校     | ZDI  | 18  | 企业   | CAT  |
 | 19  | 出版社    | GCK  | 20  | 书籍   | FQK  |
 | 21  | 音乐专辑   | BAK  | 22  | 城市   | RET  |
-| 23  | 经典     | QZP  | 24  | 电视综艺 | QAQ  |
+| 23  | 景点     | QZP  | 24  | 电视综艺 | QAQ  |
 | 25  | 机构     | ZRE  | 26  | 作品   | TDZ  |
 | 27  | 语言     | CVC  | 28  | 学科专业 | PMN  |
 
