@@ -292,7 +292,7 @@ def _get_predict_instance(cfg):
 ```
 
 ### 联合三元组抽取
-用户可以先讲上述模型下载至本地，然后使用[example/triple](https://github.com/zjunlp/DeepKE/tree/main/example/triple)中的代码进行三元组抽取。如果单句中存在超过两个以上的实体数，可能在一些实体对中会存在预测不准确的问题，那是因为这些实体对并没有被加入训练集中进行训练，所以需要进一步判断，具体使用步骤如下：
+用户可以先将上述模型下载至本地，然后使用[example/triple](https://github.com/zjunlp/DeepKE/tree/main/example/triple)中的代码进行三元组抽取。如果单句中存在超过两个以上的实体数，可能在一些实体对中会存在预测不准确的问题，那是因为这些实体对并没有被加入训练集中进行训练，所以需要进一步判断，具体使用步骤如下：
 
 1、将`conf`文件夹中的`predict.yaml`中的`text`修改为预测文本，`nerfp`修改为ner模型文件夹地址，`refp`为re模型地址
 
@@ -314,7 +314,7 @@ python predict.py
 ```bash
 {
   "@context": {
-    "歌手": "https://baike.baidu.com/item/%E6%AD%8C%E6%89%8B/16693#viewPageContent"
+    "歌手": "https://cnschema.openkg.cn/item/%E6%AD%8C%E6%89%8B/16693#viewPageContent"
   },
   "@id": "田馥甄",
   "歌手": {
