@@ -79,6 +79,6 @@ For example,input a sentence '东眼山森林游乐区位于桃园县与台北�
 1. CNN
 2. RNN
 3. Capsule
-4. GCN
+4. GCN (Based on the paper ["Graph Convolution over Pruned Dependency Trees Improves Relation Extraction"](https://aclanthology.org/D18-1244.pdf))
 5. Transformer
 6. Pre-trained Model (BERT)
