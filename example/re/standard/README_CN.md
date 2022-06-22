@@ -57,7 +57,7 @@ cd DeepKE/example/re/standard
 
 3、Capsule
 
-4、GCN
+4、GCN （基于论文["Graph Convolution over Pruned Dependency Trees Improves Relation Extraction"](https://aclanthology.org/D18-1244.pdf))
 
 5、Transformer
 
