@@ -75,7 +75,7 @@ checkpoints_robert
     |- vocab.txt                  # vocabulary
 ```
 
-where `config.json` and `vocab.txt` is completely consistent with the original Google `RoBERTa-wwm-ext, Chinese`. PyTorch version contains `pytorch_ model. bin`, `config. json`, `vocab. txt` file.
+where `config.json` and `vocab.txt` is completely consistent with the original Google `RoBERTa-wwm-ext, Chinese`. PyTorch version contains `pytorch_model. bin`, `config. json`, `vocab. txt` file.
 
 As for the relation extraction model, take pytoch version `DeepKE(RE), RoBERTa-wwm-ext, Chinese` as an example. The model is pth file after downloading.
 
