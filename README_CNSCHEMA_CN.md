@@ -339,7 +339,9 @@ python run.py
 
 2、将`conf`文件夹中的`train.yaml`为`lm`,`lm.yaml`中的`lm_file`修改为指定预训练模型，`embedding.yaml`中`num_relations`为关系的个数如51，用户可以通过修改yaml文件选择不同的模型进行训练
 
-3、进行训练。
+3、修改`train.yaml`中的`labels`为`type.txt`中所用到的标签
+
+4、进行训练。
 
 ```bash
 python run.py
