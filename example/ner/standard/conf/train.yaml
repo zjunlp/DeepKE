@@ -23,3 +23,4 @@ train_batch_size: 32
 use_gpu: True                # use gpu or not
 warmup_proportion: 0.1
 weight_decay: 0.01
+labels: ['LOC','ORG','PER','MISC']
