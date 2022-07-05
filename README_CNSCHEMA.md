@@ -193,102 +193,117 @@ DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge 
 
 ## Quick Load
 
-### Named Entity Recognition(NER)
+### [Named Entity Recognition(NER)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard)
 
 Users can directly download the [model](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg) to use. The details are as follows：
 
-1、Name the downloaded folder as `checkpoints`
+1. Name the downloaded folder as `checkpoints`
+2. Set the parameter `text` in `predict.yaml` as the sentence to be predicted
+	To use the trained model, just set the input sentence "《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽". After running `python oredict.py`, results can be obtained which show that the entity type "星空黑夜传奇" is "网络小说" aligned with cnschema, "起点中文网" is "网站" and "啤酒的罪孽" is "人物".
 
-2、Modify the `get_labels`function in the [source code](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/tools/preprocess.py). The returned labels are given in `type.txt`
+	```bash
+	text="《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽"
+	```
+3. Predict
+	```bash
+	python predict.py
+	```
 
-```python
-def get_labels(self):
-    return ['O', 'B-YAS', 'I-YAS', 'B-TOJ', 'I-TOJ', 'B-NGS', 'I-NGS', 'B-QCV', 'I-QCV', 'B-OKB', 'I-OKB', 'B-BQF', 'I-BQF', 'B-CAR', 'I-CAR', 'B-ZFM', 'I-ZFM', 'B-EMT', 'I-EMT', 'B-UER', 'I-UER', 'B-QEE', 'I-QEE', 'B-UFT', 'I-UFT', 'B-GJS', 'I-GJS', 'B-SVA', 'I-SVA', 'B-ANO', 'I-ANO', 'B-KEJ', 'I-KEJ', 'B-ZDI', 'I-ZDI', 'B-CAT', 'I-CAT', 'B-GCK', 'I-GCK', 'B-FQK', 'I-FQK', 'B-BAK', 'I-BAK', 'B-RET', 'I-RET', 'B-QZP', 'I-QZP', 'B-QAQ', 'I-QAQ', 'B-ZRE', 'I-ZRE', 'B-TDZ', 'I-TDZ', 'B-CVC', 'I-CVC', 'B-PMN', 'I-PMN', '[CLS]', '[SEP]']
-```
 
-3、Modify the parameter `text` in `predict.yaml` to the text to be predicted
+	Finally, output the results:
 
-4、Predict. The text and entity pairs to be predicted are input to the program through the terminal
+	```bash
+	NER句子：
+	《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽
+	NER结果：
+	[('星','B-UER'),('空','I-UER'),('黑','I-UER'),('夜','I-UER'),('传','I-UER'),('奇','I-UER'),('起','B-ZFM'),('点','I-ZFM'),('中','I-ZFM'),('文','I-ZFM'),('网','I-ZFM'),('啤','B-YAS'),('酒','I-YAS'),('的','I-YAS'),('罪','I-YAS'),('孽','I-YAS')]
+	```
 
-```bash
-python predict.py
-```
-
-To use the trained model, just input the sentence "《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽". After running `python oredict.py`, results can be obtained which show that the entity type "星空黑夜传奇" is "网络小说" aligned with cnschema, "起点中文网" is "网站" and "啤酒的罪孽" is "人物".
-
-Modify the parameter `text` in `predict.yaml` to the text to be predicted
-
-```bash
-text=“《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽”
-```
-
-Finally, output the results:
-
-```bash
-NER句子：
-《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽
-NER结果：
-[('星','B-UER'),('空','I-UER'),('黑','I-UER'),('夜','I-UER'),('传','I-UER'),('奇','I-UER'),('起','B-ZFM'),('点','I-ZFM'),('中','I-ZFM'),('文','I-ZFM'),('网','I-ZFM'),('啤','B-YAS'),('酒','I-YAS'),('的','I-YAS'),('罪','I-YAS'),('孽','I-YAS')]
-```
-
-### Relation Extraction(RE)
-
+### [Relation Extraction(RE)](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard)
 Users can directly download the [model](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv) to use. The details are as follows：
 
-1、Modify the parameter `fp`in `predict.yaml`to the path of downloaded file, `num_relations`in `embedding.yaml`to 51(relation nums) and `model` in `config.yaml`to lm
+1. Modify the parameter `fp`in `predict.yaml`to the path of downloaded file, `num_relations`in `embedding.yaml`to 51(relation nums) and `model` in `config.yaml`to lm
+2. Predict. The text and entity pairs to be predicted are input to the program through the terminal.
 
-2、Predict. The text and entity pairs to be predicted are input to the program through the terminal
+	```bash
+	python predict.py
+	```
 
-```bash
-python predict.py
-```
+	To use the trained model, run `python predict.py` and input the sentence "歌曲《人生长路》出自刘德华国语专辑《男人的爱》，由李泉作词作曲，2001年出行发版". The given entity pair are "男人的爱" and "人生长路". Finally, the extracted relation is "所属专辑" aligned with cnschema.
 
-To use the trained model, run `python predict.py` and input the sentence "歌曲《人生长路》出自刘德华国语专辑《男人的爱》，由李泉作词作曲，2001年出行发版". The given entity pair are "男人的爱" and "人生长路". Finally, the extracted relation is "所属专辑" aligned with cnschema.
+	To change the text to be predicted, modify the `_get_predict_instance`function in `predict.py` to the following example:
 
-To change the text to be predicted, modify the `_get_predict_instance`function in `predict.py` to the following example:
+	```python
+	def _get_predict_instance(cfg):
+	    flag = input('是否使用范例[y/n]，退出请输入: exit .... ')
+	    flag = flag.strip().lower()
+	    if flag == 'y' or flag == 'yes':
+		sentence = '歌曲《人生长路》出自刘德华国语专辑《男人的爱》，由李泉作词作曲，2001年出行发版'
+		head = '男人的爱'
+		tail = '人生长路'
+		head_type = '所属专辑'
+		tail_type = '歌曲'
+	    elif flag == 'n' or flag == 'no':
+		sentence = input('请输入句子：')
+		head = input('请输入句中需要预测关系的头实体：')
+		head_type = input('请输入头实体类型（可以为空，按enter跳过）：')
+		tail = input('请输入句中需要预测关系的尾实体：')
+		tail_type = input('请输入尾实体类型（可以为空，按enter跳过）：')
+	    elif flag == 'exit':
+		sys.exit(0)
+	    else:
+		print('please input yes or no, or exit!')
+		_get_predict_instance()
 
-```python
-def _get_predict_instance(cfg):
-    flag = input('是否使用范例[y/n]，退出请输入: exit .... ')
-    flag = flag.strip().lower()
-    if flag == 'y' or flag == 'yes':
-        sentence = '歌曲《人生长路》出自刘德华国语专辑《男人的爱》，由李泉作词作曲，2001年出行发版'
-        head = '男人的爱'
-        tail = '人生长路'
-        head_type = '所属专辑'
-        tail_type = '歌曲'
-    elif flag == 'n' or flag == 'no':
-        sentence = input('请输入句子：')
-        head = input('请输入句中需要预测关系的头实体：')
-        head_type = input('请输入头实体类型（可以为空，按enter跳过）：')
-        tail = input('请输入句中需要预测关系的尾实体：')
-        tail_type = input('请输入尾实体类型（可以为空，按enter跳过）：')
-    elif flag == 'exit':
-        sys.exit(0)
-    else:
-        print('please input yes or no, or exit!')
-        _get_predict_instance()
+	    instance = dict()
+	    instance['sentence'] = sentence.strip()
+	    instance['head'] = head.strip()
+	    instance['tail'] = tail.strip()
+	    if head_type.strip() == '' or tail_type.strip() == '':
+		cfg.replace_entity_with_type = False
+		instance['head_type'] = 'None'
+		instance['tail_type'] = 'None'
+	    else:
+		instance['head_type'] = head_type.strip()
+		instance['tail_type'] = tail_type.strip()
 
-    instance = dict()
-    instance['sentence'] = sentence.strip()
-    instance['head'] = head.strip()
-    instance['tail'] = tail.strip()
-    if head_type.strip() == '' or tail_type.strip() == '':
-        cfg.replace_entity_with_type = False
-        instance['head_type'] = 'None'
-        instance['tail_type'] = 'None'
-    else:
-        instance['head_type'] = head_type.strip()
-        instance['tail_type'] = tail_type.strip()
+	    return instance
+	```
 
-    return instance
-```
+	Finally, output the results:
 
-Finally, output the results:
+	```bash
+	“男人的爱”和“人生长路”在句中关系为“所属专辑”，置信度为0.99
+	```
 
-```bash
-“男人的爱”和“人生长路”在句中关系为“所属专辑”，置信度为0.99
-```
+### Combined Entity and Relation Extraction
+After aforementioned trained models are downloaded, entites and their relations in a text can be extracted together. IF there are more than two entities in one sentence, some predicted entity pairs may be incorrect because these entity pairs are not in training sets and need to be diagnosed further. The detailed steps are as follow:<br>
+1. In 'conf', modify `text` in `predict.yaml` as the sentence to be predicted, `nerfp` as the directory of the trained NER model and 'refp' as the directory of the trained RE model.
+2. Predict
+	```shell
+	python predict.py
+	```
+	Many results will be output. Take the input text `此外网易云平台还上架了一系列歌曲，其中包括田馥甄的《小幸运》等` as example.
+	
+	(1) Output the result of NER: `[('田', 'B-YAS'), ('馥', 'I-YAS'), ('甄', 'I-YAS'), ('小', 'B-QEE'), ('幸', 'I-QEE'), ('运', 'I-QEE')]`
+	
+	(2) Output the processed result: `{'田馥甄': '人物', '小幸运': '歌曲'}`
+	
+	(3) Output the result of RE: `"田馥甄" 和 "小幸运" 在句中关系为："歌手"，置信度为0.92。`
+	
+	(4) Output the result as `jsonld`
+	
+	 ```bash
+	    {
+	      "@context": {
+		"歌手": "https://cnschema.openkg.cn/item/%E6%AD%8C%E6%89%8B/16693#viewPageContent"
+	      },
+	      "@id": "田馥甄",
+	      "歌手": {
+		"@id": "小幸运"
+	      }
+	    }
+	  ```
 
 ## User-defined Model
 
@@ -296,15 +311,13 @@ Finally, output the results:
 
 If you need to use customized dataset for training, the steps are as follows:
 
-1、Download customized [dataset](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg) and put it into the `data` folder.
-
-2、Modify the parameter `bert_model`in `train.yaml`of the `conf`folder to the specify model. Users can choose different models to train by modifying the `yaml`file.
-
-3、Train.
-
-```bash
-python run.py
-```
+1. Download customized [dataset](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg) and put it into the `data` folder.
+2. Modify the parameter `bert_model`in `train.yaml`of the `conf`folder to the specify model. Users can choose different models to train by modifying the `yaml`file.
+3. Modify `labels` in `train.yaml` as the labels in `data/type.txt`
+4. Train.
+	```bash
+	python run.py
+	```
 
 ### Relation Extraction(RE)
 
@@ -316,9 +329,9 @@ If you need to use other models for training, the steps are as follows:
 
 3、Train.
 
-```bash
-python run.py
-```
+	```bash
+	python run.py
+	```
 
 ## FAQ
 
