@@ -194,7 +194,7 @@ DeepKE-cnSchema特别版为支持中文领域知识图谱构建推出的开箱�
 
 ## 快速加载
 
-### 实体识别（NER）
+### [实体识别（NER）](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard)
 
 用户可以直接下载[模型](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg)进行使用，具体流程如下：
 
@@ -223,7 +223,7 @@ NER结果：
 [('星','B-UER'),('空','I-UER'),('黑','I-UER'),('夜','I-UER'),('传','I-UER'),('奇','I-UER'),('起','B-ZFM'),('点','I-ZFM'),('中','I-ZFM'),('文','I-ZFM'),('网','I-ZFM'),('啤','B-YAS'),('酒','I-YAS'),('的','I-YAS'),('罪','I-YAS'),('孽','I-YAS')]
 ```
 
-### 关系抽取（RE）
+### [关系抽取（RE）](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard)
 
 使用者可以直接下载[模型](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)使用,步骤如下：
 
