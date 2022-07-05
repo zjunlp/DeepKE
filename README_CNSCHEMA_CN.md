@@ -318,7 +318,7 @@ DeepKE-cnSchema特别版为支持中文领域知识图谱构建推出的开箱�
 
 1. 下载自定义的[数据集](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg)，将其放入命名为`data`的文件夹中
 2. 将`conf`文件夹中的`train.yaml`中的`bert_model`修改为指定模型，用户可以通过修改yaml文件选择不同的模型进行训练（推荐直接下载模型，设置`bert_model`为模型路径）
-3. 修改`train.yaml`中的`labels`为`type.txt`中所用到的标签
+3. 修改`train.yaml`中的`labels`为`data/type.txt`中所用到的标签
 4. 进行训练
 
     ```bash
