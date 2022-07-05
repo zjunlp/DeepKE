@@ -131,7 +131,7 @@ cd DeepKE/example/re/multimodal
     python run.py
     ```
   - The trained model is stored in the `checkpoint` directory by default and you can change it by modifying "save_path" in `train.yaml`.
-  - Start to train from last-trained model `<br>`
+  - Start to train from last-trained model
     
     modify `load_path` in `train.yaml` as the path of the last-trained model
   - Logs for training are stored in the current directory by default and the path can be configured by modifying `log_dir` in `.yaml`
