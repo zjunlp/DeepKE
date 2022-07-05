@@ -198,7 +198,7 @@ DeepKE-cnSchema特别版为支持中文领域知识图谱构建推出的开箱�
 
 用户可以直接下载[模型](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg)进行使用，具体流程如下：
 
-1. 将下载文件夹命名为`checkpoints`
+1. 将下载的模型文件夹命名为`checkpoints`
 2. 修改 `predict.yaml`中的参数`text`为需要预测的文本
 
     使用训练好的模型，只需输入句子“《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽”，运行```python predict.py```后可得到结果，结果显示“星空黑夜传奇”实体类型为经过cnschema对齐后的“网络小说”，“起点中文网”为“网站”，“啤酒的罪孽”为“人物。
