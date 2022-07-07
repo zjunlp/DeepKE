@@ -23,7 +23,7 @@ writer = wandb.init(project="DeepKE_RE_MM")
 DATA_PATH = {
     'twitter15':{
         'test': 'data/twitter2015/test.txt',
-        'test_auximgs': 'data/txt/mre_test_dict.pth',
+        'test_auximgs': 'data/twitter2015/twitter2015_test_dict.pth',
         'rcnn_img_path': 'data/twitter2015',
         'img2crop': 'data/twitter2015/twitter2015_img2crop.pth'},
     'twitter17':{
