@@ -110,6 +110,7 @@ cd DeepKE/example/ner/multimodal
   - `train.txt`: 训练文本数据
   - `...`
 - 开始训练：模型加载和保存位置以及配置可以在conf的 `.yaml`文件中修改
+- 下载[PLM](https://huggingface.co/openai/clip-vit-base-patch32/tree/main)并修改`train.yaml`和`predict.yaml`中的`vit_name'为PLM的绝对路径
   
   - `python run.py`
   - 训练好的模型默认保存在 `checkpoint`中，可以通过修改 `train.yaml`中的"save_path"更改保存路径
