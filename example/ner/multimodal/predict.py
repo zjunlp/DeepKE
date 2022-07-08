@@ -22,20 +22,21 @@ writer = wandb.init(project="DeepKE_RE_MM")
 
 DATA_PATH = {
     'twitter15':{
-        'test': 'data/twitter2015/test.txt',
-        'test_auximgs': 'data/twitter2015/twitter2015_test_dict.pth',
-        'rcnn_img_path': 'data/twitter2015',
-        'img2crop': 'data/twitter2015/twitter2015_img2crop.pth'},
+        'test': 'data/twitter2015/twitter2015/test.txt',
+        'test_auximgs': 'data/twitter2015/twitter2015/twitter2015_test_dict.pth',
+        'rcnn_img_path': 'data/twitter2015/twitter2015_detect',
+        'img2crop': 'data/twitter2015/twitter2015_detect/twitter2015_img2crop.pth'},
     'twitter17':{
-        'test': 'data/twitter2017/test.txt',
-        'test_auximgs': 'data/twitter2017/twitter2017_test_dict.pth',
-        'rcnn_img_path': 'data/twitter2017',
-        'img2crop': 'data/twitter2017/twitter17_img2crop.pth'}
+        'test': 'data/twitter2017/twitter2017/test.txt',
+        'test_auximgs': 'data/twitter2017/twitter2017/twitter2017_test_dict.pth',
+        'rcnn_img_path': 'data/twitter2017/twitter2017_detect',
+        'img2crop': 'data/twitter2017/twitter2017_detect/twitter17_img2crop.pth'}
 }
 
 IMG_PATH = {
     'twitter15': 'data/twitter2015/twitter2015_images',
-    'twitter17': 'data/twitter2017/twitter2017_images'}
+    'twitter17': 'data/twitter2017/twitter2017_images'
+}
 
 AUX_PATH = {
     'twitter15': {'test': 'data/twitter2015/twitter2015_aux_images/test/crops'},
@@ -71,7 +72,7 @@ def main(cfg):
     rcnn_img_path = DATA_PATH[cfg.dataset_name]['rcnn_img_path']
 
     processor = MMPNERProcessor(data_path, cfg)
-    test_dataset = MMPNERDataset(processor, label_mapping, img_path, aux_path, rcnn_img_path, max_seq=cfg.max_seq, ignore_idx=cfg.ignore_idx, aux_size=cfg.aux_size, rcnn_size=cfg.rcnn_size, mode='test')
+    test_dataset = MMPNERDataset(processor, label_mapping, img_path, aux_path, rcnn_img_path, max_seq=cfg.max_seq, ignore_idx=cfg.ignore_idx, aux_size=cfg.aux_size, rcnn_size=cfg.rcnn_size, mode='test', cwd=cwd)
     test_dataloader = DataLoader(test_dataset, batch_size=cfg.batch_size, shuffle=False, num_workers=4, pin_memory=True)
 
     model = IFANERCRFModel(LABEL_LIST, cfg)
