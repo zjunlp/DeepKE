@@ -122,6 +122,7 @@ cd DeepKE/example/ner/multimodal
 - Training
   
   - Parameters, model paths and configuration for training are in the `conf` folder and users can modify them before training.
+  - Download the [PLM](https://huggingface.co/openai/clip-vit-base-patch32/tree/main) and set `vit_name` in `train.yaml` and `predict.yaml` as the directory of the PLM.
   - Run
     
     ```bash
