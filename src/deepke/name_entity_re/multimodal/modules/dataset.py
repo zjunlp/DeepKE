@@ -50,7 +50,7 @@ class MMPNERProcessor(object):
         aux_path = os.path.join(self.cwd,self.data_path[mode+"_auximgs"])
         aux_imgs = torch.load(aux_path)
 
-        rcnn_imgs = torch.load(os.path.join(self.cwd,self.data_path['train_auximgs']))
+        rcnn_imgs = torch.load(os.path.join(self.cwd,self.data_path["img2crop"]))
 
         return {"words": raw_words, "targets": raw_targets, "imgs": imgs, "aux_imgs":aux_imgs, "rcnn_imgs":rcnn_imgs}
 
