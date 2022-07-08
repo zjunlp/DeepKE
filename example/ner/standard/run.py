@@ -86,7 +86,7 @@ def main(cfg):
 
     # Preprocess the input dataset
     processor = NerProcessor()
-    label_list = processor.get_labels()
+    label_list = processor.get_labels(cfg)
     num_labels = len(label_list) + 1
     
     # Prepare the model
