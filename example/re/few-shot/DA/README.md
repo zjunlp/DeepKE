@@ -1,7 +1,7 @@
 # Data Augmentation for Few-shot RE
 ## 1 Prepare the environment
 
-Following the instructions from [nlpaug](https://github.com/makcedward/nlpaug#installation) (Thans a lot!).
+Following the instructions from [nlpaug](https://github.com/makcedward/nlpaug#installation) (Thanks a lot!).
 
 
 
