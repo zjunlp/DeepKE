@@ -45,7 +45,7 @@ cd DeepKE/example/re/few-shot
     ```
 
   - The dataset [SEMEVAL](https://semeval2.fbk.eu/semeval2.php?location=tasks#T11) is stored in `data`:
-    - `rel2id.json`：Relation Label - ID
+    - `rel2id.json`：Relation Labels / Answer words - ID
     - `temp.txt`：Results of handled relation labels
 
     - `test.txt`： Test set
