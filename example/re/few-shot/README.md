@@ -52,7 +52,7 @@ cd DeepKE/example/re/few-shot
     - `train.txt`: Training set
 
     - `val.txt`：Validation set
-  - We also provide [data augmentation methods](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/DA) to effectively leverage limited annotated data.
+  - We also provide [data augmentation methods](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/DA) to effectively leverage limited annotated RE data.
 - Training
 
   - Parameters, model paths and configuration for training are in the `conf` folder and users can modify them before training.
