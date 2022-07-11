@@ -50,7 +50,7 @@ cd DeepKE/example/re/few-shot
   - `train.txt`：训练集
 
   - `val.txt`：验证集
-- 我们也提供[数据增强方法](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/DA)来充分利用有限的有标签数据
+- 我们也提供[数据增强方法](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/DA)来充分利用有限的有标签关系抽取数据
 
 - 开始训练：模型加载和保存位置以及配置可以在conf的`.yaml`文件中修改
   
