@@ -1,7 +1,7 @@
 seed: 1234
 
 bert_name: "bert-base-uncased"
-vit_name: "openai/clip-vit-base-patch32"
+vit_name: "clip-vit-base-patch32"
 device: cuda
 
 batch_size: 32
@@ -11,4 +11,5 @@ aux_size: 128
 rcnn_size: 64
 ignore_idx: 0
 
-load_path: null
+load_path:  null
+dataset_name: 'twitter15'

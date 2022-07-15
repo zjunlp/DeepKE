@@ -22,15 +22,15 @@ writer = wandb.init(project="DeepKE_RE_MM")
 
 DATA_PATH = {
     'twitter15':{
-        'test': 'data/twitter2015/twitter2015/test.txt',
-        'test_auximgs': 'data/twitter2015/twitter2015/twitter2015_test_dict.pth',
-        'rcnn_img_path': 'data/twitter2015/twitter2015_detect',
-        'img2crop': 'data/twitter2015/twitter2015_detect/twitter2015_img2crop.pth'},
+        'test': 'data/twitter2015/test.txt',
+        'test_auximgs': 'data/twitter2015/twitter2015_test_dict.pth',
+        'rcnn_img_path': 'data/twitter2015',
+        'img2crop': 'data/twitter2015/twitter15_detect/twitter15_img2crop.pth'},
     'twitter17':{
-        'test': 'data/twitter2017/twitter2017/test.txt',
-        'test_auximgs': 'data/twitter2017/twitter2017/twitter2017_test_dict.pth',
-        'rcnn_img_path': 'data/twitter2017/twitter2017_detect',
-        'img2crop': 'data/twitter2017/twitter2017_detect/twitter17_img2crop.pth'}
+        'test': 'data/twitter2017/test.txt',
+        'test_auximgs': 'data/twitter2017/twitter2017_test_dict.pth',
+        'rcnn_img_path': 'data/twitter2017',
+        'img2crop': 'data/twitter2017/twitter17_detect/twitter17_img2crop.pth'}
 }
 
 IMG_PATH = {
