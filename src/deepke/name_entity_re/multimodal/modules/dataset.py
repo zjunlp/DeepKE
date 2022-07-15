@@ -135,7 +135,7 @@ class MMPNERDataset(Dataset):
                         rcnn_img_paths = self.data_dict['rcnn_imgs'][img]
                         rcnn_img_paths = [os.path.join(self.rcnn_img_path, path) for path in rcnn_img_paths]
                     for i in range(min(3, len(rcnn_img_paths))):
-                        rcnn_img = Image.open(rcnn_img_paths[i]).convert('RGB')
+                        rcnn_img = Image.open(os.path.join(self.cwd, rcnn_img_paths[i])).convert('RGB')
                         rcnn_img = self.rcnn_processor(images=rcnn_img, return_tensors='pt')['pixel_values'].squeeze()
                         rcnn_imgs.append(rcnn_img)
 

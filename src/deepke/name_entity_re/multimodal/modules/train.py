@@ -253,7 +253,7 @@ class Trainer(object):
             self.model.load_state_dict(torch.load(self.args.load_path))
             self.logger.info("Load model successful!")
             self.model.to(self.args.device)
-        y_pred = []
+        y_true, y_pred = [], []
 
         with torch.no_grad():
             with tqdm(total=len(self.test_data), leave=False, dynamic_ncols=True) as pbar:
@@ -269,19 +269,28 @@ class Trainer(object):
                     label_map = {idx:label for label, idx in self.label_map.items()}
                     for i, mask in enumerate(input_mask):
                         temp_1 = []
+                        temp_2 = []
                         for j, m in enumerate(mask):
                             if j == 0:
                                 continue
                             if m:
                                 if label_map[label_ids[i][j]] != "X" and label_map[label_ids[i][j]] != "[SEP]":
-                                    temp_1.append(label_map[logits[i][j]])
+                                    temp_1.append(label_map[label_ids[i][j]])
+                                    temp_2.append(label_map[logits[i][j]])
                             else:
                                 break
-                        y_pred.append(temp_1)
+                        y_true.append(temp_1)
+                        y_pred.append(temp_2)
                     
                     pbar.update()
                 # evaluate done
                 pbar.close()
+                results = classification_report(y_true, y_pred, digits=4) 
+                self.logger.info("***** Predict Eval results *****")
+                self.logger.info("\n%s", results)
+                f1_score = float(results.split('\n')[-4].split('      ')[-2].split('    ')[-1])
+                if self.writer:
+                    self.writer.log({'predict_f1': f1_score})
         
     def _step(self, batch, mode="train"):
         input_ids, token_type_ids, attention_mask, labels, images, aux_imgs, rcnn_imgs = batch
