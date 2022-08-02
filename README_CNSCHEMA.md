@@ -20,6 +20,10 @@
     </a>
 </p>
 
+<p align="center">
+    <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md">简体中文</a> </b>
+</p>
+
 <h1 align="center">
     <p>Off-the-shelf Special Edition for Chinese Knowledge Extraction Toolkit——DeepKE-cnSchema</p>
 </h1>

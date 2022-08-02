@@ -87,6 +87,9 @@ The overall experimental results on IFAformer for Multi-Modal RE task can be see
 - hydra-core == 1.0.6
 - deepke
 
+<font color='red'> Attention! </font>
+Here `transformers == 3.4.0` is the environmental requirement of the whole `DeepKE`. But to load the `openai/clip-vit-base-patch32` model used in multimodal parts, `transformers == 4.11.3` is needed indeed. So you are recommended to download the [pretrained model](https://huggingface.co/openai/clip-vit-base-patch32) on huggingface and use the local path to load the model.
+
 ## Download Code
 
 ```bash
