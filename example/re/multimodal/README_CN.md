@@ -88,6 +88,8 @@ IFAformer的主要实验结果如下表所示：
 - hydra-core == 1.0.6
 - deepke
 
+<font color='red'> 注意! </font> 这里`transformers==3.4.0`是整个`DeepKE`的环境要求。但是在使用多模态部分时，`openai/clip-vit-base-patch32`预训练模型的加载需要`transformers==4.11.3`。因此推荐大家在huggingface上下载好[模型](https://huggingface.co/openai/clip-vit-base-patch32)后，采用本地路径的方法导入。
+
 ### 克隆代码
 
 ```

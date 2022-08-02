@@ -19,6 +19,10 @@
     </a>
 </p>
 
+<p align="center">
+    <b> <a href="https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA.md">English</a> | 简体中文 </b>
+</p>
+
 <h1 align="center">
     <p>开源中文知识图谱抽取框架开箱即用特别版DeepKE-cnSchema</p>
 </h1>
