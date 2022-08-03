@@ -499,7 +499,7 @@ Please cite our paper if you use DeepKE in your work
 ```bibtex
 @article{zhang2022deepke,
   title={DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population},
-  author={Zhang, Ningyu and Xu, Xin and Tao, Liankuan and Yu, Haiyang and Ye, Hongbin and Xie, Xin and Chen, Xiang and Li, Zhoubo and Li, Lei and Liang, Xiaozhuan and others},
+  author={Zhang, Ningyu and Xu, Xin and Tao, Liankuan and Yu, Haiyang and Ye, Hongbin and Qiao, Shuofei and Xie, Xin and Chen, Xiang and Li, Zhoubo and Li, Lei and others},
   journal={arXiv preprint arXiv:2201.03335},
   year={2022}
 }
@@ -508,8 +508,8 @@ Please cite our paper if you use DeepKE in your work
 
 # Developers
 
-Zhejiang University: Ningyu Zhang, Liankuan Tao, Xin Xu, Haiyang Yu, Hongbin Ye, Shuofei Qiao, Xin Xie, Xiang Chen, Zhoubo Li, Lei Li, Xiaozhuan Liang, Yunzhi Yao, Shumin Deng, Wen Zhang, Guozhou Zheng, Huajun Chen
+Zhejiang University: Ningyu Zhang, Liankuan Tao, Xin Xu, Haiyang Yu, Hongbin Ye, Shuofei Qiao, Peng Wang, Xin Xie, Xiang Chen, Zhoubo Li, Lei Li, Xiaozhuan Liang, Yunzhi Yao, Shumin Deng, Wen Zhang, Guozhou Zheng, Huajun Chen
 
-Alibaba Group: Feiyu Xiong, Hui Chen, Qiang Chen
+Alibaba Group: Feiyu Xiong, Qiang Chen
 
 DAMO Academy: Zhenru Zhang, Chuanqi Tan, Fei Huang
