@@ -6,7 +6,7 @@ Following the instructions from [nlpaug](https://github.com/makcedward/nlpaug#in
 
 
 ## 2 Try different DA methods
-We provide many data augmentation methods: DA based word2vec, TF-IDF, contextual word embedding (BERT and RoBERTa), random swapping and WordNet' Synonym. And all DA methods can be implimented on contexts, entites and both of them. 
+We provide many data augmentation methods: DA based Word2Vec, TF-IDF, contextual word embedding (BERT and RoBERTa), random swapping and WordNet' Synonym. And all DA methods can be implemented on contexts, entites and both of them. 
 - Generate augmented data
     
   ```shell
