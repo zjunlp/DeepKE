@@ -60,16 +60,8 @@ cd DeepKE/example/ner/standard
   python predict.py
   ```
 
-## Use models quickly
-
-We align the relationship type and the entity type of [DUIE](https://ai.baidu.com/broad/download?dataset=dureader) with the cnschema
-
-On this basis, two models are trained based on 'Chinese Bert WwM' and 'Chinese Roberta WwM ext'. The super parameters used in the model are the given parameters.
-
-You can download the [model](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg) directly for experiments.You just need to change the file name of the download folder to 'checkpoints' and then you can use it easily.
-
-For example,input a sentence '《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽', DeepKE-chschema will output the result that the entity type of "星空黑夜传奇" is "网络小说" and "起点中文网" is "网站" with cnschema aligning.
-
 ## Model
+
+BiLSTM + CRF
 
 BERT
