@@ -50,73 +50,8 @@ cd DeepKE/example/ner/standard
 
 - 进行预测 ```python predict.py```
 
-## CnSchema特别版
-### 直接使用模型
-我们使用[DUIE数据集](https://ai.baidu.com/broad/download?dataset=dureader)，并将其关系类型与实体类型与[cnSchema](https://github.com/OpenKG-ORG/cnSchema)对齐。cnSchema是面向中文信息处理，利用先进的知识图谱、自然语言处理和机器学习技术，融合结构化与文本数据，支持快速领域知识建模，支持跨数据源、跨领域、跨语言的开放数据自动化处理，为智能机器人、语义搜索、智能计算等新兴应用市场提供schema层面的支持与服务。
-
-cnSchema基于的原则
-* 完全开放，源自schema.org，OpenKG自主发布的Web Schema
-* 立足中文，对接世界
-* 面向应用，支持开放数据生态
-* 社区共识，知识图谱专家指导
-
-在这之上使用`chinese-bert-wwm`和`chinese-roberta-wwm-ext`为基础训练了DeepKE-cnschema(NER)模型。模型所使用的超参数为所给的参数。最终经过训练后可以得到如下表的效果
-
-<table>
-	<tr>
-		<th>模型</th>
-		<th>P</th>
-		<th>R</th>
-		<th>F1</th>
-	</tr>
-	<tr>
-		<td>chinese-roberta-wwm-ext(micro)</td>
-		<td>0.8028</td>
-		<td>0.8612</td>
-		<td>0.8310</td>
-	</tr>
-  <tr>
-		<td>chinese-roberta-wwm-ext(macro)</td>
-		<td>0.6990</td>
-		<td>0.7295</td>
-		<td>0.7021</td>
-	</tr>
-  <tr>
-		<td>chinese-bert-wwm(micro)</td>
-		<td>0.7841</td>
-		<td>0.8587</td>
-		<td>0.8197</td>
-	</tr>
-  <tr>
-		<td>chinese-bert-wwm(macro)</td>
-		<td>0.6921</td>
-		<td>0.7393</td>
-		<td>0.7078</td>
-	</tr>
-	
-</table>
-
-使用者可以直接下载[模型](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg)进行预测，步骤如下：
-
-1. 只需将下载文件夹命名为`checkpoints`
-
-2. 只需修改 `predict.yaml`中的参数`text`为需要预测的文本
-
-3. 运行```python predict.py```即可直接进行预测使用。
-
-### 训练
-如果需要使用其他模型进行训练，步骤如下：
-
-1. 也可先下载[数据集](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg)，将其放入命名为`data`的文件夹中
-
-2. 将`conf`文件夹中的`train.yaml`中的`bert_model`修改为指定模型
-
-3. 修改`train.yaml`中的`labels`为`type.txt`中所用到的标签
-
-4. 再运行```python run.py```即可进行训练。
-
-使用训练好的模型，只需输入句子“《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽”，运行```python predict.py```后可得到结果，结果显示“星空黑夜传奇”实体类型为经过cnschema对齐后的“网络小说”，“起点中文网”为“网站”。
-
 ### 模型内容
+
+BiLSTM + CRF
 
 BERT
