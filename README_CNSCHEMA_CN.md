@@ -363,7 +363,7 @@ A: 可能中文输入数据包含了不可见的特殊字符，这些字符无�
 ```
 @article{zhang2022deepke,
   title={DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population},
-  author={Zhang, Ningyu and Xu, Xin and Tao, Liankuan and Yu, Haiyang and Ye, Hongbin and Xie, Xin and Chen, Xiang and Li, Zhoubo and Li, Lei and Liang, Xiaozhuan and others},
+  author={Zhang, Ningyu and Xu, Xin and Tao, Liankuan and Yu, Haiyang and Ye, Hongbin and Qiao, Shuofei and Xie, Xin and Chen, Xiang and Li, Zhoubo and Li, Lei and Liang, Xiaozhuan and others},
   journal={arXiv preprint arXiv:2201.03335},
   year={2022}
 }
