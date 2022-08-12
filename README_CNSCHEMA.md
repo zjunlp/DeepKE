@@ -28,7 +28,7 @@
     <p>Off-the-shelf Special Edition for Chinese Knowledge Extraction Toolkit——DeepKE-cnSchema</p>
 </h1>
 
-DeepKE is a knowledge extraction toolkit based on PyTorch,  supporting **low-resource**, **document-level** and **multimodal** scenarios for **entity**, **relation** and **attribute** extraction. DeepKE-cnSchema is an off-the-shelf version. Users can download the model to realize entity and relation knowledge extraction directly which supports cnSchema.
+DeepKE is a knowledge extraction toolkit based on PyTorch,  supporting **low-resource**, **document-level** and **multimodal** scenarios for **entity**, **relation** and **attribute** extraction. DeepKE-cnSchema is an off-the-shelf version. Users can download the model to realize entity and relation knowledge extraction directly without training.
 
 ---
 
@@ -38,17 +38,17 @@ DeepKE is a knowledge extraction toolkit based on PyTorch,  supporting **low-res
 | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
 | [Introduction](#Introduction)                                                           | Introduce the basic principles of DeepKE-cnSchema                                          |
 | [Chinese Model Download](#Chinese-Model-Download)                                       | Provide the download address of DeepKE-cnSchema                                            |
-| [Datasets and Chinese Baseline Performance](#Datasets-and-Chinese-Baseline-Performance) | Provide Chinese datasets and Chinese model performance                                     |
-| [Quick Load](#Quick-Load)                                                               | Introduce how to use DeepKE-cnSchema to realize entity recognition and relation extraction |
-| [User-defined Model](#User-defined-Model)                                               | Provide instructions for training models with customized dataset                           |
+| [Datasets and Chinese Baseline Performance](#Datasets-and-Chinese-Baseline-Performance) | Report the performance of Chinese models                                     |
+| [Quick Load](#Quick-Load)                                                               | Introduce how to use DeepKE-cnSchema for entity and relation extraction |
+| [User-defined Model](#User-defined-Model)                                               | Provide instructions for training models with customized datasets                           |
 | [FAQ](#FAQ)                                                                             | FAQ                                                                                        |
 | [Citation](#Citation)                                                                   | Technical report of this catalogue                                                         |
 
 ## Introduction
 
-DeepKE is a knowledge extraction toolkit supporting **low-resource**, **document-level** and **multimodal** scenarios for *entity*, *relation* and *attribute* extraction. We provide [comprehensive documents](https://zjunlp.github.io/DeepKE/), [Google Colab tutorials](https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing), and [online demo](http://deepke.zjukg.cn/) for beginners.
+DeepKE is a knowledge extraction toolkit supporting **low-resource**, **document-level** and **multimodal** scenarios for *entity*, *relation* and *attribute* extraction. We provide [documents](https://zjunlp.github.io/DeepKE/), [Google Colab tutorials](https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing), [online demo](http://deepke.zjukg.cn/), and [slides](https://github.com/zjunlp/DeepKE/blob/main/docs/slides/Slides-DeepKE-en.pdf) for beginners.
 
-In order to promote the Chinese knowledge graph construction and make it user friendly, we provide DeepKE-cnSchema, a special version of DeepKE, containing pretrained models which support [cnSchema](https://github.com/OpenKG-ORG/cnSchema). DeepKE-cnSchema supports off-the-shelf tasks such as Chinese entity extraction and relation extraction. It can extract 50 relation types and 28 entity types, of which the entity types are common ones such as person, location, city, institution, etc and the relation types include ancestral home, birthplace, nationality and other types.
+To promote efficient Chinese knowledge graph construction, we provide DeepKE-cnSchema, a specific version of DeepKE, containing off-the-shelf models based on [cnSchema](https://github.com/OpenKG-ORG/cnSchema). DeepKE-cnSchema supports multiple tasks such as Chinese entity extraction and relation extraction. It can extract 50 relation types and 28 entity types, including common entity types such as person, location, city, institution, etc and the common relation types such as ancestral home, birthplace, nationality and other types.
 
 ## Chinese Model Download
 
@@ -89,11 +89,11 @@ As for the relation extraction model, take pytoch version `DeepKE(RE), RoBERTa-w
 
 ### Datasets
 
-We have carried out experiments on Chinese named entity recognition and relation extraction datasets. The experimental results are as follows:
+We have conduct experiments on Chinese named entity recognition and relation extraction datasets. The experimental results are as follows:
 
 ### Named Entity Recognition(NER)
 
-DeepKE leverages[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1OLx5tjEriMyzbv0iv_s9lihtXWIjB6OS)and[`chinese-roberta-wwm-ext`](https://drive.google.com/drive/folders/1T3xf_MXRaVqLV-ST4VqvKoaQqQgRpp67)to train and obtain the DeepKE-cnSchema(NER) model. Hyper-parameters used in the model are predifined. Finally, we can get the following results after  training:
+DeepKE leverages[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1OLx5tjEriMyzbv0iv_s9lihtXWIjB6OS)and[`chinese-roberta-wwm-ext`](https://drive.google.com/drive/folders/1T3xf_MXRaVqLV-ST4VqvKoaQqQgRpp67)to train and obtain the DeepKE-cnSchema(NER) model. Hyper-parameters used in the model are predifined. Finally, we can obtain the following results after  training:
 
 <table>
     <tr>
@@ -118,7 +118,7 @@ DeepKE leverages[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1OLx
 
 ### Relation Extraction(RE)
 
-DeepKE leverages[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)and[`chinese-roberta-wwm-ext`](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)to train and obtain the DeepKE-cnschema(RE) model. Hyper-parameters used in the model are predefined. Finally, we can get the following results after  training:
+DeepKE leverages[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)and[`chinese-roberta-wwm-ext`](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)to train and obtain the DeepKE-cnschema(RE) model. Hyper-parameters used in the model are predefined. Finally, we can obtain the following results after  training:
 
 <table>
     <tr>
@@ -143,7 +143,7 @@ DeepKE leverages[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1wb_
 
 ### Support Knowledge Schema Type
 
-DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge graphs construction. [Cnschema](https://github.com/OpenKG-ORG/cnSchema) is oriented to Chinese information processing which uses advanced knowledge graphs, natural language processing and machine learning technologies, integrates structured text data, supports rapid domain knowledge modeling, supports open data automatic processing across data sources, domains and languages, and provides schema level support and services for emerging application markets such as intelligent robots, semantic search and intelligent computing. Currently, the Schema types supported by Deepke-cnSchema are as follows:
+DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge graphs construction. [Cnschema](https://github.com/OpenKG-ORG/cnSchema) is developed for Chinese information processing, which uses advanced knowledge graphs, natural language processing and machine learning technologies. It integrates structured text data, supports rapid domain knowledge modeling and open data automatic processing across data sources, domains and languages, and provides schema-level support and services for emerging application markets such as intelligent robots, semantic search and intelligent computing. Currently, the Schema types supported by DeepKE-cnSchema are as follows:
 
 #### Entity Schema
 
@@ -195,15 +195,15 @@ DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge 
 | 49  | cns:作品     | cns:影视作品  | cns:改编自  | 50  | cns:人物     | cns:企业    | cns:创始人  |
 
 
-## Quick Load
+## Quick Start
 
 ### [Named Entity Recognition(NER)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard)
 
-Users can directly download the [model](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg) to use. The details are as follows：
+Users can directly download the [model](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg) for usage. The details are as follows：
 
-1. Name the downloaded folder as `checkpoints`
+1. Create the downloaded folder as `checkpoints`
 2. Set the parameter `text` in `predict.yaml` as the sentence to be predicted
-	To use the trained model, just set the input sentence "《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽". After running `python oredict.py`, results can be obtained which show that the entity type "星空黑夜传奇" is "网络小说" aligned with cnschema, "起点中文网" is "网站" and "啤酒的罪孽" is "人物".
+	To use the trained model, just set the input sentence "《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽". After running `python oredict.py`, results can be obtained which show that the entity type "星空黑夜传奇" is "网络小说", "起点中文网" is "网站" and "啤酒的罪孽" is "人物".
 
 	```bash
 	text="《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽"
@@ -224,16 +224,16 @@ Users can directly download the [model](https://drive.google.com/drive/folders/1
 	```
 
 ### [Relation Extraction(RE)](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard)
-Users can directly download the [model](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv) to use. The details are as follows：
+Users can directly download the [model](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv) for usage. The details are as follows：
 
 1. Modify the parameter `fp`in `predict.yaml`to the path of downloaded file, `num_relations`in `embedding.yaml`to 51(relation nums) and `model` in `config.yaml`to lm
-2. Predict. The text and entity pairs to be predicted are input to the program through the terminal.
+2. Predict. The text and entity pairs to be predicted are fed to the program through the terminal.
 
 	```bash
 	python predict.py
 	```
 
-	To use the trained model, run `python predict.py` and input the sentence "歌曲《人生长路》出自刘德华国语专辑《男人的爱》，由李泉作词作曲，2001年出行发版". The given entity pair are "男人的爱" and "人生长路". Finally, the extracted relation is "所属专辑" aligned with cnschema.
+	To use the trained model, run `python predict.py` and input the sentence "歌曲《人生长路》出自刘德华国语专辑《男人的爱》，由李泉作词作曲，2001年出行发版". The given entity pair are "男人的爱" and "人生长路". Finally, the extracted relation is "所属专辑".
 
 	To change the text to be predicted, modify the `_get_predict_instance`function in `predict.py` to the following example:
 
@@ -280,8 +280,8 @@ Users can directly download the [model](https://drive.google.com/drive/folders/1
 	“男人的爱”和“人生长路”在句中关系为“所属专辑”，置信度为0.99
 	```
 
-### Combined Entity and Relation Extraction
-After aforementioned trained models are downloaded, entites and their relations in a text can be extracted together. IF there are more than two entities in one sentence, some predicted entity pairs may be incorrect because these entity pairs are not in training sets and need to be diagnosed further. The detailed steps are as follow:<br>
+### Joint Entity and Relation Extraction
+After aforementioned trained models are downloaded, entites and their relations in a text can be extracted together. If there are more than two entities in one sentence, some predicted entity pairs may be incorrect because these entity pairs are not in training sets and need to be exracted further. The detailed steps are as follow:<br>
 1. In `conf`, modify `text` in `predict.yaml` as the sentence to be predicted, `nerfp` as the directory of the trained NER model and 'refp' as the directory of the trained RE model.
 2. Predict
 	```shell
@@ -309,11 +309,11 @@ After aforementioned trained models are downloaded, entites and their relations 
 	    }
 	  ```
 
-## User-defined Model
+## Custom Models (Advanced Usage)
 
-### Named Entity Recognition(NER)
+### Named Entity Recognition (NER)
 
-If you need to use customized dataset for training, the steps are as follows:
+If you need to use customized dataset for training, follow the steps bellow:
 
 1. Download customized [dataset](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg) and put it into the `data` folder.
 2. Modify the parameter `bert_model`in `train.yaml`of the `conf`folder to the specify model. Users can choose different models to train by modifying the `yaml`file.
@@ -323,9 +323,9 @@ If you need to use customized dataset for training, the steps are as follows:
 	python run.py
 	```
 
-### Relation Extraction(RE)
+### Relation Extraction (RE)
 
-If you need to use other models for training, the steps are as follows:
+If you need to use other models for training, follow the steps bellow:
 
 1、Download the customized [dataset](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv) and rename it to `data`.
 
