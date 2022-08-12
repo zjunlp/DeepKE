@@ -53,6 +53,8 @@ DeepKE is a knowledge extraction toolkit supporting **cnSchema**，**low-resourc
 <br>
 
 # What's New
+## August, 2022
+* We have added [data augmentation](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/DA) support for [low-resource relation extraction](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot).
 ## June, 2022
 * We have added multimodal support for [entity](https://github.com/zjunlp/DeepKE/tree/main/example/ner/multimodal) and [relation extraction](https://github.com/zjunlp/DeepKE/tree/main/example/re/multimodal).
 ## May, 2022
