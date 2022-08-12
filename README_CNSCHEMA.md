@@ -281,7 +281,7 @@ Users can directly download the [model](https://drive.google.com/drive/folders/1
 	```
 
 ### Joint Entity and Relation Extraction
-After aforementioned trained models are downloaded, entites and their relations in a text can be extracted together. If there are more than two entities in one sentence, some predicted entity pairs may be incorrect because these entity pairs are not in training sets and need to be exracted further. The detailed steps are as follow:<br>
+After aforementioned trained models are downloaded, entites and their relations in a text can be extracted together. If there are more than two entities in one sentence, some predicted entity pairs may be incorrect because these entity pairs are not in training sets and need to be exracted further. The detailed steps are as follows:<br>
 1. In `conf`, modify `text` in `predict.yaml` as the sentence to be predicted, `nerfp` as the directory of the trained NER model and `refp` as the directory of the trained RE model.
 2. Predict
 	```shell
