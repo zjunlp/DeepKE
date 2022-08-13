@@ -195,7 +195,7 @@ DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge 
 | 49  | cns:作品     | cns:影视作品  | cns:改编自  | 50  | cns:人物     | cns:企业    | cns:创始人  |
 
 
-## Quick Start
+## Quick Load
 
 ### [Named Entity Recognition(NER)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard)
 
