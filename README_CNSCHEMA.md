@@ -93,7 +93,7 @@ We have conduct experiments on Chinese named entity recognition and relation ext
 
 ### Named Entity Recognition(NER)
 
-DeepKE leverages[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1OLx5tjEriMyzbv0iv_s9lihtXWIjB6OS)and[`chinese-roberta-wwm-ext`](https://drive.google.com/drive/folders/1T3xf_MXRaVqLV-ST4VqvKoaQqQgRpp67)to train and obtain the DeepKE-cnSchema(NER) model. Hyper-parameters used in the model are predifined. Finally, we can obtain the following results after  training:
+DeepKE leverages[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1OLx5tjEriMyzbv0iv_s9lihtXWIjB6OS)and[`chinese-roberta-wwm-ext`](https://drive.google.com/drive/folders/1T3xf_MXRaVqLV-ST4VqvKoaQqQgRpp67)to train and obtain the DeepKE-cnSchema(NER) model. Hyper-parameters used in the model are predefined. Finally, we can obtain the following results after training:
 
 <table>
     <tr>
