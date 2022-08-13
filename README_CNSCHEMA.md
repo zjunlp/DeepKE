@@ -143,7 +143,7 @@ DeepKE leverages[`chinese-bert-wwm`](https://drive.google.com/drive/folders/1wb_
 
 ### Support Knowledge Schema Type
 
-DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge graphs construction. [Cnschema](https://github.com/OpenKG-ORG/cnSchema) is developed for Chinese information processing, which uses advanced knowledge graphs, natural language processing and machine learning technologies. It integrates structured text data, supports rapid domain knowledge modeling and open data automatic processing across data sources, domains and languages, and provides schema-level support and services for emerging application markets such as intelligent robots, semantic search and intelligent computing. Currently, the Schema types supported by DeepKE-cnSchema are as follows:
+DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge graphs construction. [CnSchema](https://github.com/OpenKG-ORG/cnSchema) is developed for Chinese information processing, which uses advanced knowledge graphs, natural language processing and machine learning technologies. It integrates structured text data, supports rapid domain knowledge modeling and open data automatic processing across data sources, domains and languages, and provides schema-level support and services for emerging application markets such as intelligent robots, semantic search and intelligent computing. Currently, the Schema types supported by DeepKE-cnSchema are as follows:
 
 #### Entity Schema
 
