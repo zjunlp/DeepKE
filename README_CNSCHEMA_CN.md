@@ -282,7 +282,7 @@ DeepKE-cnSchema特别版为支持中文领域知识图谱构建推出的开箱�
     “男人的爱”和“人生长路”在句中关系为“所属专辑”，置信度为0.99
     ```
 
-### 联合三元组抽取
+### [联合三元组抽取](https://github.com/zjunlp/DeepKE/tree/main/example/triple)
 用户可以先将上述模型下载至本地，然后使用[example/triple](https://github.com/zjunlp/DeepKE/tree/main/example/triple)中的代码进行三元组抽取。如果单句中存在超过两个以上的实体数，可能在一些实体对中会存在预测不准确的问题，那是因为这些实体对并没有被加入训练集中进行训练，所以需要进一步判断，具体使用步骤如下：
 
 1. 将`conf`文件夹中的`predict.yaml`中的`text`修改为预测文本，`nerfp`修改为ner模型文件夹地址，`refp`为re模型地址
