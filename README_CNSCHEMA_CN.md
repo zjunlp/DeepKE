@@ -45,7 +45,7 @@ DeepKE 是一个开源的知识图谱抽取与构建工具，支持<b>低资源�
 
 ## 简介
 
-DeepKE 是一个开源的知识图谱抽取与构建工具，支持低资源、长篇章、多模态的知识抽取工具，可以基于PyTorch实现命名实体识别、关系抽取和属性抽取功能。同时为初学者提供了详尽的文档，Google Colab教程和在线演示。
+DeepKE 是一个开源的知识图谱抽取与构建工具，支持低资源、长篇章、多模态的知识抽取工具，可以基于PyTorch实现命名实体识别、关系抽取和属性抽取功能。同时为初学者提供了详尽的[文档](https://zjunlp.github.io/DeepKE/)，[Google Colab教程](https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing)，[在线演示](http://deepke.zjukg.cn/)和[幻灯片](https://github.com/zjunlp/DeepKE/blob/main/docs/slides/Slides-DeepKE-cn.pdf)。
 
 为促进中文领域的知识图谱构建和方便用户使用，DeepKE提供了预训练好的支持[cnSchema](https://github.com/OpenKG-ORG/cnSchema)的特别版DeepKE-cnSchema，支持开箱即用的中文实体抽取和关系抽取等任务，可抽取50种关系类型和28种实体类型，其中实体类型包含了通用的人物、地点、城市、机构等类型，关系类型包括了常见的祖籍、出生地、国籍、朝代等类型。
 
