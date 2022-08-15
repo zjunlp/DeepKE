@@ -488,7 +488,7 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 <br>
 
 # To do
-In next version, we plan to add multi-modality knowledge extraction to the toolkit. 
+In next version, we plan to add event extraction to the toolkit. 
 
 Meanwhile, we will offer long-term maintenance to fix bugs, solve issues and meet new requests. So if you have any problems, please put issues to us.
 
