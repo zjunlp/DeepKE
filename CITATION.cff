@@ -13,6 +13,8 @@ authors:
     given-names: Haiyang
   - family-names: Ye
     given-names: Hongbin
+  - family-names: Qiao
+    given-names: Shuofei
   - family-names: Xie
     given-names: Xin
   - family-names: Chen
@@ -27,10 +29,18 @@ authors:
     given-names: Yunzhi
   - family-names: Deng
     given-names: Shumin
+  - family-names: Wang
+    given-names: Peng
+  - family-names: Zhang
+    given-names: Wen
   - family-names: Zhang
     given-names: Zhenru
   - family-names: Tan
     given-names: Chuanqi
+  - family-names: Chen
+    given-names: Qiang
+  - family-names: Xiong
+    given-names: Feiyu
   - family-names: Huang
     given-names: Fei
   - family-names: Zheng
@@ -51,6 +61,8 @@ preferred-citation:
     given-names: Haiyang
   - family-names: Ye
     given-names: Hongbin
+  - family-names: Qiao
+    given-names: Shuofei
   - family-names: Xie
     given-names: Xin
   - family-names: Chen
@@ -65,10 +77,18 @@ preferred-citation:
     given-names: Yunzhi
   - family-names: Deng
     given-names: Shumin
+  - family-names: Wang
+    given-names: Peng
+  - family-names: Zhang
+    given-names: Wen
   - family-names: Zhang
     given-names: Zhenru
   - family-names: Tan
     given-names: Chuanqi
+  - family-names: Chen
+    given-names: Qiang
+  - family-names: Xiong
+    given-names: Feiyu
   - family-names: Huang
     given-names: Fei
   - family-names: Zheng
