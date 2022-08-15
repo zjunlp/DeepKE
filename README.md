@@ -53,7 +53,7 @@
 <br>
 
 # What's New
-## August, 2022
+## Aug, 2022
 * We have added [data augmentation](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/DA) support for [low-resource relation extraction](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot).
 ## June, 2022
 * We have added multimodal support for [entity](https://github.com/zjunlp/DeepKE/tree/main/example/ner/multimodal) and [relation extraction](https://github.com/zjunlp/DeepKE/tree/main/example/re/multimodal).
@@ -69,9 +69,9 @@
 ## Oct, 2021
 * `pip install deepke`
 * The codes of deepke-v2.0 have been released.
-## August, 2019
+## Aug, 2019
 * The codes of deepke-v1.0 have been released.
-## August, 2018
+## Aug, 2018
 * The project DeepKE startup and codes of deepke-v0.1 have been released.
 <br>
 
