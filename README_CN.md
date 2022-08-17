@@ -56,7 +56,7 @@
 
 ## 2022年8月
 
-- 新增针对[低资源关系抽取](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot)的[数据增强](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/DA)功能。
+- 新增针对[低资源关系抽取](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot)的[数据增强](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/DA) (中文、英文)功能。
 
 ## 2022年6月
 
