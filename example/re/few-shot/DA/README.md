@@ -1,7 +1,7 @@
 # Data Augmentation for Few-shot RE
 ## 1 Prepare the environment
 
-Following the instructions from [nlpaug](https://github.com/makcedward/nlpaug#installation) and [nlpcda](https://github.com/425776024/nlpcda)(Thanks a lot!).
+Following the instructions from [nlpaug](https://github.com/makcedward/nlpaug#installation) (for English) and [nlpcda](https://github.com/425776024/nlpcda)(Thanks a lot!) (for Chinese).
 
 ```bash
 >> pip install nlpaug nlpcda
