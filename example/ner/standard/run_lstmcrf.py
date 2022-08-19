@@ -120,35 +120,35 @@ def main(cfg):
                     torch.save(model, os.path.join(utils.get_original_cwd(), cfg.output_dir, cfg.model_save_name))
 
 
-        if cfg.do_eval:
-            evaluation_model = torch.load(os.path.join(utils.get_original_cwd(), cfg.output_dir, cfg.model_save_name))
-            evaluation_model.eval()
+    if cfg.do_eval:
+        evaluation_model = torch.load(os.path.join(utils.get_original_cwd(), cfg.output_dir, cfg.model_save_name))
+        evaluation_model.eval()
 
-            evaluation_examples = build_crflstm_corpus(cfg.eval_on, cfg)
+        evaluation_examples = build_crflstm_corpus(cfg.eval_on, cfg)
 
-            evaluation_dataloader = DataLoader(eval_examples, batch_size=cfg.eval_batch_size,
-                                         collate_fn=lambda x: collate_fn(x, word2id, label2id))
-            y_true_list = []
-            y_pred_list = []
-            eval_loss = 0
-            for step, batch in tqdm(enumerate(evaluation_dataloader), desc="Eval"):
-                batch = (x.to(device) for x in batch)
-                input, target, mask = batch
-                y_pred = evaluation_model(input, mask)
-                loss = evaluation_model.loss_fn(input, target, mask)
-                if cfg.gradient_accumulation_steps > 1:
-                    loss = loss / cfg.gradient_accumulation_steps
+        evaluation_dataloader = DataLoader(eval_examples, batch_size=cfg.eval_batch_size,
+                                     collate_fn=lambda x: collate_fn(x, word2id, label2id))
+        y_true_list = []
+        y_pred_list = []
+        eval_loss = 0
+        for step, batch in tqdm(enumerate(evaluation_dataloader), desc="Eval"):
+            batch = (x.to(device) for x in batch)
+            input, target, mask = batch
+            y_pred = evaluation_model(input, mask)
+            loss = evaluation_model.loss_fn(input, target, mask)
+            if cfg.gradient_accumulation_steps > 1:
+                loss = loss / cfg.gradient_accumulation_steps
 
-                for lst in y_pred:
-                    y_pred_list += lst
-                for y, m in zip(target, mask):
-                    y_true_list += y[m == True].tolist()
-                eval_loss += loss.item()
+            for lst in y_pred:
+                y_pred_list += lst
+            for y, m in zip(target, mask):
+                y_true_list += y[m == True].tolist()
+            eval_loss += loss.item()
 
-            report = classification_report([id2label[l] for l in y_true_list], [id2label[l] for l in y_pred_list],
-                                           digits=4)
-            print('>> total:', len(y_true_list), 'loss:', eval_loss / len(evaluation_dataloader))
-            print(report)
+        report = classification_report([id2label[l] for l in y_true_list], [id2label[l] for l in y_pred_list],
+                                       digits=4)
+        print('>> total:', len(y_true_list), 'loss:', eval_loss / len(evaluation_dataloader))
+        print(report)
 
 if __name__ == '__main__':
     main()
