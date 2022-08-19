@@ -51,7 +51,7 @@ cd DeepKE/example/ner/standard
   - Logs for training are in the `log` folder and the trained model is saved in the `checkpoints` folder.
 
   ```bash
-  python run.py
+  python run_bert.py or python run_crflstm.py
   ```
 
 - Prediction

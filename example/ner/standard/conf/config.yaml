@@ -9,3 +9,4 @@ defaults:
     - hydra/output: custom
     - train
     - predict
+    - hydra/model: lstmcrf   # [bert, lstmcrf]
