@@ -8,6 +8,8 @@ import os
 import random
 import sys
 import numpy as np
+from hydra import utils
+import pickle
 
 class NerProcessor(DataProcessor):
     """Processor for the dataset."""
@@ -121,3 +123,36 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
                               valid_ids=valid,
                               label_mask=label_mask))
     return features
+
+def build_crflstm_corpus(split, cfg):
+    assert split in ['train', 'dev', 'test']
+    processor = NerProcessor()
+    if split == 'train':
+        examples = processor.get_train_examples(os.path.join(utils.get_original_cwd(), cfg.data_dir))
+        word2id = {}
+        label2id = {}
+        id2label = {}
+        for example in examples:
+            textlist = example.text_a.split(' ')
+            labellist = example.label
+            for text in textlist:
+                if text not in word2id:
+                    word2id[text] = len(word2id)
+            for label in labellist:
+                if label not in label2id:
+                    label2id[label] = len(label2id)
+                    id2label[len(label2id) - 1] = label
+        word2id['<unk>'] = len(word2id)
+        word2id['<pad>'] = len(word2id)
+        with open(os.path.join(utils.get_original_cwd(), cfg.data_dir, cfg.model_vocab_path), 'wb') as outp:
+            pickle.dump(word2id, outp)
+            pickle.dump(label2id, outp)
+            pickle.dump(id2label, outp)
+        return examples, word2id, label2id, id2label
+
+    elif split == 'dev':
+        examples = processor.get_dev_examples(os.path.join(utils.get_original_cwd(), cfg.data_dir))
+        return examples
+    else:
+        examples = processor.get_test_examples(os.path.join(utils.get_original_cwd(), cfg.data_dir))
+        return examples

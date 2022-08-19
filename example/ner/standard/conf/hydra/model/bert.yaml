@@ -1,0 +1,10 @@
+model_name: "bert"
+bert_model: "bert-base-chinese"
+do_lower_case: True
+fp16: False
+fp16_opt_level: "01"
+local_rank: -1
+loss_scale: 0.0
+max_grad_norm: 1.0
+max_seq_length: 128
+task_name: "ner"

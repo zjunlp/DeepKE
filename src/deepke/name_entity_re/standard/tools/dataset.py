@@ -1,3 +1,5 @@
+import torch
+
 class InputExample(object):
     """A single training/test example for simple sequence classification."""
 
@@ -70,3 +72,26 @@ class DataProcessor(object):
     def _read_tsv(cls, input_file, quotechar=None):
         """Reads a tab separated value file."""
         return readfile(input_file)
+
+def collate_fn(batch, word2id, label2id):
+    batch.sort(key=lambda x: len(x.text_a), reverse=True)
+    max_len = len(batch[0].text_a.split(' '))
+    inputs = []
+    targets = []
+    masks = []
+
+    UNK = word2id.get('<unk>')
+    PAD = word2id.get('<pad>')
+    for item in batch:
+      input = item.text_a.split(' ')
+      target = item.label.copy()
+
+      input = [word2id.get(w, UNK) for w in input]
+      target = [label2id.get(l) for l in target]
+      pad_len = max_len - len(input)
+      assert len(input) == len(target)
+      inputs.append(input + [PAD] * pad_len)
+      targets.append(target + [0] * pad_len)
+      masks.append([1] * len(input) + [0] * pad_len)
+
+    return torch.tensor(inputs), torch.tensor(targets), torch.tensor(masks).bool()

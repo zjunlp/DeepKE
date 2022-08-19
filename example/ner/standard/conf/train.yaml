@@ -1,27 +1,24 @@
 adam_epsilon: 1e-8
-bert_model: "bert-base-chinese"
 data_dir: "data/"
 do_eval: True
-do_lower_case: True
 do_train: True
 eval_batch_size: 8
 eval_on: "dev"
-fp16: False
-fp16_opt_level: "01"
 gpu_id: 1
 gradient_accumulation_steps: 1
-learning_rate: 5e-5
-local_rank: -1
-loss_scale: 0.0
-max_grad_norm: 1.0
-max_seq_length: 128
-num_train_epochs: 3            # the number of training epochs
+learning_rate: 1e-3
+num_train_epochs: 40            # the number of training epochs
 output_dir: "checkpoints"
 seed: 42
-task_name: "ner"
-train_batch_size: 32
+train_batch_size: 128
 use_gpu: True                # use gpu or not
 warmup_proportion: 0.1
 weight_decay: 0.01
+
+# For StepLR Optimizer
+lr_step : 5
+lr_gamma : 0.8
+beta1: 0.9
+beta2: 0.999
 labels: ['LOC','ORG','PER']
 # labels: ['YAS','TOJ', 'NGS', 'QCV', 'OKB', 'BQF', 'CAR', 'ZFM', 'EMT', 'UER', 'QEE', 'UFT', 'GJS', 'SVA', 'ANO', 'KEJ', 'ZDI', 'CAT', 'GCK', 'FQK', 'BAK', 'RET', 'QZP', 'QAQ', 'ZRE', 'TDZ', 'CVC', 'PMN']
