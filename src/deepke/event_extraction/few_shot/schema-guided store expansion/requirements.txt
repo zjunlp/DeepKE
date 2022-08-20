@@ -1,4 +1,4 @@
-nltk==3.6.4
+nltk==3.6.6
 beautifulsoup4==4.6.0
 pattern==3.6
 pyicu
