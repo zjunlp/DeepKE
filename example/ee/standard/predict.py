@@ -3,10 +3,10 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader
 from transformers import AutoTokenizer
-from deepke.event_extraction.few_shot.degree.model import GenerativeModel
-from deepke.event_extraction.few_shot.degree.data import GenDataset, EEDataset
-from deepke.event_extraction.few_shot.degree.utils import compute_f1
-from deepke.event_extraction.few_shot.degree.template_generate_ace import *
+from deepke.event_extraction.standard.degree.model import GenerativeModel
+from deepke.event_extraction.standard.degree.data import GenDataset, EEDataset
+from deepke.event_extraction.standard.degree.utils import compute_f1
+from deepke.event_extraction.standard.degree.template_generate_ace import *
 
 import ipdb
 
@@ -158,9 +158,9 @@ def cal_scores(gold_triggers, pred_triggers, gold_roles, pred_roles):
 @hydra.main(config_path="conf", config_name="predict.yaml")
 def main(config):
     if config.dataset == "ace05e" or config.dataset == "ace05ep":
-        from deepke.event_extraction.few_shot.degree.template_generate_ace import eve_template_generator
+        from deepke.event_extraction.standard.degree.template_generate_ace import eve_template_generator
 
-        template_file = "deepke.event_extraction.few_shot.degree.template_generate_ace"
+        template_file = "deepke.event_extraction.standard.degree.template_generate_ace"
 
     # fix random seed
     np.random.seed(config.seed)

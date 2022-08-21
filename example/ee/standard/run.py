@@ -3,9 +3,9 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader
 from transformers import AutoTokenizer, AdamW, get_linear_schedule_with_warmup
-from deepke.event_extraction.few_shot.degree.model import GenerativeModel
-from deepke.event_extraction.few_shot.degree.data import GenDataset
-from deepke.event_extraction.few_shot.degree.utils import Summarizer, compute_f1
+from deepke.event_extraction.standard.degree.model import GenerativeModel
+from deepke.event_extraction.standard.degree.data import GenDataset
+from deepke.event_extraction.standard.degree.utils import Summarizer, compute_f1
 import ipdb
 import hydra
 
@@ -15,7 +15,7 @@ def main(config):
     print(vars(config))
 
     if config.dataset == "ace05e" or config.dataset == "ace05ep":
-        from deepke.event_extraction.few_shot.degree.template_generate_ace import eve_template_generator
+        from deepke.event_extraction.standard.degree.template_generate_ace import eve_template_generator
 
         template_file = "template_generate_ace"
     # elif config.dataset == "ere":

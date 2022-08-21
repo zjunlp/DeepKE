@@ -1,7 +1,7 @@
 import os, json, pickle, logging, pprint, random
 import numpy as np
-from deepke.event_extraction.few_shot.degree.data import EEDataset
-from deepke.event_extraction.few_shot.degree.utils import generate_vocabs
+from deepke.event_extraction.standard.degree.data import EEDataset
+from deepke.event_extraction.standard.degree.utils import generate_vocabs
 from transformers import AutoTokenizer
 import ipdb
 import hydra
@@ -10,7 +10,7 @@ import hydra
 @hydra.main(config_path="conf", config_name="generate_data.yaml")
 def main(config):
     if config.dataset == "ace05e" or config.dataset == "ace05ep":
-        from deepke.event_extraction.few_shot.degree.template_generate_ace import eve_template_generator
+        from deepke.event_extraction.standard.degree.template_generate_ace import eve_template_generator
 
     # fix random seed
     random.seed(config.seed)
