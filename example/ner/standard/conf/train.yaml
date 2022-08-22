@@ -7,7 +7,7 @@ eval_on: "dev"
 gpu_id: 1
 gradient_accumulation_steps: 1
 learning_rate: 1e-3
-num_train_epochs: 40            # the number of training epochs
+num_train_epochs: 3            # the number of training epochs
 output_dir: "checkpoints"
 seed: 42
 train_batch_size: 128
