@@ -108,6 +108,11 @@ def main(cfg):
                     eval_loss += loss.item()
                 eval_labels = list(label2id.keys()).copy()
                 eval_labels.remove('O')
+
+                assert (np.array(y_true_list)).shape == (np.array(y_pred_list)).shape # Check whether the dimensions are equal
+                assert (np.array(y_true_list)).ndim == 1    # Only accepts 1 dim
+                assert (np.array(y_pred_list)).ndim == 1
+
                 eval_f1 = f1_score([id2label[l] for l in y_true_list], [id2label[l] for l in y_pred_list],
                                    labels=eval_labels, average='weighted')
                 print('>> total:', len(y_true_list), 'f1:', eval_f1, 'loss:', eval_loss / len(eval_dataloader))
