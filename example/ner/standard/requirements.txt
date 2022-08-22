@@ -4,4 +4,6 @@ hydra-core==1.0.6
 seqeval==0.0.5
 tqdm==4.31.1
 matplotlib==3.4.1
+ipdb
+tensorboardX
 deepke
