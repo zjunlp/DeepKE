@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='deepke',  # 打包后的包文件名
-    version='2.0.5',    #版本号
+    version='2.1.0',    #版本号
     keywords=["pip", "RE","NER","AE"],    # 关键字
     description='DeepKE 是基于 Pytorch 的深度学习中文关系抽取处理套件。',  # 说明
     long_description="client",  #详细说明
@@ -29,7 +29,8 @@ setup(
         'wandb==0.12.7',
         "ujson",
         "huggingface_hub==0.2.1",
-        "pytorch-crf==0.7.2"
+        "pytorch-crf==0.7.2",
+        "pyld==2.0.3"
     ], 
     classifiers=[
         "Programming Language :: Python :: 3",
