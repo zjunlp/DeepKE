@@ -35,6 +35,8 @@
 
 Data-Efficient Knowledge Graph Construction, 高效知识图谱构建 ([Tutorial on CCKS 2022](http://sigkg.cn/ccks2022/?page_id=24)) \[[slides](https://pan.baidu.com/s/1yMskUVU188-4dcf96lVrWg?pwd=gy8y)\] 
 
+Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022](https://www.aacl2022.org/Program/tutorials)) \[[slides](https://github.com/NLP-Tutorials/AACL-IJCNLP2022-KGC-Tutorial)\] 
+
 # 目录
 
 * [新版特性](#新版特性)
