@@ -57,6 +57,7 @@ DeepKE 是一个开源的知识图谱抽取与构建工具，支持低资源、�
 |:------------------------------------------- |:---------------------- |:---------------------------------------------------------------------------------:|:----------------------------------------------------------------------:|
 | **`DeepKE(NER), RoBERTa-wwm-ext, Chinese`** | **实体抽取** | **[PyTorch](https://drive.google.com/drive/folders/1T3xf_MXRaVqLV-ST4VqvKoaQqQgRpp67)** | **[Pytorch（密码u022）](https://pan.baidu.com/s/1hb9XEbK4x5fIyco4DgZZfg)** |
 | **`DeepKE(NER), BERT-wwm, Chinese`**        | **实体抽取** | **[PyTorch](https://drive.google.com/drive/folders/1OLx5tjEriMyzbv0iv_s9lihtXWIjB6OS)** | **[Pytorch（密码1g0t）](https://pan.baidu.com/s/10TWE1VA2S-SJgmOm8szRxw)** |
+| **`DeepKE(NER), BiLSTM-CRF, Chinese`**      | **实体抽取** | **[PyTorch](https://drive.google.com/file/d/1_qfghNkC7g8TSCKu0AndHKKoyLFaMSjP)** | **[Pytorch（密码1qae）](https://pan.baidu.com/s/1LOGAHkCd4Ne5Og65XfSPrg)** |
 | **`DeepKE(RE), RoBERTa-wwm-ext, Chinese`**  | **关系抽取** | **[PyTorch](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)** | **[Pytorch（密码ggnu）](https://pan.baidu.com/s/1qfiTfRTdbIiAahwPVa4MkA)** |
 | **`DeepKE(RE), BERT-wwm, Chinese`**         | **关系抽取** | **[PyTorch](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)** | **[Pytorch（密码6psm）](https://pan.baidu.com/s/1ngvTwg_ZXaenxhOeadWoCA)** |
 
