@@ -18,7 +18,7 @@
 <img src="lightner-model.png" width="75%" height="75%" />
 </div>
 
-基于LightNER的低资源实体识别方法 (详情请查阅论文 [https://arxiv.org/pdf/2109.00720.pdf](https://arxiv.org/pdf/2109.00720.pdf)).
+基于LightNER (COLING2022)的低资源实体识别方法 (详情请查阅论文 [https://arxiv.org/pdf/2109.00720.pdf](https://arxiv.org/pdf/2109.00720.pdf)).
 
 
 ### 克隆代码
@@ -73,23 +73,23 @@ cd DeepKE/example/ner/few-shot
 ```bibtex
 @article{DBLP:journals/corr/abs-2109-00720,
   author    = {Xiang Chen and
-               Ningyu Zhang and
                Lei Li and
-               Xin Xie and
                Shumin Deng and
                Chuanqi Tan and
+               Changliang Xu and
                Fei Huang and
                Luo Si and
-               Huajun Chen},
-  title     = {LightNER: {A} Lightweight Generative Framework with Prompt-guided
-               Attention for Low-resource {NER}},
+               Huajun Chen and
+               Ningyu Zhang},
+  title     = {LightNER: {A} Lightweight Tuning Paradigm for Low-resource {NER} via
+               Pluggable Prompting},
   journal   = {CoRR},
   volume    = {abs/2109.00720},
   year      = {2021},
   url       = {https://arxiv.org/abs/2109.00720},
   eprinttype = {arXiv},
   eprint    = {2109.00720},
-  timestamp = {Mon, 20 Sep 2021 16:29:41 +0200},
+  timestamp = {Thu, 01 Sep 2022 08:06:28 +0200},
   biburl    = {https://dblp.org/rec/journals/corr/abs-2109-00720.bib},
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
