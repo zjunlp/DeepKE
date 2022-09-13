@@ -518,3 +518,12 @@ python predict.py
 阿里巴巴：熊飞宇、陈强
 
 阿里巴巴达摩院：张珍茹、谭传奇、黄非
+
+# 其它知识抽取开源工具
+
+- [CogIE](https://github.com/jinzhuoran/CogIE)
+- [OpenNRE](https://github.com/thunlp/OpenNRE)
+- [OmniEvent](https://github.com/THU-KEG/OmniEvent)
+- [OpenUE](https://github.com/zjunlp/OpenUE)
+- [openie](https://stanfordnlp.github.io/CoreNLP/openie.html)
+- [RESIN](https://github.com/RESIN-KAIROS/RESIN-pipeline-public)

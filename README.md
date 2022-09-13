@@ -519,3 +519,12 @@ Zhejiang University: Ningyu Zhang, Liankuan Tao, Xin Xu, Haiyang Yu, Hongbin Ye,
 Alibaba Group: Feiyu Xiong, Qiang Chen
 
 DAMO Academy: Zhenru Zhang, Chuanqi Tan, Fei Huang
+
+# Other Knowledge Extraction open-source project
+
+- [CogIE](https://github.com/jinzhuoran/CogIE)
+- [OpenNRE](https://github.com/thunlp/OpenNRE)
+- [OmniEvent](https://github.com/THU-KEG/OmniEvent)
+- [OpenUE](https://github.com/zjunlp/OpenUE)
+- [openie](https://stanfordnlp.github.io/CoreNLP/openie.html)
+- [RESIN](https://github.com/RESIN-KAIROS/RESIN-pipeline-public)
