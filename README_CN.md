@@ -525,5 +525,5 @@ python predict.py
 - [OpenNRE](https://github.com/thunlp/OpenNRE)
 - [OmniEvent](https://github.com/THU-KEG/OmniEvent)
 - [OpenUE](https://github.com/zjunlp/OpenUE)
-- [openie](https://stanfordnlp.github.io/CoreNLP/openie.html)
+- [OpenIE](https://stanfordnlp.github.io/CoreNLP/openie.html)
 - [RESIN](https://github.com/RESIN-KAIROS/RESIN-pipeline-public)
