@@ -520,11 +520,11 @@ Alibaba Group: Feiyu Xiong, Qiang Chen
 
 DAMO Academy: Zhenru Zhang, Chuanqi Tan, Fei Huang
 
-# Other knowledge extraction open-source project
+# Other Knowledge Extraction Open-Source Projects
 
 - [CogIE](https://github.com/jinzhuoran/CogIE)
 - [OpenNRE](https://github.com/thunlp/OpenNRE)
 - [OmniEvent](https://github.com/THU-KEG/OmniEvent)
 - [OpenUE](https://github.com/zjunlp/OpenUE)
-- [openie](https://stanfordnlp.github.io/CoreNLP/openie.html)
+- [OpenIE](https://stanfordnlp.github.io/CoreNLP/openie.html)
 - [RESIN](https://github.com/RESIN-KAIROS/RESIN-pipeline-public)
