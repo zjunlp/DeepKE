@@ -28,21 +28,21 @@ IFAformer的主要实验结果如下表所示：
 	</tr>
 	<tr>
 		<td rowspan="3">text</td>
-		<td>PCNN</td>
+		<td>PCNN*</td>
 		<td>73.36</td>
 		<td>69.14</td>
 		<td>43.75</td>
 		<td>53.59</td>
 	</tr>
 	<tr>
-		<td>BERT</td>
+		<td>BERT*</td>
 		<td>71.13</td>
 		<td>58.51</td>
 		<td>60.16</td>
 		<td>59.32</td>
 	</tr>
 	<tr>
-		<td>MTB</td>
+		<td>MTB*</td>
 		<td>75.34</td>
 		<td>63.28</td>
 		<td>65.16</td>
@@ -50,11 +50,6 @@ IFAformer的主要实验结果如下表所示：
 	</tr>
 	<tr>
 		<td rowspan="4">text+image</td>
-		<td>BERT+SG</td>
-		<td>74.09</td>
-		<td>62.95</td>
-		<td>62.65</td>
-		<td>62.80</td>
 	</tr>
 	<tr>
 		<td>BERT+SG+Att</td>
@@ -64,6 +59,13 @@ IFAformer的主要实验结果如下表所示：
 		<td>63.64</td>
 	</tr>
 	<tr>
+		<td>ViLBERT</td>
+		<td>74.89</td>
+		<td>64.50</td>
+		<td>61.86</td>
+		<td>63.61</td>
+	</tr>
+	<tr>
 		<td>MEGA</td>
 		<td>76.15</td>
 		<td>64.51</td>
@@ -71,7 +73,24 @@ IFAformer的主要实验结果如下表所示：
 		<td>66.41</td>
 	</tr>
 	<tr>
-		<td><b>IFAformer</b></td>
+		<td rowspan="4">Ours</td>
+	</tr>
+	<tr>
+		<td>Vanilla IFAformer</td>
+		<td>87.75</td>
+		<td>69.90</td>
+		<td>68.11</td>
+		<td>68.99</td>
+	</tr>
+	<tr>
+		<td>&emsp;w/o Text Attn.</td>
+		<td>76.21</td>
+		<td>66.95</td>
+		<td>61.72</td>
+		<td>64.23</td>
+	</tr>
+	<tr>
+		<td>&emsp;w/ Visual Objects</td>
 		<td><b>92.38</b></td>
 		<td><b>82.59</b></td>
 		<td><b>80.78</b></td>
@@ -81,8 +100,7 @@ IFAformer的主要实验结果如下表所示：
 
 ### 环境依赖
 
-> python == 3.8
-
+- python == 3.8
 - torch == 1.5
 - transformers == 3.4.0
 - hydra-core == 1.0.6
