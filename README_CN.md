@@ -58,7 +58,7 @@ Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022
 
 # 新版特性
 
-## 2022年8月
+## 2022年9月
 
 - 论文 [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)被EMNLP2022 System Demonstration Track录用。
 
