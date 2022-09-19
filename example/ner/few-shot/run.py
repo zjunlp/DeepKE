@@ -14,7 +14,7 @@ from deepke.name_entity_re.few_shot.module.datasets import ConllNERProcessor, Co
 from deepke.name_entity_re.few_shot.module.train import Trainer
 from deepke.name_entity_re.few_shot.module.metrics import Seq2SeqSpanMetric
 from deepke.name_entity_re.few_shot.utils.util import get_loss, set_seed
-from deepke.name_entity_re.few_shot.module.mapping_type import mit_movie_mapping, mit_restaurant_mapping, atis_mapping
+from deepke.name_entity_re.few_shot.module.mapping_type import mit_movie_mapping, mit_restaurant_mapping, cluener2020_mapping, atis_mapping
 
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -33,6 +33,7 @@ DATASET_CLASS = {
     'conll2003': ConllNERDataset,
     'mit-movie': ConllNERDataset,
     'mit-restaurant': ConllNERDataset,
+    'cluener2020': ConllNERDataset,
     'atis': ConllNERDataset
 }
 
@@ -40,6 +41,7 @@ DATA_PROCESS = {
     'conll2003': ConllNERProcessor,
     'mit-movie': ConllNERProcessor,
     'mit-restaurant': ConllNERProcessor,
+    'cluener2020': ConllNERProcessor,
     'atis': ConllNERProcessor
 }
 
@@ -51,6 +53,8 @@ DATA_PATH = {
                   'dev': 'data/mit-movie/test.txt'},
     'mit-restaurant': {'train': 'data/mit-restaurant/10-shot-train.txt',
                   'dev': 'data/mit-restaurant/test.txt'},
+    'cluener2020': {'train': 'data/cluener2020/20-shot-train.txt',
+                       'dev': 'data/cluener2020/test.txt'},
     'atis': {'train': 'data/atis/20-shot-train.txt',
                   'dev': 'data/atis/test.txt'}
 }
@@ -62,6 +66,7 @@ MAPPING = {
                 'misc': '<<others>>'},
     'mit-movie': mit_movie_mapping,
     'mit-restaurant': mit_restaurant_mapping,
+    'cluener2020': cluener2020_mapping,
     'atis': atis_mapping
 }
 
@@ -82,6 +87,8 @@ def main(cfg):
         cfg.save_path = os.path.join(cfg.save_path, cfg.dataset_name+"_"+str(cfg.batch_size)+"_"+str(cfg.learning_rate)+cfg.notes)
         if not os.path.exists(cfg.save_path):
             os.makedirs(cfg.save_path, exist_ok=True)
+    if 'chinese' in cfg.bart_name:
+        cfg.bart_name = os.path.join(utils.get_original_cwd(), cfg.bart_name)
     
     process = data_process(data_path=data_path, mapping=mapping, bart_name=cfg.bart_name, learn_weights=cfg.learn_weights)
     train_dataset = dataset_class(data_processor=process, mode='train')

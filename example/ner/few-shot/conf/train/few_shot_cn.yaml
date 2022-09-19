@@ -1,0 +1,25 @@
+seed: 42
+
+bart_name: "bart-large-chinese" #在目录下下载bart-(large/base)-chinese【https://huggingface.co/fnlp】的预训练权重和tokenizer等
+dataset_name: cluener2020
+device: cuda
+
+num_epochs: 45
+batch_size: 5
+learning_rate: 5e-5
+warmup_ratio: 0.01
+eval_begin_epoch: 42
+src_seq_ratio: 0.6
+tgt_max_len: 10
+num_beams: 1
+length_penalty: 1
+
+use_prompt: True
+prompt_len: 10
+prompt_dim: 800
+
+freeze_plm: True
+learn_weights: False
+save_path: null # 模型保存路径
+load_path: null # 模型加载路径，
+notes: ''

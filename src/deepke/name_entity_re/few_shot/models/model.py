@@ -36,11 +36,15 @@ class PromptBartDecoder(nn.Module):
                     self.averge_weights.append(nn.Parameter(torch.FloatTensor(len(id)).uniform_(1.0, 2.5)))
             print(self.averge_weights)
             mapping = [0, 2]
+            if self.pad_token_id == 0:
+                mapping = [101, 102]
             for id in label_ids:
                 mapping += id[:1]
             mapping = torch.LongTensor(mapping)
         else:
             mapping = torch.LongTensor([0, 2]+label_ids)
+            if self.pad_token_id == 0:
+                mapping = torch.LongTensor([101, 102] + label_ids)
             self.label_start_id = min(label_ids)
             self.label_end_id = max(label_ids)+1
 

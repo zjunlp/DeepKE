@@ -4,7 +4,7 @@ import numpy as np
 from itertools import chain
 from torch.utils.data import Dataset, DataLoader
 from torch.nn.utils.rnn import pad_sequence
-from transformers import BartTokenizer
+from transformers import BartTokenizer, BertTokenizer
 
 import logging
 logger = logging.getLogger(__name__)
@@ -14,7 +14,9 @@ logger = logging.getLogger(__name__)
 class ConllNERProcessor(object):
     def __init__(self, data_path, mapping, bart_name, learn_weights) -> None:
         self.data_path = data_path
-        self.tokenizer = BartTokenizer.from_pretrained(bart_name)
+        self.bart_name = bart_name
+        self.tokenizer = BertTokenizer.from_pretrained(self.bart_name) if 'chinese' in self.bart_name \
+        else BartTokenizer.from_pretrained(self.bart_name)
         self.mapping = mapping  # 记录的是原始tag与转换后的tag的str的匹配关系
         self.original_token_nums = self.tokenizer.vocab_size
         self.learn_weights = learn_weights
@@ -92,17 +94,17 @@ class ConllNERProcessor(object):
         target_shift = len(self.mapping) + 2 
         def prepare_target(item):
             raw_word = item['raw_word']
-            word_bpes = [[self.tokenizer.bos_token_id]] 
+            word_bpes = [[self.tokenizer.cls_token_id if 'chinese' in self.bart_name else self.tokenizer.bos_token_id]]
             first = [] 
             cur_bpe_len = 1
             for word in raw_word:
-                bpes = self.tokenizer.tokenize(word, add_prefix_space=True)
+                bpes = self.tokenizer.tokenize(word) if 'chinese' in self.bart_name else self.tokenizer.tokenize(word, add_prefix_space=True)
                 bpes = self.tokenizer.convert_tokens_to_ids(bpes)
                 first.append(cur_bpe_len)
                 cur_bpe_len += len(bpes)
                 word_bpes.append(bpes)
             assert first[-1] + len(bpes) == sum(map(len, word_bpes))
-            word_bpes.append([self.tokenizer.eos_token_id])
+            word_bpes.append([self.tokenizer.sep_token_id if 'chinese' in self.bart_name else self.tokenizer.eos_token_id])
             assert len(first) == len(raw_word) == len(word_bpes) - 2
 
             lens = list(map(len, word_bpes)) 
@@ -133,7 +135,7 @@ class ConllNERProcessor(object):
                 cur_pair.append(self.mapping2targetid[tag] + 2) 
                 pairs.append([p for p in cur_pair])
             target.extend(list(chain(*pairs)))
-            target.append(1) 
+            target.append(1)
 
             word_bpes = list(chain(*word_bpes))
             assert len(word_bpes)<500
@@ -160,7 +162,8 @@ class ConllNERProcessor(object):
             self.mapping2id = {} 
             self.mapping2targetid = {} 
             for key, value in self.mapping.items():
-                key_id = self.tokenizer.convert_tokens_to_ids(self.tokenizer.tokenize(value[2:-2], add_prefix_space=True))
+                key_id = self.tokenizer.convert_tokens_to_ids(self.tokenizer.tokenize(value[2:-2]) if 'chinese' in
+                    self.bart_name else self.tokenizer.tokenize(value[2:-2], add_prefix_space=True))
                 self.mapping2id[value] = key_id  # may be list
                 self.mapping2targetid[key] = len(self.mapping2targetid)
         else:

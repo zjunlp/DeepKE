@@ -99,6 +99,19 @@ mit_movie_mapping = {
     'trailer': '<<trailer>>'
 }
 
+cluener2020_mapping = {
+    'scene': '<<scene>>',
+    'address': '<<address>>',
+    'book': '<<book>>',
+    'name': '<<name>>',
+    'company': '<<company>>',
+    'organization': '<<organization>>',
+    'government': '<<government>>',
+    'movie': '<<movie>>',
+    'position': '<<position>>',
+    'game': '<<game>>'
+}
+
 mit_restaurant_mapping = {
     'location': '<<location>>',
     'cuisine': '<<cuisine>>',

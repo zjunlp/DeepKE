@@ -3,7 +3,7 @@ import numpy as np
 import random
 from torch import nn
 import torch.nn.functional as F
-from transformers import BartModel, BartTokenizer
+from transformers import BartModel, BartTokenizer, BertTokenizer
 import os
 
 def avg_token_embeddings(tokenizer: BartTokenizer, bart_model: BartModel, bart_name, num_tokens):
@@ -21,7 +21,8 @@ def avg_token_embeddings(tokenizer: BartTokenizer, bart_model: BartModel, bart_n
     Returns:
         [type]: [description]
     """
-    _tokenizer = BartTokenizer.from_pretrained(bart_name)
+    _tokenizer = BertTokenizer.from_pretrained(bart_name) if 'chinese' in bart_name \
+        else BartTokenizer.from_pretrained(bart_name)
     for token in tokenizer.unique_no_split_tokens:
         if token[:2] == '<<':  # 特殊字符
             index = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(token))
