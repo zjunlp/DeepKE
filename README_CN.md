@@ -519,7 +519,7 @@ python predict.py
 
 浙江大学：[张宁豫](https://person.zju.edu.cn/ningyu)、陶联宽、徐欣、余海阳、叶宏彬、乔硕斐、王鹏、谢辛、陈想、黎洲波、李磊、梁孝转、姚云志、邓淑敏、张文、郑国轴、陈华钧
 
-开源社区贡献者: To be added
+开源社区贡献者: [thredreams](https://github.com/thredreams)
 
 阿里巴巴：熊飞宇、陈强
 
