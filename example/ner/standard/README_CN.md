@@ -63,7 +63,7 @@ cd DeepKE/example/ner/standard
 
 ### 使用数据进行训练预测
 
-- 模型采用的数据是People's Daily(中文NER)，文本数据采用{word, label}对格式
+- 支持三种类型文件格式，包含json格式、docx格式以及txt格式，详细可参考`data`文件夹。模型采用的数据是People's Daily(中文NER)，文本数据采用{word, label}对格式
 
 - 存放数据： 可先下载数据 ```wget 120.27.214.45/Data/ner/standard/data.tar.gz```在此目录下
 

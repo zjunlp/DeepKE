@@ -32,7 +32,7 @@ cd DeepKE/example/re/standard
 
 - 存放数据： 可先下载数据 ```wget 120.27.214.45/Data/re/standard/data.tar.gz```在此目录下
 
-  在 `data/origin` 文件夹下存放训练数据：
+  支持三种类型文件格式，包含json格式、docx格式以及txt格式，详细可参考`data`文件夹。在 `data/origin` 文件夹下存放训练数据：
 
   - `train.csv`：存放训练数据集
 

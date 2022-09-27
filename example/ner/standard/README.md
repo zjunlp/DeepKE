@@ -39,7 +39,7 @@ cd DeepKE/example/ner/standard
     tar -xzvf data.tar.gz
     ```
 
-  - The dataset is stored in `data`：
+  - Three types of data formats are supported. The dataset is stored in `data`：
     - `train.txt`: Training set
     - `valid.txt `: Validation set
     - `test.txt`: Test set

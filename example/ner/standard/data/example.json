@@ -1,0 +1,1 @@
+[{"sentence":"秦始皇兵马俑位于陕西省西安市，1961年被国务院公布为第一批全国重点文物保护单位，是世界八大奇迹之一。","entities":[{"word":"秦始皇","label":"PER"},{"word":"陕西省","label":"LOC"},{"word":"西安市","label":"LOC"},{"word":"国务院","label":"ORG"}]},{"sentence":"本报北京9月4日讯记者杨涌报道：部分省区人民日报宣传发行工作座谈会9月3日在4日在京举行。","entities":[{"word":"杨涌","label":"PER"},{"word":"北京","label":"LOC"},{"word":"人民日报","label":"ORG"}]}]
