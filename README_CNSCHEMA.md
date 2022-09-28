@@ -168,7 +168,7 @@ DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge 
 #### Relation Schema
 
 | Serial Number | Head Entity Type | Tail Entity Type | Relation | Serial Number | Head Entity Type | Tail Entity Type | Relation |
-| ------------- | :--------------- | :--------------: | -------- | ------------- | :--------------- | :--------------: | -------- |
+| --- |:------ |:-----:| ---- | --- |:------ |:-----:| ---- |
 | 1   | cns:地点     | cns:人物    | cns:祖籍   | 2   | cns:人物     | cns:人物    | cns:父亲   |
 | 3   | cns:地点     | cns:企业    | cns:总部地点 | 4   | cns:地点     | cns:人物    | cns:出生地  |
 | 5   | cns:目      | cns:生物    | cns:目    | 6   | cns:Number | cns:行政区   | cns:面积   |
@@ -186,11 +186,11 @@ DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge 
 | 29  | cns:出版社    | cns:书籍    | cns:出版社  | 30  | cns:人物     | cns:电视综艺  | cns:主持人  |
 | 31  | cns:Text   | cns:学科专业  | cns:专业代码 | 32  | cns:人物     | cns:歌曲    | cns:歌手   |
 | 33  | cns:人物     | cns:歌曲    | cns:作曲   | 34  | cns:人物     | cns:网络小说  | cns:主角   |
-| 35  | cns:人物     | cns:企业    | cns:董事长  | 36  | cns:Date   | cns:机构    | cns:机构成立时间 |
+| 35  | cns:人物     | cns:企业    | cns:董事长  | 36  | cns:Date   | cns:企业    | cns:成立时间 |
 | 37  | cns:学校     | cns:人物    | cns:毕业院校 | 38  | cns:Number | cns:机构    | cns:占地面积 |
 | 39  | cns:语言     | cns:国家    | cns:官方语言 | 40  | cns:Text   | cns:行政区   | cns:人口数量 |
 | 41  | cns:Number | cns:行政区   | cns:人口数量 | 42  | cns:城市     | cns:景点    | cns:所在城市 |
-| 43  | cns:人物     | cns:图书作品  | cns:作者   | 44  | cns:Date   | cns:企业    | cns:企业成立时间 |
+| 43  | cns:人物     | cns:图书作品  | cns:作者   | 44  | None   | None    | 其他 |
 | 45  | cns:人物     | cns:歌曲    | cns:作曲   | 46  | cns:人物     | cns:行政区   | cns:气候   |
 | 47  | cns:人物     | cns:电视综艺  | cns:嘉宾   | 48  | cns:人物     | cns:影视作品  | cns:主演   |
 | 49  | cns:作品     | cns:影视作品  | cns:改编自  | 50  | cns:人物     | cns:企业    | cns:创始人  |
