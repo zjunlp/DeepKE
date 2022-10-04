@@ -533,3 +533,4 @@ python predict.py
 - [OpenUE](https://github.com/zjunlp/OpenUE)
 - [OpenIE](https://stanfordnlp.github.io/CoreNLP/openie.html)
 - [RESIN](https://github.com/RESIN-KAIROS/RESIN-pipeline-public)
+- [ZShot](https://github.com/IBM/zshot)
