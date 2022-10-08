@@ -66,7 +66,7 @@ For entity extraction and relation extraction tasks, we provide models based on 
 
 It is recommended to use Baidu Netdisk download in Chinese Mainland, and Google download for overseas users.
 
-As for the entity extraction model, take pytoch version `DeepKE(RE), RoBERTa-wwm-ext, Chinese` as an example. After downloading, unzip the zip file to get:
+As for the entity extraction model, take pytoch version `DeepKE(RE), RoBERTa-wwm-ext, Chinese` as an example. After downloading, files of the model are obtained:
 
 ```
 checkpoints_robert
