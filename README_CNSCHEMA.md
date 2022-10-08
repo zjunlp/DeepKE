@@ -59,7 +59,7 @@ For entity extraction and relation extraction tasks, we provide models based on 
 | **`DeepKE(NER), RoBERTa-wwm-ext, Chinese`** | **entity extraction**   | **[PyTorch](https://drive.google.com/drive/folders/1T3xf_MXRaVqLV-ST4VqvKoaQqQgRpp67)** | **[Pytorch（password:u022）](https://pan.baidu.com/s/1hb9XEbK4x5fIyco4DgZZfg)** |
 | **`DeepKE(NER), BERT-wwm, Chinese`**        | **entity extraction**   | **[PyTorch](https://drive.google.com/drive/folders/1OLx5tjEriMyzbv0iv_s9lihtXWIjB6OS)** | **[Pytorch（password:1g0t）](https://pan.baidu.com/s/10TWE1VA2S-SJgmOm8szRxw)** |
 | **`DeepKE(NER), BiLSTM-CRF, Chinese`**      | **entity extraction** | **[PyTorch](https://drive.google.com/file/d/1_qfghNkC7g8TSCKu0AndHKKoyLFaMSjP)** | **[Pytorch（password:1qae）](https://pan.baidu.com/s/1LOGAHkCd4Ne5Og65XfSPrg)** |
-| **`DeepKE(RE), RoBERTa-wwm-ext, Chinese`**  | **relation extraction** | **[PyTorch](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)** | **[Pytorch（password:ggnu）](https://pan.baidu.com/s/1qfiTfRTdbIiAahwPVa4MkA)** |
+| **`DeepKE(RE), RoBERTa-wwm-ext, Chinese`**  | **relation extraction** | **[PyTorch](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)** | **[Pytorch（password:78pq）](https://pan.baidu.com/s/1ozFsxExAQTBRs5NbJW7W5g)** |
 | **`DeepKE(RE), BERT-wwm, Chinese`**         | **relation extraction** | **[PyTorch](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)** | **[Pytorch（password:6psm）](https://pan.baidu.com/s/1ngvTwg_ZXaenxhOeadWoCA)** |
 
 ### Instructions
