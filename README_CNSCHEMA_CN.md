@@ -64,7 +64,7 @@ DeepKE 是一个开源的知识图谱抽取与构建工具，支持低资源、�
 ### 使用说明
 
 中国大陆境内建议使用百度网盘下载点，境外用户建议使用谷歌下载点。
-实体抽取模型中，以Pytorch版`DeepKE(RE), RoBERTa-wwm-ext, Chinese`为例，下载完毕后对zip文件进行解压得到：
+实体抽取模型中，以Pytorch版`DeepKE(RE), RoBERTa-wwm-ext, Chinese`为例，下载完毕后得到模型文件：
 
 ```
 checkpoints_robert
