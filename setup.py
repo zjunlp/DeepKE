@@ -15,7 +15,7 @@ setup(
     package_dir={"": "src"},
     packages=find_packages("src"),
     install_requires=[
-        'torch==1.11',
+        'torch>-1.5,<=1.11',
         'hydra-core==1.0.6',
         'tensorboard==2.4.1',
         'matplotlib==3.4.1',
