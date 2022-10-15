@@ -10,7 +10,7 @@
 <img src="lightner-model.png" width="75%" height="75%" />
 </div>
 
-Illustration of LightNER (COLING'22) for few-shot named entity recognition (Details in paper [https://arxiv.org/pdf/2109.00720.pdf](https://arxiv.org/pdf/2109.00720.pdf)).
+Illustration of LightNER (COLING'22) for few-shot named entity recognition (Details in paper [https://aclanthology.org/2022.coling-1.209.pdf](https://aclanthology.org/2022.coling-1.209.pdf)).
 
 ## Requirements
 
