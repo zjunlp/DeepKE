@@ -91,26 +91,23 @@ cd DeepKE/example/ner/few-shot
 If you use or extend our work, please cite the following paper:
 
 ```bibtex
-@article{DBLP:journals/corr/abs-2109-00720,
-  author    = {Xiang Chen and
-               Lei Li and
-               Shumin Deng and
-               Chuanqi Tan and
-               Changliang Xu and
-               Fei Huang and
-               Luo Si and
-               Huajun Chen and
-               Ningyu Zhang},
-  title     = {LightNER: {A} Lightweight Tuning Paradigm for Low-resource {NER} via
-               Pluggable Prompting},
-  journal   = {CoRR},
-  volume    = {abs/2109.00720},
-  year      = {2021},
-  url       = {https://arxiv.org/abs/2109.00720},
-  eprinttype = {arXiv},
-  eprint    = {2109.00720},
-  timestamp = {Thu, 01 Sep 2022 08:06:28 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/abs-2109-00720.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
-}
+@inproceedings{chen-etal-2022-lightner,
+    title = "{L}ight{NER}: A Lightweight Tuning Paradigm for Low-resource {NER} via Pluggable Prompting",
+    author = "Chen, Xiang  and
+      Li, Lei  and
+      Deng, Shumin  and
+      Tan, Chuanqi  and
+      Xu, Changliang  and
+      Huang, Fei  and
+      Si, Luo  and
+      Chen, Huajun  and
+      Zhang, Ningyu",
+    booktitle = "Proceedings of the 29th International Conference on Computational Linguistics",
+    month = oct,
+    year = "2022",
+    address = "Gyeongju, Republic of Korea",
+    publisher = "International Committee on Computational Linguistics",
+    url = "https://aclanthology.org/2022.coling-1.209",
+    pages = "2374--2387"
+   }
 ```
