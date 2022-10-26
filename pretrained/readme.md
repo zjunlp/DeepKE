@@ -1,11 +1,9 @@
-此文件夹下存放预训练模型参数的文件夹，如 BERT 等。
+This folder is the folder where the pre training model parameters are stored, such as BERT.
 
-中文 BERT 推荐使用哈工大发布的中文全词遮掩预训练模型 [BERT-wmm](https://github.com/ymcui/Chinese-BERT-wwm)，而且提供讯飞云下载，国内下载速度很快，具体链接见上述网址。
+Chinese BERT recommends to use the pretraining model of Chinese full word masking released by Harbin Institute of Technology [BERT wmm](https://github.com/ymcui/Chinese-BERT-wwm) It also provides Xunfeiyun download, which is very fast in China. See the above website for specific links.
 
+There must be three files in the folder:
 
-文件夹内必须有三个文件：
-
-- config.json `BERT 模型结构的配置文件`
-- pytorch_model.bin `预训练模型参数`
-- vocab.txt `BERT 模型词表`
-
+- config.json `Configuration file of BERT model structure`
+- pytorch_model.bin `Pretraining model parameters`
+- vocab.txt `BERT vocabulary`
