@@ -40,7 +40,7 @@ cd DeepKE/example/re/standard
     tar -xzvf data.tar.gz
     ```
 
-  - Three types of data formats are supported.The dataset is stored in `data/origin`:
+  - Three types of data formats are supported,including `json`,`xlsx` and `csv`. The dataset is stored in `data/origin`:
     - `train.csv`: Training set
     -  `valid.csv `: Validation set
     - `test.csv`: Test set

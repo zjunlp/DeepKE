@@ -1,1 +1,1 @@
-支持三种类型文件格式，包含json格式、xlsx格式以及csv格式。其中各个文件的格式已提供，如非csv文件，需要用到[transform_data.py](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/transform_data.py)中的json2csv函数以及xlsx2csv函数将其进行转换。
+Three types of data formats are supported,including `json`,`xlsx` and `csv`. The format of each file has been provided.If it is not csv file,you can use function `json2csv` and function `xlsx2csv` to transfer in [transform_data.py](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/transform_data.py).
