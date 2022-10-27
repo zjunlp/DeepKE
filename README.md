@@ -150,6 +150,8 @@ wget 120.27.214.45/Data/re/standard/data.tar.gz
 tar -xzvf data.tar.gz
 ```
 
+Many types of data formats are supported,and details are in each part. 
+
 **Step5** Training (Parameters for training can be changed in the `conf` folder)
 
 We support visual parameter tuning by using *wandb*.

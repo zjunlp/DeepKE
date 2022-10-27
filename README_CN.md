@@ -153,6 +153,8 @@ wget 120.27.214.45/Data/re/standard/data.tar.gz
 tar -xzvf data.tar.gz
 ```
 
+支持多种数据类型格式，具体请见各部分子README。
+
 **Step 5** ：模型训练，训练用到的参数可在conf文件夹内修改
 
 DeepKE使用*wandb*支持可视化调参
