@@ -37,6 +37,9 @@ Data-Efficient Knowledge Graph Construction, 高效知识图谱构建 ([Tutorial
 
 Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022](https://www.aacl2022.org/Program/tutorials)) \[[slides](https://github.com/NLP-Tutorials/AACL-IJCNLP2022-KGC-Tutorial)\] 
 
+**相关工具链接**：
+知识图谱提示学习框架 [PromptKG](https://github.com/zjunlp/PromptKG)
+
 # 目录
 
 * [新版特性](#新版特性)
