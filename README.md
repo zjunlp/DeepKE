@@ -539,3 +539,4 @@ DAMO Academy: Zhenru Zhang, Chuanqi Tan, Fei Huang
 - [OpenIE](https://stanfordnlp.github.io/CoreNLP/openie.html)
 - [RESIN](https://github.com/RESIN-KAIROS/RESIN-pipeline-public)
 - [ZShot](https://github.com/IBM/zshot)
+- [ZS4IE](https://github.com/BBN-E/ZS4IE)
