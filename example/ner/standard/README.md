@@ -65,3 +65,18 @@ cd DeepKE/example/ner/standard
 BiLSTM + CRF
 
 BERT
+
+## Prepare weak_supervised data
+
+If you only have text data and corresponding dictionaries, but no canonical training data.
+
+You can get weakly supervised formatted training data through automated labeling methods.
+
+Please make sure that:
+
+- Provide high-quality dictionaries
+- Enough text data
+
+<p align="left">
+<a href="https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data/README.md">prepare-data</a> </b>
+</p>
