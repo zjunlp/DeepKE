@@ -1,3 +1,20 @@
+<p align="left">
+    <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data/README_CN.md">简体中文</a> </b>
+</p>
+
+**The input dictionary** format is csv (contains two columns, entities and corresponding labels).
+
+**Data to be automatically marked** (txt format and separated by lines, as shown in the figure below) should be placed under the `source_data` path, the script will traverse all txt format files in this folder, and automatically mark line by line.
+
+<h3 align="left">
+    <img src="pics/input_data_format.png", width=450>
+</h3>
+
+**The output file**(the distribution ratio of `training set`, `validation set`, and `test set` can be customized) can be directly used as training data in DeepKE.
+<h3 align="left">
+    <img src="pics/output_data_format.png", width=250>
+</h3>
+
 ## Dict
 Two entity Dicts (one in Chinese and one in English) are provided in advance, and the samples are automatically tagged using the entity dictionary + jieba part-of-speech tagging.
 
