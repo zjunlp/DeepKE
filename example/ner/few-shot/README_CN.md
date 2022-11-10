@@ -65,6 +65,12 @@ cd DeepKE/example/ner/few-shot
 - 每次训练的日志保存在 `logs` 文件夹内，模型结果保存目录可以自定义。
 - 进行预测：在config.yaml中加入 - predict ， 再在predict.yaml中修改load_path为模型路径以及write_path为预测结果保存路径，再` python predict.py `
 
+### 自定义Tokenizer
+
+若您需要定制化自己的Tokenizer（例如`MBartTokenizer`用于多语言处理）。
+
+您可在<a href="https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/few_shot/module/datasets.py#L18">tokenizer</a>
+中自定义分词器。
 
 ## 引用
 

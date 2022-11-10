@@ -81,3 +81,16 @@ cd DeepKE/example/ner/standard
 - 模型加载和保存位置以及配置可以在conf的 `*.yaml`文件中修改
 
 - 进行预测 ```python predict.py```
+
+### 样本自动化打标
+
+如果您只有文本数据和对应的词典，而没有规范的训练数据。
+
+您可以通过自动化打标方法得到弱监督的格式化训练数据，请确保：
+
+- 提供高质量的词典
+- 充足的文本数据
+
+<p align="left">
+<a href="https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data/README.md">prepare-data</a> </b>
+</p>

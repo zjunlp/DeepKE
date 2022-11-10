@@ -86,6 +86,12 @@ cd DeepKE/example/ner/few-shot
     python predict.py
     ```
 
+### Custom Tokenizer
+
+If you need to customize your own Tokenizer (eg `MBartTokenizer` for multilingual processing).
+
+You can customize the tokenizer in <a href="https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/few_shot/module/datasets.py#L18">tokenizer</a>
+
 ## Cite
 
 If you use or extend our work, please cite the following paper:

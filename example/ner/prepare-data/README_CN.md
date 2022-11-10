@@ -1,4 +1,24 @@
+<p align="left">
+    <b> <a href="https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data/README.md">English</a> | 简体中文 </b>
+</p>
+
+**输入的词典**格式为`csv`（包含两列，分别是实体以及对应的标签）。
+
+**待自动打标的数据**（txt格式按行分隔，如下图所示）应放在`source_data`路径下，脚本会遍历此文件夹下的所有txt格式的文件，逐行进行自动打标。
+<h3 align="left">
+    <img src="pics/input_data_format.png", width=450>
+</h3>
+
+**输出的文件**的格式为：（可定制化训练集、验证集、测试集的分配比例），可直接作为DeepKE中的训练数据。
+<h3 align="left">
+    <img src="pics/output_data_format.png", width=250>
+</h3>
+
 ## 词典
+词典格式：
+<h3 align="left">
+    <img src="pics/vocab_dict.png", width=250>
+</h3>
 预提供了两个实体词典（中英文各一个），使用实体词典+jieba词性标注对样本进行自动标注。
 
 - 中文示例词典中, 我们采用[(人民日报)数据集](https://github.com/OYE93/Chinese-NLP-Corpus/tree/master/NER/People's%20Daily). 它是NER相关的数据集，包含人员 (PER)、位置 (LOC) 和组织 (ORG) 相关的命名实体识别。
