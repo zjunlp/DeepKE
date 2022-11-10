@@ -42,7 +42,7 @@ cd DeepKE/example/re/standard
 
   - `relation.csv`：存放关系种类
 
-- 开始训练：```python run.py``` (训练所用到参数都在conf文件夹中，修改即可使用lm时，可修改'lm_file'使用下载至本地的模型)
+- 开始训练：```python run.py``` (训练所用到参数都在conf文件夹中，修改即可使用lm时，可修改'lm_file'使用下载至本地的模型),该任务支持多卡训练，修改`trian.yaml`中的use_multi_gpu参数为True，gpu_ids设置为所选gpu，以逗号为间隔，第一张卡为计算主卡，需使用略多内存。
 
 - 每次训练的日志保存在 `logs` 文件夹内，模型结果保存在 `checkpoints` 文件夹内。
 

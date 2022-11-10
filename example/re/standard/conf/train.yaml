@@ -19,3 +19,6 @@ only_comparison_plot: False
 plot_utils: matplot  # [matplot, tensorboard]
 
 predict_plot: False
+
+use_multi_gpu: False
+gpu_ids: 0,1

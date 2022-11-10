@@ -28,7 +28,7 @@ def manual_seed(seed: int = 1) -> None:
 
 
 
-def seq_len_to_mask(seq_len: Union[List, np.ndarray, torch.Tensor], max_len=None, mask_pos_to_true=True):
+def seq_len_to_mask(seq_len: Union[List, np.ndarray, torch.Tensor], max_len=512, mask_pos_to_true=True):
     """
     将一个表示sequence length的一维数组转换为二维的mask，默认pad的位置为1。
     转变 1-d seq_len到2-d mask。
