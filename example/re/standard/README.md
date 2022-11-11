@@ -72,3 +72,12 @@ cd DeepKE/example/re/standard
 4. GCN (Based on the paper ["Graph Convolution over Pruned Dependency Trees Improves Relation Extraction"](https://aclanthology.org/D18-1244.pdf))
 5. Transformer
 6. Pre-trained Model (BERT)
+
+## Data Labeling
+
+If you only have sentence and entity pairs but relation labels, you can get use our distant supervised based [relation labeling tools](https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data).
+
+Please make sure that:
+
+- Use the triple file we provide or high-quality customized triple file
+- Enough source data 

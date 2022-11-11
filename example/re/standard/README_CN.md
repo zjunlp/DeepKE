@@ -48,8 +48,6 @@ cd DeepKE/example/re/standard
 
 - 进行预测 ```python predict.py```
 
-
-
 ## 模型内容
 1、CNN
 
@@ -62,3 +60,12 @@ cd DeepKE/example/re/standard
 5、Transformer
 
 6、预训练模型
+
+## 数据标注
+
+如果您只有句子和实体对但没有可用的关系标签，我们提供了基于远程监督的[关系标注工具](https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data)。
+
+请您在使用前确认：
+
+- 使用我们提供的三元组文件或确保您自定义的三元组文件质量较高
+- 拥有足够的源数据
