@@ -63,7 +63,7 @@ cd DeepKE/example/re/standard
 
 ## 数据标注
 
-如果您只有句子和实体对但没有可用的关系标签，我们提供了基于远程监督的[关系标注工具](https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data)。
+如果您只有句子和实体对但没有可用的关系标签，我们提供了基于远程监督的[关系标注工具](https://github.com/zjunlp/DeepKE/blob/main/example/re/prepare-data)。
 
 请您在使用前确认：
 

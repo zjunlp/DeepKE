@@ -75,7 +75,7 @@ cd DeepKE/example/re/standard
 
 ## Data Labeling
 
-If you only have sentence and entity pairs but relation labels, you can get use our distant supervised based [relation labeling tools](https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data).
+If you only have sentence and entity pairs but relation labels, you can get use our distant supervised based [relation labeling tools](https://github.com/zjunlp/DeepKE/blob/main/example/re/prepare-data).
 
 Please make sure that:
 

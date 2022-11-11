@@ -10,15 +10,15 @@ We specify the source file (dataset to be labeled) as `.json` format and include
 
 ```json
 [
-	{
-		"sentence": "This summer, the United States Embassy in Beirut, Lebanon, once again made its presence felt on the cultural scene by sponsoring a photo exhibition, an experimental jazz performance, a classical music concert and a visit from the Whiffenpoofs, Yale University's a cappella singers.",
+  {
+    "sentence": "This summer, the United States Embassy in Beirut, Lebanon, once again made its presence felt on the cultural scene by sponsoring a photo exhibition, an experimental jazz performance, a classical music concert and a visit from the Whiffenpoofs, Yale University's a cappella singers.",
     "head": "Lebanon",
     "tail": "Beirut",
     "head_offset": "50",
     "tail_offset": "42",
-    ...
-	},
-  ...
+    //...
+  },
+  //... 
 ]
 ```
 
@@ -124,15 +124,15 @@ The output file names are `labeled_train.json`, `labeled_dev.json`, `labeled_tes
 ```json
 [
 	{
-		"sentence": "This summer, the United States Embassy in Beirut, Lebanon, once again made its presence felt on the cultural scene by sponsoring a photo exhibition, an experimental jazz performance, a classical music concert and a visit from the Whiffenpoofs, Yale University's a cappella singers.",
+    "sentence": "This summer, the United States Embassy in Beirut, Lebanon, once again made its presence felt on the cultural scene by sponsoring a photo exhibition, an experimental jazz performance, a classical music concert and a visit from the Whiffenpoofs, Yale University's a cappella singers.",
     "head": "Lebanon",
     "tail": "Beirut",
     "head_offset": "50",
     "tail_offset": "42",
     "relation": "/location/location/contains",
-    ...
+    //...
 	},
-  ...
+  //...
 ]
 ```
 
