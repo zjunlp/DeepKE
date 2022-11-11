@@ -7,12 +7,12 @@
 **Data to be automatically marked** (txt format and separated by lines, as shown in the figure below) should be placed under the `source_data` path, the script will traverse all txt format files in this folder, and automatically mark line by line.
 
 <h3 align="left">
-    <img src="pics/input_data_format.png", width=450>
+    <img src="pics/en_input_data_format.png", width=450>
 </h3>
 
 **The output file**(the distribution ratio of `training set`, `validation set`, and `test set` can be customized) can be directly used as training data in DeepKE.
 <h3 align="left">
-    <img src="pics/output_data_format.png", width=250>
+    <img src="pics/en_output_data_format.png", width=350>
 </h3>
 
 ## Dict
