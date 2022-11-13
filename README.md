@@ -61,6 +61,8 @@ Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022
 <br>
 
 # What's New
+## Nov, 2022
+* Add data [annotation instructions](https://github.com/zjunlp/DeepKE/blob/main/README_TAG.md) for entity recognition and relation extraction, automatic labelling of weakly supervised data ((entity recognition)[https://github.com/zjunlp/DeepKE/tree/main/example/ner/prepare-data] and (relation extraction))[https://github.com/zjunlp/DeepKE/tree/main/example/re/prepare-data], and optimize (multi-GPU training)[https://github.com/zjunlp/DeepKE/tree/main/example/re/standard].
 ## Sept, 2022
 * The paper [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335) has been accepted by the EMNLP 2022 System Demonstration Track.
 ## Aug, 2022
@@ -196,7 +198,7 @@ python predict.py
 
 - Named entity recognition seeks to locate and classify named entities mentioned in unstructured text into pre-defined categories such as person names, organizations, locations, organizations, etc.
 
-- The data is stored in `.txt` files. Some instances as following:
+- The data is stored in `.txt` files. Some instances as following (Users can label data based on the tools [Doccano](https://github.com/doccano/doccano), [MarkTool](https://github.com/FXLP/MarkTool), or they can use the [Weak Supervision](https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data) with DeepKE to obtain data automatically):
 
   |                           Sentence                           |           Person           |    Location    |          Organization          |
   | :----------------------------------------------------------: | :------------------------: | :------------: | :----------------------------: |
@@ -286,7 +288,7 @@ python predict.py
 
 - Relationship extraction is the task of extracting semantic relations between entities from a unstructured text.
 
-- The data is stored in `.csv` files. Some instances as following:
+- The data is stored in `.csv` files. Some instances as following (Users can label data based on the tools [Doccano](https://github.com/doccano/doccano), [MarkTool](https://github.com/FXLP/MarkTool), or they can use the [Weak Supervision](https://github.com/zjunlp/DeepKE/blob/main/example/re/prepare-data) with DeepKE to obtain data automatically):
 
   |                        Sentence                        | Relation |    Head    | Head_offset |    Tail    | Tail_offset |
   | :----------------------------------------------------: | :------: | :--------: | :---------: | :--------: | :---------: |
