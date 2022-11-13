@@ -39,7 +39,8 @@ Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022
 
 **相关工具**：
 
-[PromptKG](https://github.com/zjunlp/PromptKG)：知识图谱表征学习与应用的提示学习框架
+[Doccano](https://github.com/doccano/doccano)、[MarkTool](https://github.com/FXLP/MarkTool)：实体识别关系抽取数据标注工具
+[PromptKG](https://github.com/zjunlp/PromptKG)：基于提示学习的知识图谱表示与应用框架
 
 # 目录
 
@@ -61,6 +62,10 @@ Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022
 <br>
 
 # 新版特性
+
+## 2022年11月
+
+- 新增实体识别、关系抽取的[数据标注说明](https://github.com/zjunlp/DeepKE/blob/main/README_TAG_CN.md)和弱监督数据自动标注([实体识别](https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data/README_CN.md)、[关系抽取](https://github.com/zjunlp/DeepKE/blob/main/example/re/prepare-data/README_CN.md))功能，优化[多GPU训练](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README_CN.md)。
 
 ## 2022年9月
 
@@ -199,7 +204,7 @@ python predict.py
 
 ### 1. 命名实体识别NER
 
-- 命名实体识别是从非结构化的文本中识别出实体和其类型。数据为txt文件，样式范例为：
+- 命名实体识别是从非结构化的文本中识别出实体和其类型。数据为txt文件，样式范例为(用户可以基于工具[Doccano](https://github.com/doccano/doccano)、[MarkTool](https://github.com/FXLP/MarkTool)标注数据，也可以通过DeepKE自带的[弱监督功能](https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data/README_CN.md)自动得到数据)：
 
   |                           Sentence                           |           Person           |    Location    |          Organization          |
   | :----------------------------------------------------------: | :------------------------: | :------------: | :----------------------------: |
@@ -288,7 +293,7 @@ python predict.py
 
 ### 2. 关系抽取RE
 
-- 关系抽取是从非结构化的文本中抽取出实体之间的关系，以下为几个样式范例，数据为csv文件：
+- 关系抽取是从非结构化的文本中抽取出实体之间的关系，以下为几个样式范例，数据为csv文件(用户可以基于工具[Doccano](https://github.com/doccano/doccano)、[MarkTool](https://github.com/FXLP/MarkTool)标注数据，也可以通过DeepKE自带的[弱监督功能](https://github.com/zjunlp/DeepKE/blob/main/example/re/prepare-data/README_CN.md)自动得到数据)：
 
   |                        Sentence                        | Relation |    Head    | Head_offset |    Tail    | Tail_offset |
   | :----------------------------------------------------: | :------: | :--------: | :---------: | :--------: | :---------: |
