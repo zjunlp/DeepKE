@@ -39,6 +39,8 @@ Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022
 
 **Related Toolkit**:
 
+[Doccano](https://github.com/doccano/doccano)、[MarkTool](https://github.com/FXLP/MarkTool)：Data Annotation Toolkits
+
 [PromptKG](https://github.com/zjunlp/PromptKG): A Prompt Learning Framework for Knowledge Graph Representation Learning and Application
 
 # Table of Contents
@@ -62,7 +64,7 @@ Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022
 
 # What's New
 ## Nov, 2022
-* Add data [annotation instructions](https://github.com/zjunlp/DeepKE/blob/main/README_TAG.md) for entity recognition and relation extraction, automatic labelling of weakly supervised data ((entity recognition)[https://github.com/zjunlp/DeepKE/tree/main/example/ner/prepare-data] and (relation extraction))[https://github.com/zjunlp/DeepKE/tree/main/example/re/prepare-data], and optimize (multi-GPU training)[https://github.com/zjunlp/DeepKE/tree/main/example/re/standard].
+* Add data [annotation instructions](https://github.com/zjunlp/DeepKE/blob/main/README_TAG.md) for entity recognition and relation extraction, automatic labelling of weakly supervised data ([entity extraction](https://github.com/zjunlp/DeepKE/tree/main/example/ner/prepare-data) and [relation extraction](https://github.com/zjunlp/DeepKE/tree/main/example/re/prepare-data)), and optimize [multi-GPU training](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard).
 ## Sept, 2022
 * The paper [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335) has been accepted by the EMNLP 2022 System Demonstration Track.
 ## Aug, 2022
@@ -148,7 +150,7 @@ conda activate deepke
 cd DeepKE/example/re/standard
 ```
 
-**Step4** Download the dataset
+**Step4** Download the dataset, or follow the [annotation instructions](https://github.com/zjunlp/DeepKE/blob/main/README_TAG.md) to obtain data
 
 ```bash
 wget 120.27.214.45/Data/re/standard/data.tar.gz
