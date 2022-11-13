@@ -156,7 +156,7 @@ python setup.py develop
 cd DeepKE/example/re/standard
 ```
 
-**Step 4**：下载数据集
+**Step 4**：下载数据集，或根据[数据标注说明](https://github.com/zjunlp/DeepKE/blob/main/README_TAG_CN.md)标注数据
 ```
 wget 120.27.214.45/Data/re/standard/data.tar.gz
 
