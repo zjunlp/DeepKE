@@ -40,6 +40,7 @@ Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022
 **相关工具**：
 
 [Doccano](https://github.com/doccano/doccano)、[MarkTool](https://github.com/FXLP/MarkTool)：实体识别关系抽取数据标注工具
+
 [PromptKG](https://github.com/zjunlp/PromptKG)：基于提示学习的知识图谱表示与应用框架
 
 # 目录
