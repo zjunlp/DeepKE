@@ -92,14 +92,14 @@ def main(cfg):
         total_loss = 0
         log_loss = 0
         for index, train_batch in enumerate(tqdm(data.train_dataloader())):
-            loss = lit_model.training_step(train_batch, index)
+            loss = lit_model.training_step(train_batch, index) / cfg.gradient_accumulation_steps
             total_loss += loss.item()
             log_loss += loss.item()
             loss.backward()
-
-            optimizer.step()
-            scheduler.step()
-            optimizer.zero_grad()
+            for (index + 1) % cfg.gradient_accumulation_steps == 0  or (index + 1) == num_batch:
+                optimizer.step()
+                scheduler.step()
+                optimizer.zero_grad()
 
             if log_step > 0 and (index+1) % log_step == 0:
                 cur_loss = log_loss / log_step
