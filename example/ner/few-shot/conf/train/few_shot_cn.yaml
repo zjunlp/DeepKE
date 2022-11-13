@@ -1,6 +1,6 @@
 seed: 42
 
-bart_name: "bart-large-chinese" #在目录下下载bart-(large/base)-chinese【https://huggingface.co/fnlp】的预训练权重和tokenizer等
+bart_name: "bart-large-chinese" #在此目录下下载bart-(large/base)-chinese【https://huggingface.co/fnlp】的预训练权重和tokenizer等
 dataset_name: cluener2020
 device: cuda
 

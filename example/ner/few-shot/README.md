@@ -74,6 +74,15 @@ cd DeepKE/example/ner/few-shot
     python run.py +train=few_shot
     ```
 
+  - Few-shot Training for Chinese
+
+    > Full data fine-tuning can achieve the best performance.
+
+    Pretrained weights need to be provided in the directory defined in `few_shot_cn.yaml`
+    ```bash
+    python run.py +train=few_shot_cn
+    ```
+
   - Logs for training are in the `log` folder. The path of the trained model can be customized.
 
 - Prediction

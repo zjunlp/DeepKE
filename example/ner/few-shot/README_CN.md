@@ -59,6 +59,9 @@ cd DeepKE/example/ner/few-shot
   
   - 训练conll2003：` python run.py ` (训练所用到参数都在conf文件夹中，修改即可)
 
+  - 进行中文few-shot训练：` python run.py +train=few_shot_cn `(需要在`few_shot_cn.yaml`中指定的目录下提供预训练权重) 
+
+    > 全量数据微调才能达到最佳性能。
   - 进行few-shot训练：` python run.py +train=few_shot ` (若要加载模型，修改few_shot.yaml中的load_path)
 
 
