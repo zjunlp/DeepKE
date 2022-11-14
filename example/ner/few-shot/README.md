@@ -74,7 +74,7 @@ cd DeepKE/example/ner/few-shot
     python run.py +train=few_shot
     ```
 
-  - Few-shot Training for Chinese
+  - Few-shot Training for **Chinese**
 
     > Full data fine-tuning can achieve the best performance.
 
