@@ -2,38 +2,51 @@
     <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data/README_CN.md">简体中文</a> </b>
 </p>
 
-**The input dictionary** format is csv (contains two columns, entities and corresponding labels).
-
-**Data to be automatically marked** (txt format and separated by lines, as shown in the figure below) should be placed under the `source_data` path, the script will traverse all txt format files in this folder, and automatically mark line by line.
-
-<h3 align="left">
-    <img src="pics/en_input_data_format.png", width=675>
-</h3>
-
-**The output file**(the distribution ratio of `training set`, `validation set`, and `test set` can be customized) can be directly used as training data in DeepKE.
-<h3 align="left">
-    <img src="pics/en_output_data_format.png", width=525>
-</h3>
+In order for users to better use `DeepKE` to complete entity recognition tasks, we provide an easy-to-use **dict matching based** entity recognition **automatic annotation** tool.
 
 ## Dict
-Two entity Dicts (one in Chinese and one in English) are provided in advance, and the samples are automatically tagged using the entity dictionary + jieba part-of-speech tagging.
+- The format of Dict：
+    <h3 align="left">
+        <img src="pics/vocab_dict.png", width=375>
+    </h3>
+- Two entity Dicts (one in Chinese and one in English) are provided in advance, and the samples are automatically tagged using the entity dictionary + jieba part-of-speech tagging.
 
-- In Chinese example dict, we adapt [People's Daily](https://github.com/OYE93/Chinese-NLP-Corpus/tree/master/NER/People's%20Daily) dataset. It is a dataset for NER, concentrating on their types of named entities related to persons(PER), locations(LOC), and organizations(ORG).
+    - In Chinese example dict, we adapt [People's Daily](https://github.com/OYE93/Chinese-NLP-Corpus/tree/master/NER/People's%20Daily) dataset. It is a dataset for NER, concentrating on their types of named entities related to persons(PER), locations(LOC), and organizations(ORG).
 
-- In English example dict，we adapt Conll dataset. It is a dataset for NER, concentrating on their types of named entities related to persons(PER), locations(LOC), organizations(ORG) and others(MISC).You can get the Conll dataset with the following command.
+    - In English example dict，we adapt Conll dataset. It is a dataset for NER, concentrating on their types of named entities related to persons(PER), locations(LOC), organizations(ORG) and others(MISC).You can get the Conll dataset with the following command.
 
-```shell
-wget 120.27.214.45/Data/ner/few_shot/data.tar.gz
-```
+    ```shell
+    wget 120.27.214.45/Data/ner/few_shot/data.tar.gz
+    ```
 
-Pre-provided dict from Google Drive： [CN(vocab_dict_cn), EN(vocab_dict_en)](https://drive.google.com/drive/folders/1PGANizeTsvEQFYTL8O1jrDLZwk_MPqO0?usp=sharing)
-From BaiduNetDisk ： [CN(vocab_dict_cn), EN(vocab_dict_en)](https://pan.baidu.com/s/1a07W42ZByeZ00MZp5pZgxg) (x7ba)
+    - Pre-provided dict from Google Drive： 
+        - [CN(vocab_dict_cn), EN(vocab_dict_en)](https://drive.google.com/drive/folders/1PGANizeTsvEQFYTL8O1jrDLZwk_MPqO0?usp=sharing)
+    - From BaiduNetDisk ： 
+        - [CN(vocab_dict_cn), EN(vocab_dict_en)](https://pan.baidu.com/s/1a07W42ZByeZ00MZp5pZgxg)
+        - (x7ba)
 
-**If you need to build a domain self-built dictionary, please refer to the pre-provided dictionary format (csv)**
+- **If you need to build a domain self-built dictionary, please refer to the pre-provided dictionary format (csv)**
 
-| Entity | Label |
-|  ----  | ----  |
-| Washington | LOC  |
+    | Entity | Label |
+    |  ----  | ----  |
+    | Washington | LOC  |
+    |  ...  | ...  |
+
+## Source File
+
+
+- **The input dictionary** format is csv (contains two columns, entities and corresponding labels).
+
+- **Data to be automatically marked** (txt format and separated by lines, as shown in the figure below) should be placed under the `source_data` path, the script will traverse all txt format files in this folder, and automatically mark line by line.
+
+    <h3 align="left">
+        <img src="pics/en_input_data_format.png", width=675>
+    </h3>
+
+- **The output file**(the distribution ratio of `training set`, `validation set`, and `test set` can be customized) can be directly used as training data in DeepKE.
+    <h3 align="left">
+        <img src="pics/en_output_data_format.png", width=525>
+    </h3>
 
 
 
