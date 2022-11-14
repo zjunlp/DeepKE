@@ -546,3 +546,4 @@ python predict.py
 - [OpenIE](https://stanfordnlp.github.io/CoreNLP/openie.html)
 - [RESIN](https://github.com/RESIN-KAIROS/RESIN-pipeline-public)
 - [ZShot](https://github.com/IBM/zshot)
+- [OmniEvent](https://github.com/THU-KEG/OmniEvent)
