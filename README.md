@@ -91,7 +91,7 @@ Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022
 
 # Prediction Demo
 
-There is a demonstration of prediction.The GIF file is created by [Terminalizer](https://github.com/faressoft/terminalizer).Get the [code](https://drive.google.com/file/d/1r4tWfAkpvynH3CBSgd-XG79rf-pB-KR3/view?usp=share_link).
+There is a demonstration of prediction. The GIF file is created by [Terminalizer](https://github.com/faressoft/terminalizer). Get the [code](https://drive.google.com/file/d/1r4tWfAkpvynH3CBSgd-XG79rf-pB-KR3/view?usp=share_link).
 <img src="pics/demo.gif" width="636" height="494" align=center>
 
 <br>
