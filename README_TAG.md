@@ -33,7 +33,7 @@ DeepKE is an open source knowledge graph extraction and construction tool that s
 | Chapter                   | Description                                             |
 | ------------------------- | ------------------------------------------------------- |
 | [Introduction](#Introduction)             | The basic principles and supported data types of DeepKE |
-| [Automatic Data Annotation](#Automatic Data Annotation)   | How to manually annotate data                           |
+| <a href="#Manual Data Annotation">Manual Data Annotation</a>  | How to manually annotate data                           |
 | <a href="#Automatic Data Annotation">Automatic Data Annotation</a> | How to automatically annotate data based on DeepKE      |
 | [FAQ](#FAQ)                       | Frequently Asked Questions                              |
 | [References](#References)                | Technical reports for this catalogue                    |
@@ -44,7 +44,7 @@ DeepKE is an open source knowledge graph extraction and construction tool that s
 
 It is well known that data is very important for model training. To facilitate the use of this tool, DeepKE provides detailed annotation of entity identification and relationship extraction data, so that users can obtain training data manually or automatically. The annotated data can be directly used by DeepKE for model training.
 
-## Manual data annotation
+## Manual Data Annotation
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/doccano/doccano/master/docs/images/logo/doccano.png">
