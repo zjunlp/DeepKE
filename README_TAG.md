@@ -169,9 +169,9 @@ Once the server is installed and started, point your browser to  `http://0.0.0.0
 
 ### Relation Extraction
 
-- Create a Project
+- [Create a Project](#Create-a-Project)
   - Same operation as entity identification, just refer to above.
-- Adding the corpus
+- [Adding the corpus](#Adding-the-corpus)
   - Same operation as entity identification, just refer to above.
   - **In the input text, the text format `{text}*{head entity}*{tail entity}*{head entity type}*{tail entity type}`, where the head and tail entity types can be empty.**
 
