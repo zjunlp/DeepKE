@@ -103,7 +103,7 @@ Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022
 <br>
 
 # 预测演示
-下面使用一个demo展示预测过程<br>该动图由[Terminalizer](https://github.com/faressoft/terminalizer)生成，生成[代码](https://drive.google.com/file/d/1r4tWfAkpvynH3CBSgd-XG79rf-pB-KR3/view?usp=share_link)可点击获取。
+下面使用一个demo展示预测过程.该动图由[Terminalizer](https://github.com/faressoft/terminalizer)生成，生成[代码](https://drive.google.com/file/d/1r4tWfAkpvynH3CBSgd-XG79rf-pB-KR3/view?usp=share_link)可点击获取。
 <img src="pics/demo.gif" width="636" height="494" align=center>
 
 <br>
