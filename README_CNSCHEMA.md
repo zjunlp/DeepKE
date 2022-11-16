@@ -148,7 +148,7 @@ DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge 
 
 #### Entity Schema
 
-| Serial Number | Entity Type | Serial Number | Entity Type | 
+| ID | Entity Type | ID | Entity Type | 
 | ------------- | :---------- | ------------- | :---------- | 
 | 1   | cns:人物      | 2   | cns:影视作品 | 
 | 3   | cns:目        | 4   | cns:生物   | 
@@ -167,7 +167,7 @@ DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge 
 
 #### Relation Schema
 
-| Serial Number | Head Entity Type | Tail Entity Type | Relation | Serial Number | Head Entity Type | Tail Entity Type | Relation |
+| ID | Head Entity Type | Tail Entity Type | Relation | ID | Head Entity Type | Tail Entity Type | Relation |
 | --- |:------ |:-----:| ---- | --- |:------ |:-----:| ---- |
 | 1   | cns:地点     | cns:人物    | cns:祖籍   | 2   | cns:人物     | cns:人物    | cns:父亲   |
 | 3   | cns:地点     | cns:企业    | cns:总部地点 | 4   | cns:地点     | cns:人物    | cns:出生地  |
