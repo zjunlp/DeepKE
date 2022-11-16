@@ -64,9 +64,9 @@ Once the server is installed and started, point your browser to  `http://0.0.0.0
 
 #### Create a Project
 
-- Create a Project。Click `Create` in the upper left corner to jump to the following interface.
+- Create a Project. Click `Create` in the upper left corner to jump to the following interface.
 
-  - Select the Sequence Labeling task 。
+  - Select the Sequence Labeling task.
   - Fill in the necessary information, such as Project name and Description.
   - Check configurable attributes such as Allow overlapping entity and Use relation labeling **as required**.
 
