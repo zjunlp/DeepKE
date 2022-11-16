@@ -40,6 +40,15 @@ def main(cfg):
         'lm': models.LM,
     }
 
+    USE_MULTI_GPU = cfg.use_multi_gpu
+    if USE_MULTI_GPU and torch.cuda.device_count() > 1:
+        MULTI_GPU = True
+        os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+        os.environ["CUDA_VISIBLE_DEVICES"] = cfg.gpu_ids
+        device_ids = [int(i) for i in cfg.gpu_ids.split(',')]
+    else:
+        MULTI_GPU = False
+
     # device
     if cfg.use_gpu and torch.cuda.is_available():
         device = torch.device('cuda', cfg.gpu_id)
@@ -67,11 +76,14 @@ def main(cfg):
     valid_dataset = CustomDataset(valid_data_path)
     test_dataset = CustomDataset(test_data_path)
 
-    train_dataloader = DataLoader(train_dataset, batch_size=cfg.batch_size, shuffle=True, collate_fn=collate_fn(cfg))
-    valid_dataloader = DataLoader(valid_dataset, batch_size=cfg.batch_size, shuffle=True, collate_fn=collate_fn(cfg))
-    test_dataloader = DataLoader(test_dataset, batch_size=cfg.batch_size, shuffle=True, collate_fn=collate_fn(cfg))
+    train_dataloader = DataLoader(train_dataset, batch_size=cfg.batch_size * len(device_ids), shuffle=True, collate_fn=collate_fn(cfg))
+    valid_dataloader = DataLoader(valid_dataset, batch_size=cfg.batch_size * len(device_ids), shuffle=True, collate_fn=collate_fn(cfg))
+    test_dataloader = DataLoader(test_dataset, batch_size=cfg.batch_size * len(device_ids), shuffle=True, collate_fn=collate_fn(cfg))
 
     model = __Model__[cfg.model_name](cfg)
+    if MULTI_GPU:
+        model = torch.nn.DataParallel(model, device_ids=device_ids)
+        device = device_ids[0]
     model.to(device)
 
     wandb.watch(model, log="all")

@@ -46,7 +46,7 @@ cd DeepKE/example/ner/standard
 
 - Training
 
-  - Parameters for training are in the `conf` folder and users can modify them before training.
+  - Parameters for training are in the `conf` folder and users can modify them before training.This task supports multi card training. Modify trian.yaml's parameter 'use_multi_gpu' to true.'os.environ['CUDA_VISIBLE_DEVICES']' in 'run.py' set to the selected gpus. The first card is the main card for calculation, which requires a little more memory.
 
   - Logs for training are in the `log` folder and the trained model is saved in the `checkpoints` folder.
 

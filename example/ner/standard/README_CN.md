@@ -73,7 +73,8 @@ cd DeepKE/example/ner/standard
   - `valid.txt`：存放验证数据集
   - `test.txt`：存放测试数据集
 - 开始训练(可根据**目标场景**选Bert或者BiLSTM-CRF)：
-  1. ```python run_bert.py``` (bert超参设置在`bert.yaml`中，训练所用到参数都在conf文件夹中，修改即可)
+
+  1. ```python run_bert.py``` (bert超参设置在`bert.yaml`中，训练所用到参数都在conf文件夹中，修改即可).该任务支持多卡训练，修改trian.yaml中的use_multi_gpu参数为True，run_bert.py中os.environ['CUDA_VISIBLE_DEVICES']为指定gpu，以逗号为间隔，第一张卡为计算主卡，需使用略多内存。
   2. ```python run_lstmcrf.py``` (BiLSTM-CRF超参设置在`lstmcrf.yaml`中，训练所用到参数都在conf文件夹中，修改即可)
 
 - 每次训练的日志保存在 `logs` 文件夹内，模型结果保存在 `checkpoints` 文件夹内。

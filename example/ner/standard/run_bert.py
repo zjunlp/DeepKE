@@ -4,6 +4,8 @@ import csv
 import json
 import logging
 import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '2,1,3' 
+
 import random
 import sys
 import numpy as np
@@ -61,10 +63,17 @@ wandb.init(project="DeepKE_NER_Standard")
 def main(cfg):
     
     # Use gpu or not
-    if cfg.use_gpu and torch.cuda.is_available():
-        device = torch.device('cuda', cfg.gpu_id)
+    USE_MULTI_GPU = cfg.use_multi_gpu
+    if USE_MULTI_GPU and torch.cuda.device_count() > 1:
+        MULTI_GPU = True
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        n_gpu = torch.cuda.device_count()
     else:
-        device = torch.device('cpu')
+        MULTI_GPU = False
+    # if cfg.use_gpu and torch.cuda.is_available():
+    #     device = torch.device('cuda', cfg.gpu_id)
+    # else:
+    #     device = torch.device('cpu')
 
     if cfg.gradient_accumulation_steps < 1:
         raise ValueError("Invalid gradient_accumulation_steps parameter: {}, should be >= 1".format(cfg.gradient_accumulation_steps))
@@ -100,6 +109,8 @@ def main(cfg):
 
     config = BertConfig.from_pretrained(cfg.bert_model, num_labels=num_labels, finetuning_task=cfg.task_name)
     model = TrainNer.from_pretrained(cfg.bert_model,from_tf = False,config = config)
+    if n_gpu > 1:
+        model = torch.nn.DataParallel(model)
     model.to(device)
 
     param_optimizer = list(model.named_parameters())
@@ -126,7 +137,7 @@ def main(cfg):
         train_data = TensorDataset(all_input_ids, all_input_mask, all_segment_ids, all_label_ids,all_valid_ids,all_lmask_ids)
         train_sampler = RandomSampler(train_data)
         
-        train_dataloader = DataLoader(train_data, sampler=train_sampler, batch_size=cfg.train_batch_size)
+        train_dataloader = DataLoader(train_data, sampler=train_sampler, batch_size=cfg.train_batch_size * n_gpu)
 
         model.train()
 
@@ -137,6 +148,9 @@ def main(cfg):
                 batch = tuple(t.to(device) for t in batch)
                 input_ids, input_mask, segment_ids, label_ids, valid_ids,l_mask = batch
                 loss = model(input_ids, segment_ids, input_mask, label_ids,valid_ids,l_mask,device)
+                if n_gpu > 1:
+                    loss = loss.mean()
+                
                 if cfg.gradient_accumulation_steps > 1:
                     loss = loss / cfg.gradient_accumulation_steps
     
@@ -186,7 +200,7 @@ def main(cfg):
         eval_data = TensorDataset(all_input_ids, all_input_mask, all_segment_ids, all_label_ids,all_valid_ids,all_lmask_ids)
         # Run prediction for full data
         eval_sampler = SequentialSampler(eval_data)
-        eval_dataloader = DataLoader(eval_data, sampler=eval_sampler, batch_size=cfg.eval_batch_size)
+        eval_dataloader = DataLoader(eval_data, sampler=eval_sampler, batch_size=cfg.eval_batch_size * n_gpu)
         model.eval()
         eval_loss, eval_accuracy = 0, 0
         nb_eval_steps, nb_eval_examples = 0, 0

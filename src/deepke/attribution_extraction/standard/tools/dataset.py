@@ -17,7 +17,7 @@ def collate_fn(cfg):
     """
         batch.sort(key=lambda data: data['seq_len'], reverse=True)
 
-        max_len = batch[0]['seq_len']
+        max_len = 512
 
         def _padding(x, max_len):
             return x + [0] * (max_len - len(x))
