@@ -33,8 +33,8 @@ DeepKE is an open source knowledge graph extraction and construction tool that s
 | Chapter                   | Description                                             |
 | ------------------------- | ------------------------------------------------------- |
 | [Introduction](#Introduction)             | The basic principles and supported data types of DeepKE |
-| <a href="#Manual data annotation">Manual data annotation</a>   | How to manually annotate data                           |
-| <a href="#Automatic data annotation">Automatic data annotation</a> | How to automatically annotate data based on DeepKE      |
+| <a href="#Manual Data Annotation">Manual Data Annotation</a>   | How to manually annotate data                           |
+| <a href="#Automatic Data Annotation">Automatic Data Annotation</a> | How to automatically annotate data based on DeepKE      |
 | [FAQ](#FAQ)                       | Frequently Asked Questions                              |
 | [References](#References)                | Technical reports for this catalogue                    |
 
