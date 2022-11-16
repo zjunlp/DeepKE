@@ -22,7 +22,11 @@
     <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/README_TAG_CN.md">简体中文</a> </b>
 </p>
 
-# Open Source Chinese Knowledge Graph Extraction Framework DeepKE - Data Annotation 
+<h1 align="center">
+    <p>Data Annotation Instructions</p>
+</h1>
+
+
 
 DeepKE is an open source knowledge graph extraction and construction tool that supports **low-resource, long-text and multi-modal** knowledge extraction tools. Based on PyTorch, it can realize named **entity recognition, relationship extraction and attribute extraction functions**. This version, DeepKE-cnSchema, is an out-of-the-box version that allows users to download the model for entity and relational knowledge extraction that supports cnSchema.
 
