@@ -211,6 +211,8 @@ python predict.py
 
 - Read the detailed process in specific README
   - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard)**
+    
+    ***We provide off-the-shelf models, [DeepKE-cnSchema](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md), which will extract entities in cnSchema without training.***
 
     **Step1** Enter  `DeepKE/example/ner/standard`.  Download the dataset.
 
