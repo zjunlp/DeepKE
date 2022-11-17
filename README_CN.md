@@ -276,7 +276,7 @@ python predict.py
     tar -xzvf data.tar.gz
     ```
 
-    我们在原始图像上分别使用[faster_rcnn](https://github.com/pytorch/vision/blob/main/torchvision/models/detection/faster_rcnn.py)和[visual grounding工具](https://github.com/zyang-ur/onestage_grounding)分别抽取RCNN objects和visual grounding objects来作为局部视觉信息
+    我们在原始图像上使用[faster_rcnn](https://github.com/pytorch/vision/blob/main/torchvision/models/detection/faster_rcnn.py)和[visual grounding工具](https://github.com/zyang-ur/onestage_grounding)分别抽取RCNN objects和visual grounding objects来作为局部视觉信息
 
     **Step2** 多模态场景下训练模型 <br>
 
@@ -309,7 +309,6 @@ python predict.py
   - **[常规全监督STANDARD](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard)**  
 
      ***我们还提供了开箱即用的[DeepKE-cnSchema特别版](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md)，无需训练即可抽取支持cnSchema的关系***
-  - **[常规全监督STANDARD](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard)**  
 
     **Step1**：进入`DeepKE/example/re/standard`，下载数据集
   
@@ -393,7 +392,7 @@ python predict.py
     tar -xzvf data.tar.gz
     ```
 
-    我们在原始图像上分别使用[faster_rcnn](https://github.com/pytorch/vision/blob/main/torchvision/models/detection/faster_rcnn.py)和[visual grounding工具](https://github.com/zyang-ur/onestage_grounding)分别抽取RCNN objects和visual grounding objects来作为局部视觉信息
+    我们在原始图像上使用[faster_rcnn](https://github.com/pytorch/vision/blob/main/torchvision/models/detection/faster_rcnn.py)和[visual grounding工具](https://github.com/zyang-ur/onestage_grounding)分别抽取RCNN objects和visual grounding objects来作为局部视觉信息
 
     **Step2** 模型训练 <br>
 
