@@ -58,7 +58,8 @@ Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022
 * [Tips](#tips)
 * [To do](#to-do)
 * [Citation](#citation)
-* [Developers](#developers)
+* [Contributors](#contributors)
+* [Other Knowledge Extraction Open-Source Projects](#other-knowledge-extraction-open-source-projects)
 
 <br>
 
