@@ -116,7 +116,7 @@ There is a demonstration of prediction. The GIF file is created by [Terminalizer
 **Step1** Download the basic code
 
 ```bash
-git clone https://github.com/zjunlp/DeepKE.git
+git clone --depth 1 https://github.com/zjunlp/DeepKE.git
 ```
 
 **Step2** Create a virtual environment using `Anaconda` and enter it.<br>
