@@ -28,7 +28,7 @@
 
 
 
-DeepKE is an open source knowledge graph extraction and construction tool that supports **low-resource, long-text and multi-modal** knowledge extraction tools. Based on PyTorch, it can realize named **entity recognition, relationship extraction and attribute extraction functions**. This version, DeepKE-cnSchema, is an out-of-the-box version that allows users to download the model for entity and relational knowledge extraction that supports cnSchema.
+DeepKE is an open source knowledge graph extraction and construction tool that supports **low-resource, long-text and multi-modal** knowledge extraction tools. Based on PyTorch, it can realize named **entity recognition, relation extraction and attribute extraction functions**. This version, DeepKE-cnSchema, is an out-of-the-box version that allows users to download the model for entity and relational knowledge extraction that supports cnSchema.
 
 ---
 
