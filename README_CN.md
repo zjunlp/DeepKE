@@ -127,7 +127,7 @@ Deepke的架构图如下所示
 
 DeepKE支持pip安装使用，以常规全监督设定关系抽取为例，经过以下6个步骤就可以实现一个常规关系抽取模型
 
-**Step 1**：下载代码 ```git clone https://github.com/zjunlp/DeepKE.git```（别忘记star和fork哈！！！）
+**Step 1**：下载代码 ```git clone --depth 1 https://github.com/zjunlp/DeepKE.git```（别忘记star和fork哈！！！）
 
 **Step 2**：使用anaconda创建虚拟环境，进入虚拟环境（提供Dockerfile源码可自行创建镜像，位于docker文件夹中）
 
