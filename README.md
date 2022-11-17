@@ -212,7 +212,7 @@ python predict.py
 - Read the detailed process in specific README
   - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard)**
     
-    ***We provide off-the-shelf models, [DeepKE-cnSchema](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md), which will extract entities in cnSchema without training.***
+    ***We provide the off-the-shelf model, [DeepKE-cnSchema-NER](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md), which will extract entities in cnSchema without training.***
 
     **Step1** Enter  `DeepKE/example/ner/standard`.  Download the dataset.
 
@@ -301,9 +301,12 @@ python predict.py
   |  《九玄珠》是在纵横中文网连载的一部小说，作者是龙马。  | 连载网站 |   九玄珠   |      1      | 纵横中文网 |      7      |
   |     提起杭州的美景，西湖总是第一个映入脑海的词语。     | 所在城市 |    西湖    |      8      |    杭州    |      2      |
 
+- **!NOTE: If there are multiple entity types for one relation, entity types can be prefixed with the relation as inputs.**
 - Read the detailed process in specific README
 
   - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard)** 
+
+    ***We provide the off-the-shelf model, [DeepKE-cnSchema-RE](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md), which will extract relations in cnSchema without training.***
 
     **Step1** Enter the `DeepKE/example/re/standard` folder.  Download the dataset.
 
