@@ -60,6 +60,7 @@ cd DeepKE/example/re/standard
 
 - Prediction
 
+    Set the *fp* in [predict.yaml](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/conf/predict.yaml) as the trained model / checkpoint to be used in prediction.
   ```bash
   python predict.py
   ```
