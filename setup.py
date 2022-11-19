@@ -17,7 +17,6 @@ setup(
     install_requires=[
         'torch>=1.5,<=1.11',
         'hydra-core==1.0.6',
-        'tensorboard==2.4.1',
         'matplotlib==3.4.1',
         'transformers==3.4.0',
         'jieba==0.42.1',
