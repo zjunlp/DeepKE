@@ -496,8 +496,8 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 
 # Tips
 
-1. Using nearest mirror, like [THU](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/) in China, will speed up the installation of *Anaconda*.
-2. Using nearest mirror, like [aliyun](http://mirrors.aliyun.com/pypi/simple/) in China, will speed up `pip install XXX`.
+1. <font color="red"> Using nearest mirror, like [THU](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/) in China, will speed up the installation of *Anaconda*.</font>
+2. <font color="red">Using nearest mirror, like [aliyun](http://mirrors.aliyun.com/pypi/simple/) in China, will speed up `pip install XXX`.</font>
 3. When encountering `ModuleNotFoundError: No module named 'past'`，run `pip install future` .
 4. It's slow to install the pretrained language models online. Recommend download pretrained models before use and save them in the `pretrained` folder. Read `README.md` in every task directory to check the specific requirement for saving pretrained models.
 5. The old version of *DeepKE* is in the [deepke-v1.0](https://github.com/zjunlp/DeepKE/tree/deepke-v1.0) branch. Users can change the branch to use the old version. The old version has been totally transfered to the standard relation extraction ([example/re/standard](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README.md)).
