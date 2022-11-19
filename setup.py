@@ -30,7 +30,7 @@ setup(
         "ujson",
         "huggingface_hub==0.2.1",
         "pytorch-crf==0.7.2",
-        "pyld==2.0.3"
+        "PyLD==2.0.3"
     ], 
     classifiers=[
         "Programming Language :: Python :: 3",
