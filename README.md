@@ -496,8 +496,8 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 
 # Tips
 ```diff
-- 1. Using nearest mirror, like [THU](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/) in China, will speed up the installation of *Anaconda*.
-- 2. Using nearest mirror, like [aliyun](http://mirrors.aliyun.com/pypi/simple/) in China, will speed up `pip install XXX`.
+1. Using nearest mirror, like [THU](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/) in China, will speed up the installation of *Anaconda*.
+2. Using nearest mirror, like [aliyun](http://mirrors.aliyun.com/pypi/simple/) in China, will speed up `pip install XXX`.
 ```
 3. When encountering `ModuleNotFoundError: No module named 'past'`，run `pip install future` .
 4. It's slow to install the pretrained language models online. Recommend download pretrained models before use and save them in the `pretrained` folder. Read `README.md` in every task directory to check the specific requirement for saving pretrained models.
