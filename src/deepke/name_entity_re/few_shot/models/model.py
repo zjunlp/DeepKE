@@ -315,7 +315,10 @@ class PromptBartState(object):
         return state
 
     def reorder_state(self, indices: torch.LongTensor):
-        super().reorder_state(indices)
+        if self.encoder_mask is not None:
+            self.encoder_mask = self._reorder_state(self.encoder_mask, indices)
+        if self.encoder_output is not None:
+            self.encoder_output = self._reorder_state(self.encoder_output, indices)
         self.src_tokens = self._reorder_state(self.src_tokens, indices)
         if self.first is not None:
             self.first = self._reorder_state(self.first, indices)
@@ -500,13 +503,13 @@ def _beam_search_generate(decoder: PromptBartDecoder, tokens=None, state=None, m
     if tokens is None:
         if bos_token_id is None:
             raise RuntimeError("You have to specify either `tokens` or `bos_token_id`.")
-        batch_size = state.num_samples
+        batch_size = state.num_samples()
         if batch_size is None:
             raise RuntimeError("Cannot infer the number of samples from `state`.")
         tokens = torch.full([batch_size, 1], fill_value=bos_token_id, dtype=torch.long).to(device)
     batch_size = tokens.size(0)
     if state.num_samples:
-        assert state.num_samples == batch_size, "The number of samples in `tokens` and `state` should match."
+        assert state.num_samples() == batch_size, "The number of samples in `tokens` and `state` should match."
 
     if eos_token_id is None:
         _eos_token_id = -1
