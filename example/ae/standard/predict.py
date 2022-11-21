@@ -112,10 +112,10 @@ def main(cfg):
     model.eval()
 
     x = dict()
-    x['word'], x['lens'] = torch.tensor([data[0]['token2idx']]), torch.tensor([data[0]['seq_len']])
+    x['word'], x['lens'] = torch.tensor([data[0]['token2idx'] + [0] * (512 - len(data[0]['token2idx']))]), torch.tensor([data[0]['seq_len']])
     
     if cfg.model_name != 'lm':
-        x['entity_pos'], x['attribute_value_pos'] = torch.tensor([data[0]['entity_pos']]), torch.tensor([data[0]['attribute_value_pos']])
+        x['entity_pos'], x['attribute_value_pos'] = torch.tensor(data[0]['entity_pos'] + [0] * (512 - len(data[0]['token2idx']))), torch.tensor(data[0]['attribute_value_pos'] + [0] * (512 - len(data[0]['token2idx'])))
         if cfg.model_name == 'cnn':
             if cfg.use_pcnn:
                 x['pcnn_mask'] = torch.tensor([data[0]['entities_pos']])
