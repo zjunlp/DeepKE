@@ -70,10 +70,12 @@ def main(cfg):
         n_gpu = torch.cuda.device_count()
     else:
         MULTI_GPU = False
-    # if cfg.use_gpu and torch.cuda.is_available():
-    #     device = torch.device('cuda', cfg.gpu_id)
-    # else:
-    #     device = torch.device('cpu')
+    if not MULTI_GPU:
+        n_gpu = 1
+        if cfg.use_gpu and torch.cuda.is_available():
+            device = torch.device('cuda', cfg.gpu_id)
+        else:
+            device = torch.device('cpu')
 
     if cfg.gradient_accumulation_steps < 1:
         raise ValueError("Invalid gradient_accumulation_steps parameter: {}, should be >= 1".format(cfg.gradient_accumulation_steps))
