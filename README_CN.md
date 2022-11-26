@@ -493,10 +493,10 @@ python predict.py
 <br>
 
 # 备注（常见问题）
-```diff
-- 1. 使用 Anaconda 时，建议添加国内镜像，下载速度更快。如[镜像](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/)。
-- 2. 使用 pip 时，建议使用国内镜像，下载速度更快，如阿里云镜像。
-```
+
+1. 使用 Anaconda 时，```建议添加国内镜像```，下载速度更快。如[镜像](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/)。
+2. 使用 pip 时，```建议使用国内镜像```，下载速度更快，如阿里云镜像。
+
 3. 安装后提示 `ModuleNotFoundError: No module named 'past'`，输入命令 `pip install future` 即可解决。
 4. 使用语言预训练模型时，在线安装下载模型比较慢，更建议提前下载好，存放到 pretrained 文件夹内。具体存放文件要求见文件夹内的 `README.md`。
 5. DeepKE老版本位于[deepke-v1.0](https://github.com/zjunlp/DeepKE/tree/deepke-v1.0)分支，用户可切换分支使用老版本，老版本的能力已全部迁移到标准设定关系抽取([example/re/standard](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README.md))中。
