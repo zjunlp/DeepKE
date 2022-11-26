@@ -122,7 +122,7 @@ git clone --depth 1 https://github.com/zjunlp/DeepKE.git
 
 **Step2** Create a virtual environment using `Anaconda` and enter it.<br>
 
-We also provide dockerfile source code, which is located in the `docker` folder, to help users create their own mirrors.
+ - **❗NOTE: We provide a [Dockerfile](https://github.com/zjunlp/DeepKE/tree/main/docker) with [tutorials](https://github.com/zjunlp/DeepKE/issues/145) please refer to the [Tips](#tips) to speed up installation**
 
 ```bash
 conda create -n deepke python=3.8
