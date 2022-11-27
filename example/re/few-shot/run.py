@@ -96,11 +96,10 @@ def main(cfg):
             total_loss += loss.item()
             log_loss += loss.item()
             loss.backward()
-            for (index + 1) % cfg.gradient_accumulation_steps == 0  or (index + 1) == num_batch:
+            if (index + 1) % cfg.accumulate_grad_batches == 0 or (index + 1) == num_batch:
                 optimizer.step()
                 scheduler.step()
                 optimizer.zero_grad()
-
             if log_step > 0 and (index+1) % log_step == 0:
                 cur_loss = log_loss / log_step
                 logging(cfg.log_dir, 
