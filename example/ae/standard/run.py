@@ -109,7 +109,10 @@ def main(cfg):
         train_loss = train(epoch, model, train_dataloader, optimizer, criterion, device, writer, cfg)
         valid_f1, valid_loss = validate(epoch, model, valid_dataloader, criterion, device, cfg)
         scheduler.step(valid_loss)
-        model_path = model.save(epoch, cfg)
+        if MULTI_GPU:
+            model_path = model.module.save(epoch, cfg)
+        else:
+            model_path = model.save(epoch, cfg)        
         # logger.info(model_path)
 
         train_losses.append(train_loss)
