@@ -44,7 +44,7 @@ Prompt Learning-related research works and toolkits for PLM-based KG Embedding L
 
 [Doccano](https://github.com/doccano/doccano)、[MarkTool](https://github.com/FXLP/MarkTool)：Data Annotation Toolkits
 
-[LambdaKG](https://github.com/zjunlp/PromptKG): A library and benchmark for PLM-based KG embeddings
+[LambdaKG](https://github.com/zjunlp/PromptKG/tree/main/lambdaKG): A library and benchmark for PLM-based KG embeddings
 
 # Table of Contents
 
