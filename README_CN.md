@@ -170,7 +170,7 @@ tar -xzvf data.tar.gz
 
 **Step 5** ：模型训练，训练用到的参数可在conf文件夹内修改
 
-DeepKE使用*wandb*支持可视化调参
+DeepKE使用[wandb](https://docs.wandb.ai/quickstart)支持可视化调参
 
 ```
 python run.py
