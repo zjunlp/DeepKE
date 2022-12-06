@@ -37,11 +37,14 @@ Data-Efficient Knowledge Graph Construction, 高效知识图谱构建 ([Tutorial
 
 Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022](https://www.aacl2022.org/Program/tutorials)) \[[slides](https://github.com/NLP-Tutorials/AACL-IJCNLP2022-KGC-Tutorial)\] 
 
+Prompt Learning-related research works and toolkits for PLM-based KG Embedding Learning, Editing and Applications [[resources](https://github.com/zjunlp/PromptKG)\] 
+
+
 **Related Toolkit**:
 
 [Doccano](https://github.com/doccano/doccano)、[MarkTool](https://github.com/FXLP/MarkTool)：Data Annotation Toolkits
 
-[PromptKG](https://github.com/zjunlp/PromptKG): A Prompt Learning Framework for Knowledge Graph Representation Learning and Application
+[LambdaKG](https://github.com/zjunlp/PromptKG): A library and benchmark for PLM-based KG embeddings
 
 # Table of Contents
 
