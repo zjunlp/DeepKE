@@ -163,7 +163,7 @@ Many types of data formats are supported,and details are in each part.
 
 **Step5** Training (Parameters for training can be changed in the `conf` folder)
 
-We support visual parameter tuning by using *wandb*.
+We support visual parameter tuning by using *[wandb](https://docs.wandb.ai/quickstart)*.
 
 ```bash
 python run.py
