@@ -4,7 +4,7 @@ import csv
 import json
 import logging
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '2,1,3' 
+os.environ['CUDA_VISIBLE_DEVICES'] = '0,2,1,3' 
 
 import random
 import sys
