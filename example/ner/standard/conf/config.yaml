@@ -4,6 +4,7 @@
 
 # populated at runtime
 cwd: ???
+lan: "zh" # en
 
 defaults:
     - hydra/output: custom
