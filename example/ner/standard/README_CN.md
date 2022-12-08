@@ -61,7 +61,7 @@ cd DeepKE/example/ner/standard
 > 
 > 使用`BiLSTM_CRF`则需要根据训练集构建词典，并存储在pkl文件中供预测和评价使用。(配置为`lstmcrf.yaml`中的`model_vocab_path`属性)
 
-### 使用数据进行训练预测
+### 使用数据进行训练预测 （仅支持BIO中文数据集）
 
 - 支持三种类型文件格式，包含json格式、docx格式以及txt格式，详细可参考`data`文件夹。模型采用的数据是People's Daily(中文NER)，文本数据采用{word, label}对格式
 
