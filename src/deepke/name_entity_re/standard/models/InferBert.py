@@ -13,7 +13,6 @@ from .BiLSTM_CRF import *
 import hydra
 from hydra import utils
 import nltk
-from nltk
 from nltk import word_tokenize
 
 
