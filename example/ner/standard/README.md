@@ -30,7 +30,7 @@ cd DeepKE/example/ner/standard
 
 ## Train and Predict
 
-- Dataset
+- Dataset (Only supporting Chinese datasets)
 
   - Download the dataset to this directory.
 
