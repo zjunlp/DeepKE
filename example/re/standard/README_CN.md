@@ -45,7 +45,7 @@ cd DeepKE/example/re/standard
 - 开始训练：```python run.py``` (训练所用到参数都在conf文件夹中，修改即可使用lm时，可修改'lm_file'使用下载至本地的模型),该任务支持多卡训练，修改`trian.yaml`中的use_multi_gpu参数为True，gpu_ids设置为所选gpu，以逗号为间隔，第一张卡为计算主卡，需使用略多内存。
 
 - 每次训练的日志保存在 `logs` 文件夹内，模型结果保存在 `checkpoints` 文件夹内。
-- 修改 [predict.yaml](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/conf/predict.yaml)中的fp为用于预测的模型或checkpoint路径
+- 修改 [predict.yaml](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/conf/predict.yaml)中的fp为用于预测的模型或checkpoint路径，需使用模型的绝对路径。如`xxx/checkpoints/2019-12-03_17-35-30/cnn_epoch21.pth`。
 - 进行预测 ```python predict.py```
 
 ## 模型内容

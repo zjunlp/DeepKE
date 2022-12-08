@@ -174,7 +174,7 @@ python run.py
 
 **Step6** Prediction (Parameters for prediction can be changed in the `conf` folder)
 
-Modify the path of the trained model in `predict.yaml`.
+Modify the path of the trained model in `predict.yaml`.The absolute path of the model needs to be used，such as `xxx/checkpoints/2019-12-03_ 17-35-30/cnn_ epoch21.pth`.
 
 ```bash
 python predict.py

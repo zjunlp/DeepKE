@@ -60,7 +60,7 @@ cd DeepKE/example/re/standard
 
 - Prediction
 
-    Set the *fp* in [predict.yaml](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/conf/predict.yaml) as the path of the trained model / checkpoint to be used in prediction.
+    Set the *fp* in [predict.yaml](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/conf/predict.yaml) as the path of the trained model / checkpoint to be used in prediction.The absolute path of the model needs to be used，such as `xxx/checkpoints/2019-12-03_ 17-35-30/cnn_ epoch21.pth`.
   ```bash
   python predict.py
   ```

@@ -178,7 +178,7 @@ python run.py
 
 **Step 6** ：模型预测。预测用到的参数可在conf文件夹内修改
 
-修改`conf/predict.yaml`中保存训练好的模型路径。
+修改`conf/predict.yaml`中保存训练好的模型路径。需使用模型的绝对路径。如`xxx/checkpoints/2019-12-03_17-35-30/cnn_epoch21.pth`。
 ```
 python predict.py
 ```
