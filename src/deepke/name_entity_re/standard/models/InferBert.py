@@ -12,6 +12,9 @@ from .BiLSTM_CRF import *
 
 import hydra
 from hydra import utils
+import nltk
+from nltk
+from nltk import word_tokenize
 
 
 class BertNer(BertForTokenClassification):
@@ -73,7 +76,11 @@ class InferNer:
 
     def tokenize(self, text: str):
         """ tokenize input"""
-        words = list(text)
+        if self.cfg.lan == "en":
+            nltk.download('punkt')
+            words = word_tokenize(text)
+        else:
+            words = list(text)
         tokens = []
         valid_positions = []
         for i,word in enumerate(words):
