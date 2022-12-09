@@ -90,10 +90,10 @@ def main(cfg):
         raise ValueError("At least one of `do_train` or `do_eval` must be True.")
 
     # Checkpoints
-    if os.path.exists(utils.get_original_cwd()+'/'+cfg.output_dir) and os.listdir(utils.get_original_cwd()+'/'+cfg.output_dir) and cfg.do_train:
-        raise ValueError("Output directory ({}) already exists and is not empty.".format(utils.get_original_cwd()+'/'+cfg.output_dir))
-    if not os.path.exists(utils.get_original_cwd()+'/'+cfg.output_dir):
-        os.makedirs(utils.get_original_cwd()+'/'+cfg.output_dir)
+    if os.path.exists(os.path.join(utils.get_original_cwd(), cfg.output_dir)) and os.listdir(os.path.join(utils.get_original_cwd(), cfg.output_dir)) and cfg.do_train:
+        raise ValueError("Output directory ({}) already exists and is not empty.".format(os.path.join(utils.get_original_cwd(), cfg.output_dir))
+    if not os.path.exists(os.path.join(utils.get_original_cwd(), cfg.output_dir)):
+        os.makedirs(os.path.join(utils.get_original_cwd(), cfg.output_dir))
 
     # Preprocess the input dataset
     processor = NerProcessor()
@@ -106,7 +106,7 @@ def main(cfg):
     train_examples = None
     num_train_optimization_steps = 0
     if cfg.do_train:
-        train_examples = processor.get_train_examples(utils.get_original_cwd()+'/'+cfg.data_dir)
+        train_examples = processor.get_train_examples(os.path.join(utils.get_original_cwd(), cfg.data_dir))
         num_train_optimization_steps = int(len(train_examples) / cfg.train_batch_size / cfg.gradient_accumulation_steps) * cfg.num_train_epochs
 
     config = BertConfig.from_pretrained(cfg.bert_model, num_labels=num_labels, finetuning_task=cfg.task_name)
@@ -172,24 +172,24 @@ def main(cfg):
             })
         # Save a trained model and the associated configuration
         model_to_save = model.module if hasattr(model, 'module') else model  # Only save the model it-self
-        model_to_save.save_pretrained(utils.get_original_cwd()+'/'+cfg.output_dir)
-        tokenizer.save_pretrained(utils.get_original_cwd()+'/'+cfg.output_dir)
+        model_to_save.save_pretrained(os.path.join(utils.get_original_cwd(), cfg.output_dir))
+        tokenizer.save_pretrained(os.path.join(utils.get_original_cwd(), cfg.output_dir))
         label_map = {i : label for i, label in enumerate(label_list,1)}
         model_config = {"bert_model":cfg.bert_model,"do_lower":cfg.do_lower_case,"max_seq_length":cfg.max_seq_length,"num_labels":len(label_list)+1,"label_map":label_map}
-        json.dump(model_config,open(os.path.join(utils.get_original_cwd()+'/'+cfg.output_dir,"model_config.json"),"w"))
+        json.dump(model_config,open(os.path.join(utils.get_original_cwd(), cfg.output_dir,"model_config.json"),"w"))
         # Load a trained model and config that you have fine-tuned
     else:
         # Load a trained model and vocabulary that you have fine-tuned
-        model = TrainNer.from_pretrained(utils.get_original_cwd()+'/'+cfg.output_dir)
-        tokenizer = BertTokenizer.from_pretrained(utils.get_original_cwd()+'/'+cfg.output_dir, do_lower_case=cfg.do_lower_case)
+        model = TrainNer.from_pretrained(os.path.join(utils.get_original_cwd(), cfg.output_dir))
+        tokenizer = BertTokenizer.from_pretrained(os.path.join(utils.get_original_cwd(), cfg.output_dir), do_lower_case=cfg.do_lower_case)
 
     model.to(device)
 
     if cfg.do_eval:
         if cfg.eval_on == "dev":
-            eval_examples = processor.get_dev_examples(utils.get_original_cwd()+'/'+cfg.data_dir)
+            eval_examples = processor.get_dev_examples(os.path.join(utils.get_original_cwd(), cfg.data_dir))
         elif cfg.eval_on == "test":
-            eval_examples = processor.get_test_examples(utils.get_original_cwd()+'/'+cfg.data_dir)
+            eval_examples = processor.get_test_examples(os.path.join(utils.get_original_cwd(), cfg.data_dir))
         else:
             raise ValueError("eval on dev or test set only")
         eval_features = convert_examples_to_features(eval_examples, label_list, cfg.max_seq_length, tokenizer)
@@ -246,7 +246,7 @@ def main(cfg):
 
         report = classification_report(y_true, y_pred,digits=4)
         logger.info("\n%s", report)
-        output_eval_file = os.path.join(utils.get_original_cwd()+'/'+cfg.output_dir, "eval_results.txt")
+        output_eval_file = os.path.join(os.path.join(utils.get_original_cwd(), cfg.output_dir), "eval_results.txt")
         with open(output_eval_file, "w") as writer:
             logger.info("***** Eval results *****")
             logger.info("\n%s", report)
