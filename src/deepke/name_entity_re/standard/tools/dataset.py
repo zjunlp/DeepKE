@@ -43,9 +43,9 @@ def readfile(filename):
                 sentence = []
                 label = []
             continue
-        splits = line.split(' ')
+        splits = line.strip().split()
         sentence.append(splits[0])
-        label.append(splits[-1][:-1])
+        label.append(splits[-1])
 
     if len(sentence) >0:
         data.append((sentence,label))
