@@ -148,7 +148,11 @@ class InferNer:
             logits.pop()
 
             labels = [(self.label_map[label],confidence) for label,confidence in logits]
-            words = list(text)
+            if self.cfg.lan == "en":
+                nltk.download('punkt')
+                words = word_tokenize(text)
+            else:
+                words = list(text)
             assert len(labels) == len(words)
         else:
             raise NotImplementedError(f"model type {self.cfg.model_name} not supported")
