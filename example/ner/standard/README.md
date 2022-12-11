@@ -56,7 +56,7 @@ cd DeepKE/example/ner/standard
 
 - Prediction
     
-   Chinese datasets are supported by default. If English datasets are used, 'nltk' need to be installed and download the corresponding vocabulary by running 'nltk.download('punkt')'. **Before prediction, 'lan' in *config.yaml* also need to be set *en*.**
+   Chinese datasets are supported by default. If English datasets are used, 'nltk' need to be installed and download the corresponding vocabulary by running 'nltk.download('punkt')'. **Meanwhile before prediction, 'lan' in *config.yaml* also need to be set *en*.**
 
   ```bash
   python predict.py
