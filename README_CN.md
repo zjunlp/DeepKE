@@ -145,7 +145,7 @@ conda activate deepke
 pip install deepke
 ```
 
-2） 基于源码安装
+2） 基于源码安装 (**强烈建议使用源码安装**)
 
 ```
 python setup.py install
