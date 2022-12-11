@@ -50,7 +50,7 @@ cd DeepKE/example/re/standard
 
   - Parameters for training are in the `conf` folder and users can modify them before training.
   - If using LM, modify 'lm_file' to use the local model.
-  - Logs for training are in the `log` folder and the trained model is saved in the `checkpoints` folder. This task supports multi card training. Modify `trian.yaml`'s parameter 'use_multi_gpu' to true, 'gpu_ids' set to the selected gpus. The first card is the main card for calculation, which requires a little more memory.
+  - Logs for training are in the `log` folder and the trained model is saved in the `checkpoints` folder. This task supports multi card training. Modify `trian.yaml`'s parameter `use_multi_gpu` to true, `gpu_ids` set to the selected gpus. The first card is the main card for calculation, which requires a little more memory.`show_plot` set to visualize the loss of the current epoch.The default value is False.
 
 
 

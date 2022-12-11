@@ -42,7 +42,7 @@ cd DeepKE/example/ae/standard
 
   - `attribute.csv`：存放属性种类
 
-- 开始训练：```python run.py``` (训练所用到参数都在conf文件夹中，修改即可；使用LM时，可修改'lm_file'使用下载至本地的模型)。该任务支持多卡训练，修改trian.yaml中的use_multi_gpu参数为True，gpu_ids设置为所选gpu，以逗号为间隔，第一张卡为计算主卡，需使用略多内存。
+- 开始训练：```python run.py``` (训练所用到参数都在conf文件夹中，修改即可；使用LM时，可修改'lm_file'使用下载至本地的模型)。该任务支持多卡训练，修改trian.yaml中的`use_multi_gpu`参数为True，`gpu_ids`设置为所选gpu，以逗号为间隔，第一张卡为计算主卡，需使用略多内存。设置`show_plot`为True可对当前epoch的loss进行可视化展示，默认为False。
 
 - 每次训练的日志保存在 `logs` 文件夹内，模型结果保存在 `checkpoints` 文件夹内。
 
