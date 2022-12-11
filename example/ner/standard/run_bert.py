@@ -91,7 +91,7 @@ def main(cfg):
 
     # Checkpoints
     if os.path.exists(os.path.join(utils.get_original_cwd(), cfg.output_dir)) and os.listdir(os.path.join(utils.get_original_cwd(), cfg.output_dir)) and cfg.do_train:
-        raise ValueError("Output directory ({}) already exists and is not empty.".format(os.path.join(utils.get_original_cwd(), cfg.output_dir))
+        raise ValueError("Output directory ({}) already exists and is not empty.".format(os.path.join(utils.get_original_cwd(), cfg.output_dir)))
     if not os.path.exists(os.path.join(utils.get_original_cwd(), cfg.output_dir)):
         os.makedirs(os.path.join(utils.get_original_cwd(), cfg.output_dir))
 
