@@ -1,5 +1,5 @@
 accelerator: None
-accumulate_grad_batches: '1'
+accumulate_grad_batches: 1
 amp_backend: 'native'
 amp_level: 'O2'
 auto_lr_find: False
@@ -7,7 +7,7 @@ auto_scale_batch_size: False
 auto_select_gpus: False
 batch_size: 16
 benchmark: False
-check_val_every_n_epoch: '3'
+check_val_every_n_epoch: 3
 checkpoint_callback: True
 data_class: 'REDataset'
 data_dir: 'data/k-shot/8-1'
