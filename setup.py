@@ -74,7 +74,7 @@ setup(
         'pathtools==0.1.2',
         'pillow==9.1.0',
         'promise==2.3',
-        'protobuf==3.20.1',
+        'protobuf==3.20.2',
         'pyasn1==0.4.8',
         'pyasn1-modules==0.2.8',
         'pyld==2.0.3',
