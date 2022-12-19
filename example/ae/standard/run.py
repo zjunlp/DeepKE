@@ -48,6 +48,7 @@ def main(cfg):
         device_ids = [int(i) for i in cfg.gpu_ids.split(',')]
     else:
         MULTI_GPU = False
+        device_ids = [cfg.gpu_id]
 
     # device
     if cfg.use_gpu and torch.cuda.is_available():
