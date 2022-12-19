@@ -111,7 +111,7 @@ setup(
         'tqdm==4.60.0',
         'transformers==3.4.0',
         'typing-extensions==4.2.0',
-        'ujson==5.2.0',
+        'ujson==5.4.0',
         'wandb==0.12.7',
         'werkzeug==2.1.1',
         'wheel==0.37.1',
