@@ -57,7 +57,7 @@ setup(
         'ipdb==0.13.9',
         'jieba==0.42.1',
         'jmespath==1.0.0',
-        'joblib==1.1.0',
+        'joblib==1.2.0',
         'keras==2.9.0',
         'kiwisolver==1.4.2',
         'lxml==4.9.1',
