@@ -72,7 +72,7 @@ setup(
         'packaging==21.3',
         'pandas==1.4.3',
         'pathtools==0.1.2',
-        'pillow==9.1.0',
+        'pillow==9.3.0',
         'promise==2.3',
         'protobuf==3.20.1',
         'pyasn1==0.4.8',
