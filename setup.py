@@ -66,7 +66,7 @@ setup(
         'nlpaug==1.1.11',
         'nlpcda==2.5.8',
         'nltk==3.7',
-        'oauthlib==3.2.0',
+        'oauthlib==3.2.1',
         'omegaconf==2.0.6',
         'opt-einsum==3.3.0',
         'packaging==21.3',
