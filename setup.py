@@ -95,7 +95,6 @@ setup(
         'sentry-sdk==1.5.10',
         'seqeval==1.2.2',
         'setproctitle==1.2.3',
-        'setuptools==59.5.0',
         'shortuuid==1.0.8',
         'smmap==5.0.0',
         'soupsieve==2.3.2.post1',
