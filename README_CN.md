@@ -39,6 +39,8 @@ Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022
 
 Prompt Learning-related research works and toolkits for PLM-based KG Embedding Learning, Editing and Applications [[resources](https://github.com/zjunlp/PromptKG)\] 
 
+基于大模型提示学习的推理工作综述 \[[论文](https://arxiv.org/abs/2212.09597)\]\[[列表](https://github.com/zjunlp/Prompt4ReasoningPapers)\]
+
 **相关工具**：
 
 [Doccano](https://github.com/doccano/doccano)、[MarkTool](https://github.com/FXLP/MarkTool)：实体识别关系抽取数据标注工具
