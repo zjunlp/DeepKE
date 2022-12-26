@@ -44,11 +44,14 @@ DATA_PATH = {
                   'dev': 'data/conll2003/dev.txt',
                   'test': 'data/conll2003/test.txt'},
     'mit-movie': {'train': 'data/mit-movie/20-shot-train.txt',
-                  'dev': 'data/mit-movie/test.txt'},
+                  'dev': 'data/mit-movie/test.txt',
+                  'test': 'data/mit-movie/test.txt'},
     'mit-restaurant': {'train': 'data/mit-restaurant/10-shot-train.txt',
-                  'dev': 'data/mit-restaurant/test.txt'},
+                  'dev': 'data/mit-restaurant/test.txt',
+                  'test': 'data/mit-restaurant/test.txt'},
     'atis': {'train': 'data/atis/20-shot-train.txt',
-                  'dev': 'data/atis/test.txt'}
+             'dev': 'data/atis/test.txt',
+             'test': 'data/atis/test.txt'}
 }
 
 MAPPING = {
