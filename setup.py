@@ -113,7 +113,7 @@ setup(
         'ujson==5.2.0',
         'wandb==0.12.7',
         'werkzeug==2.1.1',
-        'wheel==0.37.1',
+        'wheel==0.38.1',
         'yaspin==2.1.0',
         'zipp==3.8.0',
     ], 
