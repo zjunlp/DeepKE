@@ -17,3 +17,4 @@ nltk==3.8
 protobuf==3.20.1
 numpy==1.18.5
 ipdb==0.13.11
+TorchCRF==1.1.0
