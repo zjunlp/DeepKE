@@ -10,5 +10,10 @@ seqeval==1.2.2
 tqdm==4.60.0
 opt-einsum==3.3.0
 wandb==0.12.7
-ujson
+ujson==5.6.0
 huggingface_hub==0.2.1
+tensorboardX==2.5.1
+nltk==3.8
+protobuf==3.20.1
+numpy==1.18.5
+ipdb==0.13.11
