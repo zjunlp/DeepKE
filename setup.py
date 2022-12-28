@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-with open("package_readme.md") as readme_file:
+with open("README.md") as readme_file:
     readme = readme_file.read()
 
 with open("requirements.txt") as requirements_file:
@@ -13,7 +13,6 @@ setup(
     description='DeepKE 是基于 Pytorch 的深度学习中文关系抽取处理套件。',  # 说明
     long_description=readme,
     long_description_content_type="text/markdown",
-    long_description="client",  #详细说明
     license="MIT",  # 许可
     url='https://github.com/zjunlp/deepke',
     author='ZJUNLP',
