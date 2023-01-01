@@ -43,7 +43,7 @@ Prompt Learning-related research works and toolkits for PLM-based KG Embedding L
 
 **相关工具**：
 
-[Doccano](https://github.com/doccano/doccano)、[MarkTool](https://github.com/FXLP/MarkTool)：实体识别关系抽取数据标注工具
+[Doccano](https://github.com/doccano/doccano)、[MarkTool](https://github.com/FXLP/MarkTool)、[LabelStudio](https://labelstud.io/ )：实体识别关系抽取数据标注工具
 
 [LambdaKG](https://github.com/zjunlp/PromptKG/tree/main/lambdaKG): 基于预训练语言模型的知识图谱表示与应用工具
 
