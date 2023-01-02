@@ -6,7 +6,7 @@
 
 ### 模型简介
 
-**IFAformer**是一个具有隐式特征对齐的双模态Transformer模型，它在视觉和文本编码器上使用统一的Transformer架构，且无需显示设计模态对齐模块。
+**IFAformer** (AAAI SA'23)是一个具有隐式特征对齐的双模态Transformer模型，它在视觉和文本编码器上使用统一的Transformer架构，且无需显示设计模态对齐模块 (技术和实验细节参见论文[https://arxiv.org/pdf/2211.07504.pdf](https://arxiv.org/pdf/2211.07504.pdf))。
 
 <div align=center>
 <img src="mner_model.png" width="75%"height="75%"/>
@@ -121,3 +121,28 @@ cd DeepKE/example/ner/multimodal
 - 进行预测： 修改 `predict.yaml`中的load_path来加载训练好的模型。此外，我们提供了在Twitter2017数据集上训练好的[模型](https://drive.google.com/drive/folders/1ZGbX9IiNU3cLZtt4U8oc45zt0BHyElAQ?usp=sharing)供大家直接预测使用
 - `python predict.py `
 
+## 引用
+
+如果您使用了上述代码，请您引用下列论文:
+
+```bibtex
+@article{DBLP:journals/corr/abs-2211-07504,
+  author    = {Lei Li and
+               Xiang Chen and
+               Shuofei Qiao and
+               Feiyu Xiong and
+               Huajun Chen and
+               Ningyu Zhang},
+  title     = {On Analyzing the Role of Image for Visual-enhanced Relation Extraction},
+  journal   = {CoRR},
+  volume    = {abs/2211.07504},
+  year      = {2022},
+  url       = {https://doi.org/10.48550/arXiv.2211.07504},
+  doi       = {10.48550/arXiv.2211.07504},
+  eprinttype = {arXiv},
+  eprint    = {2211.07504},
+  timestamp = {Tue, 27 Dec 2022 08:22:45 +0100},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-2211-07504.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+```
