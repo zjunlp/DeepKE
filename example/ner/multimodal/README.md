@@ -143,4 +143,28 @@ cd DeepKE/example/ner/multimodal
   ```bash
   python predict.py
   ```
+## Cite
 
+If you use or extend our work, please cite the following paper:
+
+```bibtex
+@article{DBLP:journals/corr/abs-2211-07504,
+  author    = {Lei Li and
+               Xiang Chen and
+               Shuofei Qiao and
+               Feiyu Xiong and
+               Huajun Chen and
+               Ningyu Zhang},
+  title     = {On Analyzing the Role of Image for Visual-enhanced Relation Extraction},
+  journal   = {CoRR},
+  volume    = {abs/2211.07504},
+  year      = {2022},
+  url       = {https://doi.org/10.48550/arXiv.2211.07504},
+  doi       = {10.48550/arXiv.2211.07504},
+  eprinttype = {arXiv},
+  eprint    = {2211.07504},
+  timestamp = {Tue, 27 Dec 2022 08:22:45 +0100},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-2211-07504.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+```
