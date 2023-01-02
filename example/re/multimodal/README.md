@@ -6,7 +6,7 @@
 
 ## Model
 
-**IFAformer** is a novel dual Multimodal Transformer model with implicit feature alignment, which utilizes the Transformer structure uniformly in the visual and textual without explicitly designing modal alignment structure.
+**IFAformer** (AAAI SA'23) is a novel dual Multimodal Transformer model with implicit feature alignment, which utilizes the Transformer structure uniformly in the visual and textual without explicitly designing modal alignment structure (Details in [https://arxiv.org/pdf/2211.07504.pdf](https://arxiv.org/pdf/2211.07504.pdf)).
 
 <div align=center>
 <img src="mre_model.png" width="75%" height="75%"/>
