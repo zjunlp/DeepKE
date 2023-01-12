@@ -19,7 +19,7 @@
 <img src="knowprompt-model.png" width="75%" height="75%" />
 </div>
 
-Few-shot relation extraction based on the WWW2020 paper”[KnowPrompt: Knowledge-aware Prompt-tuning with Synergistic Optimization for Relation Extraction](https://arxiv.org/pdf/2104.07650.pdf)"
+Few-shot relation extraction based on the WWW2022 paper”[KnowPrompt: Knowledge-aware Prompt-tuning with Synergistic Optimization for Relation Extraction](https://arxiv.org/pdf/2104.07650.pdf)"
 
 ## Download Code
 
