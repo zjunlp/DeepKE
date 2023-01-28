@@ -452,7 +452,7 @@ You can also use your customized triple file, but the file format should be `.cs
 | Lebanon | Beirut | /location/location/contains |
 | ...     | ...    | ...                         |
 
-#### Ouput File
+#### Output File
 
 The output file names are `labeled_train.json`, `labeled_dev.json`, `labeled_test.json` for the `train`, `dev`, `test` dataset. The format of the output file is as follows:
 
