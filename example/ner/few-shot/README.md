@@ -11,6 +11,7 @@
 </div>
 
 Illustration of LightNER (COLING'22) for few-shot named entity recognition (Details in paper [https://aclanthology.org/2022.coling-1.209.pdf](https://aclanthology.org/2022.coling-1.209.pdf)).
+- ❗NOTE: We have released a follow-up work "[One Model for All Domains: Collaborative Domain-Prefix Tuning for Cross-Domain NER](https://arxiv.org/abs/2301.10410)" at [CP-NER](https://github.com/zjunlp/DeepKE/tree/main/example/ner/cross).
 
 ## Requirements
 
