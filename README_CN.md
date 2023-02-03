@@ -37,7 +37,9 @@ Data-Efficient Knowledge Graph Construction, 高效知识图谱构建 ([Tutorial
 
 Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022](https://www.aacl2022.org/Program/tutorials)) \[[slides](https://github.com/NLP-Tutorials/AACL-IJCNLP2022-KGC-Tutorial)\] 
 
-Prompt Learning-related research works and toolkits for PLM-based KG Embedding Learning, Editing and Applications [[resources](https://github.com/zjunlp/PromptKG)\] 
+PromptKG Family: a Gallery of Prompt Learning & KG-related Research Works, Toolkits, and Paper-list [[Resources](https://github.com/zjunlp/PromptKG)\] 
+
+Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey](https://arxiv.org/abs/2202.08063)\]\[[Paper-list](https://github.com/zjunlp/Low-resource-KEPapers)\]
 
 基于大模型提示学习的推理工作综述 \[[论文](https://arxiv.org/abs/2212.09597)\]\[[列表](https://github.com/zjunlp/Prompt4ReasoningPapers)\]
 
