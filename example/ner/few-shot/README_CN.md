@@ -19,7 +19,7 @@
 </div>
 
 基于LightNER (COLING2022)的低资源实体识别方法 (详情请查阅论文 [https://arxiv.org/pdf/2109.00720.pdf](https://arxiv.org/pdf/2109.00720.pdf)).
-
+- ❗NOTE: 发布了后续工作 "[One Model for All Domains: Collaborative Domain-Prefix Tuning for Cross-Domain NER](https://arxiv.org/abs/2301.10410)", 代码详见 [CP-NER](https://github.com/zjunlp/DeepKE/tree/main/example/ner/cross).
 
 ### 克隆代码
 ```bash
