@@ -1,7 +1,7 @@
 # 使用大型语言模型进行关系抽取
 
 <p align="left">
-    <b> <a href="https://github.com/zjunlp/DeepKE/blob/main/example/LLM/README.md">English</a> | 简体中文</a> </b>
+    <b> <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/README.md">English</a> | 简体中文</a> </b>
 </p>
 
 ## 目录
