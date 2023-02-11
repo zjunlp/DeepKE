@@ -1,7 +1,7 @@
 # Relation Extraction with Large Language Models
 
 <p align="left">
-    <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/LLM/README_CN.md">简体中文</a> </b>
+    <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/re/README_CN.md">简体中文</a> </b>
 </p>
 
 ## Contents
