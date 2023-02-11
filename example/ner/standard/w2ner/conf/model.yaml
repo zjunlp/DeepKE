@@ -1,0 +1,17 @@
+bert_name: "bert-base-chinese"
+do_lower_case: True
+
+## embedding dimension
+dist_emb_size: 20
+type_emb_size: 20
+lstm_hid_size: 512
+conv_hid_size: 96
+bert_hid_size: 768
+biaffine_size: 512
+ffnn_hid_size: 288
+dilation: [1, 2, 3]
+
+## dropout
+emb_dropout: 0.5
+conv_dropout: 0.5
+out_dropout: 0.33

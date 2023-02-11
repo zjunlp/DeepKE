@@ -1,0 +1,20 @@
+data_dir: "data/people's daily"
+save_path: "output"
+device: 2 # cuda
+
+do_train: False
+do_eval: True
+do_predict: True
+
+epochs: 15           # the number of training epochs
+batch_size: 8
+
+warm_factor: 0.1  # warmup rate
+weight_decay: 0.1
+clip_grad_norm: 5.0
+bert_learning_rate: 1e-5 # lr for bert parameters
+learning_rate: 1e-3  # lr for other parameters
+
+max_seq_len: 200 # Max Word length (Bert: 510 ([CLS], [SEP]  ----->  512), Under 500 is recommended)
+use_bert_last_4_layers: True
+seed: 123
