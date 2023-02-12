@@ -36,7 +36,7 @@
 ## 快速使用
 templates文件夹中为所使用的prompt模版，运行run.py文件，选择对应任务并选择是否传入模版中的候选参数，来完成实现最终的模版，得到最终的预测结果。
 
-以EE任务为例，nlp_prompter.fit方法中，text_input参数为预测文本，examples为少样本或零样本示例，可为空，domain为预测文本所属领域，也可为空。输入文本"历经4小时51分钟的体力、意志力鏖战，北京时间9月9日上午纳达尔在亚瑟·阿什球场，以7比5、6比3、5比7、4比6和6比4击败赛会5号种子俄罗斯球员梅德韦杰夫，夺得了2019年美国网球公开赛男单冠军。"，最终输出event_list: [TennisMatch:[arguments:[Winner,Nadal], [Loser,Medvedev], [Location,Arthur Ashe Stadium], [Time,9th September 2019]]]。
+以EE任务为例，nlp_prompter.fit方法中，text_input参数为预测文本，examples为少样本或零样本示例，可为空，domain为预测文本所属领域，也可为空。输入文本"历经4小时51分钟的体力、意志力鏖战，北京时间9月9日上午纳达尔在亚瑟·阿什球场，以7比5、6比3、5比7、4比6和6比4击败赛会5号种子俄罗斯球员梅德韦杰夫，夺得了2019年美国网球公开赛男单冠军。"，最终输出event_list: [event_type: [arguments: [role: 纳达尔, argument: 夺得2019年美国网球公开赛男单冠军], [role: 梅德韦杰夫, argument: 被纳达尔击败]], [event_type: [arguments: [role: 纳达尔, argument: 以7比5、6比3、5比7、4比6和6比4击败梅德韦杰夫]], [event_type: [arguments: [role: 纳达尔, argument: 历经4小时51分钟的体力、意志力鏖战]], [event_type: [arguments: [role: 纳达尔, argument: 在亚瑟·阿什球场]], [event_type: [arguments: [role: 梅德韦杰夫, argument: 赛会5号种子俄罗斯球员]]]]。
 # 使用大型语言模型进行关系抽取
 
 

@@ -31,14 +31,16 @@ def main(cfg):
   nlp_prompter = Prompter(model)
   
   if not cfg.zero_shot:
-    data_path = os.path.join(os.path.join(cfg.cwd,'data'),cfg.task +'.jinja')
-    data = json.load(open(data_path,'r'))
+    data = json.load(open(cfg.data_path,'r'))
   else:
     data = []
   task = {
-    "ner": "ner.jinja",
-    "rte": "rte.jinja",
-    "ee": "ee.jinja",
+    "ner_cn": "ner_cn.jinja",
+    "ner_en": "ner_en.jinja",
+    "rte_cn": "rte_cn.jinja",
+    "rte_en": "rte_en.jinja",
+    "ee_cn": "ee_cn.jinja",
+    "ee_en": "ee_en.jinja",
   }
   result = nlp_prompter.fit(task[cfg.task], text_input = text, examples = data, domain = cfg.domain, labels = None)
                     
