@@ -33,25 +33,5 @@
              "the Mona Lisa"
           ]
        ]
-    },
-    {
-       "text":"Mary is a person. She is employed by XYZ corp. she has a job title Account Manager.",
-       "labels":[
-          [
-             "Mary",
-             "is",
-             "person"
-          ],
-          [
-             "Mary",
-             "is employed by",
-             "XYZ corp"
-          ],
-          [
-             "Mary",
-             "has a job title",
-             "Account Manager"
-          ]
-       ]
     }
  ]

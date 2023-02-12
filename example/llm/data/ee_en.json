@@ -1,0 +1,45 @@
+[
+    {
+        "text":"In Baghdad, a cameraman died when an American tank fired on the Palestine Hotel.",
+        "event_list":[
+          {
+              "event_type":"Die",
+              "arguments":[
+                  {
+                      "role":"Victim",
+                      "argument":"cameraman"
+                  },
+                  {
+                      "role":"Place",
+                      "argument":"Baghdad"
+                  },
+                  {
+                      "role":"Instrument",
+                      "argument":"American tank"
+                  }
+              ]
+          },
+          {
+              "event_type":"Attack",
+              "arguments":[
+                  {
+                      "role":"Target",
+                      "argument":"Palestine Hotel"
+                  },
+                  {
+                      "role":"Place",
+                      "argument":"Baghdad"
+                  },
+                  {
+                      "role":"Target",
+                      "argument":"cameraman"
+                  },
+                  {
+                    "role":"Attacker",
+                    "argument":"American tank"
+                  }
+              ]
+          }
+         ]
+     }
+ ]
