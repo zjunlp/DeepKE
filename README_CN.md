@@ -71,6 +71,9 @@ Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey
 
 # 新版特性
 
+## 2023年2月
+* 支持使用[大模型](https://github.com/zjunlp/DeepKE/blob/main/example/llm/README_CN.md) (GPT-3) 进行抽取，包含In-context Learning (基于 [Promptify](https://github.com/promptslab/Promptify)) 和数据生成.
+
 ## 2022年11月
 
 - 新增实体识别、关系抽取的[数据标注说明](https://github.com/zjunlp/DeepKE/blob/main/README_TAG_CN.md)和弱监督数据自动标注([实体识别](https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data/README_CN.md)、[关系抽取](https://github.com/zjunlp/DeepKE/blob/main/example/re/prepare-data/README_CN.md))功能，优化[多GPU训练](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README_CN.md)。
@@ -224,7 +227,7 @@ python predict.py
 - 具体流程请进入详细的README中
   - **[常规全监督STANDARD](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard)**  
   
-     ***我们还提供了开箱即用的[DeepKE-cnSchema特别版](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md)，无需训练即可抽取支持cnSchema的实体***
+     ***我们还提供了[大模型支持](https://github.com/zjunlp/DeepKE/blob/main/example/llm/README_CN.md)和开箱即用的[DeepKE-cnSchema特别版](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md)，无需训练即可抽取支持cnSchema的实体***
   
      **Step1**: 进入`DeepKE/example/ner/standard`，下载数据集
      
@@ -531,11 +534,26 @@ python predict.py
 如果使用DeepKE，请按以下格式引用
 
 ```bibtex
-@article{zhang2022deepke,
-  title={DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population},
-  author={Zhang, Ningyu and Xu, Xin and Tao, Liankuan and Yu, Haiyang and Ye, Hongbin and Xie, Xin and Chen, Xiang and Li, Zhoubo and Li, Lei and Liang, Xiaozhuan and others},
-  journal={arXiv preprint arXiv:2201.03335},
-  year={2022}
+@inproceedings{zhang-etal-2022-deepke,
+    title = "{D}eep{KE}: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population",
+    author = "Zhang, Ningyu  and
+      Xu, Xin  and
+      Tao, Liankuan  and
+      Yu, Haiyang  and
+      Ye, Hongbin  and
+      Qiao, Shuofei  and
+      Xie, Xin  and
+      Chen, Xiang  and
+      Li, Zhoubo  and
+      Li, Lei",
+    booktitle = "Proceedings of the The 2022 Conference on Empirical Methods in Natural Language Processing: System Demonstrations",
+    month = dec,
+    year = "2022",
+    address = "Abu Dhabi, UAE",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.emnlp-demos.10",
+    pages = "98--108",
+    abstract = "We present an open-source and extensible knowledge extraction toolkit DeepKE, supporting complicated low-resource, document-level and multimodal scenarios in the knowledge base population. DeepKE implements various information extraction tasks, including named entity recognition, relation extraction and attribute extraction. With a unified framework, DeepKE allows developers and researchers to customize datasets and models to extract information from unstructured data according to their requirements. Specifically, DeepKE not only provides various functional modules and model implementation for different tasks and scenarios but also organizes all components by consistent frameworks to maintain sufficient modularity and extensibility. We release the source code at GitHub in https://github.com/zjunlp/DeepKE with Google Colab tutorials and comprehensive documents for beginners. Besides, we present an online system in http://deepke.openkg.cn/EN/re{\_}doc{\_}show.html for real-time extraction of various tasks, and a demo video.",
 }
 ```
 
