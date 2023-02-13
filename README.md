@@ -222,7 +222,7 @@ python predict.py
 - Read the detailed process in specific README
   - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard)**
     
-    ***We provide the off-the-shelf model, [DeepKE-cnSchema-NER](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md), which will extract entities in cnSchema without training.***
+    ***We [support LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm) and provide the off-the-shelf model, [DeepKE-cnSchema-NER](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md), which will extract entities in cnSchema without training.***
 
     **Step1** Enter  `DeepKE/example/ner/standard`.  Download the dataset.
 
@@ -316,7 +316,7 @@ python predict.py
 
   - **[STANDARD (Fully Supervised)](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard)** 
 
-    ***We provide the off-the-shelf model, [DeepKE-cnSchema-RE](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md), which will extract relations in cnSchema without training.***
+    ***We [support LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm) and provide the off-the-shelf model, [DeepKE-cnSchema-RE](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md), which will extract relations in cnSchema without training.***
 
     **Step1** Enter the `DeepKE/example/re/standard` folder.  Download the dataset.
 
@@ -536,11 +536,26 @@ Meanwhile, we will offer long-term maintenance to **fix bugs**, **solve issues**
 Please cite our paper if you use DeepKE in your work
 
 ```bibtex
-@article{zhang2022deepke,
-  title={DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population},
-  author={Zhang, Ningyu and Xu, Xin and Tao, Liankuan and Yu, Haiyang and Ye, Hongbin and Qiao, Shuofei and Xie, Xin and Chen, Xiang and Li, Zhoubo and Li, Lei and others},
-  journal={arXiv preprint arXiv:2201.03335},
-  year={2022}
+@inproceedings{zhang-etal-2022-deepke,
+    title = "{D}eep{KE}: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population",
+    author = "Zhang, Ningyu  and
+      Xu, Xin  and
+      Tao, Liankuan  and
+      Yu, Haiyang  and
+      Ye, Hongbin  and
+      Qiao, Shuofei  and
+      Xie, Xin  and
+      Chen, Xiang  and
+      Li, Zhoubo  and
+      Li, Lei",
+    booktitle = "Proceedings of the The 2022 Conference on Empirical Methods in Natural Language Processing: System Demonstrations",
+    month = dec,
+    year = "2022",
+    address = "Abu Dhabi, UAE",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.emnlp-demos.10",
+    pages = "98--108",
+    abstract = "We present an open-source and extensible knowledge extraction toolkit DeepKE, supporting complicated low-resource, document-level and multimodal scenarios in the knowledge base population. DeepKE implements various information extraction tasks, including named entity recognition, relation extraction and attribute extraction. With a unified framework, DeepKE allows developers and researchers to customize datasets and models to extract information from unstructured data according to their requirements. Specifically, DeepKE not only provides various functional modules and model implementation for different tasks and scenarios but also organizes all components by consistent frameworks to maintain sufficient modularity and extensibility. We release the source code at GitHub in https://github.com/zjunlp/DeepKE with Google Colab tutorials and comprehensive documents for beginners. Besides, we present an online system in http://deepke.openkg.cn/EN/re{\_}doc{\_}show.html for real-time extraction of various tasks, and a demo video.",
 }
 ```
 <br>
