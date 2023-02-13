@@ -72,7 +72,7 @@ Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey
 # 新版特性
 
 ## 2023年2月
-* 支持使用[大模型](https://github.com/zjunlp/DeepKE/blob/main/example/llm/README_CN.md) (GPT-3) 进行抽取，包含In-context Learning (基于 [Promptify](https://github.com/promptslab/Promptify)) 和数据生成.
+* 支持使用[大模型](https://github.com/zjunlp/DeepKE/blob/main/example/llm/README_CN.md) (GPT-3) 进行抽取，包含In-context Learning (基于 [Promptify](https://github.com/promptslab/Promptify)) 和数据生成。
 
 ## 2022年11月
 
