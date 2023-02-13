@@ -318,7 +318,7 @@ python predict.py
 - 具体流程请进入详细的README中，RE包括了以下三个子功能
   - **[常规全监督STANDARD](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard)**  
 
-     ***我们还提供了开箱即用的[DeepKE-cnSchema特别版](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md)，无需训练即可抽取支持cnSchema的关系***
+     ***我们还提供了[大模型支持](https://github.com/zjunlp/DeepKE/blob/main/example/llm/README_CN.md)和开箱即用的[DeepKE-cnSchema特别版](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md)，无需训练即可抽取支持cnSchema的关系***
 
     **Step1**：进入`DeepKE/example/re/standard`，下载数据集
   
