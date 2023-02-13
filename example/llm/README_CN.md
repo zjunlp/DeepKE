@@ -1,4 +1,4 @@
-本项目中部分代码源自[Promptify](https://github.com/promptslab/Promptify)，在此十分感谢Promptify团队。
+
 
 <p align="left">
     <b> <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/README.md">English</a> | 简体中文</a> </b>
@@ -7,7 +7,7 @@
 ## 目录
 - [目录](#目录)
 
-- [使用大型语言模型进行命名实体识别、事件抽取以及联合关系抽取](#使用大型语言模型进行命名实体识别、事件抽取以及联合关系抽取)
+- [使用大型语言模型进行命名实体识别、事件抽取以及实体关系联合抽取](#使用大型语言模型进行命名实体识别、事件抽取以及实体关系联合抽取)
   - [环境和数据集](#环境和数据集)
   - [使用示例](#使用示例)
 
@@ -17,8 +17,9 @@
   - [上下文学习](#上下文学习)
   - [使用大型语言模型生成数据](#使用大型语言模型生成数据)
 
+本项目中部分代码源自[Promptify](https://github.com/promptslab/Promptify)，在此十分感谢Promptify团队。
 
-# 使用大型语言模型进行命名实体识别、事件抽取以及联合关系抽取
+# 使用大型语言模型进行命名实体识别、事件抽取以及实体关系联合抽取
 
 ## 环境和数据集
 - 环境配置
@@ -33,7 +34,13 @@
 - 数据集及配置参数
   data文件夹中，所给json文件为数据所要求的格式。
   
-  `conf`文件夹保存所设置的参数。调用GPT3接口所需要的参数都通过此文件夹中文件传入。在命名实体识别任务中，`text_input`参数为预测文本，`examples`为少样本或零样本示例，可为空，`domain`为预测文本所属领域，可为空，`label`为实体标签集，也可为空。在事件抽取任务中，`text_input`参数为预测文本，`examples`为少样本或零样本示例，可为空，`domain`为预测文本所属领域，也可为空。在联合关系抽取任务中，`text_input`参数为预测文本，`examples`为少样本或零样本示例，可为空，`domain`为预测文本所属领域，也可为空。
+  `conf`文件夹保存所设置的参数。调用GPT3接口所需要的参数都通过此文件夹中文件传入。
+  
+- 在命名实体识别任务中，`text_input`参数为预测文本，`examples`为少样本或零样本示例，可为空，`domain`为预测文本所属领域，可为空，`label`为实体标签集，也可为空。
+  
+- 在事件抽取任务中，`text_input`参数为预测文本，`examples`为少样本或零样本示例，可为空，`domain`为预测文本所属领域，也可为空。
+ 
+- 在实体关系联合抽取任务中，`text_input`参数为预测文本，`examples`为少样本或零样本示例，可为空，`domain`为预测文本所属领域，也可为空。
 
 
 ## 使用示例
@@ -105,4 +112,4 @@
     --dataset {tacred,tacrev,retacred}
     --k K                 k-shot demonstrations
 ```
-
+您可以使用大模型生成的数据和原始数据，基于常规关系抽取的代码[standard-re](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard)进行模型训练。
