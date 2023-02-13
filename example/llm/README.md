@@ -1,17 +1,54 @@
-# Relation Extraction with Large Language Models
+
+本项目中部分代码源自[Promptify](https://github.com/promptslab/Promptify)，在此十分感谢Promptify团队。
 
 <p align="left">
     <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/README_CN.md">简体中文</a> </b>
 </p>
 
 ## Contents
+- [Contents](#Contents)
+
+- [NER, EE and RTE with Large Language Models](#ner-ee-and-rte-with-large-language-models)
+  - [Requirements and Datasets](#requirements-datasets-and-configuration)
+  - [Example](#example)
+
 - [Relation Extraction with Large Language Models](#relation-extraction-with-large-language-models)
-  - [Contents](#contents)
   - [Requirements and Datasets](#requirements-and-datasets)
   - [Prompts](#prompts)
   - [In-context Learning](#in-context-learning)
   - [Data Generation via LLMs](#data-generation-via-llms)
 
+
+# NER EE and RTE with Large Language Models
+
+## Requirements Datasets and Configuration
+- Requirements
+  
+  OpenAI API (key) is utilized for language models (e.g. GPT-3).
+    ```shell
+    >> pip install openai
+    >> pip install jinja2
+    >> pip install hydra-core
+    ```
+
+- Datasets and configuration
+  In `data` folder, the given json file is in the format required by the data.
+  
+  The `conf` folder stores the set parameters. The parameters required to call the GPT3 interface are passed in through the files in this folder. In the named entity recognition task, `text_input` parameter is the prediction text, `examples` are examples with few or zero samples, which can be empty, `domain` is the domain of the prediction text, which can be empty, and `label` is the entity label set, which can also be empty. In the event extraction task, `text_input` parameter is the prediction text, `examples` are examples with few or zero samples, which can be empty, and `domain` is the domain of the prediction text, which can also be empty. In the union extraction task, `text_input` parameter is the prediction text, `examples` are examples with few or zero samples, which can be empty, and `domain` is the domain of the prediction text, which can also be empty.
+
+
+
+
+## Example
+  |                           Task                           |          Input           |    Output    |     
+  | :----------------------------------------------------------: | :------------------------: | :------------: |
+  | NER |           Japan began the defence of their Asian Cup title with a lucky 2-1 win against Syria in a Group C championship match on Friday.         |       [{'E': 'Country', 'W': 'Japan'}, {'E': 'Country', 'W': 'Syria'}, {'E': 'Competition', 'W': 'Asian Cup'}, {'E': 'Competition', 'W': 'Group C championship'}]   |          
+  | EE | In Baghdad, a cameraman died when an American tank fired on the Palestine Hotel. |    event_list: [ event_type: [arguments: [role: "cameraman", argument: "Baghdad"], [role: "American tank", argument: "Palestine Hotel"]] ]      |  
+  | RTE |           The most common audits were about waste and recycling.          |[['audit', 'type', 'waste'], ['audit', 'type', 'recycling']]|     
+
+
+
+# Relation Extraction with Large Language Models
 
 ## Requirements and Datasets
 - Requirements
