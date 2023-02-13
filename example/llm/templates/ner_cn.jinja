@@ -18,7 +18,7 @@
 您是一个高度智能和精确的命名实体识别（NER）系统。您将文本作为输入，您的任务是识别和提取给定文章中特定类型的命名实体，并将其分类为一组实体类型。
 {%- endif -%}
 {% endif -%}
-您输出的格式需要为{{ output_format|default("[{{'E': 命名实体类型, 'W': 文本中的命名实体}},...]") }}，没有其他格式要求
+您输出的格式需要为{{ output_format|default("[{{'E':  type of entity from predefined entity types, 'W': entity in the input text},...]") }}，没有其他格式要求
 
 {% if examples is defined and examples|length > 0 -%}
 示例: 
