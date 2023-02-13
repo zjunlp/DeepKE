@@ -1,5 +1,4 @@
-
-本项目中部分代码源自[Promptify](https://github.com/promptslab/Promptify)，在此十分感谢Promptify团队。
+Part of the code in this project comes from [Promptify](https://github.com/promptslab/Promptify). Thank you very much for the Promptify team.
 
 <p align="left">
     <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/README_CN.md">简体中文</a> </b>
