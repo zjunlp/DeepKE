@@ -70,6 +70,8 @@ Reasoning with Language Model Prompting \[[Survey](https://arxiv.org/abs/2212.09
 <br>
 
 # What's New
+## Feb, 2023
+* We have supported using [LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm) (GPT-3) with in-context learning (based on [Promptify](https://github.com/promptslab/Promptify)) and data generation.
 ## Nov, 2022
 * Add data [annotation instructions](https://github.com/zjunlp/DeepKE/blob/main/README_TAG.md) for entity recognition and relation extraction, automatic labelling of weakly supervised data ([entity extraction](https://github.com/zjunlp/DeepKE/tree/main/example/ner/prepare-data) and [relation extraction](https://github.com/zjunlp/DeepKE/tree/main/example/re/prepare-data)), and optimize [multi-GPU training](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard).
 ## Sept, 2022
