@@ -9,13 +9,15 @@
 本项目实现了Standard场景下NER任务的提取模型，对应路径分别为：
 * [BiLSTM-CRF](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/models/BiLSTM_CRF.py)
 * [Bert](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/models/InferBert.py)
+* [W2NER](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/w2ner)
 
 
 ### 实验结果
-| 模型       | 准确率 | 召回率 | f1值  | 推理速度([People's Daily](https://github.com/OYE93/Chinese-NLP-Corpus/tree/master/NER/People's%20Daily)) |
-|------------|--------|--------|-------|--------------------------|
-| BERT       | 91.15  | 93.68  | 92.40 | 106s                     |
-| BiLSTM-CRF | 92.11  | 88.56  | 90.29 | 39s                      |
+| 模型        | 准确率   | 召回率   | f1值   | 推理速度([People's Daily](https://github.com/OYE93/Chinese-NLP-Corpus/tree/master/NER/People's%20Daily)) |
+|-----------|-------|-------|-------|------------------------------------------------------------------------------------------------------|
+| BERT      | 91.15 | 93.68 | 92.40 | 106s                                                                                                 |
+| BiLSTM-CRF | 92.11 | 88.56 | 90.29 | 39s                                                                                                  |
+| W2NER     | 96.76 | 96.11 | 96.43 | -                                                                                                    |
 ### 环境依赖
 
 > python == 3.8 
@@ -26,6 +28,7 @@
 - seqeval == 1.2.2
 - tqdm == 4.60.0
 - matplotlib == 3.4.1
+- prettytable == 2.4.0
 - deepke
 
 
@@ -73,10 +76,11 @@ cd DeepKE/example/ner/standard
   - `train.txt`：存放训练数据集
   - `valid.txt`：存放验证数据集
   - `test.txt`：存放测试数据集
-- 开始训练(可根据**目标场景**选Bert或者BiLSTM-CRF)：
+- 开始训练(可根据**目标场景**选Bert或者BiLSTM-CRF或者W2NER)：
 
   1. ```python run_bert.py``` (bert超参设置在`bert.yaml`中，训练所用到参数都在conf文件夹中，修改即可).该任务支持多卡训练，修改trian.yaml中的use_multi_gpu参数为True，run_bert.py中osviron['CUDA_VISIBLE_DEVICES']为指定gpu，以逗号为间隔，第一张卡为计算主卡，需使用略多内存。
   2. ```python run_lstmcrf.py``` (BiLSTM-CRF超参设置在`lstmcrf.yaml`中，训练所用到参数都在conf文件夹中，修改即可)
+  3. ```cd w2ner ---> python run.py``` (w2nerF超参设置在`model.yaml`中，训练所用到参数都在conf文件夹中，修改即可。其中`device`为指定GPU的编号，若只有单卡GPU，设置为0)
 
 - 每次训练的日志保存在 `logs` 文件夹内，模型结果保存在 `checkpoints` 文件夹内。
 

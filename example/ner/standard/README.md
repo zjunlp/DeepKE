@@ -14,6 +14,7 @@
 - seqeval == 1.2.2
 - tqdm == 4.60.0
 - matplotlib == 3.4.1
+- prettytable == 2.4.0
 - deepke
 
 ## Download Code
@@ -53,6 +54,11 @@ cd DeepKE/example/ner/standard
   ```bash
   python run_bert.py or python run_crflstm.py
   ```
+  - W2NER(The new state-of-the-art ner model, which involvs with three major types, including flat, overlapped (aka. nested), and discontinuous NER.)
+    ```bash 
+    cd w2ner  
+    python run.py
+    ```
 
 - Prediction
     
