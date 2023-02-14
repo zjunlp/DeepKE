@@ -74,6 +74,8 @@ BiLSTM + CRF
 
 BERT
 
+W2NER
+
 ## Prepare weak_supervised data
 
 If you only have text data and corresponding dictionaries, but no canonical training data.
