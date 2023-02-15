@@ -45,7 +45,7 @@ Reasoning with Language Model Prompting \[[Survey](https://arxiv.org/abs/2212.09
 
 **Related Toolkit**:
 
-[Doccano](https://github.com/doccano/doccano)、[MarkTool](https://github.com/FXLP/MarkTool)、[LabelStudio](https://labelstud.io/ )：Data Annotation Toolkits
+[Doccano](https://github.com/doccano/doccano)、[MarkTool](https://github.com/FXLP/MarkTool)、[LabelStudio](https://labelstud.io/ ): Data Annotation Toolkits
 
 [LambdaKG](https://github.com/zjunlp/PromptKG/tree/main/lambdaKG): A library and benchmark for PLM-based KG embeddings
 
