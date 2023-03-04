@@ -1,22 +1,16 @@
-from __future__ import absolute_import, division, print_function
-
-import csv
 import json
 import logging
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '0,2,1,3' 
 
 import random
-import sys
 import numpy as np
 import torch
 import torch.nn.functional as F
-from pytorch_transformers import (WEIGHTS_NAME, AdamW, BertConfig, BertForTokenClassification, BertTokenizer, WarmupLinearSchedule)
+from transformers import AdamW, BertConfig, BertForTokenClassification, BertTokenizer, get_linear_schedule_with_warmup
 from torch import nn
-from torch.utils.data import (DataLoader, RandomSampler, SequentialSampler, TensorDataset)
-from torch.utils.data.distributed import DistributedSampler
+from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, TensorDataset
 from tqdm import tqdm, trange
-from seqeval.metrics import classification_report
+from sklearn.metrics import classification_report
 import hydra
 from hydra import utils
 from deepke.name_entity_re.standard import *
@@ -32,10 +26,19 @@ logger = logging.getLogger(__name__)
 
 class TrainNer(BertForTokenClassification):
 
-    def forward(self, input_ids, token_type_ids=None, attention_mask=None, labels=None,valid_ids=None,attention_mask_label=None,device=None):
-        sequence_output = self.bert(input_ids, token_type_ids, attention_mask,head_mask=None)[0]
-        batch_size,max_len,feat_dim = sequence_output.shape
-        valid_output = torch.zeros(batch_size,max_len,feat_dim,dtype=torch.float32,device=device)
+    def forward(
+        self, 
+        input_ids, 
+        attention_mask=None,
+        token_type_ids=None,  
+        labels=None,
+        valid_ids=None,
+        attention_mask_label=None,
+        device=None
+    ):
+        sequence_output = self.bert(input_ids, token_type_ids, attention_mask, head_mask=None)[0]
+        batch_size, max_len, feat_dim = sequence_output.shape
+        valid_output = torch.zeros(batch_size, max_len, feat_dim, dtype=torch.float32, device=device)
         for i in range(batch_size):
             jj = -1
             for j in range(max_len):
@@ -58,10 +61,10 @@ class TrainNer(BertForTokenClassification):
         else:
             return logits
 
+
 wandb.init(project="DeepKE_NER_Standard")
 @hydra.main(config_path="conf", config_name='config')
 def main(cfg):
-    
     # Use gpu or not
     USE_MULTI_GPU = cfg.use_multi_gpu
     if USE_MULTI_GPU and torch.cuda.device_count() > 1:
@@ -123,7 +126,7 @@ def main(cfg):
         ]
     warmup_steps = int(cfg.warmup_proportion * num_train_optimization_steps)
     optimizer = AdamW(optimizer_grouped_parameters, lr=cfg.learning_rate, eps=cfg.adam_epsilon)
-    scheduler = WarmupLinearSchedule(optimizer, warmup_steps=warmup_steps, t_total=num_train_optimization_steps)
+    scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=warmup_steps, num_training_steps=num_train_optimization_steps)
     global_step = 0
     nb_tr_steps = 0
     tr_loss = 0
@@ -244,7 +247,7 @@ def main(cfg):
                             temp_2.append(0)
 
 
-        report = classification_report(y_true, y_pred,digits=4)
+        report = classification_report(y_true, y_pred)
         logger.info("\n%s", report)
         output_eval_file = os.path.join(os.path.join(utils.get_original_cwd(), cfg.output_dir), "eval_results.txt")
         with open(output_eval_file, "w") as writer:
