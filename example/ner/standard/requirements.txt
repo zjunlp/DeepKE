@@ -7,6 +7,9 @@ deepke
 wandb==0.13.9
 scikit-learn
 numpy
+tqdm
+ipdb
+tensorboardX
 
 # BERT NER
 pytorch-transformers==1.2.0
@@ -18,7 +21,3 @@ nltk
 
 # LSTM + CRF NER
 pytorch-crf
-tqdm
-
-ipdb
-tensorboardX
