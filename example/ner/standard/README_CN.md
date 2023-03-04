@@ -52,11 +52,11 @@ cd DeepKE/example/ner/standard
 
 #### 1.model parameters
 
-`hydra/model/*.yaml`路径下为模型的参数配置，例如控制模型的隐藏层维度、是否Case Sensitive......
+[`conf/hydra/model/*.yaml`](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/conf/hydra/model)路径下为模型的参数配置，例如控制模型的隐藏层维度、是否Case Sensitive......
 
 #### 2.other parameters
 
-环境路径以及训练过程中的其他超参数在`train.yaml`、`custom.yaml`中进行设置。
+环境路径以及训练过程中的其他超参数在[`train.yaml`、`custom.yaml`](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/conf)中进行设置。
 
 > 注： 训练过程中所用到的词典
 > 
@@ -78,7 +78,7 @@ cd DeepKE/example/ner/standard
   - `test.txt`：存放测试数据集
 - 开始训练(可根据**目标场景**选Bert或者BiLSTM-CRF或者W2NER)：
 
-  1. ```python run_bert.py``` (bert超参设置在`bert.yaml`中，训练所用到参数都在conf文件夹中，修改即可).该任务支持多卡训练，修改trian.yaml中的use_multi_gpu参数为True，run_bert.py中osviron['CUDA_VISIBLE_DEVICES']为指定gpu，以逗号为间隔，第一张卡为计算主卡，需使用略多内存。
+  1. ```python run_bert.py``` (修改[config.yaml](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/conf/config.yaml)中hydra/model为bert，bert超参设置在[bert.yaml](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/conf/hydra/model/bert.yaml)中，训练所用到参数都在conf文件夹中，修改即可).该任务支持多卡训练，修改trian.yaml中的use_multi_gpu参数为True，run_bert.py中osviron['CUDA_VISIBLE_DEVICES']为指定gpu，以逗号为间隔，第一张卡为计算主卡，需使用略多内存。
   2. ```python run_lstmcrf.py``` (BiLSTM-CRF超参设置在`lstmcrf.yaml`中，训练所用到参数都在conf文件夹中，修改即可)
   3. ```cd w2ner ---> python run.py``` (w2nerF超参设置在`model.yaml`中，训练所用到参数都在conf文件夹中，修改即可。其中`device`为指定GPU的编号，若只有单卡GPU，设置为0)
 
