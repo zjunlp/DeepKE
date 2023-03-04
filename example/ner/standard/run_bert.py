@@ -10,7 +10,7 @@ from transformers import AdamW, BertConfig, BertForTokenClassification, BertToke
 from torch import nn
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, TensorDataset
 from tqdm import tqdm, trange
-from sklearn.metrics import classification_report
+from seqeval.metrics import classification_report
 import hydra
 from hydra import utils
 from deepke.name_entity_re.standard import *
