@@ -6,16 +6,10 @@
 
 ## Requirements
 
-> python == 3.8 
-
-- pytorch-transformers == 1.2.0
-- torch == 1.5.0
-- hydra-core == 1.0.6
-- seqeval == 1.2.2
-- tqdm == 4.60.0
-- matplotlib == 3.4.1
-- prettytable == 2.4.0
-- deepke
+> python3
+```bash
+pip install -r requirements.txt
+```
 
 ## Download Code
 
