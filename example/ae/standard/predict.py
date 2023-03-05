@@ -121,7 +121,7 @@ def main(cfg):
                 x['pcnn_mask'] = torch.tensor([data[0]['entities_pos']])
         if cfg.model_name == 'gcn':
             # 没找到合适的做 parsing tree 的工具，暂时随机初始化
-            adj = torch.empty(1,data[0]['seq_len'],data[0]['seq_len']).random_(2)
+            adj = torch.empty(1,512,512).random_(2)
             x['adj'] = adj
 
 
