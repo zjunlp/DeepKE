@@ -254,7 +254,7 @@ def main(cfg):
                                                              config.data_dir)) if config.do_predict else None
     datasets, ori_data = data_loader.load_data_bert(config, train_examples, eval_examples, test_examples)
 
-    config.updates_total = len(datasets[0]) // config.batch_size * config.epochs
+    config.updates_total = len(datasets[0]) // config.batch_size * config.epochs if datasets[0] else 0
 
     logger.info("Building Model")
     model = Model(config)
