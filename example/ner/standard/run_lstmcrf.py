@@ -126,7 +126,8 @@ def main(cfg):
 
 
     if cfg.do_eval:
-        evaluation_model = torch.load(os.path.join(utils.get_original_cwd(), cfg.output_dir, cfg.model_save_name))
+        evaluation_model = torch.load(os.path.join(utils.get_original_cwd(), cfg.output_dir, cfg.model_save_name), map_location='cpu')
+        evaluation_model.to(device)
         evaluation_model.eval()
 
         evaluation_examples = build_crflstm_corpus(cfg.eval_on, cfg)

@@ -74,7 +74,7 @@ class DataProcessor(object):
         return readfile(input_file)
 
 def collate_fn(batch, word2id, label2id):
-    batch.sort(key=lambda x: len(x.text_a), reverse=True)
+    batch.sort(key=lambda x: len(x.text_a.split(' ')), reverse=True)
     max_len = len(batch[0].text_a.split(' '))
     inputs = []
     targets = []
