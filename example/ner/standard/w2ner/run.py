@@ -230,6 +230,8 @@ def main(cfg):
         config.__setattr__(key, cfg.get(key))
     logger.info(config)
     config.logger = logger
+    if not os.path.exists(os.path.join(utils.get_original_cwd(), cfg.save_path)):
+        os.makedirs(os.path.join(utils.get_original_cwd(), cfg.save_path))
 
     if torch.cuda.is_available():
         torch.cuda.set_device(config.device)
