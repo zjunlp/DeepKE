@@ -1,0 +1,32 @@
+dataset: "ACE"
+gpu_device: 0
+seed: 42
+train_file: "../data/ACE/degree/train.001.w1.oneie.json"
+dev_file: "../data/ACE/degree/dev.w1.oneie.json"
+test_file: "../data/ACE/degree/test.w1.oneie.json"
+finetune_dir: "./processed_data/ace_001/"
+train_finetune_file: "./processed_data/ace_001/train_all.pkl"
+dev_finetune_file: "./processed_data/ace_001/dev_all.pkl"
+test_finetune_file: "./processed_data/ace_001/test_all.pkl"
+vocab_file: "./processed_data/ace_001/vocab.json"
+output_dir: "./exp/ace_001/"
+cache_dir: "./cache"
+model_name: "facebook/bart-large"
+input_style: ["event_type_sent", "keywords", "template"]
+output_style: ["trigger:sentence", "argument:sentence"]
+n_negative: 15
+max_epoch: 35
+warmup_epoch: 5
+train_batch_size: 32
+eval_batch_size: 16
+accumulate_step: 1
+learning_rate: 1e-05
+weight_decay: 1e-05
+grad_clipping: 5.0
+beam_size: 1
+max_length: 384
+max_output_length: 100
+ignore_first_header: True
+write_file: null
+e2e_model: "./exp/ace_001/20230307_114246/best_model.mdl" # for predict
+no_dev: null

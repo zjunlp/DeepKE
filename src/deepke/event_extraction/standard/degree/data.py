@@ -238,6 +238,7 @@ class GenDataset(Dataset):
         # decoder inputs
         targets = self.tokenizer(target_text, return_tensors='pt', padding=True, max_length=self.max_output_length)
         dec_idxs = targets['input_ids']
+        # print(self.tokenizer.decode(dec_idxs[0]))
         batch_size = dec_idxs.size(0)
         dec_idxs[:, 0] = self.tokenizer.eos_token_id
         dec_attn = targets['attention_mask']
