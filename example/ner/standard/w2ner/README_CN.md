@@ -91,6 +91,9 @@ cd DeepKE/example/ner/standard/w2ner
 
 - 进行预测 ```python predict.py```
 
+> 注：在预测过程中遇到的`DeprecationWarning: In future, it will be an error for np.bool_ ...` 不会对您的实验结果有任何影响。
+> 下个`Release`版本的`DeepKE`会将依赖包和方法更新，届时将会解决这个`Warning`。
+
 ### 样本自动化打标
 
 如果您只有文本数据和对应的词典，而没有规范的训练数据。

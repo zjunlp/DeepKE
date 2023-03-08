@@ -87,6 +87,10 @@ cd DeepKE/example/ner/standard/w2ner
   ```bash
   python predict.py
   ```
+  
+>`DeprecationWarning: In future, it will be an error for np.bool_ ...` encountered during prediction will not have any 
+> effect on the results of your experiments. The next `Release` version of `DeepKE` will update the dependent packages 
+> and methods, and this `Warning` will be resolved at that time.
 
 ## Prepare weak_supervised data
 
