@@ -30,6 +30,7 @@
 
 
 [DeepKE](https://arxiv.org/pdf/2201.03335.pdf) is a knowledge extraction toolkit for knowledge graph construction supporting **cnSchema**，**low-resource**, **document-level** and **multimodal** scenarios for *entity*, *relation* and *attribute* extraction. We provide [documents](https://zjunlp.github.io/DeepKE/), [Google Colab tutorials](https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing), [online demo](http://deepke.zjukg.cn/), [paper](https://arxiv.org/pdf/2201.03335.pdf), [slides](https://drive.google.com/file/d/1IIeIZAbVduemqXc4zD40FUMoPHCJinLy/view?usp=sharing) and [poster](https://drive.google.com/file/d/1vd7xVHlWzoAxivN4T5qKrcqIGDcSM1_7/view?usp=sharing) for beginners.
+- ❗New: We have released the DeepKE-GPT at [Demo](http://deepke.openkg.cn/EN/llm.html).
 
 **Reading Materials**:
 
@@ -41,7 +42,9 @@ PromptKG Family: a Gallery of Prompt Learning & KG-related Research Works, Toolk
 
 Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey](https://arxiv.org/abs/2202.08063)\]\[[Paper-list](https://github.com/zjunlp/Low-resource-KEPapers)\]
 
-Reasoning with Language Model Prompting \[[Survey](https://arxiv.org/abs/2212.09597)\]\[[Paper-list](https://github.com/zjunlp/Prompt4ReasoningPapers)\]
+Reasoning with Language Model Prompting \[[Survey](https://arxiv.org/abs/2212.09597)\]\[[Paper-list](https://github.com/zjunlp/Prompt4ReasoningPapers)\]\[[ppt](https://github.com/zjunlp/Prompt4ReasoningPapers/blob/main/tutorial.pdf)\]
+
+
 
 **Related Toolkit**:
 
