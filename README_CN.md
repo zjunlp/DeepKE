@@ -30,6 +30,7 @@
 
 
 [DeepKE](https://arxiv.org/pdf/2201.03335.pdf) 是一个开源的知识图谱抽取与构建工具，支持<b>cnSchema、低资源、长篇章、多模态</b>的知识抽取工具，可以基于<b>PyTorch</b>实现<b>命名实体识别</b>、<b>关系抽取</b>和<b>属性抽取</b>功能。同时为初学者提供了[用户手册](), [文档](https://zjunlp.github.io/DeepKE/)，[Google Colab教程](https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing), [在线演示](http://deepke.zjukg.cn/CN/index.html), [论文](https://arxiv.org/pdf/2201.03335.pdf)和[演示文稿](https://github.com/zjunlp/DeepKE/blob/main/docs/slides/Slides-DeepKE-cn.pdf)。
+- ❗New: 我们发布了[DeepKE-GPT](http://deepke.openkg.cn/EN/llm.html) (基于ChatGPT).
 
 **阅读资料**:
 
@@ -41,7 +42,7 @@ PromptKG Family: a Gallery of Prompt Learning & KG-related Research Works, Toolk
 
 Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey](https://arxiv.org/abs/2202.08063)\]\[[Paper-list](https://github.com/zjunlp/Low-resource-KEPapers)\]
 
-基于大模型提示学习的推理工作综述 \[[论文](https://arxiv.org/abs/2212.09597)\]\[[列表](https://github.com/zjunlp/Prompt4ReasoningPapers)\]
+基于大模型提示学习的推理工作综述 \[[论文](https://arxiv.org/abs/2212.09597)\]\[[列表](https://github.com/zjunlp/Prompt4ReasoningPapers)\]\[[ppt](https://github.com/zjunlp/Prompt4ReasoningPapers/blob/main/tutorial.pdf)\]
 
 **相关工具**：
 
