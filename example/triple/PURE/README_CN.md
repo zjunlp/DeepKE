@@ -1,7 +1,7 @@
 ## 快速上手
 
 <p align="left">
-    <b> <a href="https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README.md">English</a> | 简体中文 </b>
+    <b> <a href="./README.md">English</a> | 简体中文 </b>
 </p>
 ### 环境依赖
 
