@@ -456,7 +456,7 @@ python predict.py
 
 <br>
 
-### 3. Event Extraction
+### 4. Event Extraction
 
 * Event extraction is the task to extract event type, event trigger words, event arguments from a unstructed text.
 * The data is stored in `.tsv` files, some instances are as follows:
@@ -494,7 +494,7 @@ python predict.py
     <tr> 
         <td> 收购方 </td>
         <td> 中国外运 </td>
-    </tr
+    </tr>
     <tr> 
         <td> 交易物 </td>
         <td> 股权 </td>
