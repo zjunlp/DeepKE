@@ -1,7 +1,7 @@
 # Easy Start
 
 <p align="left">
-    <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/triple/PRGC/README_CN.md">简体中文</a> </b>
+    <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/dev/example/triple/PRGC/README_CN.md">简体中文</a> </b>
 </p>
 
 ## Requirements
