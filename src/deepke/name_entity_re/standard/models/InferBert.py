@@ -1,12 +1,9 @@
-from __future__ import absolute_import, division, print_function
-
 import json
 import os
 
 import torch
 import torch.nn.functional as F
-from pytorch_transformers import (BertConfig, BertForTokenClassification,
-                                  BertTokenizer)
+from transformers import BertConfig, BertForTokenClassification, BertTokenizer
 from collections import OrderedDict
 from .BiLSTM_CRF import *
 
@@ -18,7 +15,13 @@ from nltk import word_tokenize
 
 class BertNer(BertForTokenClassification):
 
-    def forward(self, input_ids, token_type_ids=None, attention_mask=None, valid_ids=None):
+    def forward(
+        self, 
+        input_ids, 
+        token_type_ids=None, 
+        attention_mask=None, 
+        valid_ids=None
+    ):
         sequence_output = self.bert(input_ids, token_type_ids, attention_mask, head_mask=None)[0]
         batch_size,max_len,feat_dim = sequence_output.shape
         valid_output = torch.zeros(batch_size,max_len,feat_dim,dtype=torch.float32,device='cuda' if torch.cuda.is_available() else 'cpu')

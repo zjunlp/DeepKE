@@ -1,9 +1,0 @@
-nltk==3.6.6
-beautifulsoup4==4.6.0
-pattern==3.6
-pyicu
-pycld2
-morfessor==2.0.4
-polyglot==16.07.04
-tqdm
-stanfordcorenlp

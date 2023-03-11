@@ -5,8 +5,8 @@
 # populated at runtime
 cwd: ???
 
-
 defaults:
-  - run
-  - predict
-  - generate_data
+  - _self_
+  - override hydra/output: custom
+
+

@@ -27,9 +27,8 @@ ROLE_PH_MAP = {
     'Adjudicator': 'some adjudicator'
 }
 
-
 class eve_template_generator():
-    def __init__(self, passage, triggers, roles, input_style, output_style, vocab, instance_base=False, knowledge=None):
+    def __init__(self, passage, triggers, roles, input_style, output_style, vocab, instance_base=False):
         """
         generate strctured information for events
         
@@ -49,24 +48,19 @@ class eve_template_generator():
         self.output_style = output_style
         self.vocab = vocab
         self.event_templates = []
-        self.knowledge = knowledge if knowledge != None else {}
         if instance_base:
             for e_type in self.vocab['event_type_itos']:
                 theclass = getattr(sys.modules[__name__], e_type.replace(':', '_').replace('-', '_'), False)
                 if theclass:
-                    self.event_templates.append(
-                        theclass(self.input_style, self.output_style, passage, e_type, self.events, self.knowledge))
+                    self.event_templates.append(theclass(self.input_style, self.output_style, passage, e_type, self.events))
                 else:
                     print(e_type)
 
         else:
             for event in self.events:
-                theclass = getattr(sys.modules[__name__], event['event type'].replace(':', '_').replace('-', '_'),
-                                   False)
+                theclass = getattr(sys.modules[__name__], event['event type'].replace(':', '_').replace('-', '_'), False)
                 assert theclass
-                self.event_templates.append(
-                    theclass(self.input_style, self.output_style, event['tokens'], event['event type'], event,
-                             self.knowledge))
+                self.event_templates.append(theclass(self.input_style, self.output_style, event['tokens'], event['event type'], event))
         self.data = [x.generate_pair(x.trigger_text) for x in self.event_templates]
         self.data = [x for x in self.data if x]
 
@@ -93,13 +87,13 @@ class eve_template_generator():
             'passage': PASSAGE
         }
         """
-
+        
         events = {trigger: [] for trigger in triggers}
 
         for argument in roles:
             trigger = argument[0]
             events[trigger].append(argument)
-
+        
         event_structures = []
         for trigger, arguments in events.items():
             eve_type = trigger[2]
@@ -124,34 +118,29 @@ class eve_template_generator():
             })
         return event_structures
 
-
 class event_template():
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
         self.input_style = input_style
         self.output_style = output_style
         self.output_template = self.get_output_template()
         self.passage = ' '.join(passage)
         self.tokens = passage
         self.event_type = event_type
-        self.knowledge = knowledge
-        # if knowledge != '' and knowledge is not None:
-        #     self.passage = ' '.join(passage) + ' \n ' + knowledge
         if gold_event is not None:
             self.gold_event = gold_event
             if isinstance(gold_event, list):
                 # instance base
-                self.trigger_text = " and ".join(
-                    [x['trigger text'] for x in gold_event if x['event type'] == event_type])
-                self.trigger_span = [x['trigger span'] for x in gold_event if x['event type'] == event_type]
-                self.arguments = [x['arguments'] for x in gold_event if x['event type'] == event_type]
+                self.trigger_text = " and ".join([x['trigger text'] for x in gold_event if x['event type']==event_type])
+                self.trigger_span = [x['trigger span'] for x in gold_event if x['event type']==event_type]
+                self.arguments = [x['arguments'] for x in gold_event if x['event type']==event_type]
             else:
                 # trigger base
                 self.trigger_text = gold_event['trigger text']
                 self.trigger_span = [gold_event['trigger span']]
-                self.arguments = [gold_event['arguments']]
+                self.arguments = [gold_event['arguments']]         
         else:
             self.gold_event = None
-
+        
     @classmethod
     def get_keywords(self):
         pass
@@ -211,7 +200,7 @@ class event_template():
                 try:
                     # we need this ``try'' because we cannot gurantee the model will be bug-free on the matching
                     cor_tri = pred_trigger[pred[2]['cor tri cnt']]
-                    cor_tri_span = self.predstr2span(pred[0])[0]
+                    cor_tri_span = self.predstr2span(cor_tri[0])[0]
                     if cor_tri_span > -1:
                         pred_span = self.predstr2span(pred[0], cor_tri_span)
                     else:
@@ -225,7 +214,7 @@ class event_template():
                 pred_arg.append((pred_span[0], pred_span[1], pred[1]))
         pred_arg = list(set(pred_arg))
         pred_arg_num = len(pred_arg)
-
+        
         target = converted_gold
         match_id = 0
         match_type = 0
@@ -233,7 +222,7 @@ class event_template():
             id_flag = False
             id_type = False
             for gold in target:
-                if gold[0] == pred[0] and gold[1] == pred[1]:
+                if gold[0]==pred[0] and gold[1]==pred[1]:
                     id_flag = True
                     if gold[2] == pred[2]:
                         id_type = True
@@ -241,7 +230,7 @@ class event_template():
             match_id += int(id_flag)
             match_type += int(id_type)
         return {
-            'gold_tri_num': gold_tri_num,
+            'gold_tri_num': gold_tri_num, 
             'pred_tri_num': pred_tri_num,
             'match_tri_num': match_tri,
             'gold_arg_num': gold_arg_num,
@@ -249,7 +238,7 @@ class event_template():
             'match_arg_id': match_id,
             'match_arg_cls': match_type
         }
-
+    
     def get_converted_gold(self):
         converted_gold = []
         for argu in self.arguments:
@@ -257,33 +246,32 @@ class event_template():
                 for arg in arg_list:
                     converted_gold.append((arg['argument span'][0], arg['argument span'][1], arg_type))
         return list(set(converted_gold))
-
+    
     def predstr2span(self, pred_str, trigger_idx=None):
         sub_words = [_.strip() for _ in pred_str.strip().lower().split()]
-        candidates = []
+        candidates=[]
         for i in range(len(self.tokens)):
             j = 0
-            while j < len(sub_words) and i + j < len(self.tokens):
-                if self.tokens[i + j].lower() == sub_words[j]:
+            while j < len(sub_words) and i+j < len(self.tokens):
+                if self.tokens[i+j].lower() == sub_words[j]:
                     j += 1
                 else:
                     break
             if j == len(sub_words):
-                candidates.append((i, i + len(sub_words)))
+                candidates.append((i, i+len(sub_words)))
         if len(candidates) < 1:
             return -1, -1
         else:
             if trigger_idx is not None:
-                return sorted(candidates, key=lambda x: abs(trigger_idx - x[0]))[0]
+                return sorted(candidates, key=lambda x: abs(trigger_idx-x[0]))[0]
             else:
                 return candidates[0]
 
-
 class Life_Be_Born(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
-
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
+    
     @classmethod
     def get_keywords(self):
         return ['born', 'birth', 'bore']
@@ -312,9 +300,7 @@ class Life_Be_Born(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Be-Born' in self.knowledge.keys():
-            knowledge = self.knowledge['Be-Born']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -333,10 +319,8 @@ class Life_Be_Born(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else
-                            ROLE_PH_MAP['Person'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else ROLE_PH_MAP['Person'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} was born in {}.".format(*filler))
                         gold_sample = True
@@ -359,8 +343,7 @@ class Life_Be_Born(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -381,19 +364,18 @@ class Life_Be_Born(event_template):
                             except:
                                 pass
                         used_o_cnt += 1
-
+                    
         return output
-
 
 class Life_Marry(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
-
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
+    
     @classmethod
     def get_keywords(self):
         return ['marry', 'marriage', 'married']
-
+    
     def get_output_template(self):
         output_template = ''
         for o_style in OUTPUT_STYLE_SET:
@@ -418,9 +400,6 @@ class Life_Marry(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Marry' in self.knowledge.keys():
-            knowledge = self.knowledge['Marry']
-            input_str += ' \n {}'.format(knowledge[0])
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -439,10 +418,8 @@ class Life_Marry(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else
-                            ROLE_PH_MAP['Person'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else ROLE_PH_MAP['Person'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} got married in {}.".format(*filler))
                         gold_sample = True
@@ -464,10 +441,9 @@ class Life_Marry(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
-                                pass
+                                    pass
                         used_o_cnt += 1
                     if o_style == 'argument:sentence':
                         if used_o_cnt == cnt:
@@ -488,12 +464,11 @@ class Life_Marry(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Life_Divorce(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
-
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
+    
     @classmethod
     def get_keywords(self):
         return ['divorce', 'divorced', 'Divorce']
@@ -522,9 +497,7 @@ class Life_Divorce(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Divorce' in self.knowledge.keys():
-            knowledge = self.knowledge['Divorce']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -543,15 +516,13 @@ class Life_Divorce(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else
-                            ROLE_PH_MAP['Person'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else ROLE_PH_MAP['Person'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} divorced in {}.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
-
+                
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
         return (output_str, gold_sample)
 
@@ -569,8 +540,7 @@ class Life_Divorce(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -589,17 +559,16 @@ class Life_Divorce(event_template):
                                         if arg != ROLE_PH_MAP['Place']:
                                             output.append((arg, 'Place', {'cor tri cnt': a_cnt}))
                             except:
-                                pass
+                                    pass
                         used_o_cnt += 1
-
+                    
         return output
-
 
 class Life_Injure(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
-
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
+    
     @classmethod
     def get_keywords(self):
         return ['injure', 'wounded', 'hurt']
@@ -611,8 +580,7 @@ class Life_Injure(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody or some organization led to some victim injured by some way in somewhere.')
+                    output_template += ' \n {}'.format('somebody or some organization led to some victim injured by some way in somewhere.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -629,9 +597,7 @@ class Life_Injure(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Injure' in self.knowledge.keys():
-            knowledge = self.knowledge['Injure']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -650,20 +616,15 @@ class Life_Injure(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else
-                            ROLE_PH_MAP['Agent'],
-                            " and ".join([a['argument text'] for a in argu['Victim']]) if "Victim" in argu.keys() else
-                            ROLE_PH_MAP['Victim'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Instrument']]) if "Instrument" in argu.keys() else
-                            ROLE_PH_MAP['Instrument'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else ROLE_PH_MAP['Agent'],
+                            " and ".join([ a['argument text'] for a in argu['Victim']]) if "Victim" in argu.keys() else ROLE_PH_MAP['Victim'],
+                            " and ".join([ a['argument text'] for a in argu['Instrument']]) if "Instrument" in argu.keys() else ROLE_PH_MAP['Instrument'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} led to {} injured by {} in {}.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
-
+                
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
         return (output_str, gold_sample)
 
@@ -681,8 +642,7 @@ class Life_Injure(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -694,13 +654,9 @@ class Life_Injure(event_template):
                                     agent = agent.split(' and ')
                                     victim = (prediction.split(' led to ', 1)[1]).split(' injured by ', 1)[0]
                                     victim = victim.split(' and ')
-                                    instrument = \
-                                    ((prediction.split(' led to ', 1)[1]).split(' injured by ', 1)[1]).split(' in ', )[
-                                        0]
+                                    instrument = ((prediction.split(' led to ', 1)[1]).split(' injured by ', 1)[1]).split(' in ', )[0]
                                     instrument = instrument.split(' and ')
-                                    place = \
-                                    ((prediction.split(' led to ', 1)[1]).split(' injured by ', 1)[1]).split(' in ', 1)[
-                                        1].rsplit('.', 1)[0]
+                                    place = ((prediction.split(' led to ', 1)[1]).split(' injured by ', 1)[1]).split(' in ', 1)[1].rsplit('.',1)[0]
                                     place = place.split(' and ')
                                     for arg in agent:
                                         if arg != ROLE_PH_MAP['Agent']:
@@ -710,26 +666,25 @@ class Life_Injure(event_template):
                                             output.append((arg, 'Victim', {'cor tri cnt': a_cnt}))
                                     for arg in instrument:
                                         if arg != ROLE_PH_MAP['Instrument']:
-                                            output.append((arg, 'Instrument', {'cor tri cnt': a_cnt}))
+                                            output.append((arg, 'Instrument', {'cor tri cnt': a_cnt}))                    
                                     for arg in place:
                                         if arg != ROLE_PH_MAP['Place']:
                                             output.append((arg, 'Place', {'cor tri cnt': a_cnt}))
                             except Exception as e:
                                 pass
                         used_o_cnt += 1
-
+                    
         return output
-
 
 class Life_Die(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
-
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
+    
     @classmethod
     def get_keywords(self):
         return ['kill', 'death', 'assassination']
-
+    
     def get_output_template(self):
         output_template = ''
         for o_style in OUTPUT_STYLE_SET:
@@ -737,8 +692,7 @@ class Life_Die(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody or some organization led to some victim died by some way in somewhere.')
+                    output_template += ' \n {}'.format('somebody or some organization led to some victim died by some way in somewhere.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -755,9 +709,7 @@ class Life_Die(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Die' in self.knowledge.keys():
-            knowledge = self.knowledge['Die']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -776,20 +728,15 @@ class Life_Die(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else
-                            ROLE_PH_MAP['Agent'],
-                            " and ".join([a['argument text'] for a in argu['Victim']]) if "Victim" in argu.keys() else
-                            ROLE_PH_MAP['Victim'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Instrument']]) if "Instrument" in argu.keys() else
-                            ROLE_PH_MAP['Instrument'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else ROLE_PH_MAP['Agent'],
+                            " and ".join([ a['argument text'] for a in argu['Victim']]) if "Victim" in argu.keys() else ROLE_PH_MAP['Victim'],
+                            " and ".join([ a['argument text'] for a in argu['Instrument']]) if "Instrument" in argu.keys() else ROLE_PH_MAP['Instrument'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} led to {} died by {} in {}.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
-
+                
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
         return (output_str, gold_sample)
 
@@ -807,8 +754,7 @@ class Life_Die(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -820,12 +766,9 @@ class Life_Die(event_template):
                                     agent = agent.split(' and ')
                                     victim = (prediction.split(' led to ', 1)[1]).split(' died by ', 1)[0]
                                     victim = victim.split(' and ')
-                                    instrument = \
-                                    ((prediction.split(' led to ', 1)[1]).split(' died by ', 1)[1]).split(' in ', )[0]
+                                    instrument = ((prediction.split(' led to ', 1)[1]).split(' died by ', 1)[1]).split(' in ', )[0]
                                     instrument = instrument.split(' and ')
-                                    place = \
-                                    ((prediction.split(' led to ', 1)[1]).split(' died by ', 1)[1]).split(' in ', 1)[
-                                        1].rsplit('.', 1)[0]
+                                    place = ((prediction.split(' led to ', 1)[1]).split(' died by ', 1)[1]).split(' in ', 1)[1].rsplit('.',1)[0]
                                     place = place.split(' and ')
                                     for arg in agent:
                                         if arg != ROLE_PH_MAP['Agent']:
@@ -835,7 +778,7 @@ class Life_Die(event_template):
                                             output.append((arg, 'Victim', {'cor tri cnt': a_cnt}))
                                     for arg in instrument:
                                         if arg != ROLE_PH_MAP['Instrument']:
-                                            output.append((arg, 'Instrument', {'cor tri cnt': a_cnt}))
+                                            output.append((arg, 'Instrument', {'cor tri cnt': a_cnt}))         
                                     for arg in place:
                                         if arg != ROLE_PH_MAP['Place']:
                                             output.append((arg, 'Place', {'cor tri cnt': a_cnt}))
@@ -844,16 +787,15 @@ class Life_Die(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Movement_Transport(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
-
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
+    
     @classmethod
     def get_keywords(self):
         return ['travel', 'go', 'move']
-
+    
     def get_output_template(self):
         output_template = ''
         for o_style in OUTPUT_STYLE_SET:
@@ -861,8 +803,7 @@ class Movement_Transport(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'something was sent to somewhere from some place by some vehicle. somebody or some organization was responsible for the transport.')
+                    output_template += ' \n {}'.format('something was sent to somewhere from some place by some vehicle. somebody or some organization was responsible for the transport.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -872,17 +813,14 @@ class Movement_Transport(event_template):
                 if i_style == 'event_type':
                     input_str += ' \n {}'.format('movement event, transport sub-type')
                 if i_style == 'event_type_sent':
-                    input_str += ' \n {}'.format(
-                        'The event is related to movement. The event occurs when a weapon or vehicle is moved from one place to another.')
+                    input_str += ' \n {}'.format('The event is related to movement. The event occurs when a weapon or vehicle is moved from one place to another.')
                 if i_style == 'keywords':
                     input_str += ' \n Similar triggers such as {}'.format(', '.join(self.get_keywords()))
                 if i_style == 'triggers':
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Transport' in self.knowledge.keys():
-            knowledge = self.knowledge['Transport']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -901,24 +839,16 @@ class Movement_Transport(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join(
-                                [a['argument text'] for a in argu['Artifact']]) if "Artifact" in argu.keys() else
-                            ROLE_PH_MAP['Artifact'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Destination']]) if "Destination" in argu.keys() else
-                            ROLE_PH_MAP['Destination'],
-                            " and ".join([a['argument text'] for a in argu['Origin']]) if "Origin" in argu.keys() else
-                            ROLE_PH_MAP['Origin'],
-                            " and ".join([a['argument text'] for a in argu['Vehicle']]) if "Vehicle" in argu.keys() else
-                            ROLE_PH_MAP['Vehicle'],
-                            " and ".join([a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else
-                            ROLE_PH_MAP['Agent']
+                            " and ".join([ a['argument text'] for a in argu['Artifact']]) if "Artifact" in argu.keys() else ROLE_PH_MAP['Artifact'],
+                            " and ".join([ a['argument text'] for a in argu['Destination']]) if "Destination" in argu.keys() else ROLE_PH_MAP['Destination'],
+                            " and ".join([ a['argument text'] for a in argu['Origin']]) if "Origin" in argu.keys() else ROLE_PH_MAP['Origin'],
+                            " and ".join([ a['argument text'] for a in argu['Vehicle']]) if "Vehicle" in argu.keys() else ROLE_PH_MAP['Vehicle'],
+                            " and ".join([ a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else ROLE_PH_MAP['Agent']
                         )
-                        output_texts.append(
-                            "{} was sent to {} from {} by {}. {} was responsible for the transport.".format(*filler))
+                        output_texts.append("{} was sent to {} from {} by {}. {} was responsible for the transport.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
-
+                
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
         return (output_str, gold_sample)
 
@@ -936,8 +866,7 @@ class Movement_Transport(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -949,17 +878,11 @@ class Movement_Transport(event_template):
                                     artifact = artifact.split(' and ')
                                     destination = (prediction.split(' was sent to ', 1)[1]).split(' from ', 1)[0]
                                     destination = destination.split(' and ')
-                                    origin = \
-                                    ((prediction.split(' was sent to ', 1)[1]).split(' from ', 1)[1]).split(' by ', 1)[
-                                        0]
+                                    origin = ((prediction.split(' was sent to ', 1)[1]).split(' from ', 1)[1]).split(' by ', 1)[0]
                                     origin = origin.split(' and ')
-                                    vehicle = (
-                                    ((prediction.split(' was sent to ', 1)[1]).split(' from ', 1)[1]).split(' by ', 1)[
-                                        1]).split('.', 1)[0]
+                                    vehicle = (((prediction.split(' was sent to ', 1)[1]).split(' from ', 1)[1]).split(' by ', 1)[1]).split('.', 1)[0]
                                     vehicle = vehicle.split(' and ')
-                                    remain = (
-                                    ((prediction.split(' was sent to ', 1)[1]).split(' from ', 1)[1]).split(' by ', 1)[
-                                        1]).split('.', 1)[1]
+                                    remain = (((prediction.split(' was sent to ', 1)[1]).split(' from ', 1)[1]).split(' by ', 1)[1]).split('.', 1)[1]
                                     if 'was responsible for the transport' in remain:
                                         agent = (remain.split(' was responsible for the transport.')[0]).strip()
                                         agent = agent.split(' and ')
@@ -974,7 +897,7 @@ class Movement_Transport(event_template):
                                             output.append((arg, 'Artifact', {'cor tri cnt': a_cnt}))
                                     for arg in destination:
                                         if arg != ROLE_PH_MAP['Destination']:
-                                            output.append((arg, 'Destination', {'cor tri cnt': a_cnt}))
+                                            output.append((arg, 'Destination', {'cor tri cnt': a_cnt}))          
                                     for arg in origin:
                                         if arg != ROLE_PH_MAP['Origin']:
                                             output.append((arg, 'Origin', {'cor tri cnt': a_cnt}))
@@ -984,14 +907,13 @@ class Movement_Transport(event_template):
                             except:
                                 pass
                         used_o_cnt += 1
-
+                    
         return output
-
 
 class Transaction_Transfer_Ownership(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -1014,17 +936,14 @@ class Transaction_Transfer_Ownership(event_template):
                 if i_style == 'event_type':
                     input_str += ' \n {}'.format('transaction event, transfer ownership sub-type')
                 if i_style == 'event_type_sent':
-                    input_str += ' \n {}'.format(
-                        'The event is related to transaction. The event occurs when an item or an organization is sold or gave to some other.')
+                    input_str += ' \n {}'.format('The event is related to transaction. The event occurs when an item or an organization is sold or gave to some other.')
                 if i_style == 'keywords':
                     input_str += ' \n Similar triggers such as {}'.format(', '.join(self.get_keywords()))
                 if i_style == 'triggers':
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Transfer-Ownership' in self.knowledge.keys():
-            knowledge = self.knowledge['Transfer-Ownership']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -1044,23 +963,19 @@ class Transaction_Transfer_Ownership(event_template):
                     for argu in self.arguments:
                         buyer_list = []
                         if "Beneficiary" in argu.keys():
-                            buyer_list.extend([a['argument text'] for a in argu['Beneficiary']])
+                            buyer_list.extend([ a['argument text'] for a in argu['Beneficiary']])
                         if "Buyer" in argu.keys():
-                            buyer_list.extend([a['argument text'] for a in argu['Buyer']])
+                            buyer_list.extend([ a['argument text'] for a in argu['Buyer']])
                         filler = (
-                            " and ".join(buyer_list) if len(buyer_list) > 0 else ROLE_PH_MAP['Buyer'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Artifact']]) if "Artifact" in argu.keys() else
-                            ROLE_PH_MAP['Artifact'],
-                            " and ".join([a['argument text'] for a in argu['Seller']]) if "Seller" in argu.keys() else
-                            ROLE_PH_MAP['Seller'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join(buyer_list) if len(buyer_list)>0 else ROLE_PH_MAP['Buyer'],
+                            " and ".join([ a['argument text'] for a in argu['Artifact']]) if "Artifact" in argu.keys() else ROLE_PH_MAP['Artifact'],
+                            " and ".join([ a['argument text'] for a in argu['Seller']]) if "Seller" in argu.keys() else ROLE_PH_MAP['Seller'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} got {} from {} in {}.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
-
+                
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
         return (output_str, gold_sample)
 
@@ -1078,8 +993,7 @@ class Transaction_Transfer_Ownership(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -1099,7 +1013,7 @@ class Transaction_Transfer_Ownership(event_template):
                                     seller = seller.split(' and ')
                                     remain = remain.split(' in ', 1)[1]
 
-                                    place = remain.rsplit('.', 1)[0]
+                                    place = remain.rsplit('.',1)[0]
                                     place = place.split(' and ')
 
                                     for arg in buyer:
@@ -1110,21 +1024,20 @@ class Transaction_Transfer_Ownership(event_template):
                                             output.append((arg, 'Artifact', {'cor tri cnt': a_cnt}))
                                     for arg in seller:
                                         if arg != ROLE_PH_MAP['Seller']:
-                                            output.append((arg, 'Seller', {'cor tri cnt': a_cnt}))
+                                            output.append((arg, 'Seller', {'cor tri cnt': a_cnt}))          
                                     for arg in place:
                                         if arg != ROLE_PH_MAP['Place']:
                                             output.append((arg, 'Place', {'cor tri cnt': a_cnt}))
                             except:
                                 pass
                         used_o_cnt += 1
-
+                    
         return output
-
 
 class Transaction_Transfer_Money(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -1147,17 +1060,14 @@ class Transaction_Transfer_Money(event_template):
                 if i_style == 'event_type':
                     input_str += ' \n {}'.format('transaction event, transfer money sub-type')
                 if i_style == 'event_type_sent':
-                    input_str += ' \n {}'.format(
-                        'The event is related to transaction. The event occurs when someone is giving, receiving, borrowing, or lending money.')
+                    input_str += ' \n {}'.format('The event is related to transaction. The event occurs when someone is giving, receiving, borrowing, or lending money.')
                 if i_style == 'keywords':
                     input_str += ' \n Similar triggers such as {}'.format(', '.join(self.get_keywords()))
                 if i_style == 'triggers':
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Transfer-Money' in self.knowledge.keys():
-            knowledge = self.knowledge['Transfer-Money']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -1177,20 +1087,18 @@ class Transaction_Transfer_Money(event_template):
                     for argu in self.arguments:
                         recipient_list = []
                         if "Recipient" in argu.keys():
-                            recipient_list.extend([a['argument text'] for a in argu['Recipient']])
+                            recipient_list.extend([ a['argument text'] for a in argu['Recipient']])
                         if "Beneficiary" in argu.keys():
-                            recipient_list.extend([a['argument text'] for a in argu['Beneficiary']])
+                            recipient_list.extend([ a['argument text'] for a in argu['Beneficiary']])
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Giver']]) if "Giver" in argu.keys() else
-                            ROLE_PH_MAP['Giver'],
-                            " and ".join(recipient_list) if len(recipient_list) > 0 else ROLE_PH_MAP['Recipient'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Giver']]) if "Giver" in argu.keys() else ROLE_PH_MAP['Giver'],
+                            " and ".join(recipient_list) if len(recipient_list)>0 else ROLE_PH_MAP['Recipient'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} paid {} in {}.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
-
+                
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
         return (output_str, gold_sample)
 
@@ -1208,8 +1116,7 @@ class Transaction_Transfer_Money(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -1225,7 +1132,7 @@ class Transaction_Transfer_Money(event_template):
                                     recipient = recipient.split(' and ')
                                     remain = remain.split(' in ', 1)[1]
 
-                                    place = remain.rsplit('.', 1)[0]
+                                    place = remain.rsplit('.',1)[0]
                                     place = place.split(' and ')
 
                                     for arg in giver:
@@ -1233,21 +1140,20 @@ class Transaction_Transfer_Money(event_template):
                                             output.append((arg, 'Giver', {'cor tri cnt': a_cnt}))
                                     for arg in recipient:
                                         if arg != ROLE_PH_MAP['Recipient']:
-                                            output.append((arg, 'Recipient', {'cor tri cnt': a_cnt}))
+                                            output.append((arg, 'Recipient', {'cor tri cnt': a_cnt}))          
                                     for arg in place:
                                         if arg != ROLE_PH_MAP['Place']:
                                             output.append((arg, 'Place', {'cor tri cnt': a_cnt}))
                             except:
                                 pass
                         used_o_cnt += 1
-
+                    
         return output
-
 
 class Business_Start_Org(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -1260,8 +1166,7 @@ class Business_Start_Org(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody or some organization launched some organization in somewhere.')
+                    output_template += ' \n {}'.format('somebody or some organization launched some organization in somewhere.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -1278,9 +1183,7 @@ class Business_Start_Org(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Start-Org' in self.knowledge.keys():
-            knowledge = self.knowledge['Start-Org']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -1299,12 +1202,9 @@ class Business_Start_Org(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else
-                            ROLE_PH_MAP['Agent'],
-                            " and ".join([a['argument text'] for a in argu['Org']]) if "Org" in argu.keys() else
-                            ROLE_PH_MAP['Org'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else ROLE_PH_MAP['Agent'],
+                            " and ".join([ a['argument text'] for a in argu['Org']]) if "Org" in argu.keys() else ROLE_PH_MAP['Org'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} launched {} in {}.".format(*filler))
                         gold_sample = True
@@ -1326,8 +1226,7 @@ class Business_Start_Org(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -1343,28 +1242,27 @@ class Business_Start_Org(event_template):
                                     org = org.split(' and ')
                                     remain = remain.split(' in ', 1)[1]
 
-                                    place = remain.rsplit('.', 1)[0]
+                                    place = remain.rsplit('.',1)[0]
                                     place = place.split(' and ')
                                     for arg in agent:
                                         if arg != ROLE_PH_MAP['Agent']:
                                             output.append((arg, 'Agent', {'cor tri cnt': a_cnt}))
                                     for arg in org:
                                         if arg != ROLE_PH_MAP['Org']:
-                                            output.append((arg, 'Org', {'cor tri cnt': a_cnt}))
+                                            output.append((arg, 'Org', {'cor tri cnt': a_cnt}))                  
                                     for arg in place:
                                         if arg != ROLE_PH_MAP['Place']:
                                             output.append((arg, 'Place', {'cor tri cnt': a_cnt}))
                             except:
                                 pass
                         used_o_cnt += 1
-
+                    
         return output
-
 
 class Business_Merge_Org(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -1387,17 +1285,14 @@ class Business_Merge_Org(event_template):
                 if i_style == 'event_type':
                     input_str += ' \n {}'.format('business event, merge organization sub-type')
                 if i_style == 'event_type_sent':
-                    input_str += ' \n {}'.format(
-                        'The event is related to two or more organization coming together to form a new organization.')
+                    input_str += ' \n {}'.format('The event is related to two or more organization coming together to form a new organization.')
                 if i_style == 'keywords':
                     input_str += ' \n Similar triggers such as {}'.format(', '.join(self.get_keywords()))
                 if i_style == 'triggers':
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Merge-Org' in self.knowledge.keys():
-            knowledge = self.knowledge['Merge-Org']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -1416,13 +1311,12 @@ class Business_Merge_Org(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Org']]) if "Org" in argu.keys() else
-                            ROLE_PH_MAP['Org']
+                            " and ".join([ a['argument text'] for a in argu['Org']]) if "Org" in argu.keys() else ROLE_PH_MAP['Org']
                         )
                         output_texts.append("{} was merged.".format(filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
-
+                
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
         return (output_str, gold_sample)
 
@@ -1440,8 +1334,7 @@ class Business_Merge_Org(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -1453,18 +1346,17 @@ class Business_Merge_Org(event_template):
                                     org = org.split(' and ')
                                     for arg in org:
                                         if arg != ROLE_PH_MAP['Org']:
-                                            output.append((arg, 'Org', {'cor tri cnt': a_cnt}))
+                                            output.append((arg, 'Org', {'cor tri cnt': a_cnt}))                  
                             except:
                                 pass
                         used_o_cnt += 1
-
+                    
         return output
-
 
 class Business_Declare_Bankruptcy(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -1494,10 +1386,7 @@ class Business_Declare_Bankruptcy(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Declare-Bankruptcy' in self.knowledge.keys():
-            knowledge = self.knowledge['Declare-Bankruptcy']
-            input_str += ' \n {}'.format(knowledge[0])
-            # print(input_str)
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -1516,13 +1405,12 @@ class Business_Declare_Bankruptcy(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Org']]) if "Org" in argu.keys() else
-                            ROLE_PH_MAP['Org']
+                            " and ".join([ a['argument text'] for a in argu['Org']]) if "Org" in argu.keys() else ROLE_PH_MAP['Org']
                         )
                         output_texts.append("{} declared bankruptcy.".format(filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
-
+                
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
         return (output_str, gold_sample)
 
@@ -1540,8 +1428,7 @@ class Business_Declare_Bankruptcy(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -1553,22 +1440,21 @@ class Business_Declare_Bankruptcy(event_template):
                                     org = org.split(' and ')
                                     for arg in org:
                                         if arg != ROLE_PH_MAP['Org']:
-                                            output.append((arg, 'Org', {'cor tri cnt': a_cnt}))
+                                            output.append((arg, 'Org', {'cor tri cnt': a_cnt}))                  
                             except:
                                 pass
                         used_o_cnt += 1
-
+                    
         return output
-
 
 class Business_End_Org(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
-
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
+    
     @classmethod
     def get_keywords(self):
-        return ['dissolve', 'disbanded', 'close']
+        return ['dissolve', 'disbanded', 'close'] 
 
     def get_output_template(self):
         output_template = ''
@@ -1594,9 +1480,7 @@ class Business_End_Org(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'End-Org' in self.knowledge.keys():
-            knowledge = self.knowledge['End-Org']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -1615,13 +1499,12 @@ class Business_End_Org(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Org']]) if "Org" in argu.keys() else
-                            ROLE_PH_MAP['Org']
+                            " and ".join([ a['argument text'] for a in argu['Org']]) if "Org" in argu.keys() else ROLE_PH_MAP['Org']
                         )
                         output_texts.append("{} dissolved.".format(filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
-
+                
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
         return (output_str, gold_sample)
 
@@ -1639,8 +1522,7 @@ class Business_End_Org(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -1652,18 +1534,17 @@ class Business_End_Org(event_template):
                                     org = org.split(' and ')
                                     for arg in org:
                                         if arg != ROLE_PH_MAP['Org']:
-                                            output.append((arg, 'Org', {'cor tri cnt': a_cnt}))
+                                            output.append((arg, 'Org', {'cor tri cnt': a_cnt}))                  
                             except:
                                 pass
                         used_o_cnt += 1
-
+                    
         return output
-
 
 class Conflict_Attack(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -1676,8 +1557,7 @@ class Conflict_Attack(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'some attacker attacked some facility, someone, or some organization by some way in somewhere.')
+                    output_template += ' \n {}'.format('some attacker attacked some facility, someone, or some organization by some way in somewhere.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -1694,9 +1574,7 @@ class Conflict_Attack(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Attack' in self.knowledge.keys():
-            knowledge = self.knowledge['Attack']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -1716,23 +1594,19 @@ class Conflict_Attack(event_template):
                     for argu in self.arguments:
                         attacker_list = []
                         if "Attacker" in argu.keys():
-                            attacker_list.extend([a['argument text'] for a in argu['Attacker']])
+                            attacker_list.extend([ a['argument text'] for a in argu['Attacker']])
                         if "Agent" in argu.keys():
-                            attacker_list.extend([a['argument text'] for a in argu['Agent']])
+                            attacker_list.extend([ a['argument text'] for a in argu['Agent']])  
                         filler = (
-                            " and ".join(attacker_list) if len(attacker_list) > 0 else ROLE_PH_MAP['Attacker'],
-                            " and ".join([a['argument text'] for a in argu['Target']]) if "Target" in argu.keys() else
-                            ROLE_PH_MAP['Target'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Instrument']]) if "Instrument" in argu.keys() else
-                            ROLE_PH_MAP['Instrument'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join(attacker_list) if len(attacker_list)>0 else ROLE_PH_MAP['Attacker'],
+                            " and ".join([ a['argument text'] for a in argu['Target']]) if "Target" in argu.keys() else ROLE_PH_MAP['Target'],
+                            " and ".join([ a['argument text'] for a in argu['Instrument']]) if "Instrument" in argu.keys() else ROLE_PH_MAP['Instrument'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} attacked {} by {} in {}.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
-
+                
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
         return (output_str, gold_sample)
 
@@ -1750,10 +1624,9 @@ class Conflict_Attack(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except Exception as e:
-                                # print(e)
+                                #print(e)
                                 pass
                         used_o_cnt += 1
                     if o_style == 'argument:sentence':
@@ -1772,7 +1645,7 @@ class Conflict_Attack(event_template):
                                     instrument = instrument.split(' and ')
                                     remain = remain.split(' in ', 1)[1]
 
-                                    place = remain.rsplit('.', 1)[0]
+                                    place = remain.rsplit('.',1)[0]
                                     place = place.split(' and ')
                                     for arg in attack:
                                         if arg != ROLE_PH_MAP['Attacker']:
@@ -1782,20 +1655,19 @@ class Conflict_Attack(event_template):
                                             output.append((arg, 'Target', {'cor tri cnt': a_cnt}))
                                     for arg in instrument:
                                         if arg != ROLE_PH_MAP['Instrument']:
-                                            output.append((arg, 'Instrument', {'cor tri cnt': a_cnt}))
+                                            output.append((arg, 'Instrument', {'cor tri cnt': a_cnt}))                    
                                     for arg in place:
                                         if arg != ROLE_PH_MAP['Place']:
                                             output.append((arg, 'Place', {'cor tri cnt': a_cnt}))
                             except:
                                 pass
                         used_o_cnt += 1
-
+                    
         return output
 
-
 class Conflict_Demonstrate(event_template):
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -1818,17 +1690,14 @@ class Conflict_Demonstrate(event_template):
                 if i_style == 'event_type':
                     input_str += ' \n {}'.format('conflict event, demonstrate sub-type')
                 if i_style == 'event_type_sent':
-                    input_str += ' \n {}'.format(
-                        'The event is related to a large number of people coming together to protest.')
+                    input_str += ' \n {}'.format('The event is related to a large number of people coming together to protest.')
                 if i_style == 'keywords':
                     input_str += ' \n Similar triggers such as {}'.format(', '.join(self.get_keywords()))
                 if i_style == 'triggers':
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Demonstrate' in self.knowledge.keys():
-            knowledge = self.knowledge['Demonstrate']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -1847,10 +1716,8 @@ class Conflict_Demonstrate(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else
-                            ROLE_PH_MAP['Entity'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else ROLE_PH_MAP['Entity'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} protest at {}.".format(*filler))
                         gold_sample = True
@@ -1872,8 +1739,7 @@ class Conflict_Demonstrate(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -1885,7 +1751,7 @@ class Conflict_Demonstrate(event_template):
                                     entity = entity.split(' and ')
                                     remain = prediction.split(' protest at ', 1)[1]
 
-                                    place = remain.rsplit('.', 1)[0]
+                                    place = remain.rsplit('.',1)[0]
                                     place = place.split(' and ')
                                     for arg in entity:
                                         if arg != ROLE_PH_MAP['Entity']:
@@ -1894,15 +1760,14 @@ class Conflict_Demonstrate(event_template):
                                         if arg != ROLE_PH_MAP['Place']:
                                             output.append((arg, 'Place', {'cor tri cnt': a_cnt}))
                             except:
-                                pass
+                                pass                                    
                         used_o_cnt += 1
-
+                    
         return output
 
-
 class Contact_Meet(event_template):
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -1925,17 +1790,14 @@ class Contact_Meet(event_template):
                 if i_style == 'event_type':
                     input_str += ' \n {}'.format('contact event, meet sub-type')
                 if i_style == 'event_type_sent':
-                    input_str += ' \n {}'.format(
-                        'The event is related to a group of people meeting and interacting with one another face-to-face.')
+                    input_str += ' \n {}'.format('The event is related to a group of people meeting and interacting with one another face-to-face.')
                 if i_style == 'keywords':
                     input_str += ' \n Similar triggers such as {}'.format(', '.join(self.get_keywords()))
                 if i_style == 'triggers':
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Meet' in self.knowledge.keys():
-            knowledge = self.knowledge['Meet']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -1954,15 +1816,13 @@ class Contact_Meet(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else
-                            ROLE_PH_MAP['Entity'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else ROLE_PH_MAP['Entity'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} met at {}.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
-
+                
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
         return (output_str, gold_sample)
 
@@ -1980,8 +1840,7 @@ class Contact_Meet(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -1993,7 +1852,7 @@ class Contact_Meet(event_template):
                                     entity = entity.split(' and ')
                                     remain = prediction.split(' met at ', 1)[1]
 
-                                    place = remain.rsplit('.', 1)[0]
+                                    place = remain.rsplit('.',1)[0]
                                     place = place.split(' and ')
                                     for arg in entity:
                                         if arg != ROLE_PH_MAP['Entity']:
@@ -2002,15 +1861,14 @@ class Contact_Meet(event_template):
                                         if arg != ROLE_PH_MAP['Place']:
                                             output.append((arg, 'Place', {'cor tri cnt': a_cnt}))
                             except:
-                                pass
+                                pass                                    
                         used_o_cnt += 1
-
+                    
         return output
-
-
+    
 class Contact_Phone_Write(event_template):
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -2023,8 +1881,7 @@ class Contact_Phone_Write(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'some people or some organization called or texted messages at somewhere.')
+                    output_template += ' \n {}'.format('some people or some organization called or texted messages at somewhere.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -2034,17 +1891,14 @@ class Contact_Phone_Write(event_template):
                 if i_style == 'event_type':
                     input_str += ' \n {}'.format('contact event, phone write sub-type')
                 if i_style == 'event_type_sent':
-                    input_str += ' \n {}'.format(
-                        'The event is related to people phone calling or messaging one another.')
+                    input_str += ' \n {}'.format('The event is related to people phone calling or messaging one another.')
                 if i_style == 'keywords':
                     input_str += ' \n Similar triggers such as {}'.format(', '.join(self.get_keywords()))
                 if i_style == 'triggers':
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Phone-Write' in self.knowledge.keys():
-            knowledge = self.knowledge['Phone-Write']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -2063,15 +1917,13 @@ class Contact_Phone_Write(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else
-                            ROLE_PH_MAP['Entity'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else ROLE_PH_MAP['Entity'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} called or texted messages at {}.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
-
+                
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
         return (output_str, gold_sample)
 
@@ -2089,8 +1941,7 @@ class Contact_Phone_Write(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -2102,7 +1953,7 @@ class Contact_Phone_Write(event_template):
                                     entity = entity.split(' and ')
                                     remain = prediction.split(' called or texted messages at ', 1)[1]
 
-                                    place = remain.rsplit('.', 1)[0]
+                                    place = remain.rsplit('.',1)[0]
                                     place = place.split(' and ')
                                     for arg in entity:
                                         if arg != ROLE_PH_MAP['Entity']:
@@ -2111,16 +1962,15 @@ class Contact_Phone_Write(event_template):
                                         if arg != ROLE_PH_MAP['Place']:
                                             output.append((arg, 'Place', {'cor tri cnt': a_cnt}))
                             except:
-                                pass
+                                pass                                   
                         used_o_cnt += 1
-
+                    
         return output
-
-
+            
 class Personnel_Start_Position(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -2133,8 +1983,7 @@ class Personnel_Start_Position(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody got new job and was hired by some people or some organization in somewhere.')
+                    output_template += ' \n {}'.format('somebody got new job and was hired by some people or some organization in somewhere.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -2144,17 +1993,14 @@ class Personnel_Start_Position(event_template):
                 if i_style == 'event_type':
                     input_str += ' \n {}'.format('personnel event, start position sub-type')
                 if i_style == 'event_type_sent':
-                    input_str += ' \n {}'.format(
-                        'The event is related to a person begins working for an organization or a hiring manager.')
+                    input_str += ' \n {}'.format('The event is related to a person begins working for an organization or a hiring manager.')
                 if i_style == 'keywords':
                     input_str += ' \n Similar triggers such as {}'.format(', '.join(self.get_keywords()))
                 if i_style == 'triggers':
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Start-Position' in self.knowledge.keys():
-            knowledge = self.knowledge['Start-Position']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -2173,12 +2019,9 @@ class Personnel_Start_Position(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else
-                            ROLE_PH_MAP['Person'],
-                            " and ".join([a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else
-                            ROLE_PH_MAP['Entity'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else ROLE_PH_MAP['Person'],
+                            " and ".join([ a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else ROLE_PH_MAP['Entity'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} got new job and was hired by {} in {}.".format(*filler))
                         gold_sample = True
@@ -2200,8 +2043,7 @@ class Personnel_Start_Position(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -2217,7 +2059,7 @@ class Personnel_Start_Position(event_template):
                                     entity = entity.split(' and ')
                                     remain = remain.split(' in ', 1)[1]
 
-                                    place = remain.rsplit('.', 1)[0]
+                                    place = remain.rsplit('.',1)[0]
                                     place = place.split(' and ')
                                     for arg in person:
                                         if arg != ROLE_PH_MAP['Person']:
@@ -2233,11 +2075,10 @@ class Personnel_Start_Position(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Personnel_End_Position(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -2250,8 +2091,7 @@ class Personnel_End_Position(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody stopped working for some people or some organization at somewhere.')
+                    output_template += ' \n {}'.format('somebody stopped working for some people or some organization at somewhere.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -2261,17 +2101,14 @@ class Personnel_End_Position(event_template):
                 if i_style == 'event_type':
                     input_str += ' \n {}'.format('personnel event, end position sub-type')
                 if i_style == 'event_type_sent':
-                    input_str += ' \n {}'.format(
-                        'The event is related to a person stops working for an organization or a hiring manager.')
+                    input_str += ' \n {}'.format('The event is related to a person stops working for an organization or a hiring manager.')
                 if i_style == 'keywords':
                     input_str += ' \n Similar triggers such as {}'.format(', '.join(self.get_keywords()))
                 if i_style == 'triggers':
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'End-Position' in self.knowledge.keys():
-            knowledge = self.knowledge['End-Position']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -2290,12 +2127,9 @@ class Personnel_End_Position(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else
-                            ROLE_PH_MAP['Person'],
-                            " and ".join([a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else
-                            ROLE_PH_MAP['Entity'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else ROLE_PH_MAP['Person'],
+                            " and ".join([ a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else ROLE_PH_MAP['Entity'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} stopped working for {} at {}.".format(*filler))
                         gold_sample = True
@@ -2317,8 +2151,7 @@ class Personnel_End_Position(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -2334,7 +2167,7 @@ class Personnel_End_Position(event_template):
                                     entity = entity.split(' and ')
                                     remain = remain.split(' at ', 1)[1]
 
-                                    place = remain.rsplit('.', 1)[0]
+                                    place = remain.rsplit('.',1)[0]
                                     place = place.split(' and ')
                                     for arg in person:
                                         if arg != ROLE_PH_MAP['Person']:
@@ -2350,11 +2183,10 @@ class Personnel_End_Position(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Personnel_Nominate(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -2367,8 +2199,7 @@ class Personnel_Nominate(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody was nominated by somebody or some organization to do a job.')
+                    output_template += ' \n {}'.format('somebody was nominated by somebody or some organization to do a job.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -2385,9 +2216,7 @@ class Personnel_Nominate(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Nominate' in self.knowledge.keys():
-            knowledge = self.knowledge['Nominate']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -2406,10 +2235,8 @@ class Personnel_Nominate(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else
-                            ROLE_PH_MAP['Person'],
-                            " and ".join([a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else
-                            ROLE_PH_MAP['Agent']
+                            " and ".join([ a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else ROLE_PH_MAP['Person'],
+                            " and ".join([ a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else ROLE_PH_MAP['Agent']
                         )
                         output_texts.append("{} was nominated by {} to do a job.".format(*filler))
                         gold_sample = True
@@ -2431,8 +2258,7 @@ class Personnel_Nominate(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -2444,7 +2270,7 @@ class Personnel_Nominate(event_template):
                                     person = person.split(' and ')
                                     remain = prediction.split(' was nominated by ', 1)[1]
 
-                                    agent = remain.rsplit(' to do a job.', 1)[0]
+                                    agent = remain.rsplit(' to do a job.',1)[0]
                                     agent = agent.split(' and ')
                                     for arg in person:
                                         if arg != ROLE_PH_MAP['Person']:
@@ -2457,12 +2283,11 @@ class Personnel_Nominate(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Personnel_Elect(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
-
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
+    
     @classmethod
     def get_keywords(self):
         return ['election', 'elect', 'elected']
@@ -2474,8 +2299,7 @@ class Personnel_Elect(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody was elected a position, and the election was voted by some people or some organization in somewhere.')
+                    output_template += ' \n {}'.format('somebody was elected a position, and the election was voted by some people or some organization in somewhere.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -2492,9 +2316,7 @@ class Personnel_Elect(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Elect' in self.knowledge.keys():
-            knowledge = self.knowledge['Elect']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -2513,15 +2335,11 @@ class Personnel_Elect(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else
-                            ROLE_PH_MAP['Person'],
-                            " and ".join([a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else
-                            ROLE_PH_MAP['Entity'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else ROLE_PH_MAP['Person'],
+                            " and ".join([ a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else ROLE_PH_MAP['Entity'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
-                        output_texts.append(
-                            "{} was elected a position, and the election was voted by {} in {}.".format(*filler))
+                        output_texts.append("{} was elected a position, and the election was voted by {} in {}.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
@@ -2541,8 +2359,7 @@ class Personnel_Elect(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -2550,17 +2367,15 @@ class Personnel_Elect(event_template):
                         if used_o_cnt == cnt:
                             try:
                                 for a_cnt, prediction in enumerate(full_pred.split(' <sep> ')):
-                                    person = \
-                                    prediction.split(' was elected a position, and the election was voted by ', 1)[0]
+                                    person = prediction.split(' was elected a position, and the election was voted by ', 1)[0]
                                     person = person.split(' and ')
-                                    remain = \
-                                    prediction.split(' was elected a position, and the election was voted by ', 1)[1]
+                                    remain = prediction.split(' was elected a position, and the election was voted by ', 1)[1]
 
                                     entity = remain.split(' in ', 1)[0]
                                     entity = entity.split(' and ')
                                     remain = remain.split(' in ', 1)[1]
 
-                                    place = remain.rsplit('.', 1)[0]
+                                    place = remain.rsplit('.',1)[0]
                                     place = place.split(' and ')
                                     for arg in person:
                                         if arg != ROLE_PH_MAP['Person']:
@@ -2576,16 +2391,15 @@ class Personnel_Elect(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Justice_Arrest_Jail(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
         return ['arrest', 'jail', 'detained']
-
+    
     def get_output_template(self):
         output_template = ''
         for o_style in OUTPUT_STYLE_SET:
@@ -2593,8 +2407,7 @@ class Justice_Arrest_Jail(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody was sent to jailed or arrested by somebody or some organization in somewhere.')
+                    output_template += ' \n {}'.format('somebody was sent to jailed or arrested by somebody or some organization in somewhere.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -2604,17 +2417,14 @@ class Justice_Arrest_Jail(event_template):
                 if i_style == 'event_type':
                     input_str += ' \n {}'.format('justice event, arrest jail sub-type')
                 if i_style == 'event_type_sent':
-                    input_str += ' \n {}'.format(
-                        'The event is related to a person getting arrested or a person being sent to jail.')
+                    input_str += ' \n {}'.format('The event is related to a person getting arrested or a person being sent to jail.')
                 if i_style == 'keywords':
                     input_str += ' \n Similar triggers such as {}'.format(', '.join(self.get_keywords()))
                 if i_style == 'triggers':
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Arrest-Jail' in self.knowledge.keys():
-            knowledge = self.knowledge['Arrest-Jail']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -2633,12 +2443,9 @@ class Justice_Arrest_Jail(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else
-                            ROLE_PH_MAP['Person'],
-                            " and ".join([a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else
-                            ROLE_PH_MAP['Agent'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else ROLE_PH_MAP['Person'],
+                            " and ".join([ a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else ROLE_PH_MAP['Agent'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} was sent to jailed or arrested by {} in {}.".format(*filler))
                         gold_sample = True
@@ -2660,8 +2467,7 @@ class Justice_Arrest_Jail(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -2677,7 +2483,7 @@ class Justice_Arrest_Jail(event_template):
                                     agent = agent.split(' and ')
                                     remain = remain.split(' in ', 1)[1]
 
-                                    place = remain.rsplit('.', 1)[0]
+                                    place = remain.rsplit('.',1)[0]
                                     place = place.split(' and ')
                                     for arg in person:
                                         if arg != ROLE_PH_MAP['Person']:
@@ -2693,11 +2499,10 @@ class Justice_Arrest_Jail(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Justice_Release_Parole(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -2710,8 +2515,7 @@ class Justice_Release_Parole(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody was released by some people or some organization from somewhere.')
+                    output_template += ' \n {}'.format('somebody was released by some people or some organization from somewhere.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -2728,9 +2532,7 @@ class Justice_Release_Parole(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Release-Parole' in self.knowledge.keys():
-            knowledge = self.knowledge['Release-Parole']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -2749,12 +2551,9 @@ class Justice_Release_Parole(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else
-                            ROLE_PH_MAP['Person'],
-                            " and ".join([a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else
-                            ROLE_PH_MAP['Entity'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else ROLE_PH_MAP['Person'],
+                            " and ".join([ a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else ROLE_PH_MAP['Entity'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} was released by {} from {}.".format(*filler))
                         gold_sample = True
@@ -2776,8 +2575,7 @@ class Justice_Release_Parole(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -2793,7 +2591,7 @@ class Justice_Release_Parole(event_template):
                                     entity = entity.split(' and ')
                                     remain = remain.split(' from ', 1)[1]
 
-                                    place = remain.rsplit('.', 1)[0]
+                                    place = remain.rsplit('.',1)[0]
                                     place = place.split(' and ')
                                     for arg in person:
                                         if arg != ROLE_PH_MAP['Person']:
@@ -2809,16 +2607,15 @@ class Justice_Release_Parole(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Justice_Trial_Hearing(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
-
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
+    
     @classmethod
     def get_keywords(self):
-        return ['trial', 'hearing', 'proceeding']
-
+        return ['trial', 'hearing', 'proceeding']    
+    
     def get_output_template(self):
         output_template = ''
         for o_style in OUTPUT_STYLE_SET:
@@ -2826,8 +2623,7 @@ class Justice_Trial_Hearing(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody, prosecuted by some other, faced a trial in somewhere. The hearing was judged by some adjudicator.')
+                    output_template += ' \n {}'.format('somebody, prosecuted by some other, faced a trial in somewhere. The hearing was judged by some adjudicator.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -2844,9 +2640,6 @@ class Justice_Trial_Hearing(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Trial-Hearing' in self.knowledge.keys():
-            knowledge = self.knowledge['Trial-Hearing']
-            input_str += ' \n {}'.format(knowledge[0])
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -2865,20 +2658,12 @@ class Justice_Trial_Hearing(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join(
-                                [a['argument text'] for a in argu['Defendant']]) if "Defendant" in argu.keys() else
-                            ROLE_PH_MAP['Defendant'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Prosecutor']]) if "Prosecutor" in argu.keys() else
-                            ROLE_PH_MAP['Prosecutor'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else
-                            ROLE_PH_MAP['Adjudicator']
+                            " and ".join([ a['argument text'] for a in argu['Defendant']]) if "Defendant" in argu.keys() else ROLE_PH_MAP['Defendant'],
+                            " and ".join([ a['argument text'] for a in argu['Prosecutor']]) if "Prosecutor" in argu.keys() else ROLE_PH_MAP['Prosecutor'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place'],
+                            " and ".join([ a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else ROLE_PH_MAP['Adjudicator']
                         )
-                        output_texts.append(
-                            "{}, prosecuted by {}, faced a trial in {}. The hearing was judged by {}.".format(*filler))
+                        output_texts.append("{}, prosecuted by {}, faced a trial in {}. The hearing was judged by {}.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
@@ -2898,8 +2683,7 @@ class Justice_Trial_Hearing(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -2919,7 +2703,7 @@ class Justice_Trial_Hearing(event_template):
                                     place = place.split(' and ')
                                     remain = remain.split('. The hearing was judged by ', 1)[1]
 
-                                    adjudicator = remain.rsplit('.', 1)[0]
+                                    adjudicator = remain.rsplit('.',1)[0]
                                     adjudicator = adjudicator.split(' and ')
                                     for arg in defendant:
                                         if arg != ROLE_PH_MAP['Defendant']:
@@ -2938,11 +2722,10 @@ class Justice_Trial_Hearing(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Justice_Charge_Indict(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -2955,8 +2738,7 @@ class Justice_Charge_Indict(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody was charged by some other in somewhere. The adjudication was judged by some adjudicator.')
+                    output_template += ' \n {}'.format('somebody was charged by some other in somewhere. The adjudication was judged by some adjudicator.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -2966,17 +2748,13 @@ class Justice_Charge_Indict(event_template):
                 if i_style == 'event_type':
                     input_str += ' \n {}'.format('justice event, charge indict sub-type')
                 if i_style == 'event_type_sent':
-                    input_str += ' \n {}'.format(
-                        "The event is related to someone or some organziation being accused of a crime.")
+                    input_str += ' \n {}'.format("The event is related to someone or some organization being accused of a crime.")
                 if i_style == 'keywords':
                     input_str += ' \n Similar triggers such as {}'.format(', '.join(self.get_keywords()))
                 if i_style == 'triggers':
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Charge-Indict' in self.knowledge.keys():
-            knowledge = self.knowledge['Charge-Indict']
-            input_str += ' \n {}'.format(knowledge[0])
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -2995,20 +2773,12 @@ class Justice_Charge_Indict(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join(
-                                [a['argument text'] for a in argu['Defendant']]) if "Defendant" in argu.keys() else
-                            ROLE_PH_MAP['Defendant'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Prosecutor']]) if "Prosecutor" in argu.keys() else
-                            ROLE_PH_MAP['Prosecutor'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else
-                            ROLE_PH_MAP['Adjudicator']
+                            " and ".join([ a['argument text'] for a in argu['Defendant']]) if "Defendant" in argu.keys() else ROLE_PH_MAP['Defendant'],
+                            " and ".join([ a['argument text'] for a in argu['Prosecutor']]) if "Prosecutor" in argu.keys() else ROLE_PH_MAP['Prosecutor'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place'],
+                            " and ".join([ a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else ROLE_PH_MAP['Adjudicator']
                         )
-                        output_texts.append(
-                            "{} was charged by {} in {}. The adjudication was judged by {}.".format(*filler))
+                        output_texts.append("{} was charged by {} in {}. The adjudication was judged by {}.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
@@ -3028,8 +2798,7 @@ class Justice_Charge_Indict(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -3049,7 +2818,7 @@ class Justice_Charge_Indict(event_template):
                                     place = place.split(' and ')
                                     remain = remain.split('. The adjudication was judged by ', 1)[1]
 
-                                    adjudicator = remain.rsplit('.', 1)[0]
+                                    adjudicator = remain.rsplit('.',1)[0]
                                     adjudicator = adjudicator.split(' and ')
                                     for arg in defendant:
                                         if arg != ROLE_PH_MAP['Defendant']:
@@ -3068,11 +2837,10 @@ class Justice_Charge_Indict(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Justice_Sue(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -3085,8 +2853,7 @@ class Justice_Sue(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody was sued by some other in somewhere. The adjudication was judged by some adjudicator.')
+                    output_template += ' \n {}'.format('somebody was sued by some other in somewhere. The adjudication was judged by some adjudicator.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -3096,17 +2863,13 @@ class Justice_Sue(event_template):
                 if i_style == 'event_type':
                     input_str += ' \n {}'.format('justice event, sue sub-type')
                 if i_style == 'event_type_sent':
-                    input_str += ' \n {}'.format(
-                        "The event is related to a court proceeding that has been initiated and someone sue the other.")
+                    input_str += ' \n {}'.format("The event is related to a court proceeding that has been initiated and someone sue the other.")
                 if i_style == 'keywords':
                     input_str += ' \n Similar triggers such as {}'.format(', '.join(self.get_keywords()))
                 if i_style == 'triggers':
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Sue' in self.knowledge.keys():
-            knowledge = self.knowledge['Sue']
-            input_str += ' \n {}'.format(knowledge[0])
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -3125,20 +2888,12 @@ class Justice_Sue(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join(
-                                [a['argument text'] for a in argu['Defendant']]) if "Defendant" in argu.keys() else
-                            ROLE_PH_MAP['Defendant'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Plaintiff']]) if "Plaintiff" in argu.keys() else
-                            ROLE_PH_MAP['Plaintiff'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else
-                            ROLE_PH_MAP['Adjudicator']
+                            " and ".join([ a['argument text'] for a in argu['Defendant']]) if "Defendant" in argu.keys() else ROLE_PH_MAP['Defendant'],
+                            " and ".join([ a['argument text'] for a in argu['Plaintiff']]) if "Plaintiff" in argu.keys() else ROLE_PH_MAP['Plaintiff'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place'],
+                            " and ".join([ a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else ROLE_PH_MAP['Adjudicator']
                         )
-                        output_texts.append(
-                            "{} was sued by {} in {}. The adjudication was judged by {}.".format(*filler))
+                        output_texts.append("{} was sued by {} in {}. The adjudication was judged by {}.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
@@ -3158,8 +2913,7 @@ class Justice_Sue(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -3179,7 +2933,7 @@ class Justice_Sue(event_template):
                                     place = place.split(' and ')
                                     remain = remain.split('. The adjudication was judged by ', 1)[1]
 
-                                    adjudicator = remain.rsplit('.', 1)[0]
+                                    adjudicator = remain.rsplit('.',1)[0]
                                     adjudicator = adjudicator.split(' and ')
                                     for arg in defendant:
                                         if arg != ROLE_PH_MAP['Defendant']:
@@ -3198,11 +2952,10 @@ class Justice_Sue(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Justice_Convict(event_template):
 
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -3215,8 +2968,7 @@ class Justice_Convict(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody was convicted of a crime in somewhere. The adjudication was judged by some adjudicator.')
+                    output_template += ' \n {}'.format('somebody was convicted of a crime in somewhere. The adjudication was judged by some adjudicator.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -3233,9 +2985,6 @@ class Justice_Convict(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Convict' in self.knowledge.keys():
-            knowledge = self.knowledge['Convict']
-            input_str += ' \n {}'.format(knowledge[0])
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -3254,17 +3003,11 @@ class Justice_Convict(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join(
-                                [a['argument text'] for a in argu['Defendant']]) if "Defendant" in argu.keys() else
-                            ROLE_PH_MAP['Defendant'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else
-                            ROLE_PH_MAP['Adjudicator']
+                            " and ".join([ a['argument text'] for a in argu['Defendant']]) if "Defendant" in argu.keys() else ROLE_PH_MAP['Defendant'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place'],
+                            " and ".join([ a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else ROLE_PH_MAP['Adjudicator']
                         )
-                        output_texts.append(
-                            "{} was convicted of a crime in {}. The adjudication was judged by {}.".format(*filler))
+                        output_texts.append("{} was convicted of a crime in {}. The adjudication was judged by {}.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
@@ -3284,8 +3027,7 @@ class Justice_Convict(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -3301,7 +3043,7 @@ class Justice_Convict(event_template):
                                     place = place.split(' and ')
                                     remain = remain.split('. The adjudication was judged by ', 1)[1]
 
-                                    adjudicator = remain.rsplit('.', 1)[0]
+                                    adjudicator = remain.rsplit('.',1)[0]
                                     adjudicator = adjudicator.split(' and ')
                                     for arg in defendant:
                                         if arg != ROLE_PH_MAP['Defendant']:
@@ -3317,10 +3059,9 @@ class Justice_Convict(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Justice_Sentence(event_template):
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -3333,8 +3074,7 @@ class Justice_Sentence(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody was sentenced to punishment in somewhere. The adjudication was judged by some adjudicator.')
+                    output_template += ' \n {}'.format('somebody was sentenced to punishment in somewhere. The adjudication was judged by some adjudicator.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -3344,17 +3084,13 @@ class Justice_Sentence(event_template):
                 if i_style == 'event_type':
                     input_str += ' \n {}'.format('justice event, sentence sub-type')
                 if i_style == 'event_type_sent':
-                    input_str += ' \n {}'.format(
-                        "The event is related to someone being sentenced to punishment because of a crime.")
+                    input_str += ' \n {}'.format("The event is related to someone being sentenced to punishment because of a crime.")
                 if i_style == 'keywords':
                     input_str += ' \n Similar triggers such as {}'.format(', '.join(self.get_keywords()))
                 if i_style == 'triggers':
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Sentence' in self.knowledge.keys():
-            knowledge = self.knowledge['Sentence']
-            input_str += ' \n {}'.format(knowledge[0])
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -3373,17 +3109,11 @@ class Justice_Sentence(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join(
-                                [a['argument text'] for a in argu['Defendant']]) if "Defendant" in argu.keys() else
-                            ROLE_PH_MAP['Defendant'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else
-                            ROLE_PH_MAP['Adjudicator']
+                            " and ".join([ a['argument text'] for a in argu['Defendant']]) if "Defendant" in argu.keys() else ROLE_PH_MAP['Defendant'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place'],
+                            " and ".join([ a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else ROLE_PH_MAP['Adjudicator']
                         )
-                        output_texts.append(
-                            "{} was sentenced to punishment in {}. The adjudication was judged by {}.".format(*filler))
+                        output_texts.append("{} was sentenced to punishment in {}. The adjudication was judged by {}.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
@@ -3403,8 +3133,7 @@ class Justice_Sentence(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -3420,7 +3149,7 @@ class Justice_Sentence(event_template):
                                     place = place.split(' and ')
                                     remain = remain.split('. The adjudication was judged by ', 1)[1]
 
-                                    adjudicator = remain.rsplit('.', 1)[0]
+                                    adjudicator = remain.rsplit('.',1)[0]
                                     adjudicator = adjudicator.split(' and ')
                                     for arg in defendant:
                                         if arg != ROLE_PH_MAP['Defendant']:
@@ -3436,10 +3165,9 @@ class Justice_Sentence(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Justice_Fine(event_template):
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -3452,8 +3180,7 @@ class Justice_Fine(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'some people or some organization in somewhere was ordered by some adjudicator to pay a fine.')
+                    output_template += ' \n {}'.format('some people or some organization in somewhere was ordered by some adjudicator to pay a fine.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -3470,9 +3197,6 @@ class Justice_Fine(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Fine' in self.knowledge.keys():
-            knowledge = self.knowledge['Fine']
-            input_str += ' \n {}'.format(knowledge[0])
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -3491,13 +3215,9 @@ class Justice_Fine(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else
-                            ROLE_PH_MAP['Entity'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else
-                            ROLE_PH_MAP['Adjudicator']
+                            " and ".join([ a['argument text'] for a in argu['Entity']]) if "Entity" in argu.keys() else ROLE_PH_MAP['Entity'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place'],
+                            " and ".join([ a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else ROLE_PH_MAP['Adjudicator']
                         )
                         output_texts.append("{} in {} was ordered by {} to pay a fine.".format(*filler))
                         gold_sample = True
@@ -3519,8 +3239,7 @@ class Justice_Fine(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -3536,7 +3255,7 @@ class Justice_Fine(event_template):
                                     place = place.split(' and ')
                                     remain = remain.split(' was ordered by ', 1)[1]
 
-                                    adjudicator = remain.rsplit(' to pay a fine.', 1)[0]
+                                    adjudicator = remain.rsplit(' to pay a fine.',1)[0]
                                     adjudicator = adjudicator.split(' and ')
                                     for arg in entity:
                                         if arg != ROLE_PH_MAP['Entity']:
@@ -3552,10 +3271,9 @@ class Justice_Fine(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Justice_Execute(event_template):
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -3568,8 +3286,7 @@ class Justice_Execute(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody was executed by somebody or some organization at somewhere.')
+                    output_template += ' \n {}'.format('somebody was executed by somebody or some organization at somewhere.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -3586,9 +3303,6 @@ class Justice_Execute(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Execute' in self.knowledge.keys():
-            knowledge = self.knowledge['Execute']
-            input_str += ' \n {}'.format(knowledge[0])
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -3607,12 +3321,9 @@ class Justice_Execute(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else
-                            ROLE_PH_MAP['Person'],
-                            " and ".join([a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else
-                            ROLE_PH_MAP['Agent'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place']
+                            " and ".join([ a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else ROLE_PH_MAP['Person'],
+                            " and ".join([ a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else ROLE_PH_MAP['Agent'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place']
                         )
                         output_texts.append("{} was executed by {} at {}.".format(*filler))
                         gold_sample = True
@@ -3634,8 +3345,7 @@ class Justice_Execute(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -3651,7 +3361,7 @@ class Justice_Execute(event_template):
                                     agent = agent.split(' and ')
                                     remain = remain.split(' at ', 1)[1]
 
-                                    place = remain.rsplit('.', 1)[0]
+                                    place = remain.rsplit('.',1)[0]
                                     place = place.split(' and ')
                                     for arg in person:
                                         if arg != ROLE_PH_MAP['Person']:
@@ -3666,11 +3376,10 @@ class Justice_Execute(event_template):
                                 pass
                         used_o_cnt += 1
         return output
-
-
+            
 class Justice_Extradite(event_template):
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -3683,8 +3392,7 @@ class Justice_Extradite(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'somebody was extradicted to somewhere from some place. somebody or some organization was responsible for the extradition.')
+                    output_template += ' \n {}'.format('somebody was extradicted to somewhere from some place. somebody or some organization was responsible for the extradition.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -3694,17 +3402,14 @@ class Justice_Extradite(event_template):
                 if i_style == 'event_type':
                     input_str += ' \n {}'.format('justice event, extradite sub-type')
                 if i_style == 'event_type_sent':
-                    input_str += ' \n {}'.format(
-                        'The event is related to justice. The event occurs when a person was extradited from one place to another place.')
+                    input_str += ' \n {}'.format('The event is related to justice. The event occurs when a person was extradited from one place to another place.')
                 if i_style == 'keywords':
                     input_str += ' \n Similar triggers such as {}'.format(', '.join(self.get_keywords()))
                 if i_style == 'triggers':
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Extradite' in self.knowledge.keys():
-            knowledge = self.knowledge['Extradite']
-            input_str += ' \n {}'.format(knowledge[0])
+        
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -3723,18 +3428,12 @@ class Justice_Extradite(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join([a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else
-                            ROLE_PH_MAP['Person'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Destination']]) if "Destination" in argu.keys() else
-                            ROLE_PH_MAP['Destination'],
-                            " and ".join([a['argument text'] for a in argu['Origin']]) if "Origin" in argu.keys() else
-                            ROLE_PH_MAP['Origin'],
-                            " and ".join([a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else
-                            ROLE_PH_MAP['Agent']
+                            " and ".join([ a['argument text'] for a in argu['Person']]) if "Person" in argu.keys() else ROLE_PH_MAP['Person'],
+                            " and ".join([ a['argument text'] for a in argu['Destination']]) if "Destination" in argu.keys() else ROLE_PH_MAP['Destination'],
+                            " and ".join([ a['argument text'] for a in argu['Origin']]) if "Origin" in argu.keys() else ROLE_PH_MAP['Origin'],
+                            " and ".join([ a['argument text'] for a in argu['Agent']]) if "Agent" in argu.keys() else ROLE_PH_MAP['Agent']
                         )
-                        output_texts.append(
-                            "{} was extradicted to {} from {}. {} was responsible for the extradition.".format(*filler))
+                        output_texts.append("{} was extradicted to {} from {}. {} was responsible for the extradition.".format(*filler))
                         gold_sample = True
                     output_str += ' \n {}'.format(' <sep> '.join(output_texts))
         output_str = ('\n'.join(output_str.split('\n')[1:])).strip()
@@ -3754,8 +3453,7 @@ class Justice_Extradite(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -3769,12 +3467,10 @@ class Justice_Extradite(event_template):
                                     destination = (prediction.split(' was extradicted to ')[1]).split(' from ')[0]
                                     destination = destination.split(' and ')
 
-                                    origin = \
-                                    ((prediction.split(' was extradicted to ')[1]).split(' from ')[1]).split('.', 1)[0]
+                                    origin = ((prediction.split(' was extradicted to ')[1]).split(' from ')[1]).split('.', 1)[0]
                                     origin = origin.split(' and ')
 
-                                    remain = \
-                                    ((prediction.split(' was extradicted to ')[1]).split(' from ')[1]).split('.', 1)[1]
+                                    remain = ((prediction.split(' was extradicted to ')[1]).split(' from ')[1]).split('.', 1)[1]
 
                                     if 'was responsible for' in remain:
                                         agent = (remain.split(' was responsible for the extradition.')[0]).strip()
@@ -3790,7 +3486,7 @@ class Justice_Extradite(event_template):
                                             output.append((arg, 'Person', {'cor tri cnt': a_cnt}))
                                     for arg in destination:
                                         if arg != ROLE_PH_MAP['Destination']:
-                                            output.append((arg, 'Destination', {'cor tri cnt': a_cnt}))
+                                            output.append((arg, 'Destination', {'cor tri cnt': a_cnt}))          
                                     for arg in origin:
                                         if arg != ROLE_PH_MAP['Origin']:
                                             output.append((arg, 'Origin', {'cor tri cnt': a_cnt}))
@@ -3799,10 +3495,9 @@ class Justice_Extradite(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Justice_Acquit(event_template):
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -3832,9 +3527,6 @@ class Justice_Acquit(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Acquit' in self.knowledge.keys():
-            knowledge = self.knowledge['Acquit']
-            input_str += ' \n {}'.format(knowledge[0])
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -3853,12 +3545,8 @@ class Justice_Acquit(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join(
-                                [a['argument text'] for a in argu['Defendant']]) if "Defendant" in argu.keys() else
-                            ROLE_PH_MAP['Defendant'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else
-                            ROLE_PH_MAP['Adjudicator']
+                            " and ".join([ a['argument text'] for a in argu['Defendant']]) if "Defendant" in argu.keys() else ROLE_PH_MAP['Defendant'],
+                            " and ".join([ a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else ROLE_PH_MAP['Adjudicator']
                         )
                         output_texts.append("{} was acquitted of the charges by {}.".format(*filler))
                         gold_sample = True
@@ -3880,8 +3568,7 @@ class Justice_Acquit(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -3893,7 +3580,7 @@ class Justice_Acquit(event_template):
                                     defendant = defendant.split(' and ')
                                     remain = prediction.split(' was acquitted of the charges by ', 1)[1]
 
-                                    adjudicator = remain.rsplit('.', 1)[0]
+                                    adjudicator = remain.rsplit('.',1)[0]
                                     adjudicator = adjudicator.split(' and ')
                                     for arg in defendant:
                                         if arg != ROLE_PH_MAP['Defendant']:
@@ -3906,10 +3593,9 @@ class Justice_Acquit(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Justice_Pardon(event_template):
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
 
     @classmethod
     def get_keywords(self):
@@ -3939,9 +3625,6 @@ class Justice_Pardon(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Pardon' in self.knowledge.keys():
-            knowledge = self.knowledge['Pardon']
-            input_str += ' \n {}'.format(knowledge[0])
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -3960,12 +3643,8 @@ class Justice_Pardon(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join(
-                                [a['argument text'] for a in argu['Defendant']]) if "Defendant" in argu.keys() else
-                            ROLE_PH_MAP['Defendant'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else
-                            ROLE_PH_MAP['Adjudicator']
+                            " and ".join([ a['argument text'] for a in argu['Defendant']]) if "Defendant" in argu.keys() else ROLE_PH_MAP['Defendant'],
+                            " and ".join([ a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else ROLE_PH_MAP['Adjudicator']
                         )
                         output_texts.append("{} received a pardon from {}.".format(*filler))
                         gold_sample = True
@@ -3987,8 +3666,7 @@ class Justice_Pardon(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -4000,7 +3678,7 @@ class Justice_Pardon(event_template):
                                     defendant = defendant.split(' and ')
                                     remain = prediction.split(' received a pardon from ', 1)[1]
 
-                                    adjudicator = remain.rsplit('.', 1)[0]
+                                    adjudicator = remain.rsplit('.',1)[0]
                                     adjudicator = adjudicator.split(' and ')
                                     for arg in defendant:
                                         if arg != ROLE_PH_MAP['Defendant']:
@@ -4013,14 +3691,13 @@ class Justice_Pardon(event_template):
                         used_o_cnt += 1
         return output
 
-
 class Justice_Appeal(event_template):
-    def __init__(self, input_style, output_style, passage, event_type, gold_event=None, knowledge=None):
-        super().__init__(input_style, output_style, passage, event_type, gold_event, knowledge)
-
+    def __init__(self, input_style, output_style, passage, event_type, gold_event=None):
+        super().__init__(input_style, output_style, passage, event_type, gold_event)
+    
     @classmethod
     def get_keywords(self):
-        return ['appeal', 'appealing', 'appeals']
+        return ['appeal', 'appealing', 'appeals']  
 
     def get_output_template(self):
         output_template = ''
@@ -4029,8 +3706,7 @@ class Justice_Appeal(event_template):
                 if o_style == 'trigger:sentence':
                     output_template += ' \n {}'.format('Event trigger is <Trigger>')
                 if o_style == 'argument:sentence':
-                    output_template += ' \n {}'.format(
-                        'some other in somewhere appealed the adjudication from some adjudicator.')
+                    output_template += ' \n {}'.format('some other in somewhere appealed the adjudication from some adjudicator.')
         return ('\n'.join(output_template.split('\n')[1:])).strip()
 
     def generate_input_str(self, query_trigger):
@@ -4047,9 +3723,6 @@ class Justice_Appeal(event_template):
                     input_str += ' \n The event trigger word is {}'.format(query_trigger)
                 if i_style == 'template':
                     input_str += ' \n {}'.format(self.output_template)
-        if 'Appeal' in self.knowledge.keys():
-            knowledge = self.knowledge['Appeal']
-            input_str += ' \n {}'.format(knowledge[0])
         return input_str
 
     def generate_output_str(self, query_trigger):
@@ -4068,14 +3741,9 @@ class Justice_Appeal(event_template):
                     output_texts = []
                     for argu in self.arguments:
                         filler = (
-                            " and ".join(
-                                [a['argument text'] for a in argu['Plaintiff']]) if "Plaintiff" in argu.keys() else
-                            ROLE_PH_MAP['Plaintiff'],
-                            " and ".join([a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else
-                            ROLE_PH_MAP['Place'],
-                            " and ".join(
-                                [a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else
-                            ROLE_PH_MAP['Adjudicator']
+                            " and ".join([ a['argument text'] for a in argu['Plaintiff']]) if "Plaintiff" in argu.keys() else ROLE_PH_MAP['Plaintiff'],
+                            " and ".join([ a['argument text'] for a in argu['Place']]) if "Place" in argu.keys() else ROLE_PH_MAP['Place'],
+                            " and ".join([ a['argument text'] for a in argu['Adjudicator']]) if "Adjudicator" in argu.keys() else ROLE_PH_MAP['Adjudicator']
                         )
                         output_texts.append("{} in {} appealed the adjudication from {}.".format(*filler))
                         gold_sample = True
@@ -4097,8 +3765,7 @@ class Justice_Appeal(event_template):
                                 triggers = triggers.split(' and ')
                                 for t_cnt, t in enumerate(triggers):
                                     if t != '<Trigger>':
-                                        output.append(
-                                            (t, self.event_type, {'tri counter': t_cnt}))  # (text, type, kwargs)
+                                        output.append((t, self.event_type, {'tri counter': t_cnt})) # (text, type, kwargs)
                             except:
                                 pass
                         used_o_cnt += 1
@@ -4114,7 +3781,7 @@ class Justice_Appeal(event_template):
                                     place = place.split(' and ')
                                     remain = remain.split(' appealed the adjudication from ', 1)[1]
 
-                                    adjudicator = remain.rsplit('.', 1)[0]
+                                    adjudicator = remain.rsplit('.',1)[0]
                                     adjudicator = adjudicator.split(' and ')
 
                                     for arg in plaintiff:
