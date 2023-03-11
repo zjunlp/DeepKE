@@ -176,9 +176,9 @@ class EntityModel():
             self.bert_model = BertForEntity.from_pretrained(bert_model_name, num_ner_labels=num_ner_labels, max_span_length=args.entity_max_span_length)
 
         self._model_device = 'cpu'
-        self.move_model_to_cuda()
+        self.move_model_to_cuda(args=args)
 
-    def move_model_to_cuda(self):
+    def move_model_to_cuda(self,args):
         if not torch.cuda.is_available():
             logger.error('No CUDA found!')
             exit(-1)
@@ -186,7 +186,7 @@ class EntityModel():
         self._model_device = 'cuda'
         self.bert_model.cuda()
         logger.info('# GPUs = %d'%(torch.cuda.device_count()))
-        if torch.cuda.device_count() > 1:
+        if torch.cuda.device_count() > 1 and args.entity_single_card == False :
             self.bert_model = torch.nn.DataParallel(self.bert_model)
 
     def _get_input_tensors(self, tokens, spans, spans_ner_label):

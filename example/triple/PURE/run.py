@@ -229,7 +229,7 @@ def relation_train(args):
             raise TypeError("Unknown model class")
 
         model.to(device)
-        if n_gpu > 1:
+        if n_gpu > 1 and args.relation_single_card == False:
             model = torch.nn.DataParallel(model)
 
         param_optimizer = list(model.named_parameters())

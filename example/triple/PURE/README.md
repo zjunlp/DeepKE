@@ -79,10 +79,11 @@ cd DeepKE/example/triple/PURE
   - Download the dataset to this directory.
 
     ```bash
-    wget 120.27.214.45/Data/triple/PURE/data.tar.gz
-    tar -xzvf data.tar.gz
+    cd data/
+    wget 120.27.214.45/Data/triple/PURE/CMeIE.zip
+    unzip CMeIE.zip
     ```
-
+  
   - One types of data formats are supported,including `json`. The dataset  is stored in `data/CMeIE/json`:
     
     - `train.json`: Training set
@@ -94,41 +95,45 @@ cd DeepKE/example/triple/PURE
 - Training
 
   - Parameters for training are in the `conf` folder and users can modify them before training. You can modify `trian.yaml` parameter to get the result you want. You can also download some the pre-trained entity model or full relation model and put them in the `pretrain_models`folder.
-  
+
   - some important parameters are as follows:
-  
+
     - data_dir: path to the preprocessed dataset.
-  
+
     `Entity model's parameters:`
-  
+
     - entity_do_train: whether to run training.
-  
+
     - entity_do_eval: whether to run evaluation.
-  
+
     - entity_eval_test: whether to evaluate on test set (If entity_do_eval is true and entity_eval_test is false, evaluating on dev set).
-  
+
+    - entity_single_card: Whether to use single card training (default is False)
+
     - entity_learning_rate: learning rate for the BERT encoder.
-  
+
     - entity_task_learning_rate: learning rate for task-specific parameters, i.e., classification head.
-  
+
     - entity_train_batch_size: batch size during training.
-  
+
     - entity_num_epoch: number of the training epochs.
-  
+
     - entity_context_window: the context window size W for the entity model.
-  
+
     - entity_model: the base model name (a huggingface model) (Please keep the relation_model and entity_model consistent).
-  
+
     - entity_output_dir: output directory of the entity model (include log, trained model, entity prediction, etc).
-  
+
     - entity_test_pred_filename: the prediction filename for the tese set.
-  
+
     - entity_dev_pred_filename: the prediction filename for the dev set.
-  
+
     `relation model's parameters:`
-  
+
+    - no_cuda: Whether not to use CUDA when available
     - relation_train_file: The path of the training data.
     - relation_do_lower_case: Set this flag if you are using an uncased model.
+    - relation_single_card: Whether to use single card training (default is False)
     - relation_train_batch_size: Total batch size for training.
     - relation_eval_batch_size: Total batch size for eval.
     - relation_learning_rate: The initial learning rate for Adam.
@@ -136,7 +141,7 @@ cd DeepKE/example/triple/PURE
     - relation_max_seq_length: The maximum total input sequence length after WordPiece tokenization. Sequences longer than this will be truncated, and sequences shorter than this will be padded.
     - relation_prediction_file: The prediction filename for the relation model.
     - relation_output_dir: The output directory where the model predictions and checkpoints will be written.
-  
+
   - Logs for training are in the `pretrain_models` folder and the trained model is saved in `pretrain_models` .  
 
   ```bash
@@ -152,6 +157,4 @@ cd DeepKE/example/triple/PURE
 
 ## Models
 
-1. PURE (Based on the paper "A Frustratingly Easy Approach for Entity and Relation Extraction")
-2. Transformer
-3. Pre-trained Model (BERT)
+PURE (Based on the paper "[A Frustratingly Easy Approach for Entity and Relation Extraction](https://arxiv.org/pdf/2010.12812.pdf)")

@@ -70,9 +70,15 @@ cd DeepKE/example/triple/PURE
 
 ### 使用数据进行训练预测
 
-- 存放数据： 可先下载数据 ```wget 120.27.214.45/Data/triple/PURE/data.tar.gz```在此目录下
+- 存放数据： 可先下载数据在`data`目录下
 
-  支持一种类型文件格式：json格式，详细可参考`data`文件夹。在 `data/CMeIE/json` 文件夹下存放训练数据：
+  ```bas
+  cd data/
+  wget 120.27.214.45/Data/triple/PURE/CMeIE.zip
+  unzip CMeIE.zip
+  ```
+
+  支持一种类型文件格式：json格式，详细可参考文件夹。在 `data/CMeIE/json` 文件夹下存放训练数据：
 
   - `train.json`：存放训练数据集
   - `dev.json`：存放验证数据集
@@ -88,11 +94,7 @@ cd DeepKE/example/triple/PURE
 
 ## 模型内容
 
-1、PURE（基于论文 "A Frustratingly Easy Approach for Entity and Relation Extraction")
-
-2、Transformer
-
-3、预训练模型
+PURE（基于论文 "[A Frustratingly Easy Approach for Entity and Relation Extraction](https://arxiv.org/pdf/2010.12812.pdf)")
 
 ## Train.yaml 参数
 
@@ -105,6 +107,7 @@ cd DeepKE/example/triple/PURE
 - entity_do_train: 是否进行训练
 - entity_do_eval: 是否进行评估
 - entity_eval_test: 是否在测试集上评估 (如果entity_do_eval为true且entity_eval_test为false，则在开发集上评估)
+- entity_single_card: 是否使用单卡训练（默认为False）
 - entity_learning_rate: BERT encoder的学习率
 - entity_task_learning_rate: 任务特定参数的学习率.
 - entity_train_batch_size: 训练的批量
@@ -117,7 +120,9 @@ cd DeepKE/example/triple/PURE
 
 `关系模型参数:`
 
+- no_cuda: 是否在可使用时不使用CUDA
 - relation_train_file: 训练数据的路径
+- relation_single_card: 是否使用单卡训练（默认为False）
 - relation_do_lower_case: 如果使用的是uncased model，请设置此标志
 - relation_train_batch_size: 训练的总批量
 - relation_eval_batch_size: 评估的总批量大小
