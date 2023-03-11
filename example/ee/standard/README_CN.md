@@ -6,61 +6,55 @@
 
 ### 环境依赖
 
-请下载以下依赖:
+- 首先创建Conda虚拟环境
 
-```
-python==3.8
-Java 8
-```
+- 安装环境依赖
+  ```bash
+  python==3.8
+  pip install -r requirements.txt
+  ```
 
 ## 克隆代码
 
 ```bash
 git clone https://github.com/zjunlp/DeepKE.git
-cd DeepKE/example/ee/few-shot
+cd DeepKE/example/ee/standard
 ```
 
-## 使用pip安装
+## 数据集
 
-首先创建python虚拟环境，再进入虚拟环境
+- `ACE`
+根据[这里](./data/ACE/README.md)的文档进行处理。
 
-- 安装依赖: ```pip install -r requirements.txt```
+- `DuEE`
+根据[这里](./data/DuEE/README.md)的文档进行处理。
 
-## 训练以及预测
+## 训练
 
-- 数据集
-  - `ace05e`
-  1. 跟据 [DyGIE++](https://github.com/dwadden/dygiepp#ace05-event)的预处理方式来的到数据
-  2. 将处理好的数据放到具体目录 `data/raw_data/ace05e_dygieppformat`
+在`./conf/train.yaml`中修改模型参数
 
-  - `ace05ep`
-  1. 从 [LDC](https://catalog.ldc.upenn.edu/LDC2006T06)下载ACE数据集
-  2. 将处理好的数据放到具体目录 `data/raw_data/ace_2005`
-
-  - `预处理`
-  ```Bash
-  cd data/
-  bash ./scripts/process_ace05e.sh
-  bash ./scripts/process_ace05ep.sh
-  ```
-  可以通过修改`conf/generate_data.yaml`中的参数来选择低资源的划分方式，然后执行下面的命令
-  ```Bash
-  cd ..
-  python generate_data.py
-  ```
-  最终处理好的数据会存储在类似 `proceesed_data/degree_e2e_ace05ep_001`的目录下。
-
-
-- 训练
-
-  - 参数、模型路径以及一些参数都在`conf/train.yaml`文件夹下，在训练之前可以对他们进行更改。
+- Trigger 触发词
+  将`task_name`设置为`trigger`。
+  可以通过更改`data_name`参数来选择不同的数据集。
+  然后运行下述命令
   ```bash
   python run.py
   ```
 
-- 预测
-
-  - 将 `conf/predict.yaml`中的`e2e_model` 参数修改成你自己的训练得到的模型的路径，然后运行下面的命令。
+- 事件角色
+  在这里我们用正确的trigger训练事件元素抽取模型
+  将`task_name`设置为`role`。
+  可以通过更改`data_name`参数来选择不同的数据集。
+  然后运行下述命令
   ```bash
-  python predict.py
+  python run.py
   ```
+
+## 预测
+
+触发词的预测在训练的过程中会完成，预测的结果在`output_dir`中。在这里我们使用预测得到的触发词来抽取事件抽取元素。
+在`./conf/predict.yaml`中修改模型参数。
+然后运行下述命令
+```bash
+  python predict.py
+```
