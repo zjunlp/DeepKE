@@ -25,11 +25,16 @@ def main(cfg):
 
   cfg.cwd = utils.get_original_cwd()
 
-  text = cfg.text
-  
+  text = cfg.text_input
+
+  if not cfg.api_key:
+    raise ValueError("Need an API Key.")
+  if cfg.engine not in ["text-davinci-003", "text-curie-001", "text-babbage-001", "text-ada-001"]:
+    raise ValueError("The OpenAI model is not supported now.")
+
   model        = OpenAI(cfg.api_key, cfg.engine) 
   nlp_prompter = Prompter(model)
-  
+
   if not cfg.zero_shot:
     data = json.load(open(cfg.data_path,'r'))
   else:
@@ -42,6 +47,8 @@ def main(cfg):
     "ee_cn": "ee_cn.jinja",
     "ee_en": "ee_en.jinja",
   }
+  if cfg.task not in task:
+    raise ValueError(f"The task is not supported now.")
   result = nlp_prompter.fit(task[cfg.task], text_input = text, examples = data, domain = cfg.domain, labels = None)
                     
   logger.info(result['text'])
