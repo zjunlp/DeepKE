@@ -2,6 +2,7 @@ from deepke.name_entity_re.standard import *
 import hydra
 from hydra import utils
 import pickle
+import os
 
 @hydra.main(config_path="conf", config_name='config')
 def main(cfg):
@@ -13,7 +14,7 @@ def main(cfg):
 
         model = InferNer(utils.get_original_cwd() + '/' + "checkpoints/", cfg, len(word2id), len(label2id), word2id, id2label)
     elif cfg.model_name == 'bert':
-        model = InferNer(utils.get_original_cwd()+'/'+"checkpoints/", cfg)
+        model = InferNer(os.path.join(utils.get_original_cwd(), "checkpoints"), cfg)
     else:
         raise NotImplementedError(f"model type {cfg.model_name} not supported")
     text = cfg.text
