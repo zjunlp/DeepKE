@@ -1,4 +1,4 @@
-torch>=1.5,<=1.10
+torch>=1.5,<=1.11
 hydra-core==1.0.6
 tensorboard==2.4.1
 matplotlib==3.4.1
@@ -17,3 +17,5 @@ protobuf==3.20.1
 numpy==1.18.5
 ipdb==0.13.11
 pytorch-crf==0.7.2
+openai
+jinjia2
