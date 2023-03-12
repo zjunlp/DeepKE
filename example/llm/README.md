@@ -28,7 +28,7 @@ Part of the code in this project comes from [Promptify](https://github.com/promp
   OpenAI API (key) is utilized for language models (e.g. GPT-3).
     ```shell
     >> pip install openai
-    >> pip install jinja2
+    >> pip install Jinja2
     >> pip install hydra-core
     ```
 
