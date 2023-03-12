@@ -18,4 +18,4 @@ numpy==1.18.5
 ipdb==0.13.11
 pytorch-crf==0.7.2
 openai
-jinjia2
+Jinja2
