@@ -1,6 +1,6 @@
 # Easy Start
 
-**English | [简体中文](https://github.com/zjunlp/DeepKE/tree/dev/example/triple/ASP/README_CN.md)**
+**English | [简体中文](./README_CN.md)**
 
 ## Requirements
 

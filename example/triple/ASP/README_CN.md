@@ -1,6 +1,6 @@
 ## 快速上手
 
-**[English](https://github.com/zjunlp/DeepKE/tree/dev/example/triple/ASP/README.md) | 简体中文**
+**[English](./README.md) | 简体中文**
 
 ### 环境依赖
 
