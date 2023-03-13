@@ -18,7 +18,6 @@ def evaluate(config_name, gpu_id, saved_suffix):
     stored_info = runner.data.get_stored_info()
 
     runner.evaluate(model, examples_test, stored_info, 0, predict=True)  # Eval test
-    wandb.log({'examples_dev': examples_dev}) 
 
 # E.g.
 # CUDA_VISIBLE_DEVICES=0 python evaluate_ere.py CMeIE Mar05_19-39-56_2000 0
