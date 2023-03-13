@@ -7,7 +7,7 @@
 > python == 3.8.16
 
 - tqdm==4.64.1
-- numpy--1.24.1
+- numpy==1.24.1
 - scipy==1.10.1
 - torch==1.13.1+cu116
 - huggingface_hub==0.12.1
