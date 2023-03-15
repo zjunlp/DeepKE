@@ -6,9 +6,9 @@ with open("requirements.txt") as requirements_file:
     
 setup(
     name='deepke',  # 打包后的包文件名
-    version='2.1.2',    #版本号
+    version='2.1.3',    #版本号
     keywords=["pip", "RE","NER","AE"],    # 关键字
-    description='DeepKE 是基于 Pytorch 的深度学习中文关系抽取处理套件。',  # 说明
+    description='DeepKE is a knowledge extraction toolkit for knowledge graph construction supporting low-resource, document-level and multimodal scenarios for entity, relation and attribute extraction.',  # 说明
     license="MIT",  # 许可
     url='https://github.com/zjunlp/deepke',
     author='ZJUNLP',
