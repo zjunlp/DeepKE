@@ -9,13 +9,14 @@
 > python == 3.8
 
 - torch == 1.10
-- hydra-core == 1.0.6
+- hydra-core == 1.3.0
 - tensorboard == 2.4.1
 - matplotlib == 3.4.1
 - scikit-learn == 0.24.1
-- transformers == 3.4.0
+- transformers==4.20.0
 - jieba == 0.42.1
 - wandb == 0.13.9
+- pandas == 1.5.3
 - deepke 
 
 ## Download Code
