@@ -120,7 +120,7 @@ def evaluate(model, data_iterator, params, ex_params, mark='Val'):
     return metrics, predictions, ground_truths
 
 
-@hydra.main(config_path="conf/config.yaml")
+@hydra.main(config_path="conf", config_name="config")
 def main(cfg):
     cwd = get_original_cwd()
     os.chdir(cwd)

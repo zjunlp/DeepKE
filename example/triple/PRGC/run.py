@@ -173,7 +173,7 @@ def train_and_evaluate(model, params, ex_params, restore_file=''):
 
 wandb.init(project="DeepKE_TRIPLE_PRGC")
 wandb.watch_called = False
-@hydra.main(config_path="conf/config.yaml")
+@hydra.main(config_path="conf", config_name="config")
 def main(cfg):
     cwd = get_original_cwd()
     os.chdir(cwd)

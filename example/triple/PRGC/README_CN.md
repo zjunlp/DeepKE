@@ -8,7 +8,7 @@
 
 > python == 3.8
 
-- torch == 1.5
+- torch == 1.10
 - hydra-core == 1.0.6
 - tensorboard == 2.4.1
 - matplotlib == 3.4.1
