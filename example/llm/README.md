@@ -17,6 +17,7 @@
   - [In-context Learning](#in-context-learning)
   - [Data Generation via LLMs](#data-generation-via-llms)
   
+
 Part of the code in this project comes from [Promptify](https://github.com/promptslab/Promptify). Thank you very much for the Promptify team.
 
 
@@ -35,8 +36,9 @@ Part of the code in this project comes from [Promptify](https://github.com/promp
 - Datasets and configuration
   In `data` folder, the given json file is in the format required by the data.
   
+
 The `conf` folder stores the set parameters. The parameters required to call the GPT3 interface are passed in through the files in this folder.
-  
+
 - In the Named Entity Recognition （NER） task, `text_input` parameter is the prediction text, `examples` are examples with few or zero samples, which can be empty, `domain` is the domain of the prediction text, which can be empty, and `label` is the entity label set, which can also be empty. 
 
 - In the Event Extraction (EE) task, `text_input` parameter is the prediction text, `examples` are examples with few or zero samples, which can be empty, and `domain` is the domain of the prediction text, which can also be empty. 
