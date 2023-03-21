@@ -572,6 +572,8 @@ Alibaba Group: Feiyu Xiong, Qiang Chen
 
 DAMO Academy: Zhenru Zhang, Chuanqi Tan, Fei Huang
 
+Intern: Ziwen Xu, Rui Huang, Xiaolong Wen
+
 # Other Knowledge Extraction Open-Source Projects
 
 - [CogIE](https://github.com/jinzhuoran/CogIE)
