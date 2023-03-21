@@ -1,0 +1,26 @@
+[
+    {
+        "text": "The Dutch newspaper Brabants Dagblad said the boy was probably from Tilburg in the southern Netherlands and that he had been on safari in South Africa with his mother Trudy , 41, father Patrick, 40, and brother Enzo, 11.",
+        "head_type": "person",
+        "head_entity": "he",
+        "tail_type": "person",
+        "tail_entity": "Patrick",
+        "relation": "parents"
+    },
+    {
+        "text": "Vagni, 62, was kidnapped along with fellow International Committee of the Red Cross-LRB-ICRC-RRB-workers Mary Jean Lacaba of the Philippines and Andreas Notter of Switzerland in January.",
+        "head_type": "person",
+        "head_entity": "Vagni",
+        "tail_type": "number",
+        "tail_entity": "62",
+        "relation": "age"
+    },
+    {
+        "text": "Graham, a Southern Tutchone tribal member from Canada, is charged with first- and second-degree murder and could be sent to prison for life if convicted.",
+        "head_type": "person",
+        "head_entity": "Graham",
+        "tail_type": "country",
+        "tail_entity": "Canada",
+        "relation": "origin"
+    }
+]

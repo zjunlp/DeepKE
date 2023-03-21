@@ -1,0 +1,26 @@
+[
+    {
+        "text": "The Dutch newspaper Brabants Dagblad said the boy was probably from Tilburg in the southern Netherlands and that he had been on safari in South Africa with his mother Trudy , 41, father Patrick, 40, and brother Enzo, 11.",
+        "head_type": "person",
+        "head_entity": "he",
+        "tail_type": "person",
+        "tail_entity": "Patrick",
+        "relation": "parents"
+    },
+    {
+        "text": "\"I learn from students and I challenge them,\" says Heloise, 58, who took over the family hints business when her mother, also named Heloise, died in 1977.",
+        "head_type": "person",
+        "head_entity": "Heloise",
+        "tail_type": "person",
+        "tail_entity": "Heloise",
+        "relation": "parents"
+    },
+    {
+        "text": "It sold ALICO to MetLife Inc for $162 billion.",
+        "head_type": "organization",
+        "head_entity": "ALICO",
+        "tail_type": "organization",
+        "tail_entity": "MetLife Inc",
+        "relation": "parents"
+    }
+]

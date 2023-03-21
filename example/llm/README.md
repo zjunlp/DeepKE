@@ -1,122 +1,100 @@
-
-
 <p align="left">
     <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/README_CN.md">简体中文</a> </b>
 </p>
 
 ## Contents
+
 - [Contents](#Contents)
+- [IE with Large Language Models](#IE with Large Language Models)
+  - [Requirement, Data and Configuration](#Requirement, Data and Configuration)
+  - [Run and Examples](#Run and Examples)
+- [Data Augmentation with Large Language Models](#Data Augmentation with Large Language Models)
+  - [Configuration](#Configuration)
 
-- [NER, EE and RTE with Large Language Models](#ner-ee-and-rte-with-large-language-models)
-  - [Requirements and Datasets](#requirements-datasets-and-configuration)
-  - [Example](#example)
+# IE with Large Language Models
 
-- [Relation Extraction with Large Language Models](#relation-extraction-with-large-language-models)
-  - [Requirements and Datasets](#requirements-and-datasets)
-  - [Prompts](#prompts)
-  - [In-context Learning](#in-context-learning)
-  - [Data Generation via LLMs](#data-generation-via-llms)
-  
+## Requirement, Data and Configuration
 
-Part of the code in this project comes from [Promptify](https://github.com/promptslab/Promptify). Thank you very much for the Promptify team.
+- Requirement
 
+  The LLM module of Deepke calls the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tookit.
 
-# NER, EE and RTE with Large Language Models
+  ```
+  >> pip install easyinstruct
+  >> pip install hydra-core
+  ```
 
-## Requirements Datasets and Configuration
-- Requirements
-  
-  OpenAI API (key) is utilized for language models (e.g. GPT-3).
-    ```shell
-    >> pip install openai
-    >> pip install Jinja2
-    >> pip install hydra-core
-    ```
+- Data
 
-- Datasets and configuration
-  In `data` folder, the given json file is in the format required by the data.
-  
+  The data here refers to the examples data used for in-context learning, which is stored in the `data` folder. The `.json` files in it are the default examples data for various tasks. Users can customize the examples in them, but they need to follow the given data format.
 
-The `conf` folder stores the set parameters. The parameters required to call the GPT3 interface are passed in through the files in this folder.
+- Configuration
 
-- In the Named Entity Recognition （NER） task, `text_input` parameter is the prediction text, `examples` are examples with few or zero samples, which can be empty, `domain` is the domain of the prediction text, which can be empty, and `label` is the entity label set, which can also be empty. 
+  The `conf` folder stores the set parameters. The parameters required to call the GPT3 interface are passed in through the files in this folder.
 
-- In the Event Extraction (EE) task, `text_input` parameter is the prediction text, `examples` are examples with few or zero samples, which can be empty, and `domain` is the domain of the prediction text, which can also be empty. 
+  - In the Named Entity Recognition (ner) task, `text_input` parameter is the prediction text; `domain` is the domain of the prediction text, which can be empty; `label` is the entity label set, which can also be empty. 
 
-- In the Relational Triple Extraction (RTE) task, `text_input` parameter is the prediction text, `examples` are examples with few or zero samples, which can be empty, and `domain` is the domain of the prediction text, which can also be empty.
+  - In the Relation Extraction (re) task, `text_input` parameter is the text; `domain` indicates the domain to which the text belongs, and it can be empty; `labels` is the set of relationship type labels. If there is no custom label set, this parameter can be empty; `head_entity` and `tail_entity` are the head entity and tail entity of the relationship to be predicted, respectively; `head_type` and `tail_type` are the types of the head and tail entities to be predicted in the relationship.
 
+  - In the Event Extraction (ee) task, `text_input` parameter is the prediction text; `domain` is the domain of the prediction text, which can also be empty. 
 
+  - In the Relational Triple Extraction (rte) task, `text_input` parameter is the prediction text; `domain` is the domain of the prediction text, which can also be empty.
 
-
-## Example
-  |                           Task                           |          Input           |    Output    |     
-  | :----------------------------------------------------------: | :------------------------: | :------------: |
-  | NER |           Japan began the defence of their Asian Cup title with a lucky 2-1 win against Syria in a Group C championship match on Friday.         |       [{'E': 'Country', 'W': 'Japan'}, {'E': 'Country', 'W': 'Syria'}, {'E': 'Competition', 'W': 'Asian Cup'}, {'E': 'Competition', 'W': 'Group C championship'}]   |          
-  | EE | In Baghdad, a cameraman died when an American tank fired on the Palestine Hotel. |    event_list: [ event_type: [arguments: [role: "cameraman", argument: "Baghdad"], [role: "American tank", argument: "Palestine Hotel"]] ]      |  
-  | RTE |           The most common audits were about waste and recycling.          |[['audit', 'type', 'waste'], ['audit', 'type', 'recycling']]|     
+  - The specific meanings of other parameters are as follows:
+    - `task` parameter is used to specify the task type, where `ner` represents named entity recognition task, `re` represents relation extraction task, `ee` represents event extraction task, and `rte` represents triple extraction task;
+    - `language` indicates the language of the task, where `en` represents English extraction tasks, and `ch` represents Chinese extraction tasks;
+    - `engine` indicates the name of the large model used, which should be consistent with the model name specified by the OpenAI API;
+    - `api_key` is the user's API key;
+    - `zero_shot` indicates whether zero-shot setting is used. When it is set to `True`, only the instruction prompt model is used for information extraction, and when it is set to `False`, in-context form is used for information extraction;
+    - `instruction` parameter is used to specify the user-defined prompt instruction, and the default instruction is used when it is empty;
+    - `data_path` indicates the directory where in-context examples are stored, and the default is the `data` folder.
 
 
+## Run and Examples
 
-# Relation Extraction with Large Language Models
+Once the parameters are set, you can directly run the `run.py`：
 
-## Requirements and Datasets
-- Requirements
-  
-  OpenAI API (key) is utilized for language models (e.g. GPT-3).
-    ```shell
-    >> pip install openai
-    ```
-- Datasets
-  - [TACRED](https://nlp.stanford.edu/projects/tacred/)
-  - [TACREV](https://github.com/DFKI-NLP/tacrev)
-  - [RE-TACRED](https://github.com/gstoica27/Re-TACRED)
-
-
-## Prompts
-![prompt](LLM.png)
-
-## In-context Learning
-To elicit comprehension of the relation extraction task from large language models (LLMs), in-context learning is applied by providing LLMs with demonstrations in prompts. As shown above, two kinds of prompts are designed: **TEXT PROMPT** only with essential elements for RE and **INSTRUCT PROMPT** with constructions related to relation extraction. Meanwhile, entity types as schemas can also be added to prompts for better performance.
-
-Conduct in-context learning with k-shot demonstrations:
-
-```shell
->> python gpt3ICL.py -h
-    usage: gpt3ICL.py [-h] --api_key API_KEY --train_path TRAIN_PATH --test_path TEST_PATH --output_success OUTPUT_SUCCESS --output_nores OUTPUT_NORES --prompt {text,text_schema,instruct,instruct_schema} [--k K]
-
-    optional arguments:
-      -h, --help            show this help message and exit
-      --api_key API_KEY, -ak API_KEY
-      --train_path TRAIN_PATH, -tp TRAIN_PATH
-                            The path of training / demonstration data.
-      --test_path TEST_PATH, -ttp TEST_PATH
-                            The path of test data.
-      --output_success OUTPUT_SUCCESS, -os OUTPUT_SUCCESS
-                            The output directory of successful ICL samples.
-      --output_nores OUTPUT_NORES, -on OUTPUT_NORES
-                            The output directory of failed ICL samples.
-      --prompt {text,text_schema,instruct,instruct_schema}
-      --k K                 k-shot demonstrations
+```
+>> python run.py
 ```
 
-## Data Generation via LLMs
+Below are input and output examples for different tasks:
 
-To complement the scarcity of labeled RE data in few-shot settings, utilize specific prompts with descriptions of data forms to guide LLMs to generate more in-domain labeled data autonomously as shown in the picture above.
+| Task |                            Input                             |                            Output                            |
+| :--: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| NER  | Japan began the defence of their Asian Cup title with a lucky 2-1 win against Syria in a Group C championship match on Friday. | [{'E': 'Country', 'W': 'Japan'}, {'E': 'Country', 'W': 'Syria'}, {'E': 'Competition', 'W': 'Asian Cup'}, {'E': 'Competition', 'W': 'Group C championship'}] |
+|  RE  | The Dutch newspaper Brabants Dagblad said the boy was probably from Tilburg in the southern Netherlands and that he had been on safari in South Africa with his mother Trudy , 41, father Patrick, 40, and brother Enzo, 11. |                           parents                            |
+|  EE  | In Baghdad, a cameraman died when an American tank fired on the Palestine Hotel. | event_list: [ event_type: [arguments: [role: "cameraman", argument: "Baghdad"], [role: "American tank", argument: "Palestine Hotel"]] ] |
+| RTE  |    The most common audits were about waste and recycling.    | [['audit', 'type', 'waste'], ['audit', 'type', 'recycling']] |
 
-Obtain augmented data:
-```shell
->> python gpt3DA.py -h
-  usage: gpt3DA.py [-h] --api_key API_KEY --demo_path DEMO_PATH --output_dir OUTPUT_DIR --dataset {tacred,tacrev,retacred} [--k K]
+# Data Augmentation with Large Language Models
 
-  optional arguments:
-    -h, --help            show this help message and exit
-    --api_key API_KEY, -ak API_KEY
-    --demo_path DEMO_PATH, -dp DEMO_PATH
-                          The directory of demonstration data.
-    --output_dir OUTPUT_DIR
-                          The output directory of generated data.
-    --dataset {tacred,tacrev,retacred}
-    --k K                 k-shot demonstrations
+To compensate for the lack of labeled data in few-shot scenarios for relation extraction, we have designed prompts with data style descriptions to guide large language models to automatically generate more labeled data based on existing few-shot data.
+
+## Configuration
+
+- Set `task` to `da`;
+- Set `text_input` to the relationship label to be enhanced, such as `org:founded_by`;
+- Set `zero_shot` to `False` and set the low-sample example in the corresponding file under the `data` folder for the `da` task;
+- The range of entity labels can be specified in `labels`.
+
+Here is an example of a data augmentation `prompt`:
+
+```python
+'''
+One sample in relation extraction datasets consists of a relation, a context, a pair of head and tail entities in the context and their entity types. 
+
+The head entity has the relation with the tail entity and entities are pre-categorized as the following types: URL, LOCATION, IDEOLOGY, CRIMINAL CHARGE, TITLE, STATE OR PROVINCE, DATE, PERSON, NUMBER, CITY, DURATION, CAUSE OF DEATH, COUNTRY, NATIONALITY, RELIGION, ORGANIZATION, MISCELLANEOUS. 
+
+Here are some samples for relation 'org:founded_by':
+
+Relation: org:founded_by. Context: Talansky is also the US contact for the New Jerusalem Foundation , an organization founded by Olmert while he was Jerusalem 's mayor . Head Entity: New Jerusalem Foundation. Head Type: ORGANIZATION. Tail Entity: Olmert. Tail Type: PERSON.
+
+Relation: org:founded_by. Context: Sharpton has said he will not endorse any candidate until hearing more about their views on civil rights and other issues at his National Action Network convention next week in New York City . Head Entity: National Action Network. Head Type: ORGANIZATION. Tail Entity: his. Tail Type: PERSON.
+
+Relation: org:founded_by. Context: `` We believe that we can best serve our clients by offering a single multistrategy hedge fund platform , '' wrote John Havens , who was a founder of Old Lane with Pandit and is president of the alternative investment group . Head Entity: Old Lane. Head Type: ORGANIZATION. Tail Entity: John Havens. Tail Type: PERSON.
+
+Generate more samples for the relation 'org:founded_by'.
+'''
 ```
 
-Then, you can use the generated data for model training with the code from [standard-re](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard).

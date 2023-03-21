@@ -1,3 +1,2 @@
-openai
-jinja2
+easyinstruct
 hydra
