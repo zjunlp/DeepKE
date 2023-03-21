@@ -5,10 +5,10 @@
 ## Contents
 
 - [Contents](#Contents)
-- [IE with Large Language Models](#IE with Large Language Models)
-  - [Requirement, Data and Configuration](#Requirement, Data and Configuration)
-  - [Run and Examples](#Run and Examples)
-- [Data Augmentation with Large Language Models](#Data Augmentation with Large Language Models)
+- [IE with Large Language Models](#IE_with_Large_Language_Models)
+  - [Requirement, Data and Configuration](#Requirement,_Data_and_Configuration)
+  - [Run and Examples](#Run_and_Examples)
+- [Data Augmentation with Large Language Models](#Data_Augmentation_with_Large_Language_Models)
   - [Configuration](#Configuration)
 
 # IE with Large Language Models
