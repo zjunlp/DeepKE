@@ -32,7 +32,7 @@ def logging(log_dir, s, print_=True, log_=True):
 
 wandb.init(project="DeepKE_RE_Few")
 wandb.watch_called = False
-@hydra.main(config_path="conf/config.yaml")
+@hydra.main(config_path="./conf", config_name="config.yaml")
 def main(cfg):
     cwd = get_original_cwd()
     os.chdir(cwd)
