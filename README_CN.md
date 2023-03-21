@@ -569,6 +569,8 @@ python predict.py
 
 阿里巴巴达摩院：张珍茹、谭传奇、黄非
 
+实习生：徐子文、黄睿、翁晓龙
+
 # 其它知识抽取开源工具
 
 - [CogIE](https://github.com/jinzhuoran/CogIE)
