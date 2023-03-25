@@ -3,9 +3,7 @@ from torch import nn
 
 import torch.nn.functional as F
 from .modeling_IFA import IFAModel
-from .clip.modeling_clip import CLIPModel
-from .clip.configuration_clip import CLIPConfig
-from transformers import BertConfig, BertModel
+from transformers import BertConfig, BertModel, CLIPConfig, CLIPModel
 
 class IFAREModel(nn.Module):
     def __init__(self, num_labels, tokenizer, args):
