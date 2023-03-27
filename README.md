@@ -51,6 +51,9 @@ Reasoning with Language Model Prompting \[[Survey](https://arxiv.org/abs/2212.09
 
 [LambdaKG](https://github.com/zjunlp/PromptKG/tree/main/lambdaKG): A library and benchmark for PLM-based KG embeddings
 
+[easyinstruct](https://github.com/zjunlp/EasyInstruct): A easy-to-use framework to instruct Large Language Models
+
+
 # Table of Contents
 
 * [What's New](#whats-new)
