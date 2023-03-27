@@ -49,6 +49,8 @@ Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey
 
 [LambdaKG](https://github.com/zjunlp/PromptKG/tree/main/lambdaKG): 基于预训练语言模型的知识图谱表示与应用工具
 
+[easyinstruct](https://github.com/zjunlp/EasyInstruct): 一个基于指令使用大模型的工具
+
 # 目录
 
 * [新版特性](#新版特性)
