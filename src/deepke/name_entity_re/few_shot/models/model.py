@@ -1,10 +1,10 @@
 import torch
 from torch import nn
 from torch.nn import functional as F
-from transformers.configuration_bart import BartConfig
-from .modeling_bart import BartModel, _prepare_bart_decoder_inputs
+from transformers.models.bart.configuration_bart import BartConfig
+from .modeling_bart import BartModel
 
-from ..utils import avg_token_embeddings, seq_to_mask,get_model_device
+from .util import avg_token_embeddings, seq_to_mask, get_model_device
 from functools import partial
 from typing import Union
 
@@ -15,7 +15,7 @@ class PromptBartEncoder(nn.Module):
         self.bart_encoder = encoder
     
     def forward(self, src_tokens, attention_mask=None, past_key_values=None):
-        encoder_dicts = self.bart_encoder(input_ids=src_tokens, attention_mask=attention_mask, past_key_values=past_key_values, return_dict=True, output_hidden_states=True)
+        encoder_dicts = self.bart_encoder(input_ids=src_tokens, attention_mask=attention_mask, return_dict=True, output_hidden_states=True, past_prompt=past_key_values)
         return encoder_dicts.last_hidden_state, encoder_dicts.hidden_states
         
 class PromptBartDecoder(nn.Module):
@@ -82,46 +82,76 @@ class PromptBartDecoder(nn.Module):
         tokens = torch.where(mapping_token_mask, tag_mapped_tokens, word_mapped_tokens)  # bsz x max_len
         tokens = tokens.masked_fill(tgt_pad_mask, self.pad_token_id)
 
-        decoder_input_ids, _, causal_mask = _prepare_bart_decoder_inputs(
-                self.pad_token_id, 
-                tokens,
-                decoder_input_ids=None,
-                decoder_padding_mask=None,
-                causal_mask_dtype=self.bart_decoder.embed_tokens.weight.dtype
-        )
+        # decoder_input_ids, _, causal_mask = _prepare_bart_decoder_inputs(
+        #         self.pad_token_id, 
+        #         tokens,
+        #         decoder_input_ids=None,
+        #         decoder_padding_mask=None,
+        #         causal_mask_dtype=self.bart_decoder.embed_tokens.weight.dtype
+        # )
 
-        if self.use_prompt:
-            assert past_key_values is not None
-            _, _, seqlen, _ = past_key_values[0]['self']['prev_value'].shape
-            tgt_len = decoder_input_ids.size(1)
-            temp_mask = torch.zeros(tgt_len, seqlen).to(causal_mask.device) #tgtlen, preseqlen
-            causal_mask = torch.cat([temp_mask, causal_mask],dim=1) #tgtlen, preseqlen+tgtlen
+        # if self.use_prompt:
+        #     assert past_key_values is not None
+        #     _, _, seqlen, _ = past_key_values[0]['self']['prev_value'].shape
+        #     tgt_len = decoder_input_ids.size(1)
+        #     temp_mask = torch.zeros(tgt_len, seqlen).to(causal_mask.device) #tgtlen, preseqlen
+        #     causal_mask = torch.cat([temp_mask, causal_mask],dim=1) #tgtlen, preseqlen+tgtlen
 
         if self.training:
             tokens = tokens[:, :-1]
-            decoder_pad_mask = tokens.eq(self.pad_token_id) 
-            dict = self.bart_decoder(input_ids=tokens,
-                                encoder_hidden_states=encoder_outputs,  # last_hidden_state
-                                encoder_padding_mask=attention_mask,  # attention_mask
-                                decoder_padding_mask=decoder_pad_mask,
-                                decoder_causal_mask=causal_mask[:tokens.size(1), :self.prompt_len+tokens.size(1)],
-                                output_hidden_states=True,
-                                past_key_values=past_key_values,
-                                return_dict=True)
+            decoder_attention_mask = tokens.ne(self.pad_token_id)
+            # dict = self.bart_decoder(input_ids=tokens,
+            #                     encoder_hidden_states=encoder_outputs,  # last_hidden_state
+            #                     encoder_padding_mask=attention_mask,  # attention_mask
+            #                     decoder_padding_mask=decoder_pad_mask,
+            #                     decoder_causal_mask=causal_mask[:tokens.size(1), :self.prompt_len+tokens.size(1)],
+            #                     output_hidden_states=True,
+            #                     past_key_values=past_key_values,
+            #                     return_dict=True)
+            dict = self.bart_decoder(
+                input_ids=tokens,
+                attention_mask=decoder_attention_mask,
+                encoder_hidden_states=encoder_outputs,
+                encoder_attention_mask=attention_mask,
+                output_hidden_states=True,
+                return_dict=True,
+                past_prompt=past_key_values
+            )
         else:
             past_key_values = prompt_state.past_key_values
-            dict = self.bart_decoder(input_ids=tokens,
-                                encoder_hidden_states=encoder_outputs,
-                                encoder_padding_mask=attention_mask,
-                                decoder_padding_mask=None,
-                                decoder_causal_mask=None,
-                                past_key_values=past_key_values,
-                                use_cache=True,
-                                return_dict=True)
+            # dict = self.bart_decoder(input_ids=tokens,
+            #                     encoder_hidden_states=encoder_outputs,
+            #                     encoder_padding_mask=attention_mask,
+            #                     decoder_padding_mask=None,
+            #                     decoder_causal_mask=None,
+            #                     past_key_values=past_key_values,
+            #                     use_cache=True,
+            #                     return_dict=True)
+            dict = self.bart_decoder(
+                input_ids=tokens,
+                attention_mask=None,
+                encoder_hidden_states=encoder_outputs,
+                encoder_attention_mask=attention_mask,
+                past_key_values=None,
+                use_cache=True,
+                return_dict=True,
+                past_prompt=past_key_values
+            )
         hidden_state = dict.last_hidden_state  # bsz x max_len x hidden_size
         hidden_state = self.dropout_layer(hidden_state)
         if not self.training:
-            prompt_state.past_key_values = dict.past_key_values
+            dict_past_key_values = dict.past_key_values
+            state_past_key_values = []
+            for i in range(len(dict_past_key_values)):
+                tup = dict_past_key_values[i]
+                state_past_key_values.append({})
+                state_past_key_values[i]['decoder_prompt'] = {}
+                state_past_key_values[i]['decoder_prompt']['prev_key'] = tup[0]
+                state_past_key_values[i]['decoder_prompt']['prev_value'] = tup[1]
+                state_past_key_values[i]['cross_attention_prompt'] = {}
+                state_past_key_values[i]['cross_attention_prompt']['prev_key'] = tup[2]
+                state_past_key_values[i]['cross_attention_prompt']['prev_value'] = tup[3]
+            prompt_state.past_key_values = state_past_key_values
 
         logits = hidden_state.new_full((hidden_state.size(0), hidden_state.size(1), self.src_start_index+src_tokens.size(-1)),
                                        fill_value=-1e24)
@@ -266,21 +296,21 @@ class PromptBartModel(nn.Module):
 
         result = []
         for i, key_val in enumerate(past_key_values):
-            temp_dict = {'self': {"prev_key": key_val[0].contiguous(),
-                                    "prev_value": key_val[1].contiguous(),
-                                    "prev_key_padding_mask": torch.zeros(bsz, seqlen).to(key_val.device).bool() #bsz, preseqlen
-                                    },
+            temp_dict = {'decoder_prompt': {"prev_key": key_val[0].contiguous(),
+                                            "prev_value": key_val[1].contiguous(),
+                                            "prev_key_padding_mask": torch.zeros(bsz, seqlen).to(key_val.device).bool(),
+                                            },
                         }
-            key_val2 = past_key_values2[i]
-            temp_dict['encoder_decoder'] = {"prev_key": key_val2[0].contiguous(),
-                                            "prev_value": key_val2[1].contiguous(),
-                                            "prev_key_padding_mask": torch.zeros(bsz, seqlen).to(key_val2.device).bool()
-                                            }
+            key_val_dec = past_key_values2[i]
+            temp_dict['cross_attention_prompt'] = {"prev_key": key_val_dec[0].contiguous(),
+                                                   "prev_value": key_val_dec[1].contiguous(),
+                                                   "prev_key_padding_mask": torch.zeros(bsz, seqlen).to(key_val_dec.device).bool(),
+                                                  }
             key_val_enc = past_key_values_enc[i]
-            temp_dict['encoder'] = {"prev_key": key_val_enc[0].contiguous(),
-                                    "prev_value": key_val_enc[1].contiguous(),
-                                    "prev_key_padding_mask": torch.zeros(bsz, seqlen).to(key_val_enc.device).bool()
-                                    }
+            temp_dict['encoder_prompt'] = {"prev_key": key_val_enc[0].contiguous(),
+                                           "prev_value": key_val_enc[1].contiguous(),
+                                           "prev_key_padding_mask": torch.zeros(bsz, seqlen).to(key_val_enc.device).bool(),
+                                          }
             result.append(temp_dict)
 
         return result

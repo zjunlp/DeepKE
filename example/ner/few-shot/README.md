@@ -10,15 +10,14 @@
 <img src="lightner-model.png" width="75%" height="75%" />
 </div>
 
-Illustration of LightNER (COLING'22) for few-shot named entity recognition (Details in paper [https://aclanthology.org/2022.coling-1.209.pdf](https://aclanthology.org/2022.coling-1.209.pdf)).
-- ❗NOTE: We have released a follow-up work "[One Model for All Domains: Collaborative Domain-Prefix Tuning for Cross-Domain NER](https://arxiv.org/abs/2301.10410)" at [CP-NER](https://github.com/zjunlp/DeepKE/tree/main/example/ner/cross).
+Illustration of LightNER (COLING'22) for few-shot named entity recognition (Details in paper [https://arxiv.org/pdf/2109.00720.pdf](https://arxiv.org/pdf/2109.00720.pdf)).
 
 ## Requirements
 
 > python == 3.8
 
-- torch == 1.5
-- transformers == 3.4.0
+- torch == 1.11
+- transformers == 4.26.0
 - deepke
 
 ## Download Code
@@ -75,15 +74,6 @@ cd DeepKE/example/ner/few-shot
     python run.py +train=few_shot
     ```
 
-  - Few-shot Training for **Chinese**
-
-    > Full data fine-tuning can achieve the best performance.
-
-    Pretrained weights need to be provided in the directory defined in `few_shot_cn.yaml`
-    ```bash
-    python run.py +train=few_shot_cn
-    ```
-
   - Logs for training are in the `log` folder. The path of the trained model can be customized.
 
 - Prediction
@@ -96,34 +86,31 @@ cd DeepKE/example/ner/few-shot
     python predict.py
     ```
 
-### Custom Tokenizer
-
-If you need to customize your own Tokenizer (eg `MBartTokenizer` for multilingual processing).
-
-You can customize the tokenizer in <a href="https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/few_shot/module/datasets.py#L18">tokenizer</a>
-
 ## Cite
 
 If you use or extend our work, please cite the following paper:
 
 ```bibtex
-@inproceedings{chen-etal-2022-lightner,
-    title = "{L}ight{NER}: A Lightweight Tuning Paradigm for Low-resource {NER} via Pluggable Prompting",
-    author = "Chen, Xiang  and
-      Li, Lei  and
-      Deng, Shumin  and
-      Tan, Chuanqi  and
-      Xu, Changliang  and
-      Huang, Fei  and
-      Si, Luo  and
-      Chen, Huajun  and
-      Zhang, Ningyu",
-    booktitle = "Proceedings of the 29th International Conference on Computational Linguistics",
-    month = oct,
-    year = "2022",
-    address = "Gyeongju, Republic of Korea",
-    publisher = "International Committee on Computational Linguistics",
-    url = "https://aclanthology.org/2022.coling-1.209",
-    pages = "2374--2387"
-   }
+@article{DBLP:journals/corr/abs-2109-00720,
+  author    = {Xiang Chen and
+               Lei Li and
+               Shumin Deng and
+               Chuanqi Tan and
+               Changliang Xu and
+               Fei Huang and
+               Luo Si and
+               Huajun Chen and
+               Ningyu Zhang},
+  title     = {LightNER: {A} Lightweight Tuning Paradigm for Low-resource {NER} via
+               Pluggable Prompting},
+  journal   = {CoRR},
+  volume    = {abs/2109.00720},
+  year      = {2021},
+  url       = {https://arxiv.org/abs/2109.00720},
+  eprinttype = {arXiv},
+  eprint    = {2109.00720},
+  timestamp = {Thu, 01 Sep 2022 08:06:28 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-2109-00720.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
 ```
