@@ -8,8 +8,8 @@
 
 > python == 3.8
 
-- torch == 1.11
-- transformers == 4.26.0
+- torch == 1.5
+- transformers == 3.4.0
 - deepke 
 
 ## 模型
@@ -19,7 +19,7 @@
 </div>
 
 基于LightNER (COLING2022)的低资源实体识别方法 (详情请查阅论文 [https://arxiv.org/pdf/2109.00720.pdf](https://arxiv.org/pdf/2109.00720.pdf)).
-
+- ❗NOTE: 发布了后续工作 "[One Model for All Domains: Collaborative Domain-Prefix Tuning for Cross-Domain NER](https://arxiv.org/abs/2301.10410)", 代码详见 [CP-NER](https://github.com/zjunlp/DeepKE/tree/main/example/ner/cross).
 
 ### 克隆代码
 ```bash
@@ -59,12 +59,21 @@ cd DeepKE/example/ner/few-shot
   
   - 训练conll2003：` python run.py ` (训练所用到参数都在conf文件夹中，修改即可)
 
+  - 进行中文few-shot训练：` python run.py +train=few_shot_cn `(需要在`few_shot_cn.yaml`中指定的目录下提供预训练权重) 
+
+    > 全量数据微调才能达到最佳性能。
   - 进行few-shot训练：` python run.py +train=few_shot ` (若要加载模型，修改few_shot.yaml中的load_path)
 
 
 - 每次训练的日志保存在 `logs` 文件夹内，模型结果保存目录可以自定义。
 - 进行预测：在config.yaml中加入 - predict ， 再在predict.yaml中修改load_path为模型路径以及write_path为预测结果保存路径，再` python predict.py `
 
+### 自定义Tokenizer
+
+若您需要定制化自己的Tokenizer（例如`MBartTokenizer`用于多语言处理）。
+
+您可在<a href="https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/few_shot/module/datasets.py#L18">tokenizer</a>
+中自定义分词器。
 
 ## 引用
 
