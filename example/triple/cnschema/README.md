@@ -1,6 +1,8 @@
 <p align="center">
     <a href="https://github.com/zjunlp/deepke"> <img src="../../../pics/logo_cnschema.png" width="400"/></a>
-    
+
+**English | [简体中文](./README_CN.md)**
+
 ## Introduction
 
 DeepKE is a knowledge extraction toolkit supporting **low-resource**, **document-level** and **multimodal** scenarios for *entity*, *relation* and *attribute* extraction. We provide [documents](https://zjunlp.github.io/DeepKE/), [Google Colab tutorials](https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing), [online demo](http://deepke.zjukg.cn/), and [slides](https://github.com/zjunlp/DeepKE/blob/main/docs/slides/Slides-DeepKE-en.pdf) for beginners.
