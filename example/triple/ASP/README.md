@@ -152,6 +152,8 @@ Please make sure that:
 - Enough source data
 
 ## Cite 
+
+```bibtex
 @inproceedings{DBLP:conf/emnlp/LiuJMCS22,
   author    = {Tianyu Liu and
                Yuchen Eleanor Jiang and
@@ -172,3 +174,4 @@ Please make sure that:
   biburl    = {https://dblp.org/rec/conf/emnlp/LiuJMCS22.bib},
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
+```

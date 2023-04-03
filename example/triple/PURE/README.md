@@ -193,3 +193,4 @@ PURE (Based on the paper "[A Frustratingly Easy Approach for Entity and Relation
   biburl    = {https://dblp.org/rec/conf/naacl/ZhongC21.bib},
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
+```

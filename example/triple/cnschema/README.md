@@ -143,7 +143,7 @@ After aforementioned trained models are downloaded, entites and their relations 
 
 If the resources or technologies in this project are helpful to your research work, you are welcome to cite the following papers in your thesis:
 
-```
+```bibtex
 @article{zhang2022deepke,
   title={DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population},
   author={Zhang, Ningyu and Xu, Xin and Tao, Liankuan and Yu, Haiyang and Ye, Hongbin and Qiao, Shuofei and Xie, Xin and Chen, Xiang and Li, Zhoubo and Li, Lei and Liang, Xiaozhuan and others},

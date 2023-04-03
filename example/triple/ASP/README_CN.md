@@ -149,6 +149,8 @@ cd DeepKE/example/triple/ASP
 - 拥有足够的源数据
 
 ## 引用 
+
+```bibtex
 @inproceedings{DBLP:conf/emnlp/LiuJMCS22,
   author    = {Tianyu Liu and
                Yuchen Eleanor Jiang and
@@ -169,3 +171,4 @@ cd DeepKE/example/triple/ASP
   biburl    = {https://dblp.org/rec/conf/emnlp/LiuJMCS22.bib},
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
+```
