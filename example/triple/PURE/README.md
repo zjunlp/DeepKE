@@ -90,7 +90,7 @@ cd DeepKE/example/triple/PURE
     -  `dev.json `: Validation set
     - `test.json`: Test set
     
-    Relation types stored in `src/deepke/triple_extraction/PURE/mpdels/const.py`.
+    Relation types stored in `src/deepke/triple_extraction/PURE/models/const.py`.
   
 - Training
 
