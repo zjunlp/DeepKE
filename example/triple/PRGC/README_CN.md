@@ -74,6 +74,8 @@ cd DeepKE/example/triple/PRGC
   ```
 
 ## 引用 
+
+```bibtex
 @inproceedings{DBLP:conf/acl/ZhengWCYZZZQMZ20,
   author    = {Hengyi Zheng and
                Rui Wen and
@@ -104,3 +106,4 @@ cd DeepKE/example/triple/PRGC
   biburl    = {https://dblp.org/rec/conf/acl/ZhengWCYZZZQMZ20.bib},
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
+```
