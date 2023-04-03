@@ -3,9 +3,8 @@
 <p>
 
 
-<p align="center">
-    <b> <a href=".README.md">English</a> | 简体中文 </b>
-</p>
+<b> <a href="./README.md">English</a> | 简体中文 </b>
+
 
 <h1 align="center">
     <p>开源中文知识图谱抽取框架开箱即用特别版DeepKE-cnSchema</p>

@@ -1,9 +1,9 @@
 # Easy Start
 
 
-<p align="center">
-    <b> English | <a href=".README_CN.md">简体中文</a>  </b>
-</p>
+
+<b> English | <a href="./README_CN.md">简体中文</a>  </b>
+
 
 ## Model
 

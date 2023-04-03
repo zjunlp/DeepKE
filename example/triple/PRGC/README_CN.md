@@ -1,8 +1,8 @@
 ## 快速上手
 
-<p align="left">
-    <b> <a href="https://github.com/zjunlp/DeepKE/blob/dev/example/triple/PRGC/README.md">English</a> | 简体中文 </b>
-</p>
+
+<b> <a href="https://github.com/zjunlp/DeepKE/blob/dev/example/triple/PRGC/README.md">English</a> | 简体中文 </b>
+
 
 ## 模型
 <div align=center>

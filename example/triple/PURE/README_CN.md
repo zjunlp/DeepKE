@@ -1,8 +1,8 @@
 ## 快速上手
 
-<p align="left">
-    <b> <a href="./README.md">English</a> | 简体中文 </b>
-</p>
+
+<b> <a href="./README.md">English</a> | 简体中文 </b>
+
 
 ## 模型
 
