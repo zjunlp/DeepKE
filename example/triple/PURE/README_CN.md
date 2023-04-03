@@ -85,7 +85,7 @@ cd DeepKE/example/triple/PURE
   - `dev.json`：存放验证数据集
   - `test.json`：存放测试数据集
 
-  在src/deepke/triple_extraction/PURE/mpdels/const.py中存放关系种类
+  在src/deepke/triple_extraction/PURE/models/const.py中存放关系种类
 
 - 开始训练：```python run.py``` (训练所用到参数都在conf文件夹中，该任务支持多卡训练，可以修改`trian.yaml`中的参数以达到自己想要的效果。你还可以下载预训练实体模型或关系模型到`pretrain_models`文件夹中。
 
