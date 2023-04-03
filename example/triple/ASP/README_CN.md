@@ -2,6 +2,13 @@
 
 **[English](./README.md) | 简体中文**
 
+## 模型
+
+<div align=center>
+<img src="ASP.png" width="75%" height="75%" />
+</div>
+
+
 ### 环境依赖
 
 > python == 3.8.16
@@ -138,3 +145,25 @@ cd DeepKE/example/triple/ASP
 
 - 使用我们提供的三元组文件或确保您自定义的三元组文件质量较高
 - 拥有足够的源数据
+
+## 引用 
+@inproceedings{DBLP:conf/emnlp/LiuJMCS22,
+  author    = {Tianyu Liu and
+               Yuchen Eleanor Jiang and
+               Nicholas Monath and
+               Ryan Cotterell and
+               Mrinmaya Sachan},
+  editor    = {Yoav Goldberg and
+               Zornitsa Kozareva and
+               Yue Zhang},
+  title     = {Autoregressive Structured Prediction with Language Models},
+  booktitle = {Findings of the Association for Computational Linguistics: {EMNLP}
+               2022, Abu Dhabi, United Arab Emirates, December 7-11, 2022},
+  pages     = {993--1005},
+  publisher = {Association for Computational Linguistics},
+  year      = {2022},
+  url       = {https://aclanthology.org/2022.findings-emnlp.70},
+  timestamp = {Tue, 07 Feb 2023 17:10:51 +0100},
+  biburl    = {https://dblp.org/rec/conf/emnlp/LiuJMCS22.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}

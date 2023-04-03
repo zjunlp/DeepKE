@@ -2,6 +2,12 @@
 
 **English | [简体中文](./README_CN.md)**
 
+## Model
+
+<div align=center>
+<img src="ASP.png" width="75%" height="75%" />
+</div>
+
 ## Requirements
 
 > python == 3.8.16
@@ -141,3 +147,25 @@ Please make sure that:
 
 - Use the triple file we provide or high-quality customized triple file
 - Enough source data
+
+## Cite 
+@inproceedings{DBLP:conf/emnlp/LiuJMCS22,
+  author    = {Tianyu Liu and
+               Yuchen Eleanor Jiang and
+               Nicholas Monath and
+               Ryan Cotterell and
+               Mrinmaya Sachan},
+  editor    = {Yoav Goldberg and
+               Zornitsa Kozareva and
+               Yue Zhang},
+  title     = {Autoregressive Structured Prediction with Language Models},
+  booktitle = {Findings of the Association for Computational Linguistics: {EMNLP}
+               2022, Abu Dhabi, United Arab Emirates, December 7-11, 2022},
+  pages     = {993--1005},
+  publisher = {Association for Computational Linguistics},
+  year      = {2022},
+  url       = {https://aclanthology.org/2022.findings-emnlp.70},
+  timestamp = {Tue, 07 Feb 2023 17:10:51 +0100},
+  biburl    = {https://dblp.org/rec/conf/emnlp/LiuJMCS22.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}

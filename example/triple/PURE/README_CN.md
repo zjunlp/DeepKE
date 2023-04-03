@@ -4,6 +4,12 @@
     <b> <a href="./README.md">English</a> | 简体中文 </b>
 </p>
 
+## 模型
+
+<div align=center>
+<img src="PURE.png" width="75%" height="75%" />
+</div>
+
 ### 环境依赖
 
 > python == 3.8
@@ -132,3 +138,32 @@ PURE（基于论文 "[A Frustratingly Easy Approach for Entity and Relation Extr
 - relation_max_seq_length: 最大总输入序列长度。大于此长度的序列将被截断，小于此长度的将被填充。
 - relation_prediction_file: 关系预测结果文件名
 - relation_output_dir: 将在其中写入模型预测和检查点的输出目录
+
+## 引用
+
+```bibtex
+@inproceedings{DBLP:conf/naacl/ZhongC21,
+  author    = {Zexuan Zhong and
+               Danqi Chen},
+  editor    = {Kristina Toutanova and
+               Anna Rumshisky and
+               Luke Zettlemoyer and
+               Dilek Hakkani{-}T{\"{u}}r and
+               Iz Beltagy and
+               Steven Bethard and
+               Ryan Cotterell and
+               Tanmoy Chakraborty and
+               Yichao Zhou},
+  title     = {A Frustratingly Easy Approach for Entity and Relation Extraction},
+  booktitle = {Proceedings of the 2021 Conference of the North American Chapter of
+               the Association for Computational Linguistics: Human Language Technologies,
+               {NAACL-HLT} 2021, Online, June 6-11, 2021},
+  pages     = {50--61},
+  publisher = {Association for Computational Linguistics},
+  year      = {2021},
+  url       = {https://doi.org/10.18653/v1/2021.naacl-main.5},
+  doi       = {10.18653/v1/2021.naacl-main.5},
+  timestamp = {Fri, 06 Aug 2021 00:41:31 +0200},
+  biburl    = {https://dblp.org/rec/conf/naacl/ZhongC21.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
