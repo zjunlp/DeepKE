@@ -18,7 +18,7 @@
 <img src="lightner-model.png" width="75%" height="75%" />
 </div>
 
-基于LightNER (COLING'22)的低资源实体识别方法 (详情请查阅论文 [LightNER: A Lightweight Tuning Paradigm for Low-resource NER via Pluggable Prompting](https://aclanthology.org/2022.coling-1.209.pdf)).
+基于**LightNER** (COLING'22)的低资源实体识别方法 (详情请查阅论文 [LightNER: A Lightweight Tuning Paradigm for Low-resource NER via Pluggable Prompting](https://aclanthology.org/2022.coling-1.209.pdf)).
 - ❗NOTE: 发布了后续工作 "[One Model for All Domains: Collaborative Domain-Prefix Tuning for Cross-Domain NER](https://arxiv.org/abs/2301.10410)", 代码详见 [CP-NER](https://github.com/zjunlp/DeepKE/tree/main/example/ner/cross).
 
 ### 克隆代码
