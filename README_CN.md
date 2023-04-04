@@ -620,26 +620,31 @@ python predict.py
 如果使用DeepKE，请按以下格式引用
 
 ```bibtex
-@inproceedings{zhang-etal-2022-deepke,
-    title = "{D}eep{KE}: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population",
-    author = "Zhang, Ningyu  and
-      Xu, Xin  and
-      Tao, Liankuan  and
-      Yu, Haiyang  and
-      Ye, Hongbin  and
-      Qiao, Shuofei  and
-      Xie, Xin  and
-      Chen, Xiang  and
-      Li, Zhoubo  and
-      Li, Lei",
-    booktitle = "Proceedings of the The 2022 Conference on Empirical Methods in Natural Language Processing: System Demonstrations",
-    month = dec,
-    year = "2022",
-    address = "Abu Dhabi, UAE",
-    publisher = "Association for Computational Linguistics",
-    url = "https://aclanthology.org/2022.emnlp-demos.10",
-    pages = "98--108",
-    abstract = "We present an open-source and extensible knowledge extraction toolkit DeepKE, supporting complicated low-resource, document-level and multimodal scenarios in the knowledge base population. DeepKE implements various information extraction tasks, including named entity recognition, relation extraction and attribute extraction. With a unified framework, DeepKE allows developers and researchers to customize datasets and models to extract information from unstructured data according to their requirements. Specifically, DeepKE not only provides various functional modules and model implementation for different tasks and scenarios but also organizes all components by consistent frameworks to maintain sufficient modularity and extensibility. We release the source code at GitHub in https://github.com/zjunlp/DeepKE with Google Colab tutorials and comprehensive documents for beginners. Besides, we present an online system in http://deepke.openkg.cn/EN/re{\_}doc{\_}show.html for real-time extraction of various tasks, and a demo video.",
+@inproceedings{DBLP:conf/emnlp/ZhangXTYYQXCLL22,
+  author    = {Ningyu Zhang and
+               Xin Xu and
+               Liankuan Tao and
+               Haiyang Yu and
+               Hongbin Ye and
+               Shuofei Qiao and
+               Xin Xie and
+               Xiang Chen and
+               Zhoubo Li and
+               Lei Li},
+  editor    = {Wanxiang Che and
+               Ekaterina Shutova},
+  title     = {DeepKE: {A} Deep Learning Based Knowledge Extraction Toolkit for Knowledge
+               Base Population},
+  booktitle = {Proceedings of the The 2022 Conference on Empirical Methods in Natural
+               Language Processing, {EMNLP} 2022 - System Demonstrations, Abu Dhabi,
+               UAE, December 7-11, 2022},
+  pages     = {98--108},
+  publisher = {Association for Computational Linguistics},
+  year      = {2022},
+  url       = {https://aclanthology.org/2022.emnlp-demos.10},
+  timestamp = {Thu, 23 Mar 2023 16:56:00 +0100},
+  biburl    = {https://dblp.org/rec/conf/emnlp/ZhangXTYYQXCLL22.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 
