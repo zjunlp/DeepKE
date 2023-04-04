@@ -1,0 +1,71 @@
+# hyparameters
+num_train_epochs: 100
+learning_rate: 1e-4
+per_device_train_batch_size: 8
+per_device_eval_batch_size: 32  # train_batch_size * 4
+
+# path
+train_file: 'data/conll03/train.json'               # train file
+validation_file: 'data/conll03/val.json'
+test_file: 'data/conll03/test.json'
+record_schema: '../../data/conll03/record.schema'
+output_dir: '../xxx/output/conll03-t5-base'         # the path to save prefix and label word
+logging_dir: null
+model_name_or_path: '../xxx/output/conll03-t5-base' # the path of tuned model
+model_ckpt_path: '../xxx/output/conll03-t5-base'    # the path of tuned model
+source_prefix_path: null
+target_prefix_path: null
+multi_source_path: null
+
+# prefix
+use_prefix: true
+use_adapter: false
+prompt_len: 10
+prompt_dim: 800
+freeze_plm: true
+freeze_prefix: false
+save_prefix: true
+save_label_word: true
+prefix_fusion_way: 'add'
+
+# static
+do_train: false
+do_eval: false
+do_predict: true
+use_fast_tokenizer: true
+ddp_find_unused_parameters: false
+predict_with_generate: true
+evaluation_strategy: 'epoch'
+save_strategy: 'epoch'
+metric_for_best_model: 'eval_overall-F1'
+save_total_limit: 1
+load_best_model_at_end: true
+max_source_length: 256
+max_prefix_length: -1
+max_target_length: 192
+val_max_target_length: 192
+task: 'meta'
+source_prefix: 'meta: '
+lr_scheduler_type: 'linear'
+label_smoothing_factor: 0.0
+eval_steps: 0
+decoding_format: 'spotasoc'
+text_column: 'text'
+record_column: 'record'
+warmup_ratio: 0.06
+preprocessing_num_workers: 4
+dataloader_num_workers: 0
+meta_negative: -1
+meta_positive_rate: 1
+skip_memory_metrics: true
+remove_unused_columns: false
+ordered_prompt: false
+save_better_checkpoint: true
+ignore_pad_token_for_loss: true
+overwrite_cache: false
+start_eval_step: 0
+spot_noise: 0.1
+asoc_noise: 0.1
+seed: 42
+local_rank: -1
+disable_tqdm: false
