@@ -6,7 +6,7 @@
 
 ### Model
 
-An entity recognition method for multiple scenarios based on W2NER (AAAI2022) (for details, please refer to the paper https://arxiv.org/pdf/2112.10070.pdf).
+An entity recognition method for multiple scenarios based on **W2NER** (AAAI2022) (for details, please refer to the paper [Unified Named Entity Recognition as Word-Word Relation Classification](https://arxiv.org/pdf/2112.10070.pdf)).
 
 
 <div align=center>
@@ -106,3 +106,32 @@ Please make sure that:
 <p align="left">
 <a href="https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data/README.md">prepare-data</a> </b>
 </p>
+
+
+## Cite
+
+```bibtex
+@inproceedings{DBLP:conf/aaai/Li00WZTJL22,
+  author    = {Jingye Li and
+               Hao Fei and
+               Jiang Liu and
+               Shengqiong Wu and
+               Meishan Zhang and
+               Chong Teng and
+               Donghong Ji and
+               Fei Li},
+  title     = {Unified Named Entity Recognition as Word-Word Relation Classification},
+  booktitle = {Thirty-Sixth {AAAI} Conference on Artificial Intelligence, {AAAI}
+               2022, Thirty-Fourth Conference on Innovative Applications of Artificial
+               Intelligence, {IAAI} 2022, The Twelveth Symposium on Educational Advances
+               in Artificial Intelligence, {EAAI} 2022 Virtual Event, February 22
+               - March 1, 2022},
+  pages     = {10965--10973},
+  publisher = {{AAAI} Press},
+  year      = {2022},
+  url       = {https://ojs.aaai.org/index.php/AAAI/article/view/21344},
+  timestamp = {Tue, 12 Jul 2022 14:14:21 +0200},
+  biburl    = {https://dblp.org/rec/conf/aaai/Li00WZTJL22.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+```
