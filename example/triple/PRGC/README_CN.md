@@ -9,6 +9,9 @@
 <img src="PRGC.png" width="75%" height="75%" />
 </div>
 
+实体关系抽取模型**PRGC** (ACL'21)(详情请查阅论文 [PRGC: Potential Relation and Global Correspondence Based Joint Relational Triple Extraction
+](https://aclanthology.org/2021.acl-long.486.pdf)).
+
 ### 环境依赖
 
 > python == 3.8
