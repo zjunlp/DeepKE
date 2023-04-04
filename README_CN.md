@@ -73,7 +73,7 @@ Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey
 
 # 新版特性
 
-## 2023年2月
+## 2023年4月
 * 新增实体关系抽取模型[ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP/README_CN.md), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC/README_CN.md), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE/README_CN.md), 支持[事件抽取](https://github.com/zjunlp/DeepKE/blob/main/example/ee/standard/README_CN.md)(中文、英文), 提供对Python库高级版本的支持 (例如Transformers)。
 
 ## 2023年2月
