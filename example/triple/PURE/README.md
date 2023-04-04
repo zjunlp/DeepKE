@@ -10,6 +10,8 @@
 <img src="PURE.png" width="75%" height="75%" />
 </div>
 
+Illustration of **PURE** (NAACL'21) for entity and relation extraction (Details in paper [A Frustratingly Easy Approach for Entity and Relation Extraction](https://aclanthology.org/2021.naacl-main.5.pdf)).
+
 ## Requirements
 
 > python == 3.8
@@ -160,10 +162,6 @@ cd DeepKE/example/triple/PURE
   ```bash
   python predict.py
   ```
-
-## Models
-
-PURE (Based on the paper "[A Frustratingly Easy Approach for Entity and Relation Extraction](https://arxiv.org/pdf/2010.12812.pdf)")
 
 ## Cite
 
