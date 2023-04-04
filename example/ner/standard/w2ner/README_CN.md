@@ -6,7 +6,7 @@
 
 ### 模型内容
 
-基于W2NER (AAAI2022)的应对多种场景的实体识别方法 (详情请查阅论文 https://arxiv.org/pdf/2112.10070.pdf).
+基于**W2NER** (AAAI’22)的应对多种场景的实体识别方法 (详情请查阅论文[Unified Named Entity Recognition as Word-Word Relation Classification](https://arxiv.org/pdf/2112.10070.pdf)).
 
 
 
@@ -106,3 +106,39 @@ cd DeepKE/example/ner/standard/w2ner
 <p align="left">
 <a href="https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data/README.md">prepare-data</a> </b>
 </p>
+
+## 引用
+
+```bibtex
+@inproceedings{DBLP:conf/acl/ZhengWCYZZZQMZ20,
+  author    = {Hengyi Zheng and
+               Rui Wen and
+               Xi Chen and
+               Yifan Yang and
+               Yunyan Zhang and
+               Ziheng Zhang and
+               Ningyu Zhang and
+               Bin Qin and
+               Xu Ming and
+               Yefeng Zheng},
+  editor    = {Chengqing Zong and
+               Fei Xia and
+               Wenjie Li and
+               Roberto Navigli},
+  title     = {{PRGC:} Potential Relation and Global Correspondence Based Joint Relational
+               Triple Extraction},
+  booktitle = {Proceedings of the 59th Annual Meeting of the Association for Computational
+               Linguistics and the 11th International Joint Conference on Natural
+               Language Processing, {ACL/IJCNLP} 2021, (Volume 1: Long Papers), Virtual
+               Event, August 1-6, 2021},
+  pages     = {6225--6235},
+  publisher = {Association for Computational Linguistics},
+  year      = {2021},
+  url       = {https://doi.org/10.18653/v1/2021.acl-long.486},
+  doi       = {10.18653/v1/2021.acl-long.486},
+  timestamp = {Tue, 24 Jan 2023 18:41:07 +0100},
+  biburl    = {https://dblp.org/rec/conf/acl/ZhengWCYZZZQMZ20.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+```
+
