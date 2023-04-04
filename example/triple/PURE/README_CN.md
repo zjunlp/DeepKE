@@ -10,6 +10,8 @@
 <img src="PURE.png" width="75%" height="75%" />
 </div>
 
+实体关系抽取模型**PURE** (NAACL'21) (详情请查阅论文[A Frustratingly Easy Approach for Entity and Relation Extraction](https://aclanthology.org/2021.naacl-main.5.pdf)).
+
 ### 环境依赖
 
 > python == 3.8
