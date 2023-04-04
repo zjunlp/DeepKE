@@ -144,11 +144,31 @@ After aforementioned trained models are downloaded, entites and their relations 
 If the resources or technologies in this project are helpful to your research work, you are welcome to cite the following papers in your thesis:
 
 ```bibtex
-@article{zhang2022deepke,
-  title={DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population},
-  author={Zhang, Ningyu and Xu, Xin and Tao, Liankuan and Yu, Haiyang and Ye, Hongbin and Qiao, Shuofei and Xie, Xin and Chen, Xiang and Li, Zhoubo and Li, Lei and Liang, Xiaozhuan and others},
-  journal={arXiv preprint arXiv:2201.03335},
-  year={2022}
+@inproceedings{DBLP:conf/emnlp/ZhangXTYYQXCLL22,
+  author    = {Ningyu Zhang and
+               Xin Xu and
+               Liankuan Tao and
+               Haiyang Yu and
+               Hongbin Ye and
+               Shuofei Qiao and
+               Xin Xie and
+               Xiang Chen and
+               Zhoubo Li and
+               Lei Li},
+  editor    = {Wanxiang Che and
+               Ekaterina Shutova},
+  title     = {DeepKE: {A} Deep Learning Based Knowledge Extraction Toolkit for Knowledge
+               Base Population},
+  booktitle = {Proceedings of the The 2022 Conference on Empirical Methods in Natural
+               Language Processing, {EMNLP} 2022 - System Demonstrations, Abu Dhabi,
+               UAE, December 7-11, 2022},
+  pages     = {98--108},
+  publisher = {Association for Computational Linguistics},
+  year      = {2022},
+  url       = {https://aclanthology.org/2022.emnlp-demos.10},
+  timestamp = {Thu, 23 Mar 2023 16:56:00 +0100},
+  biburl    = {https://dblp.org/rec/conf/emnlp/ZhangXTYYQXCLL22.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 
