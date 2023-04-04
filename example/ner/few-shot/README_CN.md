@@ -18,7 +18,7 @@
 <img src="lightner-model.png" width="75%" height="75%" />
 </div>
 
-基于LightNER (COLING2022)的低资源实体识别方法 (详情请查阅论文 [https://arxiv.org/pdf/2109.00720.pdf](https://arxiv.org/pdf/2109.00720.pdf)).
+基于LightNER (COLING'22)的低资源实体识别方法 (详情请查阅论文 [LightNER: A Lightweight Tuning Paradigm for Low-resource NER via Pluggable Prompting](https://aclanthology.org/2022.coling-1.209.pdf)).
 - ❗NOTE: 发布了后续工作 "[One Model for All Domains: Collaborative Domain-Prefix Tuning for Cross-Domain NER](https://arxiv.org/abs/2301.10410)", 代码详见 [CP-NER](https://github.com/zjunlp/DeepKE/tree/main/example/ner/cross).
 
 ### 克隆代码
@@ -80,7 +80,7 @@ cd DeepKE/example/ner/few-shot
 如果您使用了上述代码，请您引用下列论文:
 
 ```bibtex
-@article{DBLP:journals/corr/abs-2109-00720,
+@inproceedings{DBLP:conf/coling/00160DTXHSCZ22,
   author    = {Xiang Chen and
                Lei Li and
                Shumin Deng and
@@ -90,16 +90,37 @@ cd DeepKE/example/ner/few-shot
                Luo Si and
                Huajun Chen and
                Ningyu Zhang},
+  editor    = {Nicoletta Calzolari and
+               Chu{-}Ren Huang and
+               Hansaem Kim and
+               James Pustejovsky and
+               Leo Wanner and
+               Key{-}Sun Choi and
+               Pum{-}Mo Ryu and
+               Hsin{-}Hsi Chen and
+               Lucia Donatelli and
+               Heng Ji and
+               Sadao Kurohashi and
+               Patrizia Paggio and
+               Nianwen Xue and
+               Seokhwan Kim and
+               Younggyun Hahm and
+               Zhong He and
+               Tony Kyungil Lee and
+               Enrico Santus and
+               Francis Bond and
+               Seung{-}Hoon Na},
   title     = {LightNER: {A} Lightweight Tuning Paradigm for Low-resource {NER} via
                Pluggable Prompting},
-  journal   = {CoRR},
-  volume    = {abs/2109.00720},
-  year      = {2021},
-  url       = {https://arxiv.org/abs/2109.00720},
-  eprinttype = {arXiv},
-  eprint    = {2109.00720},
-  timestamp = {Thu, 01 Sep 2022 08:06:28 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/abs-2109-00720.bib},
+  booktitle = {Proceedings of the 29th International Conference on Computational
+               Linguistics, {COLING} 2022, Gyeongju, Republic of Korea, October 12-17,
+               2022},
+  pages     = {2374--2387},
+  publisher = {International Committee on Computational Linguistics},
+  year      = {2022},
+  url       = {https://aclanthology.org/2022.coling-1.209},
+  timestamp = {Mon, 13 Mar 2023 11:20:33 +0100},
+  biburl    = {https://dblp.org/rec/conf/coling/00160DTXHSCZ22.bib},
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
