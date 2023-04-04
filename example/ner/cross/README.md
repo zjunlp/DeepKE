@@ -127,16 +127,6 @@ cd DeepKE/example/ner/cross
       python run.py hydra/run=multi_transfer.yaml
       ```
 
-## Prediction
-
-- Add `- predict` in `config.yaml`
-
-- Modify `load_path` as the path of the trained model and `write_path` as the path of predicted results in `predict.yaml` 
-
-- ```bash
-    python predict.py
-    ```
-
 ## Acknowledgement
 Our code are based on [UIE](https://github.com/universal-ie/UIE), many thanks.
 

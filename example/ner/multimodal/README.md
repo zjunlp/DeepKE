@@ -81,7 +81,7 @@ The overall experimental results on IFAformer for Multi-Modal NER task can be se
 > python == 3.8
 
 - torch == 1.5
-- transformers == 3.4.0
+- transformers == 4.26.0
 - hydra-core == 1.0.6
 - deepke
 
