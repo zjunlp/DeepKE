@@ -8,6 +8,8 @@
 <div align=center>
 <img src="PRGC.png" width="75%" height="75%" />
 </div>
+Illustration of **PRGC** (ACL'21) for entity and relation extraction (Details in paper [PRGC: Potential Relation and Global Correspondence Based Joint
+Relational Triple Extraction](https://aclanthology.org/2021.acl-long.486.pdf)).
 
 ## Requirements
 
