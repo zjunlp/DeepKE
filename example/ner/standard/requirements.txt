@@ -1,18 +1,7 @@
-# ae
-# matplotlib
-# jieba
-
-
 deepke
-wandb==0.13.9
-scikit-learn
-numpy
-tqdm
-ipdb
-tensorboardX
 
 # BERT NER
-pytorch-transformers==1.2.0
+transformers
 torch==1.11.0+cu115
 hydra-core==1.0.6
 # en
