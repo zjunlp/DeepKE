@@ -11,6 +11,8 @@
 <img src="ASP.png" width="75%" height="75%" />
 </div>
 
+Illustration of **ASP** (EMNLP'22) for entity and relation extraction (Details in paper [Autoregressive Structured Prediction with Language Models](https://aclanthology.org/2022.findings-emnlp.70.pdf)).
+
 ## Requirements
 
 > python == 3.8.16
