@@ -17,8 +17,8 @@ Illustration of LightNER (COLING'22) for few-shot named entity recognition (Deta
 
 > python == 3.8
 
-- torch == 1.5
-- transformers == 3.4.0
+- torch == 1.11
+- transformers == 4.26.0
 - deepke
 
 ## Download Code

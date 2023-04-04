@@ -23,7 +23,6 @@ class GenerativeModel(nn.Module):
                              decoder_attention_mask=batch.dec_attn, 
                              labels=batch.lbl_idxs, 
                              return_dict=True)
-        
         loss = outputs['loss']
         
         return loss
@@ -39,6 +38,7 @@ class GenerativeModel(nn.Module):
         final_output = []
         for bid in range(len(batch.enc_idxs)):
             output_sentence = self.tokenizer.decode(outputs[bid], skip_special_tokens=True, clean_up_tokenization_spaces=True)
+            # output_sentence = "Event" + output_sentence
             final_output.append(output_sentence)
         self.train()
 

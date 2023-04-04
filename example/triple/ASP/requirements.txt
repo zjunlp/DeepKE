@@ -1,0 +1,11 @@
+tqdm==4.64.1
+numpy==1.24.1
+scipy==1.10.1
+torch==1.13.1
+huggingface_hub==0.12.1
+truecase==0.0.14
+pyhocon==0.3.60
+sentencepiece==0.1.97
+wandb==0.13.9
+hydra-core==1.3.1
+transformers==4.26.0

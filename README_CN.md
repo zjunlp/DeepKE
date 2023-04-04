@@ -192,7 +192,7 @@ python run.py
 python predict.py
 ```
 - **❗注意: 如果您在安装或使用过程中遇到任何问题，您可以查看[备注（常见问题）](#备注常见问题) 或提交 GitHub issue.**
- 
+
 <br>
 
 ## 环境依赖
@@ -457,6 +457,90 @@ python predict.py
     ```
 
 <br>
+
+### 4.事件抽取
+
+* 事件抽取是指从一段无结构化的文本中抽取出某个事件的事件类型、事件触发词、论元角色以及论元。
+
+* 数据为`.tsv`文件，样例为：
+
+  <table h style="text-align:center">
+      <tr>
+          <th colspan="2"> Sentence </th>
+          <th> Event type </th>
+          <th> Trigger </th>
+          <th> Role </th>
+          <th> Argument </th>
+      </tr>
+      <tr> 
+          <td rowspan="3" colspan="2"> 据《欧洲时报》报道，当地时间27日，法国巴黎卢浮宫博物馆员工因不满工作条件恶化而罢工，导致该博物馆也因此闭门谢客一天。 </td>
+        	<td rowspan="3"> 组织行为-罢工 </td>
+      		<td rowspan="3"> 罢工 </td>
+      		<td> 罢工人员 </td>
+      		<td> 法国巴黎卢浮宫博物馆员工 </td>
+      </tr>
+      <tr> 
+          <td> 时间 </td>
+          <td> 当地时间27日 </td>
+      </tr>
+      <tr> 
+          <td> 所属组织 </td>
+          <td> 法国巴黎卢浮宫博物馆 </td>
+      </tr>
+      <tr> 
+          <td rowspan="3" colspan="2"> 中国外运2019年上半年归母净利润增长17%：收购了少数股东股权 </td>
+        	<td rowspan="3"> 财经/交易-出售/收购 </td>
+      		<td rowspan="3"> 收购 </td>
+      		<td> 出售方 </td>
+      		<td> 少数股东 </td>
+      </tr>
+      <tr> 
+          <td> 收购方 </td>
+          <td> 中国外运 </td>
+      </tr>
+      <tr> 
+          <td> 交易物 </td>
+          <td> 股权 </td>
+      </tr>
+      <tr> 
+          <td rowspan="3" colspan="2"> 美国亚特兰大航展13日发生一起表演机坠机事故，飞行员弹射出舱并安全着陆，事故没有造成人员伤亡。 </td>
+        	<td rowspan="3"> 灾害/意外-坠机 </td>
+      		<td rowspan="3"> 坠机 </td>
+      		<td> 时间 </td>
+      		<td> 13日 </td>
+      </tr>
+      <tr> 
+          <td> 地点 </td>
+          <td> 美国亚特兰 </td>
+    	</tr>
+  </table>
+
+- 具体流程请进入详细的README中
+
+  - **[常规全监督STANDARD](./example/ee/standard/README_CN.md)**  
+
+    **Step1**：进入`DeepKE/example/ee/standard`，下载数据集
+
+    ```bash
+    wget 120.27.214.45/Data/ee/DuEE.zip
+    unzip DuEE.zip
+    ```
+
+    **Step2**：模型训练<br>
+
+    数据集和参数配置可以分别进入`data`和`conf`文件夹中修改
+
+    ```
+    python run.py
+    ```
+
+    **Step3**：模型预测
+
+    ```
+    python predict.py
+    ```
+
+
 
 # Notebook教程
 

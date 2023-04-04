@@ -6,60 +6,54 @@
 
 ## Requirements
 
-To install requirements:
+- Create and enter the python virtual environment.
 
-```
-python==3.8
-Java 8
-```
+- To install requirements:
+  ```bash
+  python==3.8
+  pip install -r requirements.txt
+  ```
 
 ## Download Code
 
 ```bash
 git clone https://github.com/zjunlp/DeepKE.git
-cd DeepKE/example/ee/few-shot
+cd DeepKE/example/ee/standard
 ```
 
-## Install with pip
+## Dataset
+- `ACE`
+Follow the instruction [here](./data/ACE/README.md)
 
-- Create and enter the python virtual environment.
-- Install dependencies: `pip install -r requirements.txt`.
+- `DuEE`
+Follow the instruction [here](./data/DuEE/README.md)
 
-## Train and Predict
+## Train
 
-- Dataset
-  - `ace05e`
-  1. Prepare data processed from [DyGIE++](https://github.com/dwadden/dygiepp#ace05-event)
-  2. Put the processed data into the folder `data/raw_data/ace05e_dygieppformat`
+Modify the parameters in `./conf/train.yaml`.
 
-  - `ace05ep`
-  1. Download ACE data from [LDC](https://catalog.ldc.upenn.edu/LDC2006T06)
-  2. Put the processed data into the folder `data/raw_data/ace_2005`
-
-  - `preprocess`
-  ```Bash
-  cd data/
-  bash ./scripts/process_ace05e.sh
-  bash ./scripts/process_ace05ep.sh
-  ```
-  You can change the low resource split by modify the parameters in file `conf/generate_data.yaml`, and then run the following commands.
-  ```Bahs
-  cd ..
-  python generate_data.py
-  ```
-  the input data will be generated and stored in new dictionary like `proceesed_data/degree_e2e_ace05ep_001`.
-
-
-- Training
-
-  - Parameters, model paths and configuration for training are in the `conf` folder and users can modify them before training.
+- Trigger
+  Set `task_name` to `trigger`.
+  Select different dataset by set `data_name`.
+  Then run the following command:
   ```bash
   python run.py
   ```
 
-- Prediction
-
-  - change the parameter `e2e_model` in `conf/predict.yaml` for your trained model.
+- Role
+  Here we train the event arguments extraction model with the gold trigger.
+  Set `task_name` to `role`.
+  Select different dataset by set `data_name`.
+  Then run the following command:
   ```bash
-  python predict.py
+  python run.py
   ```
+
+## Predict
+
+The trigger prediction has been conducted during training, and the result is in the `output_dir`.Here we predict the event arguments extraction results with pred trigger result.
+Modify the parameters in `./conf/predict.yaml`.
+Then run the following command:
+```bash
+  python predict.py
+```

@@ -8,8 +8,8 @@
 
 > python == 3.8
 
-- torch == 1.5
-- transformers == 3.4.0
+- torch == 1.11
+- transformers == 4.26.0
 - deepke 
 
 ## 模型

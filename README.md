@@ -461,6 +461,89 @@ python predict.py
 
 <br>
 
+### 4. Event Extraction
+
+* Event extraction is the task to extract event type, event trigger words, event arguments from a unstructed text.
+* The data is stored in `.tsv` files, some instances are as follows:
+
+<table h style="text-align:center">
+    <tr>
+        <th colspan="2"> Sentence </th>
+        <th> Event type </th>
+        <th> Trigger </th>
+        <th> Role </th>
+        <th> Argument </th>
+    </tr>
+    <tr> 
+        <td rowspan="3" colspan="2"> 据《欧洲时报》报道，当地时间27日，法国巴黎卢浮宫博物馆员工因不满工作条件恶化而罢工，导致该博物馆也因此闭门谢客一天。 </td>
+      	<td rowspan="3"> 组织行为-罢工 </td>
+    		<td rowspan="3"> 罢工 </td>
+    		<td> 罢工人员 </td>
+    		<td> 法国巴黎卢浮宫博物馆员工 </td>
+    </tr>
+    <tr> 
+        <td> 时间 </td>
+        <td> 当地时间27日 </td>
+    </tr>
+    <tr> 
+        <td> 所属组织 </td>
+        <td> 法国巴黎卢浮宫博物馆 </td>
+    </tr>
+    <tr> 
+        <td rowspan="3" colspan="2"> 中国外运2019年上半年归母净利润增长17%：收购了少数股东股权 </td>
+      	<td rowspan="3"> 财经/交易-出售/收购 </td>
+    		<td rowspan="3"> 收购 </td>
+    		<td> 出售方 </td>
+    		<td> 少数股东 </td>
+    </tr>
+    <tr> 
+        <td> 收购方 </td>
+        <td> 中国外运 </td>
+    </tr>
+    <tr> 
+        <td> 交易物 </td>
+        <td> 股权 </td>
+    </tr>
+    <tr> 
+        <td rowspan="3" colspan="2"> 美国亚特兰大航展13日发生一起表演机坠机事故，飞行员弹射出舱并安全着陆，事故没有造成人员伤亡。 </td>
+      	<td rowspan="3"> 灾害/意外-坠机 </td>
+    		<td rowspan="3"> 坠机 </td>
+    		<td> 时间 </td>
+    		<td> 13日 </td>
+    </tr>
+    <tr> 
+        <td> 地点 </td>
+        <td> 美国亚特兰 </td>
+  	</tr>
+</table>
+
+* Read the detailed process in specific README
+
+  * [STANDARD(Fully Supervised)](./example/ee/standard/README.md)
+
+    **Step1** Enter the `DeepKE/example/ee/standard` folder. Download the dataset.
+
+    ```bash
+    wget 120.27.214.45/Data/ee/DuEE.zip
+    unzip DuEE.zip
+    ```
+
+    **Step 2** Training
+
+    The dataset and parameters can be customized in the `data` folder and `conf` folder respectively.
+
+    ```bash
+    python run.py
+    ```
+
+    **Step 3** Prediction
+
+    ```bash
+    python predict.py
+    ```
+
+<br>
+
 # Notebook Tutorial
 
 This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. Users can study *DeepKE* with them.

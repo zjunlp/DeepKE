@@ -1,29 +1,40 @@
-dataset: "ace05e"
-gpu_device: 0
+data_name: ACE # [ACE, DuEE]
+model_name_or_path: ../../../../models/bert-base-uncased # [bert-base-uncased, bert-base-chinese] english for ace, chinese for duee
+task_name: role # [trigger, role]
+model_type: bertcrf
+do_train: True
+do_eval: True
+do_predict: False # True for ACE, False for DuEE
+labels: ""
+config_name: ""
+tokenizer_name: ""
+cache_dir: ""
+evaluate_during_training: True
+do_lower_case: True
+weight_decay: 0.0
+learning_rate: 5e-5
+adam_epsilon: 1e-8
+per_gpu_train_batch_size: 16
+per_gpu_eval_batch_size: 16
+gradient_accumulation_steps: 1
+max_seq_length: 256
+max_grad_norm: 1.0
+num_train_epochs: 10
+max_steps: 5000
+warmup_steps: 0
+logging_steps: 500
+save_steps: 500
+eval_all_checkpoints: False
+no_cuda: False
+n_gpu: 0
+overwrite_output_dir: True
+overwrite_cache: False
 seed: 42
-train_file: "../../../data/processed/ace05ep_bart/train.001.w1.oneie.json"
-dev_file: "../../../data/processed/ace05ep_bart/dev.w1.oneie.json"
-test_file: "../../../data/processed/ace05ep_bart/test.w1.oneie.json"
-finetune_dir: "../../../processed_data/degree_e2e_ace05ep_001/"
-train_finetune_file: "../../../processed_data/degree_e2e_ace05ep_001/train_all.pkl"
-dev_finetune_file: "../../../processed_data/degree_e2e_ace05ep_001/dev_all.pkl"
-test_finetune_file: "../../../processed_data/degree_e2e_ace05ep_001/test_all.pkl"
-vocab_file: "../../../processed_data/degree_e2e_ace05ep_001/vocab.json"
-output_dir: "../../../models/degree_e2e_ace05ep_001/"
-cache_dir: "./cache"
-model_name: "/data/msy/models/bart-large"
-input_style: ["event_type_sent", "keywords", "template"]
-output_style: ["trigger:sentence", "argument:sentence"]
-n_negative: 15
-max_epoch: 35
-warmup_epoch: 5
-train_batch_size: 8
-eval_batch_size: 12
-accumulate_step: 2
-learning_rate: 1e-05
-weight_decay: 1e-05
-grad_clipping: 5.0
-beam_size: 1
-max_length: 384
-max_output_length: 100
-ignore_first_header: True
+fp16: False
+fp16_opt_level: "01"
+local_rank: -1
+data_dir: "" # parsing in run.py
+tag_path: "" # parsing in run.py
+output_dir: "" # parsing in run.py
+dev_trigger_pred_file: null
+test_trigger_pred_file: null
