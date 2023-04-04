@@ -66,7 +66,7 @@ def set_seed(seed=2021):
     np.random.seed(seed)
     random.seed(seed)
 
-@hydra.main(config_path="conf", config_name='config')
+@hydra.main(config_path="./conf", config_name='config.yaml')
 def main(cfg):
     cwd = utils.get_original_cwd()
     cfg.cwd = cwd

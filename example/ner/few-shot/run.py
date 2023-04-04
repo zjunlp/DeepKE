@@ -70,7 +70,7 @@ MAPPING = {
     'atis': atis_mapping
 }
 
-@hydra.main(config_path="conf/config.yaml")
+@hydra.main(config_path="./conf", config_name="config.yaml")
 def main(cfg):
     cwd = utils.get_original_cwd()
     cfg.cwd = cwd
