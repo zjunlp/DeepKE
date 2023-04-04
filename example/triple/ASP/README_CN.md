@@ -10,6 +10,8 @@
 <img src="ASP.png" width="75%" height="75%" />
 </div>
 
+实体关系抽取模型**ASP** (EMNLP'22) (详情请查阅论文[Autoregressive Structured Prediction with Language Models](https://aclanthology.org/2022.findings-emnlp.70.pdf)).
+
 
 ### 环境依赖
 
