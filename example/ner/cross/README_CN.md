@@ -10,7 +10,7 @@
 <img src="model.png" width="75%" height="75%" />
 </div>
 
-基于文本到文本生成模型的跨域命名实体识别方法**CP-NER** (详情请查看论文[https://arxiv.org/abs/2301.10410](https://arxiv.org/abs/2301.10410)).
+基于文本到文本生成模型的跨域命名实体识别方法**CP-NER** (详情请查看论文[One Model for All Domains: Collaborative Domain-Prefix Tuning for Cross-Domain NER](https://arxiv.org/abs/2301.10410)).
 
 
 ## 环境依赖
