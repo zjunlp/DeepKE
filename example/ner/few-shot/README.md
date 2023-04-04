@@ -10,7 +10,7 @@
 <img src="lightner-model.png" width="75%" height="75%" />
 </div>
 
-Illustration of LightNER (COLING'22) for few-shot named entity recognition (Details in paper [https://aclanthology.org/2022.coling-1.209.pdf](https://aclanthology.org/2022.coling-1.209.pdf)).
+Illustration of **LightNER** (COLING'22) for few-shot named entity recognition (Details in paper [LightNER: A Lightweight Tuning Paradigm for Low-resource NER via Pluggable Prompting](https://aclanthology.org/2022.coling-1.209.pdf)).
 - ❗NOTE: We have released a follow-up work "[One Model for All Domains: Collaborative Domain-Prefix Tuning for Cross-Domain NER](https://arxiv.org/abs/2301.10410)" at [CP-NER](https://github.com/zjunlp/DeepKE/tree/main/example/ner/cross).
 
 ## Requirements
@@ -107,23 +107,47 @@ You can customize the tokenizer in <a href="https://github.com/zjunlp/DeepKE/blo
 If you use or extend our work, please cite the following paper:
 
 ```bibtex
-@inproceedings{chen-etal-2022-lightner,
-    title = "{L}ight{NER}: A Lightweight Tuning Paradigm for Low-resource {NER} via Pluggable Prompting",
-    author = "Chen, Xiang  and
-      Li, Lei  and
-      Deng, Shumin  and
-      Tan, Chuanqi  and
-      Xu, Changliang  and
-      Huang, Fei  and
-      Si, Luo  and
-      Chen, Huajun  and
-      Zhang, Ningyu",
-    booktitle = "Proceedings of the 29th International Conference on Computational Linguistics",
-    month = oct,
-    year = "2022",
-    address = "Gyeongju, Republic of Korea",
-    publisher = "International Committee on Computational Linguistics",
-    url = "https://aclanthology.org/2022.coling-1.209",
-    pages = "2374--2387"
-   }
+@inproceedings{DBLP:conf/coling/00160DTXHSCZ22,
+  author    = {Xiang Chen and
+               Lei Li and
+               Shumin Deng and
+               Chuanqi Tan and
+               Changliang Xu and
+               Fei Huang and
+               Luo Si and
+               Huajun Chen and
+               Ningyu Zhang},
+  editor    = {Nicoletta Calzolari and
+               Chu{-}Ren Huang and
+               Hansaem Kim and
+               James Pustejovsky and
+               Leo Wanner and
+               Key{-}Sun Choi and
+               Pum{-}Mo Ryu and
+               Hsin{-}Hsi Chen and
+               Lucia Donatelli and
+               Heng Ji and
+               Sadao Kurohashi and
+               Patrizia Paggio and
+               Nianwen Xue and
+               Seokhwan Kim and
+               Younggyun Hahm and
+               Zhong He and
+               Tony Kyungil Lee and
+               Enrico Santus and
+               Francis Bond and
+               Seung{-}Hoon Na},
+  title     = {LightNER: {A} Lightweight Tuning Paradigm for Low-resource {NER} via
+               Pluggable Prompting},
+  booktitle = {Proceedings of the 29th International Conference on Computational
+               Linguistics, {COLING} 2022, Gyeongju, Republic of Korea, October 12-17,
+               2022},
+  pages     = {2374--2387},
+  publisher = {International Committee on Computational Linguistics},
+  year      = {2022},
+  url       = {https://aclanthology.org/2022.coling-1.209},
+  timestamp = {Mon, 13 Mar 2023 11:20:33 +0100},
+  biburl    = {https://dblp.org/rec/conf/coling/00160DTXHSCZ22.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
 ```
