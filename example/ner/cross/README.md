@@ -79,6 +79,8 @@ cd DeepKE/example/ner/cross
       ```
     - The best checkpoint, trainning details and evaluation resutls will be saved in `logs/xxx/output/conll03-t5-base`.
 
+    - We released the best checkpoints of this step at this [Google Drive](https://drive.google.com/file/d/1u7jg0AWzCB_dlExGG3RGgxJecc5A_3Rb/view?usp=sharing). 
+
 
 2. Transfer from Single-Domain (Cross-NER)
 

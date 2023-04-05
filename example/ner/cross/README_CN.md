@@ -78,6 +78,8 @@ cd DeepKE/example/ner/cross
       python run.py
       ```
     - 训练过程中产生的最佳模型权重、训练细节和测试结果会存储到`logs/xxx/output/conll03-t5-base`.
+    
+    - 可以在此链接 [Google Drive](https://drive.google.com/file/d/1u7jg0AWzCB_dlExGG3RGgxJecc5A_3Rb/view?usp=sharing) 下载此步骤中产生的最佳模型权重。
 
 
 2. 单领域迁移(Cross-NER)
