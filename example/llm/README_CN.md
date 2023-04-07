@@ -10,6 +10,7 @@
   - [使用与示例](#使用与示例)
 - [使用大语言模型进行数据增强](#使用大语言模型进行数据增强)
   - [参数设置](参数设置)
+- [CCKS2023基线](#CCKS2023基线)
 
 # 使用大语言模型进行信息抽取
 
@@ -97,3 +98,35 @@ Generate more samples for the relation 'org:founded_by'.
 '''
 ```
 
+# CCKS2023基线
+
+下面是**CCKS2023 开放环境下的知识图谱构建与补全评测**比赛中评测任务一和评测任务二关于*ChatGPT/GPT-4*的baseline说明。
+
+## 评测任务一：低资源商品实体识别与分类
+
+该评测任务本质上是一个命名实体识别(ner)任务，详细参数与配置可见上文中的[环境与数据](#环境与数据)部分。主要的参数设置如下：
+
+- `task`设置为`ner`，表示命名实体识别任务；
+- `language`设置为`ch`，表示该任务是中文数据；
+- `engine`设置为想要使用的OpenAI大模型名称(由于OpenAI GPT-4 API为完全开放，本模块目前暂不支持GPT-4 API的使用)；
+- `text_input`设置为数据集中的sku文本；
+- `zero_shot`可根据需要设置，如设置为`True`，需要在`/data/ner_ch.json`文件中按照特定格式设置in-context learning所需的examples；
+- `instruction`如果为`None`则表示使用模块默认的指令，可更改该参数设置自定义的指令；
+- `domain`可选择设置为商品的类目，也可不设置；
+- `labels`设置为商品可能具有的属性，以列表的形式给出；
+
+其它参数默认即可。
+
+## 评测任务二：指令驱动的自适应知识图谱构建
+
+该评测任务本质上是一个三元组抽取(rte)任务，详细参数与配置可见上文中的[环境与数据](#环境与数据)部分。主要的参数设置如下：
+
+- `task`设置为`rte`，表示三元组抽取任务；
+- `language`设置为`ch`，表示该任务是中文数据；
+- `engine`设置为想要使用的OpenAI大模型名称(由于OpenAI GPT-4 API为完全开放，本模块目前暂不支持GPT-4 API的使用)；
+- `text_input`设置为数据集中的`text`文本；
+- `zero_shot`可根据需要设置，如设置为`True`，需要在`/data/ner_ch.json`文件中按照特定格式设置in-context learning所需的examples；
+- `instruction`可设置为数据集中的`instruction`字段，如果为`None`则表示使用模块默认的指令；
+- `labels`可设置为实体类型，也可为空；
+
+其它参数默认即可。

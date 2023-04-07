@@ -18,7 +18,7 @@ def main(cfg):
 
     if not cfg.api_key:
         raise ValueError("Need an API Key.")
-    if cfg.engine not in ["text-davinci-003", "text-curie-001", "text-babbage-001", "text-ada-001"]:
+    if cfg.engine not in ["text-davinci-003", "text-davinci-002", "text-curie-001", "text-babbage-001", "text-ada-001", "gpt-3.5-turbo"]:
         raise ValueError("The OpenAI model is not supported now.")
 
     os.environ['OPENAI_API_KEY'] = cfg.api_key
