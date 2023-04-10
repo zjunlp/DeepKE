@@ -4,7 +4,7 @@ from torch.nn import functional as F
 from transformers.models.bart.configuration_bart import BartConfig
 from .modeling_bart import BartModel
 
-from utils.util import avg_token_embeddings, seq_to_mask, get_model_device
+from ..utils.util import avg_token_embeddings, seq_to_mask, get_model_device
 from functools import partial
 from typing import Union
 
