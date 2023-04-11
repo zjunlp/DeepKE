@@ -1,4 +1,3 @@
-from .data import *
 from .dataloader_utils import *
 from .dataloader import *
 from .metrics import *
