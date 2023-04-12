@@ -19,3 +19,4 @@ ipdb==0.13.11
 pytorch-crf==0.7.2
 openai
 Jinja2
+datasets
