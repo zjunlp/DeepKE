@@ -6,7 +6,7 @@ transformers==4.26.0
 jieba==0.42.1
 scikit-learn==0.24.1
 seqeval==1.2.2
-tqdm==4.60.0
+tqdm
 opt-einsum==3.3.0
 wandb==0.12.7
 ujson==5.6.0
