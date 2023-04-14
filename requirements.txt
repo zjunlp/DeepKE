@@ -20,3 +20,4 @@ pytorch-crf==0.7.2
 openai
 Jinja2
 datasets
+pyhocon
