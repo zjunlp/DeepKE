@@ -244,7 +244,7 @@ def main(cfg):
                         if logits[i][j] != 0:
                             temp_2.append(label_map[logits[i][j]])
                         else:
-                            temp_2.append(0)
+                            temp_2.append(None)
 
 
         report = classification_report(y_true, y_pred)
