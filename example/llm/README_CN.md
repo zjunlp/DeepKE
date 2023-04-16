@@ -11,6 +11,7 @@
 - [使用大语言模型进行数据增强](#使用大语言模型进行数据增强)
   - [参数设置](参数设置)
 - [CCKS2023基线](#CCKS2023基线)
+- [使用代码语言模型进行知识图谱构建](#使用代码语言模型进行知识图谱构建)
 
 # 使用大语言模型进行信息抽取
 
@@ -130,3 +131,5 @@ Generate more samples for the relation 'org:founded_by'.
 - `labels`可设置为实体类型，也可为空；
 
 其它参数默认即可。
+# 使用代码语言模型进行知识图谱构建
+详见[这里](https://github.com/zjunlp/DeepKE/blob/main/example/llm/README.md#Knowledge-Graph-Construction-with-Code-Language-Models)
