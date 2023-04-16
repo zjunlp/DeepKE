@@ -1,0 +1,10 @@
+{
+    "schema_path": "data/schema_prompt",
+    "ICL_path": "data/ICL_prompt",
+    "example_path": "data/example.json",
+    "openai_key": "",
+    "engine": "text-davinci-003",
+    "temperature": 0.5,
+    "max_tokens": 512,
+    "n": 1
+}

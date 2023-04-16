@@ -1,0 +1,41 @@
+from typing import List
+class Rel:
+    def __init__(self, name: str):
+        self.name = name
+class Work_for(Rel):
+    def __init__(self, name: str):
+        super.__init__(name=name)
+class Kill(Rel):
+    def __init__(self, name: str):
+        super.__init__(name=name)
+class Organization_based_in(Rel):
+    def __init__(self, name: str):
+        super.__init__(name=name)
+class Live_in(Rel):
+    def __init__(self, name: str):
+        super.__init__(name=name)
+class Located_in(Rel):
+    def __init__(self, name: str):
+        super.__init__(name=name)
+
+class Entity:
+    def __init__(self, name: str):
+        self.name = name
+class person(Entity):
+    def __init__(self, name: str):
+        super.__init__(name=name)
+class organization(Entity):
+    def __init__(self, name: str):
+        super.__init__(name=name)
+class location(Entity):
+    def __init__(self, name: str):
+        super.__init__(name=name)
+
+class Triple:
+    def __init__(self, head: Entity, relation: Rel, tail: Entity):
+        self.head = head
+        self.relation = relation
+        self.tail = tail
+class Extract:
+    def __init__(self, triples: List[Triple] = []):
+        self.triples = triples

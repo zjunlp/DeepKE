@@ -1,0 +1,36 @@
+""" Another type of plan , first advocated by Sen. Donald W. Riegle Jr. , D-Mich. , chairman of the Senate Banking Committee , doesn 't waive Gramm-Rudman. """
+extract = Extract([Triple(person('Donald W. Riegle Jr.'), Rel('Work for'), organization('Senate Banking Committee')),])
+""" The spy , high-ranking Korean CIA official Sohn Ho Young , wanted to defect because he was about to be transferred home from a post in New York City , the newspaper said . """
+extract = Extract([Triple(person('Sohn Ho Young'), Rel('Work for'), organization('Korean CIA')),])
+""" Reynie Ortiz , resident of U S West International , said the franchise is important because Hong Kong is growing as an international trade center and a gateway to Asian business. """
+extract = Extract([Triple(person('Reynie Ortiz'), Rel('Work for'), organization('U S West International')),])
+""" Most of the work conducted by the Warren Commission , which concluded that Lee Harvey Oswald acted alone in the Kennedy slaying , has been opened to the public , a move that has helped researchers evaluate _ and in many cases strongly criticize _ that investigation . """
+extract = Extract([Triple(person('Lee Harvey Oswald'), Rel('Kill'), person('Kennedy')),])
+""" Sen. Edward M. Kennedy says his family is disturbed by the decision to establish a museum in the Dallas building from which Lee Harvey Oswald is believed to have shot President John F. Kennedy . """
+extract = Extract([Triple(person('Lee Harvey Oswald'), Rel('Kill'), person('President John F. Kennedy')),])
+""" The summary also concluded that Sirhan , who is serving a life sentence at Soledad Prison for the killing , was sane and was not under the influence of alcohol when he shot Kennedy moments after he had claimed victory in the California Democratic presidential primary . """
+extract = Extract([Triple(person('Sirhan'), Rel('Kill'), person('Kennedy')),])
+""" BELGRADE , Yugoslavia ( AP ) """
+extract = Extract([Triple(location('BELGRADE'), Rel('Located in'), location('Yugoslavia')),
+                   Triple(organization('AP'), Rel('Organization based in'), location('BELGRADE')),
+                   Triple(organization('AP'), Rel('Organization based in'), location('Yugoslavia')),])
+""" ` ` From the onset , we at the Texas Department of Agriculture felt that more was at stake than steak , and a whole lot more was at stake than growth hormones , ' ' said Texas Agriculture Commissioner Jim Hightower at a news conference Monday. """
+extract = Extract([Triple(organization('Texas Department of Agriculture'), Rel('Organization based in'), location('Texas')),
+                   Triple(person('Jim Hightower'), Rel('Work for'), organization('Texas Department of Agriculture')),
+                   Triple(person('Jim Hightower'), Rel('Live in'), location('Texas')),])
+""" Bradley First Air of Carp , Ontario , which owned the plane , said the crew members were pilots from Montreal and Ottawa . """
+extract = Extract([Triple(organization('Bradley First Air of Carp'), Rel('Organization based in'), location('Ontario')),])
+""" The June celebration of cruising , started two years after Modesto native George Lucas ' film was released in 1973 , draws up to 100 , 000 people in 30 , 000 cars . """
+extract = Extract([Triple(person('George Lucas'), Rel('Live in'), location('Modesto')),])
+""" ` ` You can count it on your fingertips , ' ' said veteran Miami Beach political Gerald Schwartz. """
+extract = Extract([Triple(person('Gerald Schwartz.'), Rel('Live in'), location('Miami Beach')),])
+""" In 1856 , the 28th President of the United States , Thomas Woodrow Wilson , was born in Staunton , Va . """
+extract = Extract([Triple(person('Thomas Woodrow Wilson'), Rel('Live in'), location('Staunton , Va')),])
+""" An estimated one in four Argentina 's 31 million people lives in poverty ; 820 , 000 people in Buenos Aires Province alone eat at least one meal a day at some 1 , 500 soup kitchens that have opened , according to Gov. Antonio Cafiero. """
+extract = Extract([Triple(location('Buenos Aires Province'), Rel('Located in'), location('Argentina')),
+                   Triple(person('Antonio Cafiero.'), Rel('Live in'), location('Argentina')),
+                   Triple(person('Antonio Cafiero.'), Rel('Live in'), location('Buenos Aires Province')),])
+""" HUNTINGTON , Ind . """
+extract = Extract([Triple(location('HUNTINGTON'), Rel('Located in'), location('Ind .')),])
+""" Trump plans to display the window in the Taj Mahal , a hotel he 's building in Atlantic City , according to Patti Fox , who bid on Trump 's behalf after he made a brief appearance at the auction . """
+extract = Extract([Triple(location('Taj Mahal'), Rel('Located in'), location('Atlantic City')),])
