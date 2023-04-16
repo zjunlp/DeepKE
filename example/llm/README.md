@@ -11,7 +11,7 @@
 - [Data Augmentation with Large Language Models](#Data-Augmentation-with-Large-Language-Models)
   - [Configuration](#Configuration)
 - [CCKS2023](#CCKS2023)
-- [Knowledge Graph Construction with Code Language Models](#Knowledge Graph Construction with Code Language Models)
+- [Knowledge Graph Construction with Code Language Models](#Knowledge-Graph-Construction-with-Code-Language-Models)
 
 # IE with Large Language Models
 
