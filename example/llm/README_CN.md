@@ -10,8 +10,8 @@
   - [使用与示例](#使用与示例)
 - [使用大语言模型进行数据增强](#使用大语言模型进行数据增强)
   - [参数设置](参数设置)
-- [InstructionKGC: 指令驱动的自适应知识图谱构建](#InstructionKGC:-指令驱动的自适应知识图谱构建)
-- [CodeKGC: 使用代码语言模型进行知识图谱构建](#CodeKGC:-使用代码语言模型进行知识图谱构建)
+- [InstructionKGC: 指令驱动的自适应知识图谱构建](#InstructionKGC-指令驱动的自适应知识图谱构建)
+- [CodeKGC: 使用代码语言模型进行知识图谱构建](#CodeKGC-使用代码语言模型进行知识图谱构建)
 
 # 使用大语言模型进行信息抽取
 
@@ -99,7 +99,7 @@ Generate more samples for the relation 'org:founded_by'.
 '''
 ```
 
-# InstructionKGC: CCKS评测任务——指令驱动的自适应知识图谱构建
+# InstructionKG-指令驱动的自适应知识图谱构建（CCKS2023评测任务）
 
 下面是**CCKS2023 开放环境下的知识图谱构建与补全评测**比赛中**指令驱动的自适应知识图谱构建**任务关于*ChatGPT/GPT-4*的baseline说明。
 
@@ -179,5 +179,5 @@ output_text="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津
 |             Rougen_2              | 0.7730 |
 | score</br>(0.5\*F1+0.5\*Rougen_2) | 0.5863 |
 
-# CodeKGC: 使用代码语言模型进行知识图谱构建
+# CodeKGC-基于代码语言模型进行知识图谱构建
 详见[这里](https://github.com/zjunlp/DeepKE/blob/main/example/llm/README.md#Knowledge-Graph-Construction-with-Code-Language-Models)
