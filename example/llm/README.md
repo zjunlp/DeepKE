@@ -100,7 +100,7 @@ Generate more samples for the relation 'org:founded_by'.
 '''
 ```
 
-# InstructKGC:CCKS2023 Evaluation of Instruction-based Knowledge Graph Construction
+# InstructKGC-CCKS2023 Evaluation of Instruction-based Knowledge Graph Construction
 
 The following is a baseline description of the *ChatGPT/GPT-4* for the **Instruction-based Knowledge Graph Construction** task in the **CCKS2023 Open Environment Knowledge Graph Construction and Completion Evaluation** competition.
 
@@ -180,7 +180,7 @@ We conducted a simple 5-shot in-context learning evaluation on the CCKS dataset 
 |             Rougen_2              | 0.7730 |
 | score</br>(0.5\*F1+0.5\*Rougen_2) | 0.5863 |
 
-# CodeKGC:Code Language Models for Knowledge Graph Construction
+# CodeKGC-Code Language Models for Knowledge Graph Construction
 
 To better address Relational Triple Extraction (rte) task in Knowledge Graph Construction, we have designed code-style prompts to model the structure of  Relational Triple, and used Code-LLMs to generate more accurate predictions. The key step of code-style prompt construction is to transform (text, output triples) pairs into semantically equivalent program language written in Python.
 
