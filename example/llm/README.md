@@ -11,7 +11,7 @@
 - [Data Augmentation with Large Language Models](#Data-Augmentation-with-Large-Language-Models)
   - [Configuration](#Configuration)
 - [InstructionKGC](#InstructKGC:-CCKS2023-Evaluation-of-Instruction-based-Knowledge-Graph-Construction)
-- [CodeKGC](#Knowledge-Graph-Construction-with-Code-Language-Models)
+- [CodeKGC](#CodeKGC:-Code-Language-Models-for-Knowledge-Graph-Construction)
 
 # IE with Large Language Models
 
@@ -183,6 +183,10 @@ We conducted a simple 5-shot in-context learning evaluation on the CCKS dataset 
 # CodeKGC: Code Language Models for Knowledge Graph Construction
 
 To better address Relational Triple Extraction (rte) task in Knowledge Graph Construction, we have designed code-style prompts to model the structure of  Relational Triple, and used Code-LLMs to generate more accurate predictions. The key step of code-style prompt construction is to transform (text, output triples) pairs into semantically equivalent program language written in Python.
+
+<div align=center>
+<img src="./codekgc/codekgc_figure.png" width="85%" height="75%" />
+</div>
 
 ## Data and Configuration
 
