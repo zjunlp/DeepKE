@@ -10,7 +10,7 @@
   - [Run and Examples](#Run-and-Examples)
 - [Data Augmentation with Large Language Models](#Data-Augmentation-with-Large-Language-Models)
   - [Configuration](#Configuration)
-- [InstructionKGC](#CCKS2023)
+- [InstructionKGC](#InstructKGC:-CCKS2023-Evaluation-of-Instruction-based-Knowledge-Graph-Construction)
 - [CodeKGC](#Knowledge-Graph-Construction-with-Code-Language-Models)
 
 # IE with Large Language Models
@@ -102,7 +102,83 @@ Generate more samples for the relation 'org:founded_by'.
 
 # InstructKGC: CCKS2023 Evaluation of Instruction-based Knowledge Graph Construction
 
-see [here](https://github.com/zjunlp/DeepKE/blob/main/example/llm/README_CN.md)
+The following is a baseline description of the *ChatGPT/GPT-4* for the **Instruction-based Knowledge Graph Construction** task in the **CCKS2023 Open Environment Knowledge Graph Construction and Completion Evaluation** competition.
+
+## Task Object
+
+Extract relevant entities and relations according to user input instructions to construct a knowledge graph. This task may include knowledge graph completion, where the model is required to complete missing triples while extracting entity-relation triples.
+
+Below is an example of a **Knowledge Graph Construction Task**. Given an input text `text` and an `instruction` (including the desired entity types and relationship types), output all relationship triples `output_text` in the form of `(ent1, rel, ent2)` found within the `text`:
+
+```python
+instruction="使用自然语言抽取三元组,已知下列句子,请从句子中抽取出可能的实体、关系,抽取实体类型为{'专业','时间','人类','组织','地理地区','事件'},关系类型为{'体育运动','包含行政领土','参加','国家','邦交国','夺得','举办地点','属于','获奖'},你可以先识别出实体再判断实体之间的关系,以(头实体,关系,尾实体)的形式回答"
+text="2006年，弗雷泽出战中国天津举行的女子水球世界杯，协助国家队夺得冠军。2008年，弗雷泽代表澳大利亚参加北京奥运会女子水球比赛，赢得铜牌。"
+output_text="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗雷泽,属于,国家队)(弗雷泽,国家,澳大利亚)(弗雷泽,参加,北京奥运会女子水球比赛)(中国,包含行政领土,天津)(中国,邦交国,澳大利亚)(北京奥运会女子水球比赛,举办地点,北京)(女子水球世界杯,体育运动,水球)(国家队,夺得,冠军)"
+```
+
+The meaning of knowledge graph completion is that, when given an input `miss_text` (a portion of the text is missing) and an `instruction`, the model is still able to complete the missing triples and output `output_text`. Here is an example:
+
+```python
+instruction="使用自然语言抽取三元组,已知下列句子,请从句子中抽取出可能的实体、关系,抽取实体类型为{'专业','时间','人类','组织','地理地区','事件'},关系类型为{'体育运动','包含行政领土','参加','国家','邦交国','夺得','举办地点','属于','获奖'},你可以先识别出实体再判断实体之间的关系,以(头实体,关系,尾实体)的形式回答"
+miss_text="2006年，弗雷泽出战中国天津举行的女子水球世界杯。2008年，弗雷泽代表澳大利亚参加北京奥运会女子水球比赛，赢得铜牌。"。
+output_text="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗雷泽,属于,国家队)(弗雷泽,国家,澳大利亚)(弗雷泽,参加,北京奥运会女子水球比赛)(中国,包含行政领土,天津)(中国,邦交国,澳大利亚)(北京奥运会女子水球比赛,举办地点,北京)(女子水球世界杯,体育运动,水球)(国家队,夺得,冠军)"
+```
+
+Although the text "协助国家队夺得冠军" is not included in `miss_text`, the model can still complete the missing triples, i.e., it still needs to output `(弗雷泽,属于,国家队)(国家队,夺得,冠军)`.
+
+## Data
+
+The training dataset for the competition contains the following fields for each data entry:
+
+|    Field    |                         Description                          |
+| :---------: | :----------------------------------------------------------: |
+|     id      |                   Sample unique identifier                   |
+|    text     | Model input text (need to extract all triples involved within) |
+| instruction |   Instruction for the model to perform the extraction task   |
+| output_text | Expected model output, in the form of output text composed of (ent1, relation, ent2) |
+|     kg      |             Knowledge graph involved in the text             |
+|   entity    | All entities involved in the kg, including entity type 'type' and entity name 'text' |
+|  Relation   | All relationships involved in the kg, including relationship type 'type' and entities 'args' |
+
+In the test set, only the three fields `id`, `instruction`, and `text` are included.
+
+## Config Setup
+
+This evaluation task is essentially a triple extraction (rte) task. Detailed parameters and configuration for using this module can be found in the [Environment and Data](#Requirement,-Data-and-Configuration) section above. The main parameter settings are as follows:
+
+- Set `task` to `rte`, indicating a triple extraction task;
+- Set `language` to `ch`, indicating that the task is based on Chinese data;
+- Set `engine` to the desired OpenAI large model name (since the OpenAI GPT-4 API is not fully open, this module currently does not support the use of GPT-4 API);
+- Set `text_input` to the `text` field in the dataset;
+- Set `zero_shot` as needed; if set to `True`, examples for in-context learning need to be set in the `/data/rte_ch.json` file in a specific format;
+- Set `instruction` to the `instruction` field in the dataset; if set to `None`, the default instruction for the module will be used;
+- Set `labels` to the entity types, or leave it empty;
+
+Other parameters can be left at their default values.
+
+## Run and Example
+
+After setting the parameters, simply run the `run.py` file:
+
+```shell
+>> python run.py
+```
+
+Input and output examples for making predictions using ChatGPT:
+
+| Input                                                        | Output                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| task="rte"<br/>language="ch"<br/>engine="gpt-3.5-turbo"<br/>text_input="2006年，弗雷泽出战中国天津举行的女子水球世界杯，协助国家队夺得冠军。2008年，弗雷泽代表澳大利亚参加北京奥运会女子水球比赛，赢得铜牌。"<br/>instruction="使用自然语言抽取三元组,已知下列句子,请从句子中抽取出可能的实体、关系,抽取实体类型为{'专业','时间','人类','组织','地理地区','事件'},关系类型为{'体育运动','包含行政领土','参加','国家','邦交国','夺得','举办地点','属于','获奖'},你可以先识别出实体再判断实体之间的关系,以(头实体,关系,尾实体)的形式回答" | \[\[弗雷泽,获奖,铜牌\],\[女子水球世界杯,举办地点,天津\],\[弗雷泽,属于,国家队\],\[弗雷泽,国家,澳大利亚\],\[弗雷泽,参加,北京奥运会女子水球比赛\],\[中国,包含行政领土,天津\],\[中国,邦交国,澳大利亚\],\[北京奥运会女子水球比赛,举办地点,北京\],\[女子水球世界杯,体育运动,水球\],\[国家队,夺得,冠军)\] |
+
+## Baseline Results
+
+We conducted a simple 5-shot in-context learning evaluation on the CCKS dataset using **ChatGPT**, and the results are shown in the table below:
+
+|              Metric               | Result |
+| :-------------------------------: | :----: |
+|                F1                 | 0.3995 |
+|             Rougen_2              | 0.7730 |
+| score</br>(0.5\*F1+0.5\*Rougen_2) | 0.5863 |
 
 # CodeKGC: Code Language Models for Knowledge Graph Construction
 
