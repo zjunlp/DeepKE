@@ -101,7 +101,7 @@ Generate more samples for the relation 'org:founded_by'.
 
 # InstructionKG-指令驱动的自适应知识图谱构建
 
-下面是**CCKS2023 开放环境下的知识图谱构建与补全评测**比赛中**指令驱动的自适应知识图谱构建**任务关于*ChatGPT/GPT-4*的baseline说明。
+下面是**[CCKS2023指令驱动的自适应知识图谱构建评测任务](https://tianchi.aliyun.com/competition/entrance/532080/introduction?spm=5176.12281957.0.0.4c885d9b2YX9Nu)**关于*ChatGPT/GPT-4*的baseline说明。
 
 ## 任务目标
 
