@@ -102,7 +102,7 @@ Generate more samples for the relation 'org:founded_by'.
 
 # InstructKGC-CCKS2023 Evaluation of Instruction-based Knowledge Graph Construction
 
-The following is a baseline description of the *ChatGPT/GPT-4* for the **Instruction-based Knowledge Graph Construction** task in the **CCKS2023 Open Environment Knowledge Graph Construction and Completion Evaluation** competition.
+The following is a baseline description of the *ChatGPT/GPT-4* for the **Instruction-based Knowledge Graph Construction** task in the **[CCKS2023 Open Environment Knowledge Graph Construction and Completion Evaluation competition](https://tianchi.aliyun.com/competition/entrance/532080/introduction?spm=5176.12281957.0.0.4c885d9b2YX9Nu)**.
 
 ## Task Object
 
