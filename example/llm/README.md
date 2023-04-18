@@ -10,7 +10,7 @@
   - [Run and Examples](#Run-and-Examples)
 - [Data Augmentation with Large Language Models](#Data-Augmentation-with-Large-Language-Models)
   - [Configuration](#Configuration)
-- [InstructionKGC](#InstructKGC-CCKS2023-Evaluation-of-Instruction-based-Knowledge-Graph-Construction)
+- [InstructionKGC (CCKS2023)](#InstructKGC-CCKS2023-Evaluation-of-Instruction-based-Knowledge-Graph-Construction)
 - [CodeKGC](#CodeKGC-Code-Language-Models-for-Knowledge-Graph-Construction)
 
 # IE with Large Language Models
