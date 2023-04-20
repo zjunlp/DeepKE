@@ -10,7 +10,7 @@
 <img src="model.png" width="75%" height="75%" />
 </div>
 
-Illustration of Collaborative Domain-Prefix Tuning for cross-domain NER (**CP-NER**) based on text-to-text generative PLMs (Details in paper [One Model for All Domains: Collaborative Domain-Prefix Tuning for Cross-Domain NER](https://arxiv.org/abs/2301.10410)).
+Illustration of Collaborative Domain-Prefix Tuning for cross-domain NER (**CP-NER**) based on text-to-text generative PLMs (Details in the IJCAI2023 paper [One Model for All Domains: Collaborative Domain-Prefix Tuning for Cross-Domain NER](https://arxiv.org/abs/2301.10410)).
 
 
 ## Requirements
