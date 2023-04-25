@@ -272,4 +272,28 @@ extract = Extract([Triple(person('Thomas Woodrow Wilson'), Rel('Live in'), locat
 ```python
 extract = Extract([Triple(person('Michael D. Papagiannis'), Rel('Work for'), organization('Boston University')),])
 ```
+## Citation
+If you use the code, please cite the following paper:
 
+```bibtex
+@article{DBLP:journals/corr/abs-2304-09048,
+  author       = {Zhen Bi and
+                  Jing Chen and
+                  Yinuo Jiang and
+                  Feiyu Xiong and
+                  Wei Guo and
+                  Huajun Chen and
+                  Ningyu Zhang},
+  title        = {CodeKGC: Code Language Model for Generative Knowledge Graph Construction},
+  journal      = {CoRR},
+  volume       = {abs/2304.09048},
+  year         = {2023},
+  url          = {https://doi.org/10.48550/arXiv.2304.09048},
+  doi          = {10.48550/arXiv.2304.09048},
+  eprinttype    = {arXiv},
+  eprint       = {2304.09048},
+  timestamp    = {Mon, 24 Apr 2023 15:03:18 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2304-09048.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```
