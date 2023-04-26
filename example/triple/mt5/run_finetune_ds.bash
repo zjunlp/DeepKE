@@ -1,6 +1,7 @@
-model_name="model/mt5-base"
+model_name="google/mt5-base"
 output_dir="output/ccks_mt5-base_f1_1e-4"
 data_dir="data"
+batch_size=16
 
 deepspeed  --include localhost:0,1 run_finetune.py \
     --do_train --do_eval --do_predict \
@@ -19,9 +20,10 @@ deepspeed  --include localhost:0,1 run_finetune.py \
     --save_total_limit 1 \
     --load_best_model_at_end \
     --num_train_epochs 10 \
-    --per_device_train_batch_size 16 \
-    --per_device_eval_batch_size 48 \
+    --per_device_train_batch_size=${batch_size} \
+    --per_device_eval_batch_size=$((batch_size * 3)) \
     --gradient_accumulation_steps 2 \
+    --eval_accumulation_steps=$((batch_size * 6)) \
     --learning_rate 1e-4 \
     --preprocessing_num_workers 4 \
     --generation_max_length 256 \
