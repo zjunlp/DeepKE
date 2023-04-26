@@ -49,8 +49,8 @@ deepspeed  --include localhost:0,1 run_finetune.py \
     --from_checkpoint=True \
     --overwrite_output_dir=False \
     --model_name_or_path google/mt5-base   \
-    --output_dir output/ccks_ mt5-base_f1_1e-4  \
-    --logging_dir output/ccks_ mt5-base_f1_1e-4_log \
+    --output_dir output/ccks_mt5-base_f1_1e-4  \
+    --logging_dir output/ccks_mt5-base_f1_1e-4_log \
     --train_file data/train.json \
     --test_file data/valid.json \
     --save_total_limit 1 \
@@ -69,7 +69,7 @@ deepspeed  --include localhost:0,1 run_finetune.py \
     --bf16=True \
 ```
 
-1.In DeepSpeed, `--include localhost: 0,1` needs to be used instead of `'CUDA_VISIBLE_DEFICES="0,1" `, the effect is the same
+1.In DeepSpeed, `--include localhost:0,1` needs to be used instead of `CUDA_VISIBLE_DEFICES="0,1"`, the effect is the same
 2. For different runs (different settings), you need to modify the parameter `output_dir`、`logging_dir`, otherwise the new run will overwrite the old run 
 3. For more information on parameters, please refer to `./arguments.py` and [Transformers:TrainingArgument](https://huggingface.co/docs/transformers/v4.21.0/en/main_classes/trainer#transformers.TrainingArguments). Please review the configuration of DeepSpeed https://www.deepspeed.ai/docs/config-json/
 
