@@ -23,7 +23,6 @@ deepspeed  --include localhost:0,1 run_finetune.py \
     --per_device_train_batch_size=${batch_size} \
     --per_device_eval_batch_size=$((batch_size * 3)) \
     --gradient_accumulation_steps 2 \
-    --eval_accumulation_steps=$((batch_size * 6)) \
     --learning_rate 1e-4 \
     --preprocessing_num_workers 4 \
     --generation_max_length 256 \

@@ -1,7 +1,7 @@
 # Easy Start
 
 <p align="left">
-    <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/ner/few-shot/README_CN.md">简体中文</a> </b>
+    <b> English | <a href="https://github.com/zjunlp/DeepKE/tree/main/example/triple/mt5/README_ZH.md">简体中文</a> </b>
 </p>
 
 ## Model
