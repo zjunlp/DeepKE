@@ -15,7 +15,7 @@ cd DeepKE/example/triple/mt5
 ```
 
 
-### Create a Python virtual environment and install it using pip
+### Create a Python virtual environment and install using pip
 
 ```bash
 conda create -n ccks-mt5 python=3.9   
@@ -25,7 +25,7 @@ pip install -r requirements.txt
 
 
 ### Download data
-Download from official website https://tianchi.aliyun.com/competition/entrance/532080/information Download the files' train. json 'and' valid. json 'and place them in the directory/ In data
+Download  `train.json` and `valid.json`  from official website https://tianchi.aliyun.com/competition/entrance/, and place them in the directory `./data`
 
 
 ## 2. Run
@@ -33,49 +33,49 @@ Download from official website https://tianchi.aliyun.com/competition/entrance/5
 You can start the finetune model using the following script:
 
 ```bash
-bash run_ finetene_ ds.bash
+bash run_finetene_ds.bash
 ```
 
 Alternatively, set your own parameters to execute using the following command:
 
 ```bash
-deepspeed  --include localhost:0,1 run_ finetune.py \
---do_ train --do_ eval --do_ predict \
---num_ train_ epochs 10 \
---per_ device_ train_ batch_ size 16 \
---per_ device_ eval_ batch_ size 48 \
---gradient_ accumulation_ steps 2 \
---predict_ with_ generate \
---from_ checkpoint=True \
---overwrite_ output_ dir=False \
---model_ name_ or_ path google/mt5-base   \
---output_ dir output/ccks_ mt5-base_ f1_ 1e-4  \
---logging_ dir output/ccks_ mt5-base_ f1_ 1e-4_ log \
---train_ file data/train.json \
---test_ file data/valid.json \
---save_ total_ limit 1 \
---load_ best_ model_ at_ end \
---save_ strategy "epoch" \
---evaluation_ strategy "epoch" \
---metric_ for_ best_ model "overall-score" \
---learning_ rate 1e-4 \
---use_ fast_ tokenizer=True \
---preprocessing_ num_ workers 4 \
---generation_ max_ length 256 \
---generation_ num_ beams 1 \
---gradient_ checkpointing=True \
---deepspeed "configs/ds_mt5_z3_config_bf16.json" \
---seed 42 \
---bf16=True \
+deepspeed  --include localhost:0,1 run_finetune.py \
+    --do_train --do_eval --do_predict \
+    --num_train_epochs 10 \
+    --per_device_train_batch_size 16 \
+    --per_device_eval_batch_size 48 \
+    --gradient_accumulation_steps 2 \
+    --predict_with_generate \
+    --from_checkpoint=True \
+    --overwrite_output_dir=False \
+    --model_name_or_path google/mt5-base   \
+    --output_dir output/ccks_ mt5-base_ f1_ 1e-4  \
+    --logging_dir output/ccks_ mt5-base_ f1_ 1e-4_ log \
+    --train_file data/train.json \
+    --test_file data/valid.json \
+    --save_total_ limit 1 \
+    --load_best_ model_ at_ end \
+    --save_strategy "epoch" \
+    --evaluation_strategy "epoch" \
+    --metric_for_best_model "overall-score" \
+    --learning_rate 1e-4 \
+    --use_fast_tokenizer=True \
+    --preprocessing_num_workers 4 \
+    --generation_max_length 256 \
+    --generation_num_beams 1 \
+    --gradient_checkpointing=True \
+    --deepspeed "configs/ds_mt5_z3_config_bf16.json" \
+    --seed 42 \
+    --bf16=True \
 ```
 
-1.In DeepSpeed, `-- include localhost: 0,1` needs to be used instead of `'CUDA_ VISIBLE_ DEFICES="0,1" `, the effect is the same
-2. For different runs (different settings), you need to modify the parameter `output'_ dir`、`logging_ Dir`, otherwise the new run will overwrite the old run 
+1.In DeepSpeed, `--include localhost: 0,1` needs to be used instead of `'CUDA_VISIBLE_DEFICES="0,1" `, the effect is the same
+2. For different runs (different settings), you need to modify the parameter `output'_dir`、`logging_dir`, otherwise the new run will overwrite the old run 
 3. For more information on parameters, please refer to `./arguments. py` and [Transformers:TrainingArgument](https://huggingface.co/docs/transformers/v4.21.0/en/main_classes/trainer#transformers.TrainingArguments). Please review the configuration of DeepSpeed https://www.deepspeed.ai/docs/config-json/
 
 
 ## 3. Hardware
-We conducted finetune on the model on two pieces of 'RTX3090 24GB' If your device configuration is higher or lower, please choose a different scale model or adjust parameters ` batch_ size`, `gradient_ accumulation_ steps`.
+We conducted finetune on the model on two pieces of 'RTX3090 24GB' If your device configuration is higher or lower, please choose a different scale model or adjust parameters `batch_size`, `gradient_accumulation_steps`.
 
 
 
