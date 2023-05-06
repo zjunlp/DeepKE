@@ -40,7 +40,7 @@ Alternatively, set your own parameters to execute using the following command:
 
 ```bash
 deepspeed  --include localhost:0,1 run_finetune.py \
-    --do_train --do_eval --do_predict \
+    --do_train --do_eval \
     --num_train_epochs 10 \
     --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 48 \
@@ -52,7 +52,6 @@ deepspeed  --include localhost:0,1 run_finetune.py \
     --output_dir output/ccks_ mt5-base_ f1_ 1e-4  \
     --logging_dir output/ccks_ mt5-base_ f1_ 1e-4_ log \
     --train_file data/train.json \
-    --test_file data/valid.json \
     --save_total_ limit 1 \
     --load_best_ model_ at_ end \
     --save_strategy "epoch" \

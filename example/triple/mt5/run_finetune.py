@@ -96,7 +96,7 @@ def main():
         datasets["train"] = Dataset.from_json(data_args.train_file) 
     if data_args.validation_file is not None:
         datasets["validation"] = Dataset.from_json(data_args.validation_file)
-    else:
+    elif data_args.validation_file is None and data_args.train_file is not None:
         train_valid_datasets = datasets["train"].train_test_split(test_size=0.2, shuffle=True, seed=training_args.seed)
         datasets["train"] = train_valid_datasets["train"]
         datasets["validation"] = train_valid_datasets["test"]
@@ -238,7 +238,7 @@ def main():
 
     def preprocess_logits_for_metrics(logits, labels):
         pred_ids = torch.argmax(logits, dim=-1)
-        return pred_ids, labels
+        return pred_ids
 
 
     # Data collator
@@ -259,7 +259,7 @@ def main():
         tokenizer=tokenizer,
         data_collator=data_collator,
         compute_metrics=compute_metrics,
-        preprocess_logits_for_metrics=preprocess_logits_for_metrics,
+        preprocess_logits_for_metrics=None if training_args.do_predict else preprocess_logits_for_metrics,
     )
 
 
