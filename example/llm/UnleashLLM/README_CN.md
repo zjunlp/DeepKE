@@ -1,4 +1,4 @@
-# 使用大型语言模型进行关系抽取
+# 如何释放大型语言模型进行少样本关系抽取中的能力?
 
 <p align="left">
     <b> <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/UnleashLLM/README.md">English</a> | 简体中文</a> </b>
@@ -85,7 +85,8 @@
   title        = {How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?},
   journal      = {arXiv},
   volume       = {abs/2305.01555},
-  year         = {2023}
+  year         = {2023},
+  url          = {https://arxiv.org/pdf/2305.01555.pdf}
 }
 ```
 
