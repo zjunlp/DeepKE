@@ -17,7 +17,7 @@
 ## Requirements and Datasets
 - Requirements
   
-  OpenAI API (key) is utilized for language models (e.g. GPT-3).
+  OpenAI API (key) is utilized for language models (e.g. GPT-3, GPT-3.5).
     ```shell
     >> pip install openai
     ```
