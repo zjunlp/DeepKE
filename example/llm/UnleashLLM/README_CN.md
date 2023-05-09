@@ -16,7 +16,7 @@
 ## 环境和数据集
 - 环境配置
   
-  使用GPT-3需要OpenAI API (key) 
+  使用GPT-3.5需要OpenAI API (key) 
     ```shell
     >> pip install openai
     ```
