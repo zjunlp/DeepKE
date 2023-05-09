@@ -1,4 +1,4 @@
-# Relation Extraction with Large Language Models
+# How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?
 
 <p align="left">
     <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/UnleashLLM/README_CN.md">简体中文</a> </b>
@@ -87,7 +87,8 @@ Obtain augmented data:
   title        = {How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?},
   journal      = {arXiv},
   volume       = {abs/2305.01555},
-  year         = {2023}
+  year         = {2023},
+  url          = {https://arxiv.org/pdf/2305.01555.pdf}
 }
 ```
 
