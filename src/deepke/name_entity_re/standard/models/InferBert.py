@@ -132,7 +132,7 @@ class InferNer:
             segment_ids = torch.tensor([segment_ids],dtype=torch.long,device=self.device)
             valid_ids = torch.tensor([valid_ids],dtype=torch.long,device=self.device)
             with torch.no_grad():
-                logits = self.model(input_ids=input_ids, segment_ids=segment_ids, input_mask=input_mask, valid_ids=valid_ids)
+                logits = self.model(input_ids=input_ids, token_type_ids=segment_ids, attention_mask=input_mask, valid_ids=valid_ids)
             logits = F.softmax(logits,dim=2)
             logits_label = torch.argmax(logits,dim=2)
             logits_label = logits_label.detach().cpu().numpy().tolist()[0]
