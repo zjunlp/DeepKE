@@ -152,7 +152,7 @@ def main(cfg):
             for step, batch in enumerate(tqdm(train_dataloader, desc="Iteration")):
                 batch = tuple(t.to(device) for t in batch)
                 input_ids, input_mask, segment_ids, label_ids, valid_ids,l_mask = batch
-                loss = model(input_ids, segment_ids, input_mask, label_ids,valid_ids,l_mask,device)
+                loss = model(input_ids=input_ids, token_type_ids=segment_ids, attention_mask=input_mask, labels=label_ids, valid_ids=valid_ids, attention_mask_label=l_mask,device=device)
                 if n_gpu > 1:
                     loss = loss.mean()
                 
