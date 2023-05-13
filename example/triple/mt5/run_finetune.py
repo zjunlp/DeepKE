@@ -259,7 +259,7 @@ def main():
         tokenizer=tokenizer,
         data_collator=data_collator,
         compute_metrics=compute_metrics,
-        preprocess_logits_for_metrics=None if training_args.do_predict else preprocess_logits_for_metrics,
+        #preprocess_logits_for_metrics=None if training_args.do_predict else preprocess_logits_for_metrics,
     )
 
 
