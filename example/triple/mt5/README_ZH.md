@@ -78,13 +78,6 @@ deepspeed  --include localhost:0,1 run_finetune.py \
 我们在2块 `RTX3090 24GB`上对模型进行了finetune. 如果你的设备配置更高或更低, 请选择其他规模的模型或调整参数 `batch_size`, `gradient_accumulation_steps`.
 
 
-## 4.Result
-在训练10个epochs后, 最终得到的结果如下所示: 
-| model    | Score |
-| -------- | ----- |
-| mt5-base | 54.32 |
-
-
-## 5.Acknowledgment
+## 4.Acknowledgment
 
 部分代码来自于 [deepseed-flan-t5-summarization.ipynb](https://github.com/philschmid/deep-learning-pytorch-huggingface/blob/main/training/deepseed-flan-t5-summarization.ipynb), 感谢！
