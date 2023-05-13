@@ -78,15 +78,6 @@ deepspeed  --include localhost:0,1 run_finetune.py \
 We conducted finetune on the model on two pieces of 'RTX3090 24GB' If your device configuration is higher or lower, please choose a different scale model or adjust parameters `batch_size`, `gradient_accumulation_steps`.
 
 
-
-## 4.Result
-After training 10 epochs, the final results obtained are as follows:
-| model    | Score |
-| -------- | ----- |
-| mt5-base | 54.32 |
-
-
-
-## 5.Acknowledgment
+## 4.Acknowledgment
 Part of the code comes from [deepseed plan t5 summarization. ipynb](https://github.com/philschmid/deep-learning-pytorch-huggingface/blob/main/training/deepseed-flan-t5-summarization.ipynb) many thanks.
 
