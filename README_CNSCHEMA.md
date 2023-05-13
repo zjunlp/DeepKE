@@ -150,20 +150,20 @@ DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge 
 
 | ID | Entity Type | ID | Entity Type | 
 | ------------- | :---------- | ------------- | :---------- | 
-| 1   | cns:人物      | 2   | cns:影视作品 | 
-| 3   | cns:目        | 4   | cns:生物   | 
-| 5   | cns:Number   | 6   | cns:Date | 
-| 7   | cns:国家       | 8   | cns:网站   | 
-| 9   | cns:网络小说     | 10  | cns:图书作品 | 
-| 11  | cns:歌曲       | 12  | cns:地点   | 
-| 13  | cns:气候       | 14  | cns:行政区  | 
-| 15  | cns:TEXT     | 16  | cns:历史人物 | 
-| 17  | cns:学校       | 18  | cns:企业   | 
-| 19  | cns:出版社      | 20  | cns:书籍   | 
-| 21  | cns:音乐专辑     | 22  | cns:城市   | 
-| 23  | cns:景点       | 24  | cns:电视综艺 | 
-| 25  | cns:机构       | 26  | cns:作品   | 
-| 27  | cns:语言       | 28  | cns:学科专业 | 
+| 1   | cns:人物 YAS  | 2   | cns:影视作品 TOJ | 
+| 3   | cns:目 NGS        | 4   | cns:生物 QCV   | 
+| 5   | cns:Number OKB   | 6   | cns:Date BQF | 
+| 7   | cns:国家 CAR       | 8   | cns:网站 ZFM   | 
+| 9   | cns:网络小说 EMT     | 10  | cns:图书作品 UER | 
+| 11  | cns:歌曲 QEE       | 12  | cns:地点 UFT   | 
+| 13  | cns:气候 GJS       | 14  | cns:行政区 SVA  | 
+| 15  | cns:TEXT ANO     | 16  | cns:历史人物 KEJ | 
+| 17  | cns:学校 ZDI       | 18  | cns:企业 CAT   | 
+| 19  | cns:出版社 GCK      | 20  | cns:书籍 FQK   | 
+| 21  | cns:音乐专辑 BAK     | 22  | cns:城市 RET   | 
+| 23  | cns:景点 QZP       | 24  | cns:电视综艺 QAQ | 
+| 25  | cns:机构 ZRE       | 26  | cns:作品 TDZ   | 
+| 27  | cns:语言 CVC       | 28  | cns:学科专业 PMN | 
 
 #### Relation Schema
 
