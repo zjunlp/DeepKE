@@ -221,7 +221,7 @@ def main(cfg):
             l_mask = l_mask.to(device)
 
             with torch.no_grad():
-                logits = model(input_ids, segment_ids, input_mask,valid_ids=valid_ids,attention_mask_label=l_mask,device=device)
+                logits = model(input_ids=input_ids, token_type_ids=segment_ids, attention_mask=input_mask,valid_ids=valid_ids,attention_mask_label=l_mask,device=device)
 
             logits = torch.argmax(F.log_softmax(logits,dim=2),dim=2)
             logits = logits.detach().cpu().numpy()
