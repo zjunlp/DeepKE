@@ -314,9 +314,10 @@ def main():
             preds = test_results.predictions
             preds = np.where(preds != -100, preds, tokenizer.pad_token_id)
             test_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
-            output_test_preds_file = os.path.join(training_args.output_dir, "test_preds.txt")
+            output_test_preds_file = os.path.join(training_args.output_dir, "test_preds.json")
             with open(output_test_preds_file, "w") as writer:
-                writer.write("\n".join(test_preds))
+                for pred in test_preds:
+                    writer.write(json.dumps({"output": pred}, ensure_ascii=False)+"\n")
 
         metrics = test_results.metrics
         metrics["test_loss"] = round(metrics["test_loss"], 4)
