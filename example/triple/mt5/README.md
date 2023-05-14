@@ -73,11 +73,23 @@ deepspeed  --include localhost:0,1 run_finetune.py \
 2. For different runs (different settings), you need to modify the parameter `output_dir`、`logging_dir`, otherwise the new run will overwrite the old run 
 3. For more information on parameters, please refer to `./arguments.py` and [Transformers:TrainingArgument](https://huggingface.co/docs/transformers/v4.21.0/en/main_classes/trainer#transformers.TrainingArguments). Please review the configuration of DeepSpeed https://www.deepspeed.ai/docs/config-json/
 
+ 
 
-## 3. Hardware
+## 3. Format Conversion
+The `bash run_finetene_ds.bash` command mentioned above will output a file named `test_preds.json` in the `output/ccks_mt5-base_f1_1e-4` directory. Each line of the file contains only the word 'output'. If you need to meet the submission format requirements of the CCKS2023 competition, you also need to extract 'kg' from 'output'. Here is a simple example script called `convert.py`.
+
+```bash
+python convert.py \
+    --src_path="data/valid.json" \
+    --pred_path="output/ccks_mt5-base_f1_1e-4/test_preds.json" \
+    --tgt_path="output/valid_result.json" \
+```
+
+
+## 4. Hardware
 We conducted finetune on the model on two pieces of 'RTX3090 24GB' If your device configuration is higher or lower, please choose a different scale model or adjust parameters `batch_size`, `gradient_accumulation_steps`.
 
 
-## 4.Acknowledgment
+## 5.Acknowledgment
 Part of the code comes from [deepseed plan t5 summarization. ipynb](https://github.com/philschmid/deep-learning-pytorch-huggingface/blob/main/training/deepseed-flan-t5-summarization.ipynb) many thanks.
 
