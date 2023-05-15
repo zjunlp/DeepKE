@@ -150,7 +150,7 @@ def main():
     else:
         logger.info("There is nothing to do. Please pass `do_train`, `do_eval` and/or `do_predict`.")
         return
-
+    
     max_target_length = data_args.max_target_length
     padding = "max_length" if data_args.pad_to_max_length else False
     if training_args.label_smoothing_factor > 0 and not hasattr(model, "prepare_decoder_input_ids_from_labels"):
@@ -260,7 +260,6 @@ def main():
         tokenizer=tokenizer,
         data_collator=data_collator,
         compute_metrics=compute_metrics,
-        #preprocess_logits_for_metrics=None if training_args.do_predict else preprocess_logits_for_metrics,
     )
 
 
