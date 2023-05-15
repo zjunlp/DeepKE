@@ -142,11 +142,11 @@ def main():
     # Preprocessing the datasets.
     # We need to tokenize inputs and targets.
     if training_args.do_train:
-        column_names = datasets["train"].column_names
+        train_column_names = datasets["train"].column_names
     elif training_args.do_eval:
-        column_names = datasets["validation"].column_names
+        valid_column_names = datasets["validation"].column_names
     elif training_args.do_predict:
-        column_names = datasets["test"].column_names
+        test_column_names = datasets["test"].column_names
     else:
         logger.info("There is nothing to do. Please pass `do_train`, `do_eval` and/or `do_predict`.")
         return
@@ -188,7 +188,7 @@ def main():
             preprocess_function,
             batched=True,
             num_proc=data_args.preprocessing_num_workers,
-            remove_columns=column_names,
+            remove_columns=train_column_names,
             load_from_cache_file=not data_args.overwrite_cache,
             features=RecordFeature,
         )
@@ -201,7 +201,7 @@ def main():
             preprocess_function,
             batched=True,
             num_proc=data_args.preprocessing_num_workers,
-            remove_columns=column_names,
+            remove_columns=valid_column_names,
             load_from_cache_file=not data_args.overwrite_cache,
             features=RecordFeature,
         )
@@ -214,7 +214,7 @@ def main():
             preprocess_function,
             batched=True,
             num_proc=data_args.preprocessing_num_workers,
-            remove_columns=column_names,
+            remove_columns=test_column_names,
             load_from_cache_file=not data_args.overwrite_cache,
             features=RecordFeature,
         )
