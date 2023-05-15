@@ -140,16 +140,6 @@ def main():
 
     # Preprocessing the datasets.
     # We need to tokenize inputs and targets.
-    if training_args.do_train:
-        column_names = datasets["train"].column_names
-    elif training_args.do_eval:
-        column_names = datasets["validation"].column_names
-    elif training_args.do_predict:
-        column_names = datasets["test"].column_names
-    else:
-        logger.info("There is nothing to do. Please pass `do_train`, `do_eval` and/or `do_predict`.")
-        return
-
     max_target_length = data_args.max_target_length
     padding = "max_length" if data_args.pad_to_max_length else False
     if training_args.label_smoothing_factor > 0 and not hasattr(model, "prepare_decoder_input_ids_from_labels"):
@@ -187,7 +177,6 @@ def main():
             preprocess_function,
             batched=True,
             num_proc=data_args.preprocessing_num_workers,
-            remove_columns=column_names,
             load_from_cache_file=not data_args.overwrite_cache,
             features=RecordFeature,
         )
@@ -200,7 +189,6 @@ def main():
             preprocess_function,
             batched=True,
             num_proc=data_args.preprocessing_num_workers,
-            remove_columns=column_names,
             load_from_cache_file=not data_args.overwrite_cache,
             features=RecordFeature,
         )
@@ -213,7 +201,6 @@ def main():
             preprocess_function,
             batched=True,
             num_proc=data_args.preprocessing_num_workers,
-            remove_columns=column_names,
             load_from_cache_file=not data_args.overwrite_cache,
             features=RecordFeature,
         )
@@ -259,7 +246,6 @@ def main():
         tokenizer=tokenizer,
         data_collator=data_collator,
         compute_metrics=compute_metrics,
-        #preprocess_logits_for_metrics=None if training_args.do_predict else preprocess_logits_for_metrics,
     )
 
 
