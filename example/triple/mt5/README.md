@@ -25,7 +25,7 @@ pip install -r requirements.txt
 
 
 ### Download data
-Download  `train.json` and `valid.json`  from official website https://tianchi.aliyun.com/competition/entrance/, and place them in the directory `./data`
+Download  `train.json` and `valid.json`  (although the name is valid, this is not a validation set, but a test set for the competition) from official website https://tianchi.aliyun.com/competition/entrance/, and place them in the directory `./data`
 
 
 ## 2. Run
@@ -71,7 +71,8 @@ deepspeed  --include localhost:0,1 run_finetune.py \
 
 1.In DeepSpeed, `--include localhost:0,1` needs to be used instead of `CUDA_VISIBLE_DEFICES="0,1"`, the effect is the same
 2. For different runs (different settings), you need to modify the parameter `output_dir`、`logging_dir`, otherwise the new run will overwrite the old run 
-3. For more information on parameters, please refer to `./arguments.py` and [Transformers:TrainingArgument](https://huggingface.co/docs/transformers/v4.21.0/en/main_classes/trainer#transformers.TrainingArguments). Please review the configuration of DeepSpeed https://www.deepspeed.ai/docs/config-json/
+3. You can use `--validation_file` provides a validation set or does nothing (in `run_finetune.py`, we will divide 20% of the samples from train.json into validation sets)
+4. For more information on parameters, please refer to `./arguments.py` and [Transformers:TrainingArgument](https://huggingface.co/docs/transformers/v4.21.0/en/main_classes/trainer#transformers.TrainingArguments). Please review the configuration of DeepSpeed https://www.deepspeed.ai/docs/config-json/
 
  
 

@@ -22,7 +22,7 @@ pip install -r requirements.txt
 ```
 
 ### 下载数据
-Download  from 从官网https://tianchi.aliyun.com/competition/entrance/532080/information 下载文件 `train.json` 和 `valid.json` 并放在目录 `./data` 中.
+Download  from 从官网https://tianchi.aliyun.com/competition/entrance/532080/information 下载文件 `train.json` 和 `valid.json` (虽然名字是valid, 但这不是验证集, 而是比赛的测试集)并放在目录 `./data` 中.
 
 
 ## 2.运行
@@ -68,9 +68,8 @@ deepspeed  --include localhost:0,1 run_finetune.py \
 
 1. 在DeepSpeed中, 需要使用`--include localhost:0,1` 来代替`CUDA_VISIBLE_DEVICES="0,1"`, 作用是一样的.
 2. 对于不同的runs(不同的设定)你需要修改参数 `output_dir`、`logging_dir` , 否则新的run会覆盖旧的run.
-
-
-更多有关参数的信息请查看`./arguments.py` 和 [Transformers:TrainingArgument](https://huggingface.co/docs/transformers/v4.21.0/en/main_classes/trainer#transformers.TrainingArguments)
+3. 你可以使用`--validation_file`提供验证集, 或者什么都不做(在`run_finetune.py`中, 我们会从train.json中划分20%的样本做验证集)
+4. 更多有关参数的信息请查看`./arguments.py` 和 [Transformers:TrainingArgument](https://huggingface.co/docs/transformers/v4.21.0/en/main_classes/trainer#transformers.TrainingArguments)
 有关DeepSpeed的配置请查看 https://www.deepspeed.ai/docs/config-json/
 
 
