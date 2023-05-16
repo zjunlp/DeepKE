@@ -147,7 +147,7 @@ def main():
         valid_column_names = datasets["validation"].column_names
     if training_args.do_predict:
         test_column_names = datasets["test"].column_names
-    else:
+    if not training_args.do_train and not training_args.do_eval and not training_args.do_predict:
         logger.info("There is nothing to do. Please pass `do_train`, `do_eval` and/or `do_predict`.")
         return
     
