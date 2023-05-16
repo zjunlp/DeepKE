@@ -143,9 +143,9 @@ def main():
     # We need to tokenize inputs and targets.
     if training_args.do_train:
         train_column_names = datasets["train"].column_names
-    elif training_args.do_eval:
+    if training_args.do_eval:
         valid_column_names = datasets["validation"].column_names
-    elif training_args.do_predict:
+    if training_args.do_predict:
         test_column_names = datasets["test"].column_names
     else:
         logger.info("There is nothing to do. Please pass `do_train`, `do_eval` and/or `do_predict`.")
