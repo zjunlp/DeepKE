@@ -83,7 +83,7 @@ model_name="output/ccks_mt5-base_f1_1e-4"
 output_dir="output/ccks_mt5-base_f1_1e-4_test_result"
 data_dir="data"
 
-deepspeed  --include localhost:0 src/run_ccks_ds.py \
+deepspeed  --include localhost:0 run_finetune.py \
     --do_predict \
     --predict_with_generate \
     --use_fast_tokenizer=True \
