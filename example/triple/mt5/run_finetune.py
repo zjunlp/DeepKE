@@ -22,7 +22,7 @@ from transformers import (
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
 
 from arguments import ModelArguments, DataTrainingArguments
-from utils import RecordFeature, get_extract_metrics_f1
+from utils import get_extract_metrics_f1
 
 
 os.environ["WANDB_DISABLED"] = "true"
@@ -165,7 +165,6 @@ def main():
         model_inputs = tokenizer(inputs, max_length=data_args.max_source_length, padding=padding, truncation=True)
         return model_inputs
     
-    
     def preprocess_function(examples):
         targets = examples["output"]
         inputs = [instruct+ inp  for inp, instruct in zip(examples["input"], examples["instruction"])]
@@ -195,7 +194,6 @@ def main():
             num_proc=data_args.preprocessing_num_workers,
             remove_columns=train_column_names,
             load_from_cache_file=not data_args.overwrite_cache,
-            features=RecordFeature,
         )
     if training_args.do_eval:
         max_target_length = data_args.val_max_target_length
@@ -208,7 +206,6 @@ def main():
             num_proc=data_args.preprocessing_num_workers,
             remove_columns=valid_column_names,
             load_from_cache_file=not data_args.overwrite_cache,
-            features=RecordFeature,
         )
     if training_args.do_predict:
         max_target_length = data_args.val_max_target_length
@@ -221,7 +218,6 @@ def main():
             num_proc=data_args.preprocessing_num_workers,
             remove_columns=test_column_names,
             load_from_cache_file=not data_args.overwrite_cache,
-            features=RecordFeature,
         )
     logger.info("End Data Preprocessing ...")
 
@@ -240,7 +236,6 @@ def main():
         result = get_extract_metrics_f1(golds_outtext=decoded_labels, preds_outtext=decoded_preds)
         result = {k: round(v, 4) for k, v in result.items()}
         return result
-
 
 
     # Data collator
