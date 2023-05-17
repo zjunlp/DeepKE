@@ -1,7 +1,6 @@
 import logging
 import os
 import sys
-import json
 import numpy as np
 from datasets import Dataset
 
@@ -9,6 +8,7 @@ import random
 
 
 import torch
+import json
 import transformers
 from transformers import (
     AutoConfig,
@@ -316,7 +316,6 @@ def main():
                     writer.write(json.dumps({"output": pred}, ensure_ascii=False)+"\n")
 
         metrics = test_results.metrics
-        metrics["test_loss"] = round(metrics["test_loss"], 4)
         max_test_samples = data_args.max_test_samples if data_args.max_test_samples is not None else len(test_dataset)
         metrics["eval_samples"] = min(max_test_samples, len(test_dataset))
 
