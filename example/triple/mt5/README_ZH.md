@@ -38,7 +38,7 @@ bash run_finetene_ds.bash
 
 ```bash
 deepspeed  --include localhost:0,1 run_finetune.py \
-    --do_train --do_eval \
+    --do_train --do_eval --do_predict \
     --num_train_epochs 10 \
     --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 48 \
@@ -50,6 +50,7 @@ deepspeed  --include localhost:0,1 run_finetune.py \
     --output_dir output/ccks_mt5-base_f1_1e-4  \
     --logging_dir output/ccks_mt5-base_f1_1e-4_log \
     --train_file data/train.json \
+    --test_file data/valid.json \
     --save_total_limit 1 \
     --load_best_model_at_end \
     --save_strategy "epoch" \

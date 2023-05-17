@@ -4,13 +4,14 @@ data_dir="data"
 batch_size=16
 
 deepspeed  --include localhost:0,1 run_finetune.py \
-    --do_train --do_eval \
+    --do_train --do_eval --do_predict \
     --predict_with_generate \
     --model_name_or_path=${model_name}   \
     --output_dir=${output_dir}  \
     --overwrite_output_dir=False \
     --logging_dir=${output_dir}_log \
     --train_file=${data_dir}/train.json \
+    --test_file=${data_dir}/valid.json \
     --use_fast_tokenizer=True \
     --from_checkpoint=True \
     --evaluation_strategy "epoch" \

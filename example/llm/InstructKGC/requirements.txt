@@ -1,0 +1,12 @@
+accelerate
+appdirs
+loralib
+bitsandbytes==0.37.2
+black
+black[jupyter]
+datasets
+fire
+git+https://github.com/huggingface/peft.git
+transformers>=4.28.0
+sentencepiece
+gradio

@@ -40,7 +40,7 @@ Alternatively, set your own parameters to execute using the following command:
 
 ```bash
 deepspeed  --include localhost:0,1 run_finetune.py \
-    --do_train --do_eval \
+    --do_train --do_eval --do_predict \
     --num_train_epochs 10 \
     --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 48 \
