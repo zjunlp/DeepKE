@@ -33,40 +33,28 @@ Download  `train.json` and `valid.json`  (although the name is valid, this is no
 You can use the LoRA method to finetune the model using the following script:
 
 ```bash
-bash run_finetene_ds.bash
+bash scripts/run_finetene.bash
 ```
 
 Alternatively, set your own parameters to execute using the following command:
 
 ```bash
-deepspeed  --include localhost:0,1 run_finetune.py \
-    --do_train --do_eval \
-    --num_train_epochs 10 \
-    --per_device_train_batch_size 16 \
-    --per_device_eval_batch_size 48 \
-    --gradient_accumulation_steps 2 \
-    --predict_with_generate \
-    --from_checkpoint=True \
-    --overwrite_output_dir=False \
-    --model_name_or_path google/mt5-base   \
-    --output_dir output/ccks_mt5-base_f1_1e-4  \
-    --logging_dir output/ccks_mt5-base_f1_1e-4_log \
-    --train_file data/train.json \
-    --test_file data/valid.json \
-    --save_total_limit 1 \
-    --load_best_model_at_end \
-    --save_strategy "epoch" \
-    --evaluation_strategy "epoch" \
-    --metric_for_best_model "overall-score" \
+CUDA_VISIBLE_DEVICES="0" python src/finetune.py \
+    --base_model 'decapoda-research/llama-7b-hf' \
+    --train_path 'data/train.json' \
+    --output_dir 'lora/llama-7b-e3-r8' \
+    --batch_size 128 \
+    --micro_train_batch_size 4 \
+    --num_epochs 3 \
     --learning_rate 1e-4 \
-    --use_fast_tokenizer=True \
-    --preprocessing_num_workers 4 \
-    --generation_max_length 256 \
-    --generation_num_beams 1 \
-    --gradient_checkpointing=True \
-    --deepspeed "configs/ds_mt5_z3_config_bf16.json" \
-    --seed 42 \
-    --bf16=True \
+    --cutoff_len 512 \
+    --val_set_size 1000 \
+    --lora_r 8 \
+    --lora_alpha 16 \
+    --lora_dropout 0.05 \
+    --lora_target_modules '[q_proj,v_proj]' \
+    --train_on_inputs \
+    --group_by_length \
 ```
 
 1. You can use `--valid_file` provides a validation set, or does nothing at all (in `finetune.py`, we will divide the number of samples with `val_set_size` from train.json as the validation set), you can also use `val_set_size` adjust the number of validation sets
