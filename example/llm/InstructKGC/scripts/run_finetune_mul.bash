@@ -1,5 +1,5 @@
 output_dir='lora/llama-7b-e3-r8'
-CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 src/finetune.py \
+CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 finetune.py \
     --base_model 'decapoda-research/llama-7b-hf' \
     --train_path 'data/train.json' \
     --output_dir=${output_dir}  \

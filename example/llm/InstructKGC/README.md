@@ -39,7 +39,7 @@ bash scripts/run_finetene.bash
 Alternatively, set your own parameters to execute using the following command:
 
 ```bash
-CUDA_VISIBLE_DEVICES="0" python src/finetune.py \
+CUDA_VISIBLE_DEVICES="0" python finetune.py \
     --base_model 'decapoda-research/llama-7b-hf' \
     --train_path 'data/train.json' \
     --output_dir 'lora/llama-7b-e3-r8' \
@@ -79,7 +79,7 @@ bash scripts/run_inference.bash
 Alternatively, set your own parameters to execute using the following command:
 
 ```bash
-CUDA_VISIBLE_DEVICES="0" python src/inference.py \
+CUDA_VISIBLE_DEVICES="0" python inference.py \
     --base_model 'decapoda-research/llama-7b-hf' \
     --lora_weights 'lora/llama-7b-e3-r8' \
     --input_file 'data/valid.json' \
