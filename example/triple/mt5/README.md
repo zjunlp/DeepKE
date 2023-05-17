@@ -75,8 +75,36 @@ deepspeed  --include localhost:0,1 run_finetune.py \
 4. For more information on parameters, please refer to `./arguments.py` and [Transformers:TrainingArgument](https://huggingface.co/docs/transformers/v4.21.0/en/main_classes/trainer#transformers.TrainingArguments). Please review the configuration of DeepSpeed https://www.deepspeed.ai/docs/config-json/
 
  
+## 3.Inference or Predict
+You can use the following command to Inference and predict the trained model, model_name is the path of the trained model, output_dir is the output path
 
-## 3. Format Conversion
+```python
+model_name="output/ccks_mt5-base_f1_1e-4"
+output_dir="output/ccks_mt5-base_f1_1e-4_test_result"
+data_dir="data"
+
+deepspeed  --include localhost:0 src/run_ccks_ds.py \
+    --do_predict \
+    --predict_with_generate \
+    --use_fast_tokenizer=True \
+    --per_device_eval_batch_size 16 \
+    --test_file=${data_dir}/valid.json \
+    --model_name_or_path=${model_name}   \
+    --output_dir=${output_dir}  \
+    --overwrite_output_dir=False \
+    --logging_dir=${output_dir}_log \
+    --preprocessing_num_workers 4 \
+    --generation_max_length 256 \
+    --generation_num_beams 1 \
+    --gradient_checkpointing=True \
+    --bf16=True \
+    --deepspeed "configs/ds_mt5_z3_config_bf16.json" \
+    --seed 42 
+```
+
+
+
+## 4. Format Conversion
 The `bash run_finetene_ds.bash` command mentioned above will output a file named `test_preds.json` in the `output/ccks_mt5-base_f1_1e-4` directory. Each line of the file contains only the word 'output'. If you need to meet the submission format requirements of the CCKS2023 competition, you also need to extract 'kg' from 'output'. Here is a simple example script called `convert.py`.
 
 ```bash
@@ -87,10 +115,10 @@ python convert.py \
 ```
 
 
-## 4. Hardware
+## 5. Hardware
 We conducted finetune on the model on two pieces of 'RTX3090 24GB' If your device configuration is higher or lower, please choose a different scale model or adjust parameters `batch_size`, `gradient_accumulation_steps`.
 
 
-## 5.Acknowledgment
+## 6.Acknowledgment
 Part of the code comes from [deepseed plan t5 summarization. ipynb](https://github.com/philschmid/deep-learning-pytorch-huggingface/blob/main/training/deepseed-flan-t5-summarization.ipynb) many thanks.
 

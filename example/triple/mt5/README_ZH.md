@@ -74,7 +74,35 @@ deepspeed  --include localhost:0,1 run_finetune.py \
 有关DeepSpeed的配置请查看 https://www.deepspeed.ai/docs/config-json/
 
 
-## 3.格式转换
+## 3.推理或预测
+你可以通过以下命令对训练后的模型进行推理和预测, model_name是训练好的模型的路径, output_dir是输出路径
+
+```python
+model_name="output/ccks_mt5-base_f1_1e-4"
+output_dir="output/ccks_mt5-base_f1_1e-4_test_result"
+data_dir="data"
+
+deepspeed  --include localhost:0 src/run_ccks_ds.py \
+    --do_predict \
+    --predict_with_generate \
+    --use_fast_tokenizer=True \
+    --per_device_eval_batch_size 16 \
+    --test_file=${data_dir}/valid.json \
+    --model_name_or_path=${model_name}   \
+    --output_dir=${output_dir}  \
+    --overwrite_output_dir=False \
+    --logging_dir=${output_dir}_log \
+    --preprocessing_num_workers 4 \
+    --generation_max_length 256 \
+    --generation_num_beams 1 \
+    --gradient_checkpointing=True \
+    --bf16=True \
+    --deepspeed "configs/ds_mt5_z3_config_bf16.json" \
+    --seed 42 
+```
+
+
+## 4.格式转换
 上面的 `bash run_finetene_ds.bash` 会在 `output/ccks_mt5-base_f1_1e-4` 目录下输出 `test_preds.json` 文件, 文件的每一行仅包含 'output', 如果需要满足CCKS2023比赛的提交格式还需要从 'output' 中抽取出 'kg', 这里提供一个简单的样例 `convert.py`
 
 ```bash
@@ -85,10 +113,10 @@ python convert.py \
 ```
 
 
-## 4.硬件
+## 5.硬件
 我们在2块 `RTX3090 24GB`上对模型进行了finetune. 如果你的设备配置更高或更低, 请选择其他规模的模型或调整参数 `batch_size`, `gradient_accumulation_steps`.
 
 
-## 5.Acknowledgment
+## 6.Acknowledgment
 
 部分代码来自于 [deepseed-flan-t5-summarization.ipynb](https://github.com/philschmid/deep-learning-pytorch-huggingface/blob/main/training/deepseed-flan-t5-summarization.ipynb), 感谢！
