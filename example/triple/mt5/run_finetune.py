@@ -160,6 +160,12 @@ def main():
         )
     
 
+    def preprocess_function_test(examples):
+        inputs = [instruct+ inp  for inp, instruct in zip(examples["input"], examples["instruction"])]
+        model_inputs = tokenizer(inputs, max_length=data_args.max_source_length, padding=padding, truncation=True)
+        return model_inputs
+    
+    
     def preprocess_function(examples):
         targets = examples["output"]
         inputs = [instruct+ inp  for inp, instruct in zip(examples["input"], examples["instruction"])]
@@ -169,8 +175,6 @@ def main():
         with tokenizer.as_target_tokenizer():
             labels = tokenizer(targets, max_length=max_target_length, padding=padding, truncation=True)
 
-        # If we are padding here, replace all tokenizer.pad_token_id in the labels by -100 when we want to ignore
-        # padding in the loss.
         if padding == "max_length" and data_args.ignore_pad_token_for_loss:
             labels["input_ids"] = [
                 [(_label if _label != tokenizer.pad_token_id else -100) for _label in label] for label in labels["input_ids"]
@@ -178,6 +182,7 @@ def main():
         model_inputs["labels"] = labels["input_ids"]
         return model_inputs
     
+
 
     logger.info("Start Data Preprocessing ...")
     if training_args.do_train:
@@ -211,7 +216,7 @@ def main():
         if data_args.max_test_samples is not None:
             test_dataset = test_dataset.select(range(data_args.max_test_samples))
         test_dataset = test_dataset.map(
-            preprocess_function,
+            preprocess_function_test,
             batched=True,
             num_proc=data_args.preprocessing_num_workers,
             remove_columns=test_column_names,
@@ -236,10 +241,6 @@ def main():
         result = {k: round(v, 4) for k, v in result.items()}
         return result
 
-
-    def preprocess_logits_for_metrics(logits, labels):
-        pred_ids = torch.argmax(logits, dim=-1)
-        return pred_ids
 
 
     # Data collator
