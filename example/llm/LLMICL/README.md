@@ -1,5 +1,5 @@
 # Requirement, Data and Configuration
-
+<a id="requirements"></a>
 - Requirement
 
   The LLM module of Deepke calls the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tookit(An Easy-to-use Framework to Instruct Large Language Models).
@@ -38,7 +38,7 @@
 
 # IE with Large Language Models
 
-We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](#Requirement,-Data-and-Configuration) for the environment and data. 
+We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](#requirements) for the environment and data. 
 
 ## Run and Examples
 
@@ -75,7 +75,7 @@ To compensate for the lack of labeled data in few-shot scenarios for relation ex
 
 ## Run and Examples
 
-We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](#Requirement,-Data-and-Configuration) for the environment and data. 
+We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](#requirements) for the environment and data. 
 
 Once the parameters are set, you can directly run the `run.py`：
 
@@ -149,7 +149,7 @@ In the test set, only the three fields `id`, `instruction`, and `input` are incl
 
 ## Config Setup
 
-This evaluation task is essentially a triple extraction (rte) task. Detailed parameters and configuration for using this module can be found in the [Environment and Data](#Requirement,-Data-and-Configuration) section above. The main parameter settings are as follows:
+This evaluation task is essentially a triple extraction (rte) task. Detailed parameters and configuration for using this module can be found in the [Environment and Data](#requirements) section above. The main parameter settings are as follows:
 
 - Set `task` to `rte`, indicating a triple extraction task;
 - Set `language` to `ch`, indicating that the task is based on Chinese data;
@@ -163,7 +163,7 @@ Other parameters can be left at their default values.
 
 ## Run and Example
 
-We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](#Requirement,-Data-and-Configuration) for the environment and data. 
+We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](#requirements) for the environment and data. 
 
 After setting the parameters, simply run the `run.py` file:
 

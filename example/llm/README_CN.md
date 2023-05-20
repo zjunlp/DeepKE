@@ -23,7 +23,7 @@
 探索如何利用大语言模型进行 `数据增强`。为了弥补少样本场景下关系抽取有标签数据的缺失, 我们设计带有数据样式描述的提示，用于指导大型语言模型根据已有的少样本数据自动地生成更多的有标签数据。
 
 ### 使用大语言模型完成CCKS2023指令驱动的知识图谱构建 [英文](./LLMICL/README.md/#ccks2023-instruction-based-knowledge-graph-construction-with-large-language-models) | [中文](./LLMICL/README_CN.md/#使用大语言模型完成ccks2023指令驱动的知识图谱构建)
-了解如何利用大语言模型完成 `CCKS2023指令驱动的知识图谱构建任务`。通过将指令输入给模型，它可以学习并生成符合指定要求的知识图谱，从而提供更全面和有价值的知识表示。
+了解如何利用大语言模型完成 [CCKS2023指令驱动的知识图谱构建任务](https://tianchi.aliyun.com/competition/entrance/532080/introduction)。通过将指令输入给模型，它可以学习并生成符合指定要求的知识图谱，从而提供更全面和有价值的知识表示。
 
 
 ## CodeKGC-基于代码语言模型的知识图谱构建 [英文](./CodeKGC/README.md) | [中文](./CodeKGC/README_CN.md)
