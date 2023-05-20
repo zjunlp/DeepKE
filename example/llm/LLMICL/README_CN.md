@@ -38,7 +38,7 @@
 ## 使用与示例
 
 
-我们使用[EasyInstruct](https://github.com/zjunlp/EasyInstruct)工具(一个简单易用的指导大语言模型的框架) 完成这一任务, 环境与数据请参考[第一章](./#环境与数据)
+我们使用[EasyInstruct](https://github.com/zjunlp/EasyInstruct)工具(一个简单易用的指导大语言模型的框架) 完成这一任务, 环境与数据请参考[第一章](#环境与数据)
 
 设定好参数后，直接运行`run.py`文件即可:
 
@@ -71,7 +71,7 @@
 
 ## 使用与示例
 
-我们使用[EasyInstruct](https://github.com/zjunlp/EasyInstruct)工具(一个简单易用的指导大语言模型的框架) 完成这一任务, 环境与数据请参考[第一章](./#环境与数据)
+我们使用[EasyInstruct](https://github.com/zjunlp/EasyInstruct)工具(一个简单易用的指导大语言模型的框架) 完成这一任务, 环境与数据请参考[第一章](#环境与数据)
 
 设定好参数后，直接运行`run.py`文件即可:
 
@@ -157,7 +157,7 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 ## 使用与示例
 
-我们使用[EasyInstruct](https://github.com/zjunlp/EasyInstruct)工具(一个简单易用的指导大语言模型的框架) 完成这一任务, 环境与数据请参考[第一章](./#环境与数据)
+我们使用[EasyInstruct](https://github.com/zjunlp/EasyInstruct)工具(一个简单易用的指导大语言模型的框架) 完成这一任务, 环境与数据请参考[第一章](#环境与数据)
 
 设定好参数后，直接运行`run.py`文件即可:
 
