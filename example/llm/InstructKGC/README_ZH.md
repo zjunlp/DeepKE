@@ -1,10 +1,12 @@
-# 快速上手
+# InstructionKGC-指令驱动的自适应知识图谱构建
 
 <p align="left">
     <b> <a href="https://github.com/zjunlp/DeepKE/tree/main/example/llm/InstructKGC/README.md">English</a> | 简体中文 </b>
 </p>
 
-
+<div align=center>
+<img src="./img/instrctIE.jpeg" width="85%" height="75%" />
+</div>
 
 ## 1.准备
 

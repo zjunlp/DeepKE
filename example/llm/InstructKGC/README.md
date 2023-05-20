@@ -1,8 +1,12 @@
-# Easy Start
+# InstructKGC-CCKS2023 Evaluation of Instruction-based Knowledge Graph Construction
 
 <p align="left">
     <b> English | <a href="https://github.com/zjunlp/DeepKE/tree/main/example/llm/InstructKGC/README_ZH.md">简体中文</a> </b>
 </p>
+
+<div align=center>
+<img src="./img/instrctIE.jpeg" width="85%" height="75%" />
+</div>
 
 
 ## 1. Preparation
