@@ -40,7 +40,7 @@
 
 We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](#requirements) for the environment and data. 
 
-## Run and Examples
+### Run and Examples
 
 Once the parameters are set, you can directly run the `run.py`：
 
@@ -66,14 +66,14 @@ Below are input and output examples for different tasks:
 To compensate for the lack of labeled data in few-shot scenarios for relation extraction, we have designed prompts with data style descriptions to guide large language models to automatically generate more labeled data based on existing few-shot data.
 
 
-## Configuration
+### Configuration
 
 - Set `task` to `da`;
 - Set `text_input` to the relationship label to be enhanced, such as `org:founded_by`;
 - Set `zero_shot` to `False` and set the low-sample example in the corresponding file under the `data` folder for the `da` task;
 - The range of entity labels can be specified in `labels`.
 
-## Run and Examples
+### Run and Examples
 
 We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](#requirements) for the environment and data. 
 
@@ -111,7 +111,7 @@ Generate more samples for the relation 'org:founded_by'.
 
 The following is a baseline description of the *ChatGPT/GPT-4* for the **Instruction-based Knowledge Graph Construction** task in the **[CCKS2023 Open Environment Knowledge Graph Construction and Completion Evaluation competition](https://tianchi.aliyun.com/competition/entrance/532080/introduction?spm=5176.12281957.0.0.4c885d9b2YX9Nu)**.
 
-## Task Object
+### Task Object
 
 Extract relevant entities and relations according to user input instructions to construct a knowledge graph. This task may include knowledge graph completion, where the model is required to complete missing triples while extracting entity-relation triples.
 
@@ -133,7 +133,7 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 Although the text "协助国家队夺得冠军" is not included in `miss_input`, the model can still complete the missing triples, i.e., it still needs to output `(弗雷泽,属于,国家队)(国家队,夺得,冠军)`.
 
-## Data
+### Data
 
 The training dataset for the competition contains the following fields for each data entry:
 
@@ -147,7 +147,7 @@ The training dataset for the competition contains the following fields for each 
 
 In the test set, only the three fields `id`, `instruction`, and `input` are included.
 
-## Config Setup
+### Config Setup
 
 This evaluation task is essentially a triple extraction (rte) task. Detailed parameters and configuration for using this module can be found in the [Environment and Data](#requirements) section above. The main parameter settings are as follows:
 
@@ -161,7 +161,7 @@ This evaluation task is essentially a triple extraction (rte) task. Detailed par
 
 Other parameters can be left at their default values.
 
-## Run and Example
+### Run and Example
 
 We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](#requirements) for the environment and data. 
 
@@ -177,7 +177,7 @@ Input and output examples for making predictions using ChatGPT:
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | task="rte"<br/>language="ch"<br/>engine="gpt-3.5-turbo"<br/>text_input="2006年，弗雷泽出战中国天津举行的女子水球世界杯，协助国家队夺得冠军。2008年，弗雷泽代表澳大利亚参加北京奥运会女子水球比赛，赢得铜牌。"<br/>instruction="使用自然语言抽取三元组,已知下列句子,请从句子中抽取出可能的实体、关系,抽取实体类型为{'专业','时间','人类','组织','地理地区','事件'},关系类型为{'体育运动','包含行政领土','参加','国家','邦交国','夺得','举办地点','属于','获奖'},你可以先识别出实体再判断实体之间的关系,以(头实体,关系,尾实体)的形式回答" | \[\[弗雷泽,获奖,铜牌\],\[女子水球世界杯,举办地点,天津\],\[弗雷泽,属于,国家队\],\[弗雷泽,国家,澳大利亚\],\[弗雷泽,参加,北京奥运会女子水球比赛\],\[中国,包含行政领土,天津\],\[中国,邦交国,澳大利亚\],\[北京奥运会女子水球比赛,举办地点,北京\],\[女子水球世界杯,体育运动,水球\],\[国家队,夺得,冠军)\] |
 
-## Baseline Results
+### Baseline Results
 
 We conducted a simple 5-shot in-context learning evaluation on the CCKS dataset using **ChatGPT**, and the results are shown in the table below:
 
