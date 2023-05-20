@@ -1,6 +1,4 @@
-# IE with Large Language Models
-
-## Requirement, Data and Configuration
+# Requirement, Data and Configuration
 
 - Requirement
 
@@ -37,6 +35,11 @@
     - `data_path` indicates the directory where in-context examples are stored, and the default is the `data` folder.
 
 
+
+# IE with Large Language Models
+
+We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](./#Requirement,-Data-and-Configuration) for the environment and data. 
+
 ## Run and Examples
 
 Once the parameters are set, you can directly run the `run.py`：
@@ -62,12 +65,24 @@ Below are input and output examples for different tasks:
 
 To compensate for the lack of labeled data in few-shot scenarios for relation extraction, we have designed prompts with data style descriptions to guide large language models to automatically generate more labeled data based on existing few-shot data.
 
+
 ## Configuration
 
 - Set `task` to `da`;
 - Set `text_input` to the relationship label to be enhanced, such as `org:founded_by`;
 - Set `zero_shot` to `False` and set the low-sample example in the corresponding file under the `data` folder for the `da` task;
 - The range of entity labels can be specified in `labels`.
+
+## Run and Examples
+
+We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](./#Requirement,-Data-and-Configuration) for the environment and data. 
+
+Once the parameters are set, you can directly run the `run.py`：
+
+```
+>> python run.py
+```
+
 
 Here is an example of a data augmentation `prompt`:
 
@@ -147,6 +162,8 @@ This evaluation task is essentially a triple extraction (rte) task. Detailed par
 Other parameters can be left at their default values.
 
 ## Run and Example
+
+We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](./#Requirement,-Data-and-Configuration) for the environment and data. 
 
 After setting the parameters, simply run the `run.py` file:
 

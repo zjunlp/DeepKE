@@ -1,10 +1,6 @@
-# 使用大语言模型进行信息抽取
-
-## 环境与数据
+# 环境与数据
 
 - 环境配置
-
-  Deepke大模型模块使用[EasyInstruct](https://github.com/zjunlp/EasyInstruct)工具(一个简单易用的指示大语言模型的框架)
 
   ```shell
   >> pip install easyinstruct
@@ -36,7 +32,13 @@
     - `instruction`参数用于规定用户自定义的提示指令，当为空时采用默认的指令；
     - `data_path`表示in-context examples的存储目录，默认为`data`文件夹。
 
+
+# 使用大语言模型进行信息抽取
+
 ## 使用与示例
+
+
+我们使用[EasyInstruct](https://github.com/zjunlp/EasyInstruct)工具(一个简单易用的指导大语言模型的框架) 完成这一任务, 环境与数据请参考[第一章](./#环境与数据)
 
 设定好参数后，直接运行`run.py`文件即可:
 
@@ -66,6 +68,17 @@
 - `zero_shot`设为`False`，并在`data`文件夹下`da`对应的文件中设置少样本样例；
 - `labels`中可以指定头尾实体的标签范围。
 
+
+## 使用与示例
+
+我们使用[EasyInstruct](https://github.com/zjunlp/EasyInstruct)工具(一个简单易用的指导大语言模型的框架) 完成这一任务, 环境与数据请参考[第一章](./#环境与数据)
+
+设定好参数后，直接运行`run.py`文件即可:
+
+```shell
+>> python run.py
+```
+
 如下为一个数据增强的`prompt`示例:
 
 ```PYTHON
@@ -85,6 +98,7 @@ Relation: org:founded_by. Context: `` We believe that we can best serve our clie
 Generate more samples for the relation 'org:founded_by'.
 '''
 ```
+
 
 
 # 使用大语言模型完成CCKS2023指令驱动的知识图谱构建
@@ -142,6 +156,8 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 其它参数默认即可。
 
 ## 使用与示例
+
+我们使用[EasyInstruct](https://github.com/zjunlp/EasyInstruct)工具(一个简单易用的指导大语言模型的框架) 完成这一任务, 环境与数据请参考[第一章](./#环境与数据)
 
 设定好参数后，直接运行`run.py`文件即可:
 

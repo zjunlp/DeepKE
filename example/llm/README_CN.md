@@ -31,5 +31,5 @@
 为了更好地处理知识图谱构建中的关系三元组抽取（RTE）任务，我们设计了代码形式的提示建模关系三元组的结构，并使用代码语言模型（Code-LLM）生成更准确的预测。代码形式提示构建的关键步骤是将（文本，输出三元组）对转换成Python中的语义等价的程序语言。
 
 <div align=center>
-<img src="./codekgc/codekgc_figure.png" width="85%" height="75%" />
+<img src="./CodeKGC/codekgc_figure.png" width="85%" height="75%" />
 </div>

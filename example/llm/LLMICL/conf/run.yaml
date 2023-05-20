@@ -1,0 +1,14 @@
+task: "ee"                 # [ner, re, ee, rte, da]
+language: "en"                # ["en", "ch"]
+engine: "text-davinci-003"    # ["text-davinci-003", "text-curie-001", "text-babbage-001", "text-ada-001"]
+api_key: ""
+text_input: "历经4小时51分钟的体力、意志力鏖战，北京时间9月9日上午纳达尔在亚瑟·阿什球场，以7比5、6比3、5比7、4比6和6比4击败赛会5号种子俄罗斯球员梅德韦杰夫，夺得了2019年美国网球公开赛男单冠军。"
+zero_shot: True
+instruction: None
+data_path: ""
+domain: "sport"
+labels: None   # ['PER', 'ORG', 'LOC']
+head_type: ""
+head_entity: ""
+tail_type: ""
+tail_entity: ""

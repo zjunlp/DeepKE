@@ -8,7 +8,7 @@
 To better address Relational Triple Extraction (rte) task in Knowledge Graph Construction, we have designed code-style prompts to model the structure of  Relational Triple, and used Code-LLMs to generate more accurate predictions. The key step of code-style prompt construction is to transform (text, output triples) pairs into semantically equivalent program language written in Python.
 
 <div align=center>
-<img src="./codekgc/codekgc_figure.png" width="85%" height="75%" />
+<img src="./codekgc_figure.png" width="85%" height="75%" />
 </div>
 
 ## Data and Configuration
