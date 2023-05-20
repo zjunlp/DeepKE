@@ -32,9 +32,9 @@ def rte_post_process(result):
 
 def add_args():
     parse = argparse.ArgumentParser()
-    parse.add_argument("--input_file", type=str, default="./data/valid.json")
-    parse.add_argument("--output_file", type=str, default="./data/valid_input.json")
-    parse.add_argument("--number", str=int, default=5)
+    parse.add_argument("--input_file", type=str, default="./data/valid.json", help="input file path")
+    parse.add_argument("--output_file", type=str, default="./data/valid_input.json", help="output file path")
+    parse.add_argument("--number", str=int, default=5, help="number of examples")
     parse.add_argument("--mode", str=int, default="train", choices=["train", "test"])
     options = parse.parse_args()
     return options
@@ -48,10 +48,12 @@ def convert_train(options):
             records.append(data)
     random.shuffle(records)
     with open(options.output_file, "w") as writer:
-        for data in records[options.number]:
+        new_records = []
+        for data in records[:options.number]:
             data["text"] = data["instruction"] + data["input"]
             data["labels"] = data["output"]
-            writer.write(json.dumps(data, ensure_ascii=False)+"\n")
+            new_records.append(data)
+        json.dump(new_records, writer, ensure_ascii=False)
 
 
 def convert_test(options):
