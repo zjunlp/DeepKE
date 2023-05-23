@@ -17,6 +17,7 @@
     - [CCKS2023指令驱动的知识图谱构建 英文 | 中文](#ccks2023指令驱动的知识图谱构建-英文--中文)
   - [CodeKGC-基于代码语言模型的知识图谱构建 英文 | 中文](#codekgc-基于代码语言模型的知识图谱构建-英文--中文)
 
+---
 
 # CaMA
 
@@ -28,18 +29,22 @@
 
 ## 使用
 
+---
+
 # LLaMA
 
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/llama_logo.jpeg" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
+---
 
 # ChatGLM
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/chatglm_logo.png" alt="ChatGLM" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
+---
 
 # GPT系列
 
