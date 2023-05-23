@@ -21,7 +21,7 @@
 # CaMA
 
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/cama_logo.jpeg" alt="ZJU-CaMA" style="width: 30%; min-width: 30px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/cama_logo.jpeg" alt="ZJU-CaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
 ## 训练
@@ -31,20 +31,20 @@
 # LLaMA
 
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/llama_logo.jpeg" alt="LLaMA" style="width: 30%; min-width: 30px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/llama_logo.jpeg" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
 
 # ChatGLM
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/chatglm_logo.png" alt="ChatGLM" style="width: 30%; min-width: 30px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/chatglm_logo.png" alt="ChatGLM" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
 
 # GPT系列
 
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/chatgpt_logo.png" alt="GPT" style="width: 30%; min-width: 30px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/chatgpt_logo.png" alt="GPT" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
 ## 使用In-Context Learning指导大语言模型
