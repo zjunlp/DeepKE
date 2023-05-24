@@ -59,7 +59,7 @@ To better address Relational Triple Extraction (rte) task in Knowledge Graph Con
 ## GPT series
 
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/chatgpt_logo.png" alt="GPT" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/chatgpt_logo.png" alt="GPT" style="width: 18%; min-width: 18px; display: block; margin: auto;"></a>
 </p>
 
 ### Method 1: Instruct Large Language Models(LLMs) using In-Context Learning

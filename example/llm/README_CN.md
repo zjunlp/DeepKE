@@ -63,7 +63,7 @@ LoRA通过学习秩分解矩阵对来减少可训练参数的数量，同时冻�
 ## GPT系列
 
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/chatgpt_logo.png" alt="GPT" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/chatgpt_logo.png" alt="GPT" style="width: 18%; min-width: 18px; display: block; margin: auto;"></a>
 </p>
 
 ### 方法一：使用In-Context Learning指导大语言模型
