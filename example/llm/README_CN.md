@@ -12,8 +12,8 @@
     - [方法一：LoRA微调](#方法一lora微调)
       - [案例一：CodeKGC-基于代码语言模型的知识图谱构建 英文 | 中文](#案例一codekgc-基于代码语言模型的知识图谱构建-英文--中文)
       - [案例二：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例二lora微调llama完成ccks2023指令驱动的知识图谱构建-英文--中文)
-- [ChatGLM](#chatglm)
-- [GPT系列](#gpt系列)
+  - [ChatGLM](#chatglm)
+  - [GPT系列](#gpt系列)
     - [方法一：使用In-Context Learning指导大语言模型](#方法一使用in-context-learning指导大语言模型)
       - [案例一：使用大语言模型进行信息抽取 英文 | 中文](#案例一使用大语言模型进行信息抽取-英文--中文)
       - [案例二：使用大语言模型进行数据增强 英文 | 中文](#案例二使用大语言模型进行数据增强-英文--中文)
@@ -57,14 +57,14 @@ LoRA通过学习秩分解矩阵对来减少可训练参数的数量，同时冻�
 
 ---
 
-# ChatGLM
+## ChatGLM
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/chatglm_logo.png" alt="ChatGLM" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
 ---
 
-# GPT系列
+## GPT系列
 
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/chatgpt_logo.png" alt="GPT" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
