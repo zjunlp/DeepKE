@@ -8,6 +8,7 @@
 - [LLaMA](#llama)
   - [Method 1: LoRA](#method-1-lora)
     - [Case 1: CodeKGC-Code Language Models for Knowledge Graph Construction English | Chinese](#case-1-codekgc-code-language-models-for-knowledge-graph-construction-english--chinese)
+    - [Case 2: Instruction-based Knowledge Graph Construction(CCKS2023) with LLaMA using LoRA Fine-tuning driven by English | Chinese](#case-2-instruction-based-knowledge-graph-constructionccks2023-with-llama-using-lora-fine-tuning-driven-by-english--chinese)
 - [ChatGLM](#chatglm)
 - [GPT series](#gpt-series)
   - [Method 1: Instruct Large Language Models(LLMs) using In-Context Learning](#method-1-instruct-large-language-modelsllms-using-in-context-learning)
@@ -43,10 +44,8 @@ LoRA reduces the number of trainable parameters by learning pairs of rank-decomp
 
 To better address Relational Triple Extraction (rte) task in Knowledge Graph Construction, we have designed code-style prompts to model the structure of  Relational Triple, and used Code-LLMs to generate more accurate predictions. The key step of code-style prompt construction is to transform (text, output triples) pairs into semantically equivalent program language written in Python.
 
-<div align=center>
-<img src="./CodeKGC/codekgc_figure.png" width="85%" height="75%" />
-</div>
 
+#### Case 2: Instruction-based Knowledge Graph Construction(CCKS2023) with LLaMA using LoRA Fine-tuning driven by [English](./InstructKGC/README.md) | [Chinese](./InstructKGC/README_CN.md)
 
 --- 
 

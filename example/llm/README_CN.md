@@ -11,7 +11,7 @@
   - [LLaMA](#llama)
     - [方法一：LoRA微调](#方法一lora微调)
       - [案例一：CodeKGC-基于代码语言模型的知识图谱构建 英文 | 中文](#案例一codekgc-基于代码语言模型的知识图谱构建-英文--中文)
-      - [案例二：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例二lora微调llama完成ccks2023指令驱动的知识图谱构建-英文--中文)
+      - [案例二：使用LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例二使用lora微调llama完成ccks2023指令驱动的知识图谱构建-英文--中文)
   - [ChatGLM](#chatglm)
   - [GPT系列](#gpt系列)
     - [方法一：使用In-Context Learning指导大语言模型](#方法一使用in-context-learning指导大语言模型)
@@ -48,11 +48,7 @@ LoRA通过学习秩分解矩阵对来减少可训练参数的数量，同时冻�
 
 为了更好地处理知识图谱构建中的关系三元组抽取（RTE）任务，我们设计了代码形式的提示建模关系三元组的结构，并使用代码语言模型（Code-LLM）生成更准确的预测。代码形式提示构建的关键步骤是将（文本，输出三元组）对转换成Python中的语义等价的程序语言。
 
-<div align=center>
-<img src="./CodeKGC/codekgc_figure.png" width="85%" height="75%" />
-</div>
-
-#### 案例二：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md) | [中文](./InstructKGC/README_CN.md)
+#### 案例二：使用LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md) | [中文](./InstructKGC/README_CN.md)
 
 
 ---
