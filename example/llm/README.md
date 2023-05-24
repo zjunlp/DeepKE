@@ -16,6 +16,7 @@
     - [Case 2: Data Augmentation with LLMs English | Chinese](#case-2-data-augmentation-with-llms-english--chinese)
     - [Case 3: CCKS2023 Instruction-based Knowledge Graph Construction with LLMs English | Chinese](#case-3-ccks2023-instruction-based-knowledge-graph-construction-with-llms-english--chinese)
     - [Case 4: Unleash the Power of Large Language Models for Few-shot Relation Extraction English | Chinese](#case-4-unleash-the-power-of-large-language-models-for-few-shot-relation-extraction-english--chinese)
+>>>>>>> 3be239144d521a7af5f465956db018747e6085e0
 
 ---
 
