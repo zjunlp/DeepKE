@@ -155,6 +155,8 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 其它参数默认即可。
 
+我们为CCKS2023比赛数据格式提供了一个转化脚本, `LLMICL/ccks2023_convert.py`
+
 ### 使用与示例
 
 我们使用[EasyInstruct](https://github.com/zjunlp/EasyInstruct)工具(一个简单易用的指导大语言模型的框架) 完成这一任务, 环境与数据请参考[第一章](#requirements)

@@ -161,6 +161,8 @@ This evaluation task is essentially a triple extraction (rte) task. Detailed par
 
 Other parameters can be left at their default values.
 
+We have provided a conversion script for the CCKS2023 competition data format, `LLMICL/ccks2023_convert.py`
+
 ### Run and Example
 
 We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](#requirements) for the environment and data. 
