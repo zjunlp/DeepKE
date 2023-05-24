@@ -77,7 +77,7 @@
 ## 引用
 
 ```BibTex
-@article{DBLP:journals/corr/abs-2305-01555,
+@article{UnleashLLMRE,
   author       = {Xin Xu and
                   Yuqi Zhu and
                   Xiaohan Wang and
