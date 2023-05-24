@@ -15,7 +15,7 @@
     - [Case 1: Information Extraction with LLMs English | Chinese](#case-1-information-extraction-with-llms-english--chinese)
     - [Case 2: Data Augmentation with LLMs English | Chinese](#case-2-data-augmentation-with-llms-english--chinese)
     - [Case 3: CCKS2023 Instruction-based Knowledge Graph Construction with LLMs English | Chinese](#case-3-ccks2023-instruction-based-knowledge-graph-construction-with-llms-english--chinese)
-    - [Case 4：Unleash the Power of Large Language Models for Few-shot Relation Extraction 英文 | 中文](#case-4unleash-the-power-of-large-language-models-for-few-shot-relation-extraction-英文--中文)
+    - [Case 4: Unleash the Power of Large Language Models for Few-shot Relation Extraction English | Chinese](#case-4unleash-the-power-of-large-language-models-for-few-shot-relation-extraction-english--chinese)
 
 ---
 
@@ -77,6 +77,6 @@ To better address Relational Triple Extraction (rte) task in Knowledge Graph Con
 
 #### Case 3: CCKS2023 Instruction-based Knowledge Graph Construction with LLMs [English](./LLMICL/README.md/#ccks2023-instruction-based-knowledge-graph-construction-with-large-language-models) | [Chinese](./LLMICL/README_CN.md/#使用大语言模型完成ccks2023指令驱动的知识图谱构建)
 
-#### Case 4：Unleash the Power of Large Language Models for Few-shot Relation Extraction [英文](./UnleashLLMRE/README.md) | [中文](./UnleashLLMRE/README_CN.md)
+#### Case 4：Unleash the Power of Large Language Models for Few-shot Relation Extraction [English](./UnleashLLMRE/README.md) | [Chinese](./UnleashLLMRE/README_CN.md)
 
 
