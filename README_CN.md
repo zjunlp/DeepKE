@@ -61,6 +61,9 @@
 ## 2023年2月
 * 支持[大模型](https://github.com/zjunlp/DeepKE/blob/main/example/llm/README_CN.md) (GPT-3)，包含In-context Learning (基于 [EasyInstruct](https://github.com/zjunlp/EasyInstruct))和数据生成，新增实体识别模型[W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/README_CN.md)。
 
+<details>
+<summary><b>旧版新闻</b></summary>
+
 ## 2022年11月
 
 - 新增实体识别、关系抽取的[数据标注说明](https://github.com/zjunlp/DeepKE/blob/main/README_TAG_CN.md)和弱监督数据自动标注([实体识别](https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data/README_CN.md)、[关系抽取](https://github.com/zjunlp/DeepKE/blob/main/example/re/prepare-data/README_CN.md))功能，优化[多GPU训练](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README_CN.md)。
@@ -97,7 +100,8 @@
 - deepke-v1.0发布
 ## 2018年8月
 - DeepKE项目启动，deepke-v0.1代码发布
-<br>
+
+</details>
 
 # 预测演示
 下面使用一个demo展示预测过程。该动图由[Terminalizer](https://github.com/faressoft/terminalizer)生成，生成[代码](https://drive.google.com/file/d/1r4tWfAkpvynH3CBSgd-XG79rf-pB-KR3/view?usp=share_link)可点击获取。
