@@ -2,9 +2,7 @@
     <b> <a href="https://github.com/zjunlp/DeepKE/blob/llm/example/llm/README.md">English</a> | 简体中文</a> </b>
 </p>
 
-# 目录
 
-- [目录](#目录)
 - [方法](#方法)
   - [方法一：In-Context Learning(ICL)](#方法一in-context-learningicl)
   - [方法二：LoRA](#方法二lora)
@@ -12,6 +10,7 @@
 - [模型](#模型)
   - [CaMA](#cama)
     - [案例一：LoRA微调CaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调cama完成ccks2023指令驱动的知识图谱构建-英文--中文)
+      - [Case One: LoRA Fine-tuning of CaMA for CCKS2023 Instruction-Driven Knowledge Graph Construction English | Chinese](#case-one-lora-fine-tuning-of-cama-for-ccks2023-instruction-driven-knowledge-graph-construction-english--chinese)
   - [LLaMA](#llama)
     - [案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调llama完成ccks2023指令驱动的知识图谱构建-英文--中文)
   - [ChatGLM](#chatglm)
@@ -48,8 +47,13 @@ PT方法，即P-Tuning方法，参考[ChatGLM官方代码](https://link.zhihu.co
 <a href="" target="_blank"><img src="assets/cama_logo.jpeg" alt="ZJU-CaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
+CaMA首先（1）使用中文语料首先对LLaMA（13B）进行进一步全量预训练，在尽可能保留原来的英文和代码能力的前提下，进一步提高模型对于中文理解能力和知识储备；接着（2）使用指令数据集对第一步的模型微调，来提高语言模型对于人类指令的理解。
+模型详细信息请参考[CaMA: A Chinese-English Bilingual LLaMA Model](https://github.com/zjunlp/CaMA/tree/main)
+
 ### 案例一：LoRA微调CaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md) | [中文](./InstructKGC/README_CN.md)
 
+
+#### Case One: LoRA Fine-tuning of CaMA for CCKS2023 Instruction-Driven Knowledge Graph Construction [English](./InstructKGC/README.md) | [Chinese](./InstructKGC/README_CN.md)
 
 ---
 
