@@ -63,6 +63,12 @@ Download  from 从官网https://tianchi.aliyun.com/competition/entrance/532080/i
 
 ## 2.运行
 
+
+CaMA与LLaMA的区别只是`base_model`参数的不同, 下面是一些模型
+* [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
+* [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
+* [CaMA-13b](https://huggingface.co/zjunlp/CaMA-13B-Diff)
+
 你可以通过下面的脚本使用LoRA方法来finetune模型:
 
 ```bash
@@ -100,7 +106,13 @@ bash scripts/run_finetene_mul.bash
 ```
 
 
-## 4.预测
+## 3.预测
+
+以下是训练好的一些LoRA版本:
+* [alpaca-7b-lora-ie](https://huggingface.co/zjunlp/alpaca-7b-lora-ie)
+* [llama-7b-lora-ie](https://huggingface.co/zjunlp/llama-7b-lora-ie)
+* [alpaca-13b-lora-ie](https://huggingface.co/zjunlp/alpaca-13b-lora-ie)
+* [CaMA-13B-LoRA](https://huggingface.co/zjunlp/CaMA-13B-LoRA)
 
 你可以通过下面的脚本使用训练好的LoRA模型在比赛测试集上预测输出:
 
@@ -120,7 +132,7 @@ CUDA_VISIBLE_DEVICES="0" python inference.py \
 ```
 
 
-## 5.格式转换
+## 4.格式转换
 上面的 `bash run_inference.bash` 会在 `result` 目录下输出 `output_llama_7b_e3_r8.json` 文件, 文件中不包含 'kg' 字段, 如果需要满足CCKS2023比赛的提交格式还需要从 'output' 中抽取出 'kg', 这里提供一个简单的样例 `convert.py`
 
 ```bash
@@ -130,11 +142,11 @@ python utils/convert.py \
 ```
 
 
-## 6.硬件
+## 5.硬件
 我们在1块 上对模型进行了finetune
 注意：请确保你的设备或服务器有足够的RAM内存！！！
 
 
-## 7.Acknowledgment
+## 6.Acknowledgment
 
 代码基本来自于[Alpaca-LoRA](https://github.com/tloen/alpaca-lora), 仅做了部分改动, 感谢！

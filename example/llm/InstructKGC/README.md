@@ -67,6 +67,11 @@ Download  `train.json` and `valid.json`  (although the name is valid, this is no
 
 ## 2. Run
 
+The difference between CaMA and LLaMA is only `base_model`:
+* [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
+* [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
+* [CaMA-13b](https://huggingface.co/zjunlp/CaMA-13B-Diff)
+
 You can use the LoRA method to finetune the model using the following script:
 
 ```bash
@@ -106,7 +111,13 @@ bash scripts/run_finetene_mul.bash
 
 
 
-## 4. Predict or Inference
+## 3. Predict or Inference
+Here are some trained versions of LoRA:
+* [alpaca-7b-lora-ie](https://huggingface.co/zjunlp/alpaca-7b-lora-ie)
+* [llama-7b-lora-ie](https://huggingface.co/zjunlp/llama-7b-lora-ie)
+* [alpaca-13b-lora-ie](https://huggingface.co/zjunlp/alpaca-13b-lora-ie)
+* [CaMA-13B-LoRA](https://huggingface.co/zjunlp/CaMA-13B-LoRA)
+
 You can use the trained LoRA model to predict the output on the competition test set using the following script:
 
 ```bash
@@ -125,7 +136,7 @@ CUDA_VISIBLE_DEVICES="0" python inference.py \
 ```
 
 
-## 5. Format Conversion
+## 4. Format Conversion
 The `bash run_inference.bash` command mentioned above will output a file named `output_llama_7b_e3_r8.json` in the `result` directory, which does not contain the 'kg' field. If you need to meet the submission format requirements of the CCKS2023 competition, you also need to extract 'kg' from 'output'. Here is a simple example script called `convert.py`.
 
 
@@ -136,10 +147,10 @@ python utils/convert.py \
 ```
 
 
-## 6. Hardware
+## 5. Hardware
 We performed finetune on the model on 1 `RTX3090 24GB`
 Attention: Please ensure that your device or server has sufficient RAM memory!!!
 
 
-## 7.Acknowledgment
+## 6.Acknowledgment
 The code basically comes from [Alpaca-LoRA](https://github.com/tloen/alpaca-lora). Only some changes have been made, many thanks.
