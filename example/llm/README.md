@@ -19,8 +19,6 @@
     - [Case 4: Unleash the Power of Large Language Models for Few-shot Relation Extraction English | Chinese](#case-4-unleash-the-power-of-large-language-models-for-few-shot-relation-extraction-english--chinese)
     - [Case 5: CodeKGC-Code Language Models for Knowledge Graph Construction English | Chinese](#case-5-codekgc-code-language-models-for-knowledge-graph-construction-english--chinese)
 
----
-
 
 # Methods
 
@@ -35,6 +33,7 @@ The PT (P-Tuning) method, as referred to in the official code of ChatGLM, is a s
 [P-Tuning](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2103.10385) introduces new parameters only to the embeddings of large models. 
 [P-Tuning-V2](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2110.07602) adds new parameters to both the embeddings and the preceding layers of large models.
 
+---
 
 # Model
 
@@ -50,7 +49,7 @@ For detailed information about the model, please refer to [CaMA: A Chinese-Engli
 
 ### Case 1: LoRA Fine-tuning of CaMA for CCKS2023 Instruction-Driven Knowledge Graph Construction [English](./InstructKGC/README.md) | [Chinese](./InstructKGC/README_CN.md)
 
----
+
 
 ## LLaMA
 
@@ -61,14 +60,14 @@ For detailed information about the model, please refer to [CaMA: A Chinese-Engli
 
 ### Case 1: LoRA Fine-tuning of LLaMA for CCKS2023 Instruction-based Knowledge Graph Construction [English](./InstructKGC/README.md) | [Chinese](./InstructKGC/README_CN.md)
 
---- 
+
 
 ## ChatGLM
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/chatglm_logo.png" alt="ChatGLM" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
----
+
 
 ## GPT series
 
