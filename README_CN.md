@@ -30,28 +30,8 @@
 
 
 [DeepKE](https://arxiv.org/pdf/2201.03335.pdf) 是一个开源的知识图谱抽取与构建工具，支持<b>cnSchema、低资源、长篇章、多模态</b>的知识抽取工具，可以基于<b>PyTorch</b>实现<b>命名实体识别</b>、<b>关系抽取</b>和<b>属性抽取</b>功能。同时为初学者提供了[用户手册](), [文档](https://zjunlp.github.io/DeepKE/)，[Google Colab教程](https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing), [在线演示](http://deepke.zjukg.cn/CN/index.html), [论文](https://arxiv.org/pdf/2201.03335.pdf)和[演示文稿](https://github.com/zjunlp/DeepKE/blob/main/docs/slides/Slides-DeepKE-cn.pdf)。
-- ❗New: 我们基于[EasyInstruct](https://github.com/zjunlp/EasyInstruct)在[DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm)提供了大模型支持 ，包含[InstructionKGC]()和[CodeKGC](), 欢迎使用!
-- ❗New: 我们提供多个实体关系联合抽取模型(例如[ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE))并在[DeepKE-cnSchema](https://github.com/zjunlp/DeepKE/tree/main/example/triple/cnschema)提供开箱即用抽取模型, 欢迎使用!
-
-**阅读资料**:
-
-Data-Efficient Knowledge Graph Construction, 高效知识图谱构建 ([Tutorial on CCKS 2022](http://sigkg.cn/ccks2022/?page_id=24)) \[[slides](https://pan.baidu.com/s/1yMskUVU188-4dcf96lVrWg?pwd=gy8y)\] 
-
-Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022](https://www.aacl2022.org/Program/tutorials)) \[[slides](https://github.com/NLP-Tutorials/AACL-IJCNLP2022-KGC-Tutorial)\] 
-
-PromptKG Family: a Gallery of Prompt Learning & KG-related Research Works, Toolkits, and Paper-list [[Resources](https://github.com/zjunlp/PromptKG)\] 
-
-Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey](https://arxiv.org/abs/2202.08063)\]\[[Paper-list](https://github.com/zjunlp/Low-resource-KEPapers)\]
-
-基于大模型提示学习的推理工作综述 \[[论文](https://arxiv.org/abs/2212.09597)\]\[[列表](https://github.com/zjunlp/Prompt4ReasoningPapers)\]\[[ppt](https://github.com/zjunlp/Prompt4ReasoningPapers/blob/main/tutorial.pdf)\]
-
-**相关工具**：
-
-[Doccano](https://github.com/doccano/doccano)、[MarkTool](https://github.com/FXLP/MarkTool)、[LabelStudio](https://labelstud.io/ )：实体识别关系抽取数据标注工具
-
-[LambdaKG](https://github.com/zjunlp/PromptKG/tree/main/lambdaKG): 基于预训练语言模型的知识图谱表示与应用工具
-
-[EasyInstruct](https://github.com/zjunlp/EasyInstruct): 一个基于指令使用大模型的工具
+- ❗想用大模型做抽取吗？试试[DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm)！
+- ❗想自己全监督训抽取模型吗？试试[快速上手](#快速上手), 我们提供实体识别模型 (例如[LightNER(COLING'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/few-shot), [W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/w2ner))关系抽取模型(例如[KnowPrompt(WWW'22)](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot))实体关系联合抽取模型(例如[ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE)), 和基于cnSchema的开箱即用模型[DeepKE-cnSchema](https://github.com/zjunlp/DeepKE/tree/main/example/triple/cnschema)！
 
 # 目录
 
@@ -618,7 +598,27 @@ python predict.py
 - 在DeepKE的下一个版本中发布中英双语抽取大模型
 - 我们提供长期技术维护和答疑解惑。如有疑问，请提交issues
 
-<br>
+
+# 阅读资料
+
+Data-Efficient Knowledge Graph Construction, 高效知识图谱构建 ([Tutorial on CCKS 2022](http://sigkg.cn/ccks2022/?page_id=24)) \[[slides](https://pan.baidu.com/s/1yMskUVU188-4dcf96lVrWg?pwd=gy8y)\] 
+
+Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022](https://www.aacl2022.org/Program/tutorials)) \[[slides](https://github.com/NLP-Tutorials/AACL-IJCNLP2022-KGC-Tutorial)\] 
+
+PromptKG Family: a Gallery of Prompt Learning & KG-related Research Works, Toolkits, and Paper-list [[Resources](https://github.com/zjunlp/PromptKG)\] 
+
+Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey](https://arxiv.org/abs/2202.08063)\]\[[Paper-list](https://github.com/zjunlp/Low-resource-KEPapers)\]
+
+基于大模型提示学习的推理工作综述 \[[论文](https://arxiv.org/abs/2212.09597)\]\[[列表](https://github.com/zjunlp/Prompt4ReasoningPapers)\]\[[ppt](https://github.com/zjunlp/Prompt4ReasoningPapers/blob/main/tutorial.pdf)\]
+
+# 相关工具
+
+[Doccano](https://github.com/doccano/doccano)、[MarkTool](https://github.com/FXLP/MarkTool)、[LabelStudio](https://labelstud.io/ )：实体识别关系抽取数据标注工具
+
+[LambdaKG](https://github.com/zjunlp/PromptKG/tree/main/lambdaKG): 基于预训练语言模型的知识图谱表示与应用工具
+
+[EasyInstruct](https://github.com/zjunlp/EasyInstruct): 一个基于指令使用大模型的工具
+
 
 # 引用
 
