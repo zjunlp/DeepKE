@@ -72,7 +72,7 @@ CaMA与LLaMA的区别只是`base_model`参数的不同, 下面是一些模型
 你可以通过下面的脚本使用LoRA方法来finetune模型:
 
 ```bash
-bash scripts/run_finetene.bash
+bash scripts/run_finetune.bash
 ```
 
 或者通过下面的命令设置自己的参数执行:

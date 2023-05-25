@@ -75,7 +75,7 @@ The difference between CaMA and LLaMA is only `base_model`:
 You can use the LoRA method to finetune the model using the following script:
 
 ```bash
-bash scripts/run_finetene.bash
+bash scripts/run_finetune.bash
 ```
 
 Alternatively, set your own parameters to execute using the following command:
