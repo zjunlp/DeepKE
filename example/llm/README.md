@@ -1,6 +1,32 @@
-<p align="left">
+<p align="center">
+    <a href="https://github.com/zjunlp/deepke"> <img src="assets/logo_LLM.png" width="400"/></a>
+<p>
+<p align="center">  
+    <a href="http://deepke.zjukg.cn">
+        <img alt="Documentation" src="https://img.shields.io/badge/demo-website-blue">
+    </a>
+    <a href="https://pypi.org/project/deepke/#files">
+        <img alt="PyPI" src="https://img.shields.io/pypi/v/deepke">
+    </a>
+    <a href="https://github.com/zjunlp/DeepKE/blob/master/LICENSE">
+        <img alt="GitHub" src="https://img.shields.io/github/license/zjunlp/deepke">
+    </a>
+    <a href="http://zjunlp.github.io/DeepKE">
+        <img alt="Documentation" src="https://img.shields.io/badge/doc-website-red">
+    </a>
+    <a href="https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing">
+        <img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg">
+    </a>
+</p>
+
+
+<p align="center">
     <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/llm/example/llm/README_CN.md">简体中文</a> </b>
 </p>
+
+<h1 align="center">
+    <p>A Deep Learning Based Knowledge Extraction Toolkit<br>for Knowledge Graph Construction</p>
+</h1>
 
 - [Methods](#methods)
   - [Method 1: In-Context Learning (ICL)](#method-1-in-context-learning-icl)
