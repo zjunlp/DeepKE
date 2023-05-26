@@ -35,7 +35,7 @@
   - [LLaMA](#llama)
     - [Case 1: LoRA Fine-tuning of LLaMA for CCKS2023 Instruction-based KG Construction](#case-1-lora-fine-tuning-of-llama-for-ccks2023-instruction-based-kg-construction-english--chinese)
   - [ChatGLM](#chatglm)
-  - [GPT series](#gpt-series)
+  - [GPT-Series](#gpt-series)
     - [Case 1: Information Extraction with LLMs](#case-1-information-extraction-with-llms-english--chinese)
     - [Case 2: Data Augmentation with LLMs](#case-2-data-augmentation-with-llms-english--chinese)
     - [Case 3: CCKS2023 Instruction-based KG Construction with LLMs](#case-3-ccks2023-instruction-based-kg-construction-with-llms-english--chinese)
