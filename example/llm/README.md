@@ -8,7 +8,7 @@
   - [Method 3: P-Tuning](#method-3-p-tuning)
 - [Model](#model)
   - [CaMA](#cama)
-    - [Case 1: LoRA Fine-tuning of CaMA for CCKS2023 Instruction-Driven Knowledge Graph Construction English | Chinese](#case-1-lora-fine-tuning-of-cama-for-ccks2023-instruction-driven-knowledge-graph-construction-english--chinese)
+    - [Case 1: CaMA for CCKS2023 Instruction-Driven Knowledge Graph Construction English | Chinese](#case-1-cama-for-ccks2023-instruction-driven-knowledge-graph-construction-english--chinese)
   - [LLaMA](#llama)
     - [Case 1: LoRA Fine-tuning of LLaMA for CCKS2023 Instruction-based Knowledge Graph Construction English | Chinese](#case-1-lora-fine-tuning-of-llama-for-ccks2023-instruction-based-knowledge-graph-construction-english--chinese)
   - [ChatGLM](#chatglm)
@@ -47,7 +47,7 @@ CaMA follows a two-step approach: (1) It performs further full pre-training on L
 
 For detailed information about the model, please refer to [CaMA: A Chinese-English Bilingual LLaMA Model](https://github.com/zjunlp/CaMA/tree/main).
 
-### Case 1: LoRA Fine-tuning of CaMA for CCKS2023 Instruction-Driven Knowledge Graph Construction [English](./InstructKGC/README.md) | [Chinese](./InstructKGC/README_CN.md)
+### Case 1: Using CaMA for CCKS2023 Instruction-Driven Knowledge Graph Construction [English](./InstructKGC/README.md) | [Chinese](./InstructKGC/README_CN.md)
 
 
 

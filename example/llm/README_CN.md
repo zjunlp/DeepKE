@@ -9,7 +9,7 @@
   - [方法三：P-Tuning](#方法三p-tuning)
 - [模型](#模型)
   - [CaMA](#cama)
-    - [案例一：LoRA微调CaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调cama完成ccks2023指令驱动的知识图谱构建-英文--中文)
+    - [案例一：使用CaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一使用cama完成ccks2023指令驱动的知识图谱构建-英文--中文)
   - [LLaMA](#llama)
     - [案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调llama完成ccks2023指令驱动的知识图谱构建-英文--中文)
   - [ChatGLM](#chatglm)
@@ -52,7 +52,7 @@ CaMA首先（1）使用中文语料首先对LLaMA（13B）进行进一步全量�
 
 模型详细信息请参考[CaMA: A Chinese-English Bilingual LLaMA Model](https://github.com/zjunlp/CaMA/tree/main)
 
-### 案例一：LoRA微调CaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md) | [中文](./InstructKGC/README_CN.md)
+### 案例一：使用CaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md) | [中文](./InstructKGC/README_CN.md)
 
 
 

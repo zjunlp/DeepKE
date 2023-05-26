@@ -64,17 +64,22 @@ pip install -r requirements.txt
 Download  from 从官网https://tianchi.aliyun.com/competition/entrance/532080/information 下载文件 `train.json` 和 `valid.json` (虽然名字是valid, 但这不是验证集, 而是比赛的测试集)并放在目录 `./data` 中.
 
 
+### 模型
+下面是一些模型
+* [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
+* [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
+* [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
+* [CaMA-13b](https://huggingface.co/zjunlp/CaMA-13B-Diff)
+
+如果你需要使用CaMA请参考[CaMA/2.2 预训练模型权重获取与恢复](https://github.com/zjunlp/CaMA/tree/main)获得完整的CaMA模型权重。
+
+
 ## 2.运行
 
 
-CaMA与LLaMA的区别只是`base_model`参数的不同, 下面是一些模型
-* [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
-* [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
-* [CaMA-13b](https://huggingface.co/zjunlp/CaMA-13B-Diff)
-  
-由于meta官方没有完全开放出LLaMA的权重, 而CaMA是基于LLaMA训练得到的, 因此请参考[CaMA/2.2 预训练模型权重获取与恢复](https://github.com/zjunlp/CaMA/tree/main)获得完整的CaMA模型权重。
-
 你可以通过下面的脚本使用LoRA方法来finetune模型:
+
+注意: 由于CaMA已经在大量的信息抽取指令数据集上经过LoRA训练, 因此可以跳过这一步直接执行第3步`预测`, 你也可以选择进一步训练。
 
 ```bash
 bash scripts/run_finetune.bash
