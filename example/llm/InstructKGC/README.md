@@ -75,6 +75,8 @@ The difference between CaMA and LLaMA is only `base_model`:
 * [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [CaMA-13b](https://huggingface.co/zjunlp/CaMA-13B-Diff)
 
+Due to the limited availability of the LLaMA weights from the official source, and considering that CaMA is built upon LLaMA, please refer to [CaMA/2.2 Pretrained Model Weight Acquisition and Restoration](https://github.com/zjunlp/CaMA/tree/main) to obtain the complete CaMA model weights.
+
 You can use the LoRA method to finetune the model using the following script:
 
 ```bash

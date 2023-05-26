@@ -88,8 +88,8 @@ def main(
 
     # unwind broken decapoda-research config
     model.config.pad_token_id = tokenizer.pad_token_id = 0  # unk
-    model.config.bos_token_id = 1
-    model.config.eos_token_id = 2
+    model.config.bos_token_id = tokenizer.bos_token_id = 1
+    model.config.eos_token_id = tokenizer.eos_token_id = 2
     tokenizer.padding_side = "left"
 
     if not load_8bit:

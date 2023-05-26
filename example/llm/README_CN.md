@@ -1,5 +1,5 @@
 <p align="left">
-    <b> <a href="https://github.com/zjunlp/DeepKE/blob/llm/example/llm/README.md">English</a> | 简体中文</a> </b>
+    <b> <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/README.md">English</a> | 简体中文</a> </b>
 </p>
 
 

@@ -1,7 +1,7 @@
 # InstructionKGC-指令驱动的自适应知识图谱构建
 
 <p align="left">
-    <b> <a href="https://github.com/zjunlp/DeepKE/tree/llm/example/llm/InstructKGC/README.md">English</a> | 简体中文 </b>
+    <b> <a href="https://github.com/zjunlp/DeepKE/tree/main/example/llm/InstructKGC/README.md">English</a> | 简体中文 </b>
 </p>
 
 
@@ -71,6 +71,8 @@ CaMA与LLaMA的区别只是`base_model`参数的不同, 下面是一些模型
 * [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
 * [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [CaMA-13b](https://huggingface.co/zjunlp/CaMA-13B-Diff)
+  
+由于meta官方没有完全开放出LLaMA的权重, 而CaMA是基于LLaMA训练得到的, 因此请参考[CaMA/2.2 预训练模型权重获取与恢复](https://github.com/zjunlp/CaMA/tree/main)获得完整的CaMA模型权重。
 
 你可以通过下面的脚本使用LoRA方法来finetune模型:
 
