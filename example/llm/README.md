@@ -25,7 +25,7 @@
 </p>
 
 <h1 align="center">
-    <p>A Deep Learning Based Knowledge Extraction Toolkit<br>for Knowledge Graph Construction</p>
+    <p>A Large Language Model Based Knowledge Extraction Toolkit--- DeepKE-LLM</p>
 </h1>
 
 
