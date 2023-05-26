@@ -48,6 +48,9 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 ```bash
 git clone https://github.com/zjunlp/DeepKE.git
 cd DeepKE/example/llm/InstructKGC
+mkdir result
+mkdir lora
+mkdir data
 ```
 
 ### 创建python虚拟环境, 并使用pip安装

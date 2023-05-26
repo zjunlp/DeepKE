@@ -49,6 +49,9 @@ In the test set, only the three fields `id`, `instruction`, and `input` are incl
 ```bash
 git clone https://github.com/zjunlp/DeepKE.git
 cd DeepKE/example/llm/InstructKGC
+mkdir result
+mkdir lora
+mkdir data
 ```
 
 
