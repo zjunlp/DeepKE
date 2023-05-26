@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://github.com/zjunlp/deepke"> <img src="assets/logo_LLM.png" width="400"/></a>
+    <a href="https://github.com/zjunlp/deepke"> <img src="assets/LLM_logo.png" width="400"/></a>
 <p>
 <p align="center">  
     <a href="http://deepke.zjukg.cn">
