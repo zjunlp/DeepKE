@@ -618,6 +618,25 @@ Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey
 
 [EasyInstruct](https://github.com/zjunlp/EasyInstruct): An easy-to-use framework to instruct Large Language Models
 
+**Reading Materials**:
+
+Data-Efficient Knowledge Graph Construction, 高效知识图谱构建 ([Tutorial on CCKS 2022](http://sigkg.cn/ccks2022/?page_id=24)) \[[slides](https://drive.google.com/drive/folders/1xqeREw3dSiw-Y1rxLDx77r0hGUvHnuuE)\] 
+
+Efficient and Robust Knowledge Graph Construction ([Tutorial on AACL-IJCNLP 2022](https://www.aacl2022.org/Program/tutorials)) \[[slides](https://github.com/NLP-Tutorials/AACL-IJCNLP2022-KGC-Tutorial)\] 
+
+PromptKG Family: a Gallery of Prompt Learning & KG-related Research Works, Toolkits, and Paper-list [[Resources](https://github.com/zjunlp/PromptKG)\] 
+
+Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey](https://arxiv.org/abs/2202.08063)\]\[[Paper-list](https://github.com/zjunlp/Low-resource-KEPapers)\]
+
+
+**Related Toolkit**:
+
+[Doccano](https://github.com/doccano/doccano)、[MarkTool](https://github.com/FXLP/MarkTool)、[LabelStudio](https://labelstud.io/ ): Data Annotation Toolkits
+
+[LambdaKG](https://github.com/zjunlp/PromptKG/tree/main/lambdaKG): A library and benchmark for PLM-based KG embeddings
+
+[EasyInstruct](https://github.com/zjunlp/EasyInstruct): An easy-to-use framework to instruct Large Language Models
+
 # Citation
 
 Please cite our paper if you use DeepKE in your work

@@ -1,297 +1,101 @@
 <p align="left">
-    <b> <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/README.md">English</a> | 简体中文</a> </b>
+    <b> <a href="https://github.com/zjunlp/DeepKE/blob/llm/example/llm/README.md">English</a> | 简体中文</a> </b>
 </p>
 
-## 目录
 
-- [目录](#目录)
-- [使用大语言模型进行信息抽取](#使用大语言模型进行信息抽取)
-  - [环境与数据](#环境与数据)
-  - [使用与示例](#使用与示例)
-- [使用大语言模型进行数据增强](#使用大语言模型进行数据增强)
-  - [参数设置](#参数设置)
-- [InstructionKGC (CCKS2023)-指令驱动的自适应知识图谱构建](#InstructionKGC-指令驱动的自适应知识图谱构建)
-- [CodeKGC-基于代码语言模型的知识图谱构建](#CodeKGC-基于代码语言模型的知识图谱构建)
+- [方法](#方法)
+  - [方法一：In-Context Learning(ICL)](#方法一in-context-learningicl)
+  - [方法二：LoRA](#方法二lora)
+  - [方法三：P-Tuning](#方法三p-tuning)
+- [模型](#模型)
+  - [CaMA](#cama)
+    - [案例一：LoRA微调CaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调cama完成ccks2023指令驱动的知识图谱构建-英文--中文)
+  - [LLaMA](#llama)
+    - [案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调llama完成ccks2023指令驱动的知识图谱构建-英文--中文)
+  - [ChatGLM](#chatglm)
+    - [案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文)
+    - [案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例二p-tuning微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文)
+  - [GPT系列](#gpt系列)
+    - [案例一：ICL使用大语言模型进行信息抽取 英文 | 中文](#案例一icl使用大语言模型进行信息抽取-英文--中文)
+    - [案例二：ICL使用大语言模型进行数据增强 英文 | 中文](#案例二icl使用大语言模型进行数据增强-英文--中文)
+    - [案例三：ICL使用大语言模型完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例三icl使用大语言模型完成ccks2023指令驱动的知识图谱构建-英文--中文)
+    - [案例四：ICL释放大型语言模型进行少样本关系抽取中的能力 英文 | 中文](#案例四icl释放大型语言模型进行少样本关系抽取中的能力-英文--中文)
+    - [案例五：CodeKGC-基于代码语言模型的知识图谱构建 英文 | 中文](#案例五codekgc-基于代码语言模型的知识图谱构建-英文--中文)
 
-# 使用大语言模型进行信息抽取
+---
 
-## 环境与数据
+# 方法
 
-- 环境配置
+## 方法一：In-Context Learning(ICL)
+[In-Context Learning](http://arxiv.org/abs/2301.00234) 是一种指导大语言模型的方法，可以提升其在特定任务上的表现。它通过在特定上下文中进行迭代学习，对模型进行微调和训练，以使其更好地理解和应对特定领域的需求。通过 `In-Context Learning`，我们可以让大语言模型具备信息抽取、数据增强以及指令驱动的知识图谱构建等功能。
 
-  Deepke大模型模块使用[EasyInstruct](https://github.com/zjunlp/EasyInstruct)工具
+## 方法二：LoRA
+LoRA通过学习秩分解矩阵对来减少可训练参数的数量，同时冻结原始权重。这大大降低了适用于特定任务的大型语言模型的存储需求，并在部署期间实现了高效的任务切换，而无需引入推理延迟。详细可查看原论文[LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685).
 
-  ```shell
-  >> pip install easyinstruct
-  >> pip install hydra-core
-  ```
+## 方法三：P-Tuning
+PT方法，即P-Tuning方法，参考[ChatGLM官方代码](https://link.zhihu.com/?target=https%3A//github.com/THUDM/ChatGLM-6B/blob/main/ptuning/README.md) ，是一种针对于大模型的soft-prompt方法。
+[P-Tuning](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2103.10385)，仅对大模型的Embedding加入新的参数。
+[P-Tuning-V2](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2110.07602)，将大模型的Embedding和每一层前都加上新的参数。
 
-- 数据
 
-  这里的数据指的是用于in-context learning的examples数据，放在`data`文件夹中，其中的`.json`文件是各种任务默认的examples数据，用户可以自定义其中的example，但需要遵守给定的数据格式。
+---
 
-- 参数配置
+# 模型
 
-  `conf`文件夹保存所设置的参数。调用大模型接口所需要的参数都通过此文件夹中文件传入。
+## CaMA
 
-  - 在命名实体识别任务(ner)中，`text_input`参数为预测文本；`domain`为预测文本所属领域，可为空；`labels`为实体标签集，如无自定义的标签集，该参数可为空。
+<p align="center" width="100%">
+<a href="" target="_blank"><img src="assets/cama_logo.jpeg" alt="ZJU-CaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
+</p>
 
-  - 在关系抽取任务(re)中，`text_input`参数为文本；`domain`为文本所属领域，可为空；`labels`为关系类型标签集，如无自定义的标签集，该参数可为空；`head_entity`和`tail_entity`为待预测关系的头实体和尾实体；`head_type`和`tail_type`为待预测关系的头尾实体类型。
+CaMA首先（1）使用中文语料首先对LLaMA（13B）进行进一步全量预训练，在尽可能保留原来的英文和代码能力的前提下，进一步提高模型对于中文理解能力和知识储备；接着（2）使用指令数据集对第一步的模型微调，来提高语言模型对于人类指令的理解。
 
-  - 在事件抽取任务(ee)中，`text_input`参数为待预测文本；`domain`为预测文本所属领域，可为空。
+模型详细信息请参考[CaMA: A Chinese-English Bilingual LLaMA Model](https://github.com/zjunlp/CaMA/tree/main)
 
-  - 在三元组抽取任务(rte)中，`text_input`参数为待预测文本；`domain`为预测文本所属领域，可为空。
+### 案例一：LoRA微调CaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md) | [中文](./InstructKGC/README_CN.md)
 
-  - 其他参数的具体含义：
-    - `task`参数用于指定任务类型，其中`ner`表示命名实体识别任务，`re`表示关系抽取任务`ee`表示事件抽取任务，`rte`表示三元组抽取任务；
-    - `language`表示任务的语言，`en`表示英文抽取任务，`ch`表示中文抽取任务；
-    - `engine`表示所用的大模型名称，要与OpenAI API规定的模型名称一致；
-    - `api_key`是用户的API密钥；
-    - `zero_shot`表示是否为零样本设定，为`True`时表示只使用instruction提示模型进行信息抽取，为`False`时表示使用in-context的形式进行信息抽取；
-    - `instruction`参数用于规定用户自定义的提示指令，当为空时采用默认的指令；
-    - `data_path`表示in-context examples的存储目录，默认为`data`文件夹。
 
-## 使用与示例
 
-设定好参数后，直接运行`run.py`文件即可:
 
-```shell
->> python run.py
-```
+## LLaMA
 
-以下是不同任务的输入输出示例：
+<p align="center" width="100%">
+<a href="" target="_blank"><img src="assets/llama_logo.jpeg" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
+</p>
 
-|     任务     |                           输入文本                           |                             输出                             |
-| :----------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| 命名实体识别 | 《红楼梦》是中央电视台和中国电视剧制作中心根据中国古典文学名著《红楼梦》摄制于1987年的一部古装连续剧，由王扶林导演，周汝昌、王蒙、周岭等多位红学家参与制作。 | [{'E': 'TV Series', 'W': '红楼梦'}, {'E': 'Director', 'W': '王扶林'}, {'E': 'Actor', 'W': '周汝昌'}, {'E': 'Actor', 'W': '王蒙'}, {'E': 'Actor', 'W': '周岭'}] |
-|   关系抽取   | 孔正锡，导演，2005年以一部温馨的爱情电影《长腿叔叔》敲开电影界大门<br>(需指定头尾实体和实体类型) |                             导演                             |
-|   事件抽取   | 历经4小时51分钟的体力、意志力鏖战，北京时间9月9日上午纳达尔在亚瑟·阿什球场，以7比5、6比3、5比7、4比6和6比4击败赛会5号种子俄罗斯球员梅德韦杰夫，夺得了2019年美国网球公开赛男单冠军。 | event_list: [event_type: [arguments: [role: 纳达尔, argument: 夺得2019年美国网球公开赛男单冠军], [role: 梅德韦杰夫, argument: 被纳达尔击败]], [event_type: [arguments: [role: 纳达尔, argument: 以7比5、6比3、5比7、4比6和6比4击败梅德韦杰夫]], [event_type: [arguments: [role: 纳达尔, argument: 历经4小时51分钟的体力、意志力鏖战]], [event_type: [arguments: [role: 纳达尔, argument: 在亚瑟·阿什球场]], [event_type: [arguments: [role: 梅德韦杰夫, argument: 赛会5号种子俄罗斯球员]]]] |
-| 联合关系抽取 |  《没有你的夜晚》是歌手欧阳菲菲演唱的歌曲，出自专辑《拥抱》  | [['《没有你的夜晚》', '演唱者', '欧阳菲菲'], ['《没有你的夜晚》', '出自专辑', '《拥抱》']] |
+### 案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md) | [中文](./InstructKGC/README_CN.md)
 
-# 使用大语言模型进行数据增强
 
-为了弥补少样本场景下关系抽取有标签数据的缺失, 我们设计带有数据样式描述的提示，用于指导大型语言模型根据已有的少样本数据自动地生成更多的有标签数据。
 
-## 参数设置
 
-- `task`设置为`da`；
-- `text_input`设置为要增强的关系标签，比如`org:founded_by`；
-- `zero_shot`设为`False`，并在`data`文件夹下`da`对应的文件中设置少样本样例；
-- `labels`中可以指定头尾实体的标签范围。
+## ChatGLM
+<p align="center" width="100%">
+<a href="" target="_blank"><img src="assets/chatglm_logo.png" alt="ChatGLM" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
+</p>
 
-如下为一个数据增强的`prompt`示例:
+### 案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md) | [中文](./InstructKGC/README_CN.md)
+### 案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md) | [中文](./InstructKGC/README_CN.md)
 
-```PYTHON
-'''
-One sample in relation extraction datasets consists of a relation, a context, a pair of head and tail entities in the context and their entity types. 
 
-The head entity has the relation with the tail entity and entities are pre-categorized as the following types: URL, LOCATION, IDEOLOGY, CRIMINAL CHARGE, TITLE, STATE OR PROVINCE, DATE, PERSON, NUMBER, CITY, DURATION, CAUSE OF DEATH, COUNTRY, NATIONALITY, RELIGION, ORGANIZATION, MISCELLANEOUS. 
 
-Here are some samples for relation 'org:founded_by':
+## GPT系列
 
-Relation: org:founded_by. Context: Talansky is also the US contact for the New Jerusalem Foundation , an organization founded by Olmert while he was Jerusalem 's mayor . Head Entity: New Jerusalem Foundation. Head Type: ORGANIZATION. Tail Entity: Olmert. Tail Type: PERSON.
+<p align="center" width="100%">
+<a href="" target="_blank"><img src="assets/chatgpt_logo.png" alt="GPT" style="width: 18%; min-width: 18px; display: block; margin: auto;"></a>
+</p>
 
-Relation: org:founded_by. Context: Sharpton has said he will not endorse any candidate until hearing more about their views on civil rights and other issues at his National Action Network convention next week in New York City . Head Entity: National Action Network. Head Type: ORGANIZATION. Tail Entity: his. Tail Type: PERSON.
 
-Relation: org:founded_by. Context: `` We believe that we can best serve our clients by offering a single multistrategy hedge fund platform , '' wrote John Havens , who was a founder of Old Lane with Pandit and is president of the alternative investment group . Head Entity: Old Lane. Head Type: ORGANIZATION. Tail Entity: John Havens. Tail Type: PERSON.
 
-Generate more samples for the relation 'org:founded_by'.
-'''
-```
+### 案例一：ICL使用大语言模型进行信息抽取 [英文](./LLMICL/README.md/#ie-with-large-language-models) | [中文](./LLMICL/README_CN.md/#使用大语言模型进行信息抽取)
 
-# InstructionKGC-指令驱动的自适应知识图谱构建
 
-下面是[CCKS2023指令驱动的自适应知识图谱构建评测任务](https://tianchi.aliyun.com/competition/entrance/532080/introduction?spm=5176.12281957.0.0.4c885d9b2YX9Nu)关于*ChatGPT/GPT-4*的baseline说明。
+### 案例二：ICL使用大语言模型进行数据增强 [英文](./LLMICL/README.md/#data-augmentation-with-large-language-models) | [中文](./LLMICL/README_CN.md/#使用大语言模型进行数据增强)
 
-## 任务目标
 
-根据用户输入的指令抽取相应类型的实体和关系，构建知识图谱。其中可能包含知识图谱补全任务，即任务需要模型在抽取实体关系三元组的同时对缺失三元组进行补全。
+### 案例三：ICL使用大语言模型完成CCKS2023指令驱动的知识图谱构建 [英文](./LLMICL/README.md/#ccks2023-instruction-based-knowledge-graph-construction-with-large-language-models) | [中文](./LLMICL/README_CN.md/#使用大语言模型完成ccks2023指令驱动的知识图谱构建)
 
-以下是一个**知识图谱构建任务**例子，输入一段文本`text`和`instruction`（包括想要抽取的实体类型和关系类型），以`(ent1,rel,ent2)`的形式输出`text`中包含的所有关系三元组`output_text`：
+### 案例四：ICL释放大型语言模型进行少样本关系抽取中的能力 [英文](./UnleashLLMRE/README.md) | [中文](./UnleashLLMRE/README_CN.md)
 
-```python
-instruction="使用自然语言抽取三元组,已知下列句子,请从句子中抽取出可能的实体、关系,抽取实体类型为{'专业','时间','人类','组织','地理地区','事件'},关系类型为{'体育运动','包含行政领土','参加','国家','邦交国','夺得','举办地点','属于','获奖'},你可以先识别出实体再判断实体之间的关系,以(头实体,关系,尾实体)的形式回答"
-text="2006年，弗雷泽出战中国天津举行的女子水球世界杯，协助国家队夺得冠军。2008年，弗雷泽代表澳大利亚参加北京奥运会女子水球比赛，赢得铜牌。"
-output_text="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗雷泽,属于,国家队)(弗雷泽,国家,澳大利亚)(弗雷泽,参加,北京奥运会女子水球比赛)(中国,包含行政领土,天津)(中国,邦交国,澳大利亚)(北京奥运会女子水球比赛,举办地点,北京)(女子水球世界杯,体育运动,水球)(国家队,夺得,冠军)"
-```
-
-知识图谱补齐的含义是，在输入`miss_text`（`text`中缺失了一段文字）和`instruction`的情况下，模型仍然能够补齐缺失的三元组，输出`output_text`。下面是一个例子：
-
-```python
-instruction="使用自然语言抽取三元组,已知下列句子,请从句子中抽取出可能的实体、关系,抽取实体类型为{'专业','时间','人类','组织','地理地区','事件'},关系类型为{'体育运动','包含行政领土','参加','国家','邦交国','夺得','举办地点','属于','获奖'},你可以先识别出实体再判断实体之间的关系,以(头实体,关系,尾实体)的形式回答"
-miss_text="2006年，弗雷泽出战中国天津举行的女子水球世界杯。2008年，弗雷泽代表澳大利亚参加北京奥运会女子水球比赛，赢得铜牌。"。
-output_text="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗雷泽,属于,国家队)(弗雷泽,国家,澳大利亚)(弗雷泽,参加,北京奥运会女子水球比赛)(中国,包含行政领土,天津)(中国,邦交国,澳大利亚)(北京奥运会女子水球比赛,举办地点,北京)(女子水球世界杯,体育运动,水球)(国家队,夺得,冠军)"
-```
-
-虽然`miss_text`中不包含“协助国家队夺得冠军”这段文字，但是模型能够补齐缺失的三元组，即仍然需要输出`(弗雷泽,属于,国家队)(国家队,夺得,冠军)`。
-
-## 数据
-
-比赛数据的训练集每条数据包含如下字段：
-
-|    字段     |                          说明                          |
-| :---------: | :----------------------------------------------------: |
-|     id      |                     样本唯一标识符                     |
-|    text     |    模型输入文本（需要抽取其中涉及的所有关系三元组）    |
-| instruction |                 模型进行抽取任务的指令                 |
-| output_text | 模型期望输出，以(ent1,relation,ent2)形式组成的输出文本 |
-|     kg      |                  text中涉及的知识图谱                  |
-|   entity    |    kg中涉及的所有实体，包含实体类型type和实体名text    |
-|  Relation   |     kg中涉及的所有关系，包含关系类型type和实体args     |
-
-在测试集中仅包含`id`、`instruction`、`text`三个字段。
-
-## 参数设置
-
-该评测任务本质上是一个三元组抽取(rte)任务，使用该模块时详细参数与配置可见上文中的[环境与数据](#环境与数据)部分。主要的参数设置如下：
-
-- `task`设置为`rte`，表示三元组抽取任务；
-- `language`设置为`ch`，表示该任务是中文数据；
-- `engine`设置为想要使用的OpenAI大模型名称(由于OpenAI GPT-4 API未完全开放，本模块目前暂不支持GPT-4 API的使用)；
-- `text_input`设置为数据集中的`text`文本；
-- `zero_shot`可根据需要设置，如设置为`True`，需要在`/data/rte_ch.json`文件中按照特定格式设置in-context learning所需的examples；
-- `instruction`可设置为数据集中的`instruction`字段，如果为`None`则表示使用模块默认的指令；
-- `labels`可设置为实体类型，也可为空；
-
-其它参数默认即可。
-
-## 使用与示例
-
-设定好参数后，直接运行`run.py`文件即可:
-
-```shell
->> python run.py
-```
-
-使用ChatGPT进行预测的输入输出示例：
-
-| 输入                                                         | 输出                                                         |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| task="rte"<br/>language="ch"<br/>engine="gpt-3.5-turbo"<br/>text_input="2006年，弗雷泽出战中国天津举行的女子水球世界杯，协助国家队夺得冠军。2008年，弗雷泽代表澳大利亚参加北京奥运会女子水球比赛，赢得铜牌。"<br/>instruction="使用自然语言抽取三元组,已知下列句子,请从句子中抽取出可能的实体、关系,抽取实体类型为{'专业','时间','人类','组织','地理地区','事件'},关系类型为{'体育运动','包含行政领土','参加','国家','邦交国','夺得','举办地点','属于','获奖'},你可以先识别出实体再判断实体之间的关系,以(头实体,关系,尾实体)的形式回答" | \[\[弗雷泽,获奖,铜牌\],\[女子水球世界杯,举办地点,天津\],\[弗雷泽,属于,国家队\],\[弗雷泽,国家,澳大利亚\],\[弗雷泽,参加,北京奥运会女子水球比赛\],\[中国,包含行政领土,天津\],\[中国,邦交国,澳大利亚\],\[北京奥运会女子水球比赛,举办地点,北京\],\[女子水球世界杯,体育运动,水球\],\[国家队,夺得,冠军)\] |
-
-## 基线结果
-
-我们基于**ChatGPT**在CCKS数据集上进行了5-shot的in-context learning简单评测，结果如下表所示：
-
-|               指标                |  结果  |
-| :-------------------------------: | :----: |
-|                F1                 | 0.3995 |
-|             Rougen_2              | 0.7730 |
-| score</br>(0.5\*F1+0.5\*Rougen_2) | 0.5863 |
-
-# CodeKGC-基于代码语言模型的知识图谱构建
+### 案例五：CodeKGC-基于代码语言模型的知识图谱构建 [英文](./CodeKGC/README.md) | [中文](./CodeKGC/README_CN.md)
 
 为了更好地处理知识图谱构建中的关系三元组抽取（RTE）任务，我们设计了代码形式的提示建模关系三元组的结构，并使用代码语言模型（Code-LLM）生成更准确的预测。代码形式提示构建的关键步骤是将（文本，输出三元组）对转换成Python中的语义等价的程序语言。
-
-<div align=center>
-<img src="./codekgc/codekgc_figure.png" width="85%" height="75%" />
-</div>
-
-## 数据与参数
-
-- 数据
-
-  `conll04`数据集的样例数据存储在`codekgc/data`文件夹中。完整的数据可以在[这里](https://drive.google.com/drive/folders/1vVKJIUzK4hIipfdEGmS0CCoFmUmZwOQV?usp=share_link)获取。用户可以定制自己的数据，但必须遵循给定的数据格式。
-
-- 参数
-
-  `codekgc/config.json` 文件包含了设置参数。加载文件和调用 openai 模型所需的参数通过此文件传递。
-
-  以下是这些参数的描述：
-
-  - `schema_path` 定义了schema提示文件的文件路径。schema提示包含了预定义的 Python 类，包括 **Relation** 类、**Entity** 类、**Triple** 类和 **Extract** 类。 
-
-    schema提示的数据格式如下：
-
-    ```python
-    from typing import List
-    class Rel:
-        def __init__(self, name: str):
-            self.name = name
-    class Work_for(Rel):
-    ...
-    class Entity:
-        def __init__(self, name: str):
-            self.name = name
-    class person(Entity):
-    ...
-    class Triple:
-        def __init__(self, head: Entity, relation: Rel, tail: Entity):
-            self.head = head
-            self.relation = relation
-            self.tail = tail
-    class Extract:
-        def __init__(self, triples: List[Triple] = []):
-            self.triples = triples
-    ```
-
-  - `ICL_path` 定义了上下文示例的文件路径。
-
-    ICL 提示的数据格式如下：
-
-    ```python
-    """ In 1856 , the 28th President of the United States , Thomas Woodrow Wilson , was born in Staunton , Va . """
-    extract = Extract([Triple(person('Thomas Woodrow Wilson'), Rel('Live in'), location('Staunton , Va')),])
-    ...
-    ```
-
-  - `example_path`定义了 conll04 数据集中测试示例的文件路径。
-
-  - `openai_key` 是用户的 OpenAI API 密钥。
-
-  - `engine`、`temperature`、`max_tokens`、`n`... 是调用 OpenAI API 时需要传递的参数。
-
-## 使用与示例
-
-当参数设置完成时，可以直接运行 `codekgc.py` 文件：
-
-```shell
->> cd codekgc
->> python codekgc.py
-```
-
-以下是使用代码形式提示进行关系三元组抽取（RTE）任务的输入和输出示例：
-
-**输入**：
-
-```python
-from typing import List
-class Rel:
-...(schema prompt)
-
-""" In 1856 , the 28th President..."""
-extract = Extract([Triple(person('Thomas Woodrow Wilson'), Rel('Live in'), location('Staunton , Va')),])
-...(in-context examples)
-
-""" Boston University 's Michael D. Papagiannis said he believes the crater was created 100 million years ago when a 50-mile-wide meteorite slammed into the Earth . """
-```
-
-**输出**：
-
-```python
-extract = Extract([Triple(person('Michael D. Papagiannis'), Rel('Work for'), organization('Boston University')),])
-```
-## 引用
-如果您使用该代码，请引用以下论文：
-```bibtex
-@article{DBLP:journals/corr/abs-2304-09048,
-  author       = {Zhen Bi and
-                  Jing Chen and
-                  Yinuo Jiang and
-                  Feiyu Xiong and
-                  Wei Guo and
-                  Huajun Chen and
-                  Ningyu Zhang},
-  title        = {CodeKGC: Code Language Model for Generative Knowledge Graph Construction},
-  journal      = {CoRR},
-  volume       = {abs/2304.09048},
-  year         = {2023},
-  url          = {https://doi.org/10.48550/arXiv.2304.09048},
-  doi          = {10.48550/arXiv.2304.09048},
-  eprinttype    = {arXiv},
-  eprint       = {2304.09048},
-  timestamp    = {Mon, 24 Apr 2023 15:03:18 +0200},
-  biburl       = {https://dblp.org/rec/journals/corr/abs-2304-09048.bib},
-  bibsource    = {dblp computer science bibliography, https://dblp.org}
-}
-```
