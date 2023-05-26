@@ -25,7 +25,7 @@
 </p>
 
 <h1 align="center">
-    <p>DeepKE-LLM<br>A Large Language Model Based Knowledge Extraction Toolkit</p>
+    <p>DeepKE-LLM: A Large Language Model Based<br>Knowledge Extraction Toolkit</p>
 </h1>
 
 
