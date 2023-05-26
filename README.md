@@ -671,7 +671,7 @@ Please cite our paper if you use DeepKE in your work
 ```
 <br>
 
-# Contributors (The order is determined by the roll of the dice)
+# Contributors (In the order determined by the roll of the dice)
 
 Zhejiang University: [Ningyu Zhang](https://person.zju.edu.cn/en/ningyu), Liankuan Tao, Xin Xu, Honghao Gui, Xiaohan Wang, Zekun Xi, Xinrong Li, Haiyang Yu, Hongbin Ye, Shuofei Qiao, Peng Wang, Yuqi Zhu, Xin Xie, Xiang Chen, Zhoubo Li, Lei Li, Xiaozhuan Liang, Yunzhi Yao, Jing Chen, Yuqi Zhu, Shumin Deng, Wen Zhang, Guozhou Zheng, Huajun Chen
 
