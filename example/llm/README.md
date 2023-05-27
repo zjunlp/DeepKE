@@ -131,10 +131,4 @@ If you use this project, please cite the following papers:
   journal = {GitHub repository},
   howpublished = {\url{https://github.com/}},
 }
-@article{gui2023instructie,
-  title={InstructIE: A Chinese Instruction-based Information Extraction Dataset},
-  author={Gui, Honghao and Zhang, Jintian and Ye, Hongbin and Zhang, Ningyu},
-  journal={arXiv preprint arXiv:2305.11527},
-  year={2023}
-}
 ```
