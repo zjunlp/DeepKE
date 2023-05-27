@@ -121,7 +121,7 @@ The PT (P-Tuning) method, as referred to in the official code of ChatGLM, is a s
 
 # Citation
 
-If you use this project, please cite the following paper:
+If you use this project, please cite the following papers:
 ```bibtex
 @article{cama,
   author = {Jintian Zhang, Xiaohan Wang, Honghao Gui, Xiang Chen, Yinuo Jiang, Zhen Bi, Jing Chen, Shengyu Mao, Shuofei Qiao, Xiaozhuan Liang, Yixin Ou, Runnan Fang, Zekun Xi, Xin Xu, Shumin Deng, Huajun Chen, Ningyu Zhang},
@@ -130,5 +130,11 @@ If you use this project, please cite the following paper:
   publisher = {GitHub},
   journal = {GitHub repository},
   howpublished = {\url{https://github.com/}},
+}
+@article{gui2023instructie,
+  title={InstructIE: A Chinese Instruction-based Information Extraction Dataset},
+  author={Gui, Honghao and Zhang, Jintian and Ye, Hongbin and Zhang, Ningyu},
+  journal={arXiv preprint arXiv:2305.11527},
+  year={2023}
 }
 ```
