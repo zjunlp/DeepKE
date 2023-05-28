@@ -642,7 +642,7 @@ Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey
 Please cite our paper if you use DeepKE in your work
 
 ```bibtex
-@inproceedings{DBLP:conf/emnlp/ZhangXTYYQXCLL22,
+@inproceedings{EMNLP2022_Demo_DeepKE,
   author    = {Ningyu Zhang and
                Xin Xu and
                Liankuan Tao and
@@ -655,18 +655,12 @@ Please cite our paper if you use DeepKE in your work
                Lei Li},
   editor    = {Wanxiang Che and
                Ekaterina Shutova},
-  title     = {DeepKE: {A} Deep Learning Based Knowledge Extraction Toolkit for Knowledge
-               Base Population},
-  booktitle = {Proceedings of the The 2022 Conference on Empirical Methods in Natural
-               Language Processing, {EMNLP} 2022 - System Demonstrations, Abu Dhabi,
-               UAE, December 7-11, 2022},
+  title     = {DeepKE: {A} Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population},
+  booktitle = {{EMNLP} (Demos)},
   pages     = {98--108},
   publisher = {Association for Computational Linguistics},
   year      = {2022},
-  url       = {https://aclanthology.org/2022.emnlp-demos.10},
-  timestamp = {Thu, 23 Mar 2023 16:56:00 +0100},
-  biburl    = {https://dblp.org/rec/conf/emnlp/ZhangXTYYQXCLL22.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+  url       = {https://aclanthology.org/2022.emnlp-demos.10}
 }
 ```
 <br>
