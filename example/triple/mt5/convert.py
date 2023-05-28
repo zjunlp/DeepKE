@@ -27,6 +27,11 @@ def rte_post_process(result):
 
     return new_record
 
+def clean(s):
+    if s.startswith("输入中包含的关系三元组是："):
+        return s.replace("输入中包含的关系三元组是：", "")
+    return s
+
 
 if __name__ == "__main__":
     parse = argparse.ArgumentParser()
@@ -43,6 +48,6 @@ if __name__ == "__main__":
         data1 = json.loads(line1.strip())
         data2 = json.loads(line2.strip())
 
-        data1['output'] = data2['output']
+        data1['output'] = clean(data2['output'])
         data1['kg'] = rte_post_process(data2['output'])
         writer.write(json.dumps(data1, ensure_ascii=False) + "\n")
