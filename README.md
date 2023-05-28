@@ -31,7 +31,7 @@
 
 [DeepKE](https://arxiv.org/pdf/2201.03335.pdf) is a knowledge extraction toolkit for knowledge graph construction supporting **cnSchema**，**low-resource**, **document-level** and **multimodal** scenarios for *entity*, *relation* and *attribute* extraction. We provide [documents](https://zjunlp.github.io/DeepKE/), [Google Colab tutorials](https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing), [online demo](http://deepke.zjukg.cn/), [paper](https://arxiv.org/pdf/2201.03335.pdf), [slides](https://drive.google.com/file/d/1IIeIZAbVduemqXc4zD40FUMoPHCJinLy/view?usp=sharing) and [poster](https://drive.google.com/file/d/1vd7xVHlWzoAxivN4T5qKrcqIGDcSM1_7/view?usp=sharing) for beginners.
 - ❗Want to use Large Language Models with DeepKE? Try [DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm), have fun!
-- ❗Want to train supervised models? Try [Quick Start](#quick-start), we provide the NER models (e.g, [LightNER(COLING'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/few-shot), [W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/w2ner)) relation extraction models (e.g., [KnowPrompt(WWW'22)](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot)) and  relational triple extraction models (e.g., [ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE)), and release off-the-shelf  models at [DeepKE-cnSchema](https://github.com/zjunlp/DeepKE/tree/main/example/triple/cnschema), have fun!
+- ❗Want to train supervised models? Try [Quick Start](#quick-start), we provide the NER models (e.g, [LightNER(COLING'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/few-shot), [W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/w2ner)), relation extraction models (e.g., [KnowPrompt(WWW'22)](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot)), relational triple extraction models (e.g., [ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE)), and release off-the-shelf  models at [DeepKE-cnSchema](https://github.com/zjunlp/DeepKE/tree/main/example/triple/cnschema), have fun!
 
 # Table of Contents
 
@@ -642,7 +642,7 @@ Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey
 Please cite our paper if you use DeepKE in your work
 
 ```bibtex
-@inproceedings{DBLP:conf/emnlp/ZhangXTYYQXCLL22,
+@inproceedings{EMNLP2022_Demo_DeepKE,
   author    = {Ningyu Zhang and
                Xin Xu and
                Liankuan Tao and
@@ -655,25 +655,19 @@ Please cite our paper if you use DeepKE in your work
                Lei Li},
   editor    = {Wanxiang Che and
                Ekaterina Shutova},
-  title     = {DeepKE: {A} Deep Learning Based Knowledge Extraction Toolkit for Knowledge
-               Base Population},
-  booktitle = {Proceedings of the The 2022 Conference on Empirical Methods in Natural
-               Language Processing, {EMNLP} 2022 - System Demonstrations, Abu Dhabi,
-               UAE, December 7-11, 2022},
+  title     = {DeepKE: {A} Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population},
+  booktitle = {{EMNLP} (Demos)},
   pages     = {98--108},
   publisher = {Association for Computational Linguistics},
   year      = {2022},
-  url       = {https://aclanthology.org/2022.emnlp-demos.10},
-  timestamp = {Thu, 23 Mar 2023 16:56:00 +0100},
-  biburl    = {https://dblp.org/rec/conf/emnlp/ZhangXTYYQXCLL22.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+  url       = {https://aclanthology.org/2022.emnlp-demos.10}
 }
 ```
 <br>
 
-# Contributors
+# Contributors (Determined by the roll of the dice)
 
-Zhejiang University: [Ningyu Zhang](https://person.zju.edu.cn/en/ningyu), Liankuan Tao, Xin Xu, Xinrong Li, Haiyang Yu, Hongbin Ye, Shuofei Qiao, Peng Wang, Yuqi Zhu, Xin Xie, Xiang Chen, Zhoubo Li, Lei Li, Xiaozhuan Liang, Yunzhi Yao, Jing Chen, Yuqi Zhu, Shumin Deng, Wen Zhang, Guozhou Zheng, Huajun Chen
+Zhejiang University: [Ningyu Zhang](https://person.zju.edu.cn/en/ningyu), Liankuan Tao, Xin Xu, Honghao Gui, Xiaohan Wang, Zekun Xi, Xinrong Li, Haiyang Yu, Hongbin Ye, Shuofei Qiao, Peng Wang, Yuqi Zhu, Xin Xie, Xiang Chen, Zhoubo Li, Lei Li, Xiaozhuan Liang, Yunzhi Yao, Jing Chen, Yuqi Zhu, Shumin Deng, Wen Zhang, Guozhou Zheng, Huajun Chen
 
 Community Contributors: [thredreams](https://github.com/thredreams), [eltociear](https://github.com/eltociear)
 

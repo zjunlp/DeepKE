@@ -31,7 +31,7 @@
 
 [DeepKE](https://arxiv.org/pdf/2201.03335.pdf) 是一个开源的知识图谱抽取与构建工具，支持<b>cnSchema、低资源、长篇章、多模态</b>的知识抽取工具，可以基于<b>PyTorch</b>实现<b>命名实体识别</b>、<b>关系抽取</b>和<b>属性抽取</b>功能。同时为初学者提供了[用户手册](), [文档](https://zjunlp.github.io/DeepKE/)，[Google Colab教程](https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing), [在线演示](http://deepke.zjukg.cn/CN/index.html), [论文](https://arxiv.org/pdf/2201.03335.pdf)和[演示文稿](https://github.com/zjunlp/DeepKE/blob/main/docs/slides/Slides-DeepKE-cn.pdf)。
 - ❗想用大模型做抽取吗？试试[DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm/README_CN.md)！
-- ❗想自己全监督训抽取模型吗？试试[快速上手](#快速上手), 我们提供实体识别模型 (例如[LightNER(COLING'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/few-shot/README_CN.md), [W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/w2ner/README_CN.md))关系抽取模型(例如[KnowPrompt(WWW'22)](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/README_CN.md))实体关系联合抽取模型(例如[ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP/README_CN.md), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC/README_CN.md), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE/README_CN.md)), 和基于cnSchema的开箱即用模型[DeepKE-cnSchema](https://github.com/zjunlp/DeepKE/tree/main/example/triple/cnschema/README_CN.md)！
+- ❗想自己全监督训抽取模型吗？试试[快速上手](#快速上手), 我们提供实体识别模型 (例如[LightNER(COLING'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/few-shot/README_CN.md), [W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/w2ner/README_CN.md))、关系抽取模型(例如[KnowPrompt(WWW'22)](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/README_CN.md))、实体关系联合抽取模型(例如[ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP/README_CN.md), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC/README_CN.md), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE/README_CN.md)), 和基于cnSchema的开箱即用模型[DeepKE-cnSchema](https://github.com/zjunlp/DeepKE/tree/main/example/triple/cnschema/README_CN.md)！
 
 # 目录
 
@@ -659,9 +659,9 @@ Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey
 
 <br>
 
-# 项目贡献人员
+# 项目贡献人员 （排名不分先后）
 
-浙江大学：[张宁豫](https://person.zju.edu.cn/ningyu)、陶联宽、徐欣、李欣荣、余海阳、叶宏彬、乔硕斐、王鹏、朱雨琦、谢辛、陈想、黎洲波、李磊、梁孝转、姚云志、陈静、朱雨琦、邓淑敏、张文、郑国轴、陈华钧
+浙江大学：[张宁豫](https://person.zju.edu.cn/ningyu)、陶联宽、徐欣、桂鸿浩、王潇寒、习泽坤、李欣荣、余海阳、叶宏彬、乔硕斐、王鹏、朱雨琦、谢辛、陈想、黎洲波、李磊、梁孝转、姚云志、陈静、朱雨琦、邓淑敏、张文、郑国轴、陈华钧
 
 开源社区贡献者: [thredreams](https://github.com/thredreams), [eltociear](https://github.com/eltociear)
 

@@ -121,10 +121,10 @@ The PT (P-Tuning) method, as referred to in the official code of ChatGLM, is a s
 
 # Citation
 
-If you use this project, please cite the following paper:
+If you use this project, please cite the following papers:
 ```bibtex
 @article{cama,
-  author = {Jintian Zhang, Xiaohan Wang, Honghao Gui, Xiang Chen, Yinuo Jiang, Zhen Bi, Jing Chen, Shengyu Mao, Shuofei Qiao, Xiaozhuan Liang, Yixin Ou, Runnan Fang, Zekun Xi, Xin Xu, Shumin Deng, Huajun Chen, Ningyu Zhang},
+  author = {Jintian Zhang, Xiaohan Wang, Ningyu Zhang, Honghao Gui, Xiang Chen, Yinuo Jiang, Yuqi Zhu, Zhen Bi, Jing Chen, Shengyu Mao, Shuofei Qiao, Xiaozhuan Liang, Yixin Ou, Runnan Fang, Zekun Xi, Xin Xu, Shumin Deng, Huajun Chen},
   title = {DeepKE-LLM: A Large Language Model Based Knowledge Extraction Toolkit},
   year = {2023},
   publisher = {GitHub},
