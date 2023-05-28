@@ -116,7 +116,7 @@ CUDA_VISIBLE_DEVICES="0" python finetune.py \
 We also provide multiple GPU versions of LoRA training scripts:
 
 ```bash
-bash scripts/run_finetene_mul.bash
+bash scripts/run_finetune_mul.bash
 ```
 
 

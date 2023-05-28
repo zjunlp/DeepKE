@@ -112,7 +112,7 @@ CUDA_VISIBLE_DEVICES="0" python finetune.py \
 我们也提供了多GPU版本的LoRA训练脚本:
 
 ```bash
-bash scripts/run_finetene_mul.bash
+bash scripts/run_finetune_mul.bash
 ```
 
 
