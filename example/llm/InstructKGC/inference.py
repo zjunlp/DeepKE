@@ -56,7 +56,7 @@ def main(
             config = LoraConfig.from_pretrained(lora_weights)
             model = get_peft_model(model, config) 
             adapters_weights = torch.load(os.path.join(lora_weights, WEIGHTS_NAME), map_location=model.device)
-            model = set_peft_model_state_dict(model, adapters_weights)
+            set_peft_model_state_dict(model, adapters_weights)
         else:
             model = PeftModel.from_pretrained(
                 model,
