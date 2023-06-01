@@ -164,3 +164,26 @@ Attention: Please ensure that your device or server has sufficient RAM memory!!!
 
 ## 6.Acknowledgment
 The code basically comes from [Alpaca-LoRA](https://github.com/tloen/alpaca-lora). Only some changes have been made, many thanks.
+
+## 7.Citation
+
+If you use this project, please cite the following papers:
+```bibtex
+@article{DBLP:journals/corr/abs-2305-11527,
+  author       = {Honghao Gui and
+                  Jintian Zhang and
+                  Hongbin Ye and
+                  Ningyu Zhang},
+  title        = {InstructIE: {A} Chinese Instruction-based Information Extraction Dataset},
+  journal      = {CoRR},
+  volume       = {abs/2305.11527},
+  year         = {2023},
+  url          = {https://doi.org/10.48550/arXiv.2305.11527},
+  doi          = {10.48550/arXiv.2305.11527},
+  eprinttype    = {arXiv},
+  eprint       = {2305.11527},
+  timestamp    = {Thu, 25 May 2023 15:41:47 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2305-11527.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```
