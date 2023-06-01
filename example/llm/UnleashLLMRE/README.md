@@ -1,7 +1,7 @@
 # How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?
 
 <p align="left">
-    <b> English | <a href="[https://github.com/zjunlp/DeepKE/blob/main/example/llm/UnleashLLM/README_CN.md](https://github.com/zjunlp/DeepKE/edit/main/example/llm/UnleashLLMRE/README_CN.md)">简体中文</a> </b>
+    <b> English | <a href="https://github.com/zjunlp/DeepKE/edit/main/example/llm/UnleashLLMRE/README_CN.md">简体中文</a> </b>
 </p>
 
 
