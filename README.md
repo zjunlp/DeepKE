@@ -37,19 +37,6 @@
 
 - [Table of Contents](#table-of-contents)
 - [What's New](#whats-new)
-  - [Apr, 2023](#apr-2023)
-  - [Feb, 2023](#feb-2023)
-  - [Nov, 2022](#nov-2022)
-  - [Sept, 2022](#sept-2022)
-  - [Aug, 2022](#aug-2022)
-  - [June, 2022](#june-2022)
-  - [May, 2022](#may-2022)
-  - [Jan, 2022](#jan-2022)
-  - [Dec, 2021](#dec-2021)
-  - [Nov, 2021](#nov-2021)
-  - [Oct, 2021](#oct-2021)
-  - [Aug, 2019](#aug-2019)
-  - [Aug, 2018](#aug-2018)
 - [Prediction Demo](#prediction-demo)
 - [Model Framework](#model-framework)
 - [Quick Start](#quick-start)
@@ -75,38 +62,36 @@
 <br>
 
 # What's New
-## Apr, 2023
-* We have added new models, including [CP-NER(IJCAI'23)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/cross), [ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE), provided [event extraction](https://github.com/zjunlp/DeepKE/tree/main/example/ee/standard) capabilities (Chinese and English), and offered compatibility with higher versions of Python packages (e.g., Transformers).
-## Feb, 2023
-* We have supported using [LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm) (GPT-3) with in-context learning (based on [EasyInstruct](https://github.com/zjunlp/EasyInstruct)) & data generation, added a NER model [W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/w2ner).
+* `Apr, 2023` We have added new models, including [CP-NER(IJCAI'23)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/cross), [ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE), provided [event extraction](https://github.com/zjunlp/DeepKE/tree/main/example/ee/standard) capabilities (Chinese and English), and offered compatibility with higher versions of Python packages (e.g., Transformers).
+
+* `Feb, 2023` We have supported using [LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm) (GPT-3) with in-context learning (based on [EasyInstruct](https://github.com/zjunlp/EasyInstruct)) & data generation, added a NER model [W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/w2ner).
 
 <details>
 <summary><b>Previous News</b></summary>
   
-## Nov, 2022
-* Add data [annotation instructions](https://github.com/zjunlp/DeepKE/blob/main/README_TAG.md) for entity recognition and relation extraction, automatic labelling of weakly supervised data ([entity extraction](https://github.com/zjunlp/DeepKE/tree/main/example/ner/prepare-data) and [relation extraction](https://github.com/zjunlp/DeepKE/tree/main/example/re/prepare-data)), and optimize [multi-GPU training](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard).
-## Sept, 2022
-* The paper [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335) has been accepted by the EMNLP 2022 System Demonstration Track.
-## Aug, 2022
-* We have added [data augmentation](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/DA) (Chinese, English) support for [low-resource relation extraction](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot).
-## June, 2022
-* We have added multimodal support for [entity](https://github.com/zjunlp/DeepKE/tree/main/example/ner/multimodal) and [relation extraction](https://github.com/zjunlp/DeepKE/tree/main/example/re/multimodal).
-## May, 2022
-* We have released [DeepKE-cnschema](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA.md) with off-the-shelf knowledge extraction models.
-## Jan, 2022
-* We have released a paper [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)
-## Dec, 2021
-* We have added `dockerfile` to create the enviroment automatically. 
-## Nov, 2021
-* The demo of DeepKE, supporting real-time extration without deploying and training, has been released.
+* `Nov, 2022` Add data [annotation instructions](https://github.com/zjunlp/DeepKE/blob/main/README_TAG.md) for entity recognition and relation extraction, automatic labelling of weakly supervised data ([entity extraction](https://github.com/zjunlp/DeepKE/tree/main/example/ner/prepare-data) and [relation extraction](https://github.com/zjunlp/DeepKE/tree/main/example/re/prepare-data)), and optimize [multi-GPU training](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard).
+  
+* `Sept, 2022` The paper [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335) has been accepted by the EMNLP 2022 System Demonstration Track.
+
+* `Aug, 2022` We have added [data augmentation](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/DA) (Chinese, English) support for [low-resource relation extraction](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot).
+
+* `June, 2022` We have added multimodal support for [entity](https://github.com/zjunlp/DeepKE/tree/main/example/ner/multimodal) and [relation extraction](https://github.com/zjunlp/DeepKE/tree/main/example/re/multimodal).
+ 
+* `May, 2022` We have released [DeepKE-cnschema](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA.md) with off-the-shelf knowledge extraction models.
+
+* `Jan, 2022` We have released a paper [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)
+
+* `Dec, 2021` We have added `dockerfile` to create the enviroment automatically. 
+
+* `Nov, 2021` The demo of DeepKE, supporting real-time extration without deploying and training, has been released.
 * The documentation of DeepKE, containing the details of DeepKE such as source codes and datasets, has been released.
-## Oct, 2021
-* `pip install deepke`
+ 
+* `Oct, 2021` `pip install deepke`
 * The codes of deepke-v2.0 have been released.
-## Aug, 2019
-* The codes of deepke-v1.0 have been released.
-## Aug, 2018
-* The project DeepKE startup and codes of deepke-v0.1 have been released.
+
+* `Aug, 2019` The codes of deepke-v1.0 have been released.
+
+* `Aug, 2018` The project DeepKE startup and codes of deepke-v0.1 have been released.
   
 </details>
 

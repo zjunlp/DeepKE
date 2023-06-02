@@ -37,19 +37,6 @@
 
 - [目录](#目录)
 - [新版特性](#新版特性)
-  - [2023年4月](#2023年4月)
-  - [2023年2月](#2023年2月)
-  - [2022年11月](#2022年11月)
-  - [2022年9月](#2022年9月)
-  - [2022年8月](#2022年8月)
-  - [2022年6月](#2022年6月)
-  - [2022年5月](#2022年5月)
-  - [2022年1月](#2022年1月)
-  - [2021年12月](#2021年12月)
-  - [2021年11月](#2021年11月)
-  - [2021年10月](#2021年10月)
-  - [2019年8月](#2019年8月)
-  - [2018年8月](#2018年8月)
 - [预测演示](#预测演示)
 - [模型架构](#模型架构)
 - [快速上手](#快速上手)
@@ -76,51 +63,39 @@
 
 # 新版特性
 
-## 2023年4月
-* 新增实体关系抽取模型[CP-NER(IJCAI'23)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/cross/README_CN.md), [ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP/README_CN.md), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC/README_CN.md), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE/README_CN.md), 支持[事件抽取](https://github.com/zjunlp/DeepKE/blob/main/example/ee/standard/README_CN.md)(中文、英文), 提供对Python库高级版本的支持 (例如Transformers)。
+* `2023年4月` 新增实体关系抽取模型[CP-NER(IJCAI'23)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/cross/README_CN.md), [ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP/README_CN.md), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC/README_CN.md), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE/README_CN.md), 支持[事件抽取](https://github.com/zjunlp/DeepKE/blob/main/example/ee/standard/README_CN.md)(中文、英文), 提供对Python库高级版本的支持 (例如Transformers)。
 
-## 2023年2月
-* 支持[大模型](https://github.com/zjunlp/DeepKE/blob/main/example/llm/README_CN.md) (GPT-3)，包含In-context Learning (基于 [EasyInstruct](https://github.com/zjunlp/EasyInstruct))和数据生成，新增实体识别模型[W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/README_CN.md)。
+* `2023年2月` 支持[大模型](https://github.com/zjunlp/DeepKE/blob/main/example/llm/README_CN.md) (GPT-3)，包含In-context Learning (基于 [EasyInstruct](https://github.com/zjunlp/EasyInstruct))和数据生成，新增实体识别模型[W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/README_CN.md)。
 
 <details>
 <summary><b>旧版新闻</b></summary>
 
-## 2022年11月
 
-- 新增实体识别、关系抽取的[数据标注说明](https://github.com/zjunlp/DeepKE/blob/main/README_TAG_CN.md)和弱监督数据自动标注([实体识别](https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data/README_CN.md)、[关系抽取](https://github.com/zjunlp/DeepKE/blob/main/example/re/prepare-data/README_CN.md))功能，优化[多GPU训练](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README_CN.md)。
+- `2022年11月` 新增实体识别、关系抽取的[数据标注说明](https://github.com/zjunlp/DeepKE/blob/main/README_TAG_CN.md)和弱监督数据自动标注([实体识别](https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data/README_CN.md)、[关系抽取](https://github.com/zjunlp/DeepKE/blob/main/example/re/prepare-data/README_CN.md))功能，优化[多GPU训练](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README_CN.md)。
 
-## 2022年9月
+- `2022年9月` 论文 [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)被EMNLP2022 System Demonstration Track录用。
 
-- 论文 [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)被EMNLP2022 System Demonstration Track录用。
+- `2022年8月` 新增针对[低资源关系抽取](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot)的[数据增强](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/DA) (中文、英文)功能。
 
-## 2022年8月
 
-- 新增针对[低资源关系抽取](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot)的[数据增强](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/DA) (中文、英文)功能。
+- `2022年6月` 新增支持多模态场景的[实体抽取](https://github.com/zjunlp/DeepKE/tree/main/example/ner/multimodal)、[关系抽取](https://github.com/zjunlp/DeepKE/tree/main/example/re/multimodal)功能。
 
-## 2022年6月
+- `2022年5月` 发布[DeepKE-cnschema](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md)特别版模型，支持基于cnSchema的开箱即用的中文实体识别和关系抽取。
 
-- 新增支持多模态场景的[实体抽取](https://github.com/zjunlp/DeepKE/tree/main/example/ner/multimodal)、[关系抽取](https://github.com/zjunlp/DeepKE/tree/main/example/re/multimodal)功能。
+- `2022年1月` 发布论文 [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)
 
-## 2022年5月
+- `2021年12月` 加入`dockerfile`以便自动创建环境
 
-- 发布[DeepKE-cnschema](https://github.com/zjunlp/DeepKE/blob/main/README_CNSCHEMA_CN.md)特别版模型，支持基于cnSchema的开箱即用的中文实体识别和关系抽取。
-## 2022年1月
-
-- 发布论文 [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)
-
-## 2021年12月
-- 加入`dockerfile`以便自动创建环境
-## 2021年11月
-- 发布DeepKE demo页面，支持实时抽取，无需部署和训练模型
+- `2021年11月` 发布DeepKE demo页面，支持实时抽取，无需部署和训练模型
 - 发布DeepKE文档，包含DeepKE源码和数据集等详细信息
-## 2021年10月
-- `pip install deepke`
+
+- `2021年10月` `pip install deepke`
 - deepke-v2.0发布
-## 2019年8月
-- `pip install deepke`
+
+- `2019年8月` `pip install deepke`
 - deepke-v1.0发布
-## 2018年8月
-- DeepKE项目启动，deepke-v0.1代码发布
+
+- `2018年8月` DeepKE项目启动，deepke-v0.1代码发布
 
 </details>
 
