@@ -98,8 +98,8 @@ CaMA首先（1）使用中文语料首先对LLaMA（13B）进行进一步全量�
 <a href="" target="_blank"><img src="assets/chatglm_logo.png" alt="ChatGLM" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
-### 案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文]() | [中文]() 
-### 案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文]() | [中文]()
+### 案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_LORA_EN.md) | [中文](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_LORA.md) 
+### 案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_PT_EN.md) | [中文](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_PT.md)
 
 
 
