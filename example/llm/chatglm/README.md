@@ -1,4 +1,4 @@
-# InstructionKGC-指令驱动的自适应知识图谱构建
+# 基于chatglm的指令驱动的知识图谱构建
 
 <p align="left">
     <b> <a href="https://github.com/zjunlp/DeepKE/tree/main/example/llm/InstructKGC/README.md">English</a> | 简体中文 </b>
@@ -86,6 +86,32 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 deepspeed finetuning_lora.py --num_train_epochs 5 -
 
 ```
 
+你可以通过下面的命令使用P-Tuning方法来finetune模型:
+
+
+```bash
+CUDA_VISIBLE_DEVICES=0 deepspeed finetuning_pt.py --num_train_epochs 5 --train_batch_size 2 --pre_seq_len 16
+```
+
+或者是在finetuning_pt函数中设置自己的参数执行:
+
+```bash
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--train_path', default='data/train.json', type=str, help='')
+    parser.add_argument('--model_dir', default="./model",  type=str, help='')
+    parser.add_argument('--num_train_epochs', default=5, type=int, help='')
+    parser.add_argument('--train_batch_size', default=1, type=int, help='')
+    parser.add_argument('--gradient_accumulation_steps', default=1, type=int, help='')
+    parser.add_argument('--output_dir', default='output_dir_lora/', type=str, help='')
+    parser.add_argument('--log_steps', type=int, default=10, help='')
+    parser.add_argument('--max_len', type=int, default=400, help='')
+    parser.add_argument('--max_src_len', type=int, default=450, help='')
+    parser.add_argument('--local_rank', type=int, default=0, help='')
+    parser.add_argument('--lora_r', type=int, default=8, help='')
+    parser.add_argument('--prompt_text', type=str,default="",help='')
+    return parser.parse_args()
+
+```
 
 
 
@@ -109,6 +135,24 @@ CUDA_VISIBLE_DEVICES=0 python predict_lora.py
     parser.add_argument('--prompt_text', type=str,default="",help='')
 ```
 
+
+你可以通过下面的命令使用训练好的P-Tuning模型在比赛测试集上预测输出:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python predict_pt.py 
+```
+
+或者是在predict_pt函数中设置自己的参数执行::
+
+```bash
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--test_path', default='data/test.json', type=str, help='')
+    parser.add_argument('--device', default='0', type=str, help='')
+    parser.add_argument('--model_dir',default="./model", type=str,help='')
+    parser.add_argument('--max_len', type=int, default=768, help='')
+    parser.add_argument('--max_src_len', type=int, default=450, help='')
+    parser.add_argument('--prompt_text', type=str,default="",help='')
+```
 
 
 ## 4.硬件
