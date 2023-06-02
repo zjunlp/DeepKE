@@ -37,8 +37,8 @@
   - [LLaMA](#llama)
     - [案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调llama完成ccks2023指令驱动的知识图谱构建-英文--中文)
   - [ChatGLM](#chatglm)
-    - [案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文 \[开发中\]](#案例一lora微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文-开发中)
-    - [案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文 \[开发中\]](#案例二p-tuning微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文-开发中)
+    - [案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文 ](#案例一lora微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文)
+    - [案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文 ](#案例二p-tuning微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文)
   - [GPT系列](#gpt系列)
     - [案例一：ICL使用大语言模型进行信息抽取 英文 | 中文](#案例一icl使用大语言模型进行信息抽取-英文--中文)
     - [案例二：ICL使用大语言模型进行数据增强 英文 | 中文](#案例二icl使用大语言模型进行数据增强-英文--中文)
@@ -98,8 +98,8 @@ CaMA首先（1）使用中文语料首先对LLaMA（13B）进行进一步全量�
 <a href="" target="_blank"><img src="assets/chatglm_logo.png" alt="ChatGLM" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
-### 案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文]() | [中文]() [开发中]
-### 案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文]() | [中文]() [开发中]
+### 案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文]() | [中文]() 
+### 案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文]() | [中文]()
 
 
 
