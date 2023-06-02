@@ -1,7 +1,7 @@
 # LoRA fine-tuned ChatGLM to complete the construction of knowledge graph driven by CCKS2023 instructions.
 
 <p align="left">
-    <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_LORA.md">简体中文</a> </b>
+    <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_PT.md">简体中文</a> </b>
 </p>
 
 
