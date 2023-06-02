@@ -1,4 +1,4 @@
-# InstructKGC-CCKS2023 Evaluation of Instruction-based Knowledge Graph Construction
+# LoRA fine-tuned ChatGLM to complete the construction of knowledge graph driven by CCKS2023 instructions.
 
 <p align="left">
     <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_LORA.md">简体中文</a> </b>
