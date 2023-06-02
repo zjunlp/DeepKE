@@ -30,6 +30,7 @@
 
 
 
+- [环境依赖](#环境依赖)
 - [模型](#模型)
   - [CaMA](#cama)
     - [案例一：使用CaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一使用cama完成ccks2023指令驱动的知识图谱构建-英文--中文)
@@ -52,6 +53,17 @@
  
 ---
 
+# 环境依赖
+
+大模型时代, DeepKE-LLM采用全新的环境依赖
+```
+conda create -n deepke-llm python=3.9
+conda activate deepke-llm
+
+cd example/llm
+pip install -r requirements.txt
+```
+注意！！是example/llm文件夹下的 `requirements.txt`
 
 # 模型
 

@@ -35,21 +35,42 @@
 
 # Table of Contents
 
-* [What's New](#whats-new)
-* [Prediction Demo](#prediction-demo)
-* [Model Framework](#model-framework)
-* [Quick Start](#quick-start)
-   * [Requirements](#requirements)
-   * [Introduction of Three Functions](#introduction-of-three-functions)
-      * [1. Named Entity Recognition](#1-named-entity-recognition)
-      * [2. Relation Extraction](#2-relation-extraction)
-      * [3. Attribute Extraction](#3-attribute-extraction)
-* [Notebook Tutorial](#notebook-tutorial)
-* [Tips](#tips)
-* [To do](#to-do)
-* [Citation](#citation)
-* [Contributors](#contributors)
-* [Other Knowledge Extraction Open-Source Projects](#other-knowledge-extraction-open-source-projects)
+- [Table of Contents](#table-of-contents)
+- [What's New](#whats-new)
+  - [Apr, 2023](#apr-2023)
+  - [Feb, 2023](#feb-2023)
+  - [Nov, 2022](#nov-2022)
+  - [Sept, 2022](#sept-2022)
+  - [Aug, 2022](#aug-2022)
+  - [June, 2022](#june-2022)
+  - [May, 2022](#may-2022)
+  - [Jan, 2022](#jan-2022)
+  - [Dec, 2021](#dec-2021)
+  - [Nov, 2021](#nov-2021)
+  - [Oct, 2021](#oct-2021)
+  - [Aug, 2019](#aug-2019)
+  - [Aug, 2018](#aug-2018)
+- [Prediction Demo](#prediction-demo)
+- [Model Framework](#model-framework)
+- [Quick Start](#quick-start)
+  - [DeepKE-LLM](#deepke-llm)
+  - [DeepKE](#deepke)
+  - [Requirements](#requirements)
+    - [DeepKE-LLM](#deepke-llm-1)
+    - [DeepKE](#deepke-1)
+  - [Introduction of Three Functions](#introduction-of-three-functions)
+    - [1. Named Entity Recognition](#1-named-entity-recognition)
+    - [2. Relation Extraction](#2-relation-extraction)
+    - [3. Attribute Extraction](#3-attribute-extraction)
+    - [4. Event Extraction](#4-event-extraction)
+- [Notebook Tutorial](#notebook-tutorial)
+- [Tips](#tips)
+- [To do](#to-do)
+- [Reading Materials](#reading-materials)
+- [Related Toolkit](#related-toolkit)
+- [Citation](#citation)
+- [Contributors (Determined by the roll of the dice)](#contributors-determined-by-the-roll-of-the-dice)
+- [Other Knowledge Extraction Open-Source Projects](#other-knowledge-extraction-open-source-projects)
 
 <br>
 
@@ -111,6 +132,21 @@ There is a demonstration of prediction. The GIF file is created by [Terminalizer
 
 # Quick Start
 
+## DeepKE-LLM
+
+In the era of large models, DeepKE-LLM utilizes a completely new environment dependency.
+
+```
+conda create -n deepke-llm python=3.9
+conda activate deepke-llm
+
+cd example/llm
+pip install -r requirements.txt
+```
+
+Please note that the `requirements.txt` file is located in the `example/llm` folder.
+
+## DeepKE
 *DeepKE* supports `pip install deepke`. <br>Take the fully supervised relation extraction for example.
 
 **Step1** Download the basic code
@@ -180,6 +216,21 @@ python predict.py
 
 ## Requirements
 
+### DeepKE-LLM
+
+> python == 3.9
+
+- torch==1.13.0
+- accelerate==0.17.1
+- transformers==4.28.1
+- bitsandbytes==0.37.2
+- peft==0.2.0
+- gradio
+- datasets
+- sentencepiece
+- fire
+
+### DeepKE
 > python == 3.8
 
 - torch == 1.5

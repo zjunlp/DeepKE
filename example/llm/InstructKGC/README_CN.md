@@ -43,24 +43,20 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 
 ## 1.准备
+### 环境
+请参考[DeepKE/example/llm/README_CN.md](../README_CN.md/#环境依赖)创建python虚拟环境, 然后激活该环境 `deepke-llm`:
+```
+conda activate deepke-llm
+```
 
-### 克隆代码
+
+### 下载数据
 ```bash
-git clone https://github.com/zjunlp/DeepKE.git
-cd DeepKE/example/llm/InstructKGC
 mkdir result
 mkdir lora
 mkdir data
 ```
 
-### 创建python虚拟环境, 并使用pip安装
-```bash
-conda create -n instructkgc python=3.9   
-conda activate instructkgc
-pip install -r requirements.txt
-```
-
-### 下载数据
 从官网https://tianchi.aliyun.com/competition/entrance/532080/information 下载文件 `train.json` 和 `valid.json` (虽然名字是valid, 但这不是验证集, 而是比赛的测试集)并放在目录 `./data` 中.
 
 

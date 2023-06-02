@@ -43,28 +43,20 @@ In the test set, only the three fields `id`, `instruction`, and `input` are incl
 
 
 ## 1. Preparation
+### Environment
+Please refer to [DeepKE/example/llm/README.md](../README.md/#requirements) to create a Python virtual environment, and activate the `deepke-llm` environment:
+```
+conda activate deepke-llm
+```
 
-### Clone Code
+### Download data
 
 ```bash
-git clone https://github.com/zjunlp/DeepKE.git
-cd DeepKE/example/llm/InstructKGC
 mkdir result
 mkdir lora
 mkdir data
 ```
 
-
-### Create a Python virtual environment and install using pip
-
-```bash
-conda create -n instructkgc python=3.9   
-conda activate instructkgc
-pip install -r requirements.txt
-```
-
-
-### Download data
 Download  `train.json` and `valid.json`  (although the name is valid, this is not a validation set, but a test set for the competition) from official website https://tianchi.aliyun.com/competition/entrance/, and place them in the directory `./data`
 
 

@@ -29,6 +29,7 @@
 </h1>
 
 
+- [Requirements](#requirements)
 - [Models](#models)
   - [CaMA](#cama)
     - [Case 1: Using CaMA for CCKS2023 Instruction-based KG Construction English | Chinese](#case-1-using-cama-for-ccks2023-instruction-based-kg-construction-english--chinese)
@@ -47,6 +48,20 @@
   - [Method 3: P-Tuning](#method-3-p-tuning)
 - [Citation](#citation)
 
+
+# Requirements
+
+In the era of large models, DeepKE-LLM utilizes a completely new environment dependency.
+
+```
+conda create -n deepke-llm python=3.9
+conda activate deepke-llm
+
+cd example/llm
+pip install -r requirements.txt
+```
+
+Please note that the `requirements.txt` file is located in the `example/llm` folder.
 
 # Models
 
