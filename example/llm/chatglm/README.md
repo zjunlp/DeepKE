@@ -1,7 +1,7 @@
-# 基于lora微调的chatglm知识图谱构建
+# InstructionKGC-指令驱动的自适应知识图谱构建
 
 <p align="left">
-    <b> <a href="https://github.com/zjunlp/DeepKE/blob/master/chatglm/README_EN.md">English</a> | 简体中文 </b>
+    <b> <a href="https://github.com/zjunlp/DeepKE/tree/main/example/llm/InstructKGC/README.md">English</a> | 简体中文 </b>
 </p>
 
 
