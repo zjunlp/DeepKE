@@ -1,7 +1,7 @@
 # 如何释放大型语言模型进行少样本关系抽取中的能力?
 
 <p align="left">
-    <b> <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/UnleashLLM/README.md">English</a> | 简体中文</a> </b>
+    <b> <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/UnleashLLMRE/README.md">English</a> | 简体中文</a> </b>
 </p>
 
 ## 目录
@@ -77,16 +77,16 @@
 ## 引用
 
 ```BibTex
-@article{DBLP:journals/corr/abs-2305-01555,
+@article{UnleashLLMRE,
   author       = {Xin Xu and
                   Yuqi Zhu and
                   Xiaohan Wang and
                   Ningyu Zhang},
   title        = {How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?},
-  journal      = {arXiv},
-  volume       = {abs/2305.01555},
+  journal      = {The 4th Workshop on Simple and Efficient Natural Language Processing (SustaiNLP 2023)},
   year         = {2023},
-  url          = {https://arxiv.org/pdf/2305.01555.pdf}
+  url          = {https://arxiv.org/pdf/2305.01555.pdf},
+  publisher    = "Association for Computational Linguistics"
 }
 ```
 

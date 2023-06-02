@@ -144,7 +144,7 @@ PT方法，即P-Tuning方法，参考[ChatGLM官方代码](https://link.zhihu.co
 如果您使用了本项目代码， 烦请引用下列论文: 
 ```bibtex
 @article{cama,
-  author = {Jintian Zhang, Xiaohan Wang, Ningyu Zhang, Honghao Gui, Xiang Chen, Yinuo Jiang, Yuqi Zhu, Zhen Bi, Jing Chen, Shengyu Mao, Shuofei Qiao, Xiaozhuan Liang, Yixin Ou, Runnan Fang, Zekun Xi, Xin Xu, Shumin Deng, Huajun Chen},
+  author = {Jintian Zhang, Xiaohan Wang, Ningyu Zhang, Honghao Gui, Xiang Chen, Yinuo Jiang, Yuqi Zhu, Zhen Bi, Jing Chen, Shengyu Mao, Shuofei Qiao, Xiaozhuan Liang, Yixin Ou, Runnan Fang, Zekun Xi, Xin Xu, Huajun Chen},
   title = {DeepKE-LLM: A Large Language Model Based Knowledge Extraction Toolkit},
   year = {2023},
   publisher = {GitHub},

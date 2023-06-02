@@ -156,3 +156,26 @@ python utils/convert.py \
 ## 6.Acknowledgment
 
 代码基本来自于[Alpaca-LoRA](https://github.com/tloen/alpaca-lora), 仅做了部分改动, 感谢！
+
+## 7.Citation
+
+如果您使用了本项目代码或数据，烦请引用下列论文:
+```bibtex
+@article{DBLP:journals/corr/abs-2305-11527,
+  author       = {Honghao Gui and
+                  Jintian Zhang and
+                  Hongbin Ye and
+                  Ningyu Zhang},
+  title        = {InstructIE: {A} Chinese Instruction-based Information Extraction Dataset},
+  journal      = {CoRR},
+  volume       = {abs/2305.11527},
+  year         = {2023},
+  url          = {https://doi.org/10.48550/arXiv.2305.11527},
+  doi          = {10.48550/arXiv.2305.11527},
+  eprinttype    = {arXiv},
+  eprint       = {2305.11527},
+  timestamp    = {Thu, 25 May 2023 15:41:47 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2305-11527.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```
