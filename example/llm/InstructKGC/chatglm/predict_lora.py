@@ -11,10 +11,10 @@ import argparse
 
 def set_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--test_path', default='data/train.json', type=str, help='')
+    parser.add_argument('--test_path', default='data/test.json', type=str, help='')
     parser.add_argument('--device', default='0', type=str, help='')
     parser.add_argument('--model_dir',
-                        default="/zjunlp/xzk/chatglm/model", type=str,
+                        default="/data/model", type=str,
                         help='')
     parser.add_argument('--max_len', type=int, default=768, help='')
     parser.add_argument('--max_src_len', type=int, default=450, help='')
@@ -26,7 +26,7 @@ def set_args():
 
 def main():
     args = set_args()
-    model = ChatGLMForConditionalGeneration.from_pretrained(args.ori_model_dir)
+    model = ChatGLMForConditionalGeneration.from_pretrained(args.model_dir)
     tokenizer = ChatGLMTokenizer.from_pretrained(args.model_dir)
     model.eval()
     model.half().to("cuda:{}".format(args.device))
@@ -39,6 +39,7 @@ def main():
         for i, line in enumerate(tqdm(fh, desc="iter")):
             with torch.no_grad():
                 sample = json.loads(line.strip())
+                print(sample)
                 src_tokens = tokenizer.tokenize(sample["input"])
                 prompt_tokens = tokenizer.tokenize(sample["instruction"])
 
@@ -64,11 +65,11 @@ def main():
                     r = tokenizer.decode(outputs).replace("<eop>", "")
                     res.append(r)
                 save_data.append(
-                    {"text": sample["input"],"answer": res[0]})
+                    {"id":sample["id"],"cata":sample["cate"],"instruction":sample["instruction"],"input": sample["input"],"output": res[0]})
 
     e_time = time.time()
     print("总耗时：{}s".format(e_time - s_time))
-    save_path = os.path.join(args.model_dir, "answer.json")
+    save_path = os.path.join(args.model_dir, "result.json")
     fin = open(save_path, "w", encoding="utf-8")
     json.dump(save_data, fin, ensure_ascii=False, indent=4)
     fin.close()
