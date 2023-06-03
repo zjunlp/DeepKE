@@ -1,14 +1,4 @@
 # -*- coding:utf-8 -*-
-# @project: ChatGLM-Finetuning
-# @filename: finetuning_lora
-# @author: 刘聪NLP
-# @zhihu: https://www.zhihu.com/people/LiuCongNLP
-# @contact: logcongcong@gmail.com
-# @time: 2023/4/4 16:34
-"""
-    文件说明：
-            
-"""
 from modeling_chatglm import ChatGLMForConditionalGeneration
 from tokenization_chatglm import ChatGLMTokenizer
 import torch
@@ -40,7 +30,7 @@ def print_trainable_parameters(model):
 def set_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--train_path', default='data/train.json', type=str, help='')
-    parser.add_argument('--model_dir', default="/zjunlp/xzk/chatglm/model",  type=str, help='')
+    parser.add_argument('--model_dir', default="/model",  type=str, help='')
     parser.add_argument('--num_train_epochs', default=5, type=int, help='')
     parser.add_argument('--train_batch_size', default=1, type=int, help='')
     parser.add_argument('--gradient_accumulation_steps', default=1, type=int, help='')
@@ -119,7 +109,6 @@ def main():
                                   collate_fn=coll_fn,
                                   drop_last=True,
                                   num_workers=0)
-    print("asdadajhaksdhal")
     model_engine, optimizer, _, _ = deepspeed.initialize(config=conf,
                                                          model=model,
                                                          model_parameters=model.parameters())
