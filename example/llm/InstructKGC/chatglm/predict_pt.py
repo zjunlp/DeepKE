@@ -39,7 +39,7 @@ def main():
             with torch.no_grad():
                 sample = json.loads(line.strip())
                 src_tokens = tokenizer.tokenize(sample["input"])
-                prompt_tokens = tokenizer.tokenize(args.prompt_text)
+                prompt_tokens = tokenizer.tokenize(sample["instruction"])
 
                 if len(src_tokens) > args.max_src_len - len(prompt_tokens):
                     src_tokens = src_tokens[:args.max_src_len - len(prompt_tokens)]
