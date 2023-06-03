@@ -11,10 +11,13 @@ import argparse
 
 def set_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--test_path', default='data/test.json', type=str, help='')
-    parser.add_argument('--device', default='0', type=str, help='')
+    parser.add_argument('--test_path', default='data/spo_1.json', type=str, help='')
+    parser.add_argument('--device', default='3', type=str, help='')
+    parser.add_argument('--ori_model_dir',
+                        default="/orimodel", type=str,
+                        help='')
     parser.add_argument('--model_dir',
-                        default="/data/model", type=str,
+                        default="/model", type=str,
                         help='')
     parser.add_argument('--max_len', type=int, default=768, help='')
     parser.add_argument('--max_src_len', type=int, default=450, help='')
@@ -26,9 +29,10 @@ def set_args():
 
 def main():
     args = set_args()
-    model = ChatGLMForConditionalGeneration.from_pretrained(args.model_dir)
+    model = ChatGLMForConditionalGeneration.from_pretrained(args.ori_model_dir)
     tokenizer = ChatGLMTokenizer.from_pretrained(args.model_dir)
     model.eval()
+    model = PeftModel.from_pretrained(model, args.model_dir, torch_dtype=torch.float32)
     model.half().to("cuda:{}".format(args.device))
     model.eval()
     save_data = []
