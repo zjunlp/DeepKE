@@ -1,14 +1,4 @@
 # -*- coding:utf-8 -*-
-# @project: ChatGLM-Finetuning
-# @filename: finetuning_pt
-# @author: 刘聪NLP
-# @zhihu: https://www.zhihu.com/people/LiuCongNLP
-# @contact: logcongcong@gmail.com
-# @time: 2023/4/4 14:40
-"""
-    文件说明：
-            
-"""
 from modeling_chatglm import ChatGLMForConditionalGeneration
 from tokenization_chatglm import ChatGLMTokenizer
 from configuration_chatglm import ChatGLMConfig
@@ -38,12 +28,12 @@ def print_trainable_parameters(model):
 
 def set_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--train_path', default='data/spo_0.json', type=str, help='')
-    parser.add_argument('--model_dir', default="/data/work/lcong/public_model_path/ChatGLM-6B/", type=str, help='')
+    parser.add_argument('--train_path', default='data/train.json', type=str, help='')
+    parser.add_argument('--model_dir', default="/model", type=str, help='')
     parser.add_argument('--num_train_epochs', default=20, type=int, help='')
     parser.add_argument('--train_batch_size', default=2, type=int, help='')
     parser.add_argument('--gradient_accumulation_steps', default=1, type=int, help='')
-    parser.add_argument('--output_dir', default='output_dir_pt_20/', type=str, help='')
+    parser.add_argument('--output_dir', default='output_dir_pt/', type=str, help='')
     parser.add_argument('--log_steps', type=int, default=10, help='')
     parser.add_argument('--max_len', type=int, default=768, help='')
     parser.add_argument('--max_src_len', type=int, default=450, help='')
@@ -111,7 +101,7 @@ def main():
         if param.requires_grad == True:
             print(name)
 
-    train_dataset = Seq2SeqDataSet(args.train_path, tokenizer, args.max_len, args.max_src_len, args.prompt_text)
+    train_dataset = Seq2SeqDataSet(args.train_path, tokenizer, args.max_len, args.max_src_len)
     train_dataloader = DataLoader(train_dataset,
                                   batch_size=conf["train_micro_batch_size_per_gpu"],
                                   sampler=RandomSampler(train_dataset),
