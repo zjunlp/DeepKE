@@ -29,16 +29,16 @@
 </h1>
 
 
-
 - [环境依赖](#环境依赖)
 - [模型](#模型)
-  - [CaMA](#cama)
-    - [案例一：使用CaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一使用cama完成ccks2023指令驱动的知识图谱构建-英文--中文)
-  - [LLaMA](#llama)
+  - [LLaMA系列](#llama系列)
     - [案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调llama完成ccks2023指令驱动的知识图谱构建-英文--中文)
+    - [案例一：使用CaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一使用cama完成ccks2023指令驱动的知识图谱构建-英文--中文)
   - [ChatGLM](#chatglm)
-    - [案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文 ](#案例一lora微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文)
-    - [案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文 ](#案例二p-tuning微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文)
+    - [案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文)
+    - [案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例二p-tuning微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文)
+  - [MOSS](#moss)
+  - [CPM-Bee](#cpm-bee)
   - [GPT系列](#gpt系列)
     - [案例一：ICL使用大语言模型进行信息抽取 英文 | 中文](#案例一icl使用大语言模型进行信息抽取-英文--中文)
     - [案例二：ICL使用大语言模型进行数据增强 英文 | 中文](#案例二icl使用大语言模型进行数据增强-英文--中文)
@@ -67,7 +67,15 @@ pip install -r requirements.txt
 
 # 模型
 
-## CaMA
+
+
+
+## LLaMA系列
+<p align="center" width="100%">
+<a href="" target="_blank"><img src="assets/llama_logo.jpeg" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
+</p>
+LLaMA，它是一组从7B到65B参数的基础语言模型
+
 
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/cama_logo.jpeg" alt="ZJU-CaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
@@ -77,18 +85,9 @@ CaMA首先（1）使用中文语料首先对LLaMA（13B）进行进一步全量�
 
 模型详细信息请参考[CaMA: A Chinese-English Bilingual LLaMA Model](https://github.com/zjunlp/CaMA/tree/main)
 
-### 案例一：使用CaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md) | [中文](./InstructKGC/README_CN.md)
-
-
-
-
-## LLaMA
-
-<p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/llama_logo.jpeg" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
-</p>
-
 ### 案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md) | [中文](./InstructKGC/README_CN.md)
+
+### 案例一：使用CaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md) | [中文](./InstructKGC/README_CN.md)
 
 
 
@@ -103,13 +102,27 @@ CaMA首先（1）使用中文语料首先对LLaMA（13B）进行进一步全量�
 
 
 
+
+## MOSS
+<p align="center" width="100%">
+<a href="" target="_blank"><img src="assets/moss_logo.png" alt="ChatGLM" style="width: 25%; min-width: 25px; display: block; margin: auto;"></a>
+</p>
+MOSS是一个支持中英双语和多种插件的开源对话语言模型
+
+计划中！敬请期待！
+
+
+## CPM-Bee
+CPM-Bee是一个完全开源、允许商用的百亿参数中英文基座模型，也是CPM-Live训练的第二个里程碑。
+
+计划中！敬请期待！
+
+
 ## GPT系列
 
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/chatgpt_logo.png" alt="GPT" style="width: 18%; min-width: 18px; display: block; margin: auto;"></a>
 </p>
-
-
 
 ### 案例一：ICL使用大语言模型进行信息抽取 [英文](./LLMICL/README.md/#ie-with-large-language-models) | [中文](./LLMICL/README_CN.md/#使用大语言模型进行信息抽取)
 
@@ -124,6 +137,7 @@ CaMA首先（1）使用中文语料首先对LLaMA（13B）进行进一步全量�
 ### 案例五：CodeKGC-基于代码语言模型的知识图谱构建 [英文](./CodeKGC/README.md) | [中文](./CodeKGC/README_CN.md)
 
 为了更好地处理知识图谱构建中的关系三元组抽取（RTE）任务，我们设计了代码形式的提示建模关系三元组的结构，并使用代码语言模型（Code-LLM）生成更准确的预测。代码形式提示构建的关键步骤是将（文本，输出三元组）对转换成Python中的语义等价的程序语言。
+
 
 
 # 方法

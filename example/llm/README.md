@@ -31,11 +31,14 @@
 
 - [Requirements](#requirements)
 - [Models](#models)
-  - [CaMA](#cama)
-    - [Case 1: Using CaMA for CCKS2023 Instruction-based KG Construction English | Chinese](#case-1-using-cama-for-ccks2023-instruction-based-kg-construction-english--chinese)
-  - [LLaMA](#llama)
+  - [LLaMA-series](#llama-series)
     - [Case 1: LoRA Fine-tuning of LLaMA for CCKS2023 Instruction-based KG Construction English | Chinese](#case-1-lora-fine-tuning-of-llama-for-ccks2023-instruction-based-kg-construction-english--chinese)
+    - [Case 2: Using CaMA for CCKS2023 Instruction-based KG Construction English | Chinese](#case-2-using-cama-for-ccks2023-instruction-based-kg-construction-english--chinese)
   - [ChatGLM](#chatglm)
+    - [Case 1: LoRA Fine-tuning of ChatGLM for CCKS2023 Instruction-based KG Construction English | Chinese](#case-1-lora-fine-tuning-of-chatglm-for-ccks2023-instruction-based-kg-construction-english--chinese)
+    - [Case 2: P-Tuning of ChatGLM for CCKS2023 Instruction-based KG Construction English | Chinese](#case-2-p-tuning-of-chatglm-for-ccks2023-instruction-based-kg-construction-english--chinese)
+  - [MOSS](#moss)
+  - [CPM-Bee](#cpm-bee)
   - [GPT-series](#gpt-series)
     - [Case 1: Information Extraction with LLMs English | Chinese](#case-1-information-extraction-with-llms-english--chinese)
     - [Case 2: Data Augmentation with LLMs English | Chinese](#case-2-data-augmentation-with-llms-english--chinese)
@@ -65,7 +68,13 @@ Please note that the `requirements.txt` file is located in the `example/llm` fol
 
 # Models
 
-## CaMA
+## LLaMA-series
+
+<p align="center" width="100%">
+<a href="" target="_blank"><img src="assets/llama_logo.jpeg" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
+</p>
+LLaMA, a collection of foundation language models ranging from 7B to 65B parameters
+
 
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/cama_logo.jpeg" alt="ZJU-CaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
@@ -75,18 +84,11 @@ CaMA follows a two-step approach: (1) It performs further full pre-training on L
 
 For detailed information about the model, please refer to [CaMA: A Chinese-English Bilingual LLaMA Model](https://github.com/zjunlp/CaMA/blob/main/README_EN.md).
 
-### Case 1: Using CaMA for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md) | [Chinese](./InstructKGC/README_CN.md)
-
-
-
-## LLaMA
-
-<p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/llama_logo.jpeg" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
-</p>
-
 
 ### Case 1: LoRA Fine-tuning of LLaMA for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md) | [Chinese](./InstructKGC/README_CN.md)
+
+### Case 2: Using CaMA for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md) | [Chinese](./InstructKGC/README_CN.md)
+
 
 
 
@@ -94,7 +96,27 @@ For detailed information about the model, please refer to [CaMA: A Chinese-Engli
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/chatglm_logo.png" alt="ChatGLM" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
+
+### Case 1: LoRA Fine-tuning of ChatGLM for CCKS2023 Instruction-based KG Construction [English](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_LORA_EN.md) | [Chinese](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_LORA.md) 
+### Case 2: P-Tuning of ChatGLM for CCKS2023 Instruction-based KG Construction [English](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_PT_EN.md) | [Chinese](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_PT.md)
+
+
+
+## MOSS
+<p align="center" width="100%">
+<a href="" target="_blank"><img src="assets/moss_logo.png" alt="ChatGLM" style="width: 25%; min-width: 25px; display: block; margin: auto;"></a>
+</p>
+MOSS is an open-sourced plugin-augmented conversational language model.
+
 Under developement and will be released soon!
+
+
+
+## CPM-Bee
+CPM-Bee is a fully open-source, commercially-usable Chinese-English bilingual base model with a capacity of ten billion parameters. It is the second milestone achieved through the training process of CPM-Live. 
+
+Under developement and will be released soon!
+
 
 
 ## GPT-series
