@@ -4,6 +4,19 @@
     <b> English | <a href="https://github.com/zjunlp/DeepKE/tree/main/example/llm/InstructKGC/README_CN.md">简体中文</a> </b>
 </p>
 
+- [InstructKGC-CCKS2023 Evaluation of Instruction-based Knowledge Graph Construction](#instructkgc-ccks2023-evaluation-of-instruction-based-knowledge-graph-construction)
+  - [Task Object](#task-object)
+  - [Data](#data)
+  - [1. Preparation](#1-preparation)
+    - [Environment](#environment)
+    - [Download data](#download-data)
+    - [Model](#model)
+  - [2. Run](#2-run)
+  - [3. Predict or Inference](#3-predict-or-inference)
+  - [4. Format Conversion](#4-format-conversion)
+  - [5. Hardware](#5-hardware)
+  - [6.Acknowledgment](#6acknowledgment)
+  - [7.Citation](#7citation)
 
 ## Task Object
 

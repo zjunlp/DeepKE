@@ -1,15 +1,16 @@
 # -*- coding:utf-8 -*-
-from modeling_chatglm import ChatGLMForConditionalGeneration
-from tokenization_chatglm import ChatGLMTokenizer
-import torch
-import deepspeed
-import argparse
-from torch.utils.data import RandomSampler, DataLoader
-from data_set import Seq2SeqDataSet, coll_fn
 import os
+import argparse
 from shutil import copy
-from peft import LoraConfig, get_peft_model, get_peft_model_state_dict, prepare_model_for_int8_training, \
-    set_peft_model_state_dict
+
+import deepspeed
+import torch
+from torch.utils.data import RandomSampler, DataLoader
+from peft import LoraConfig, get_peft_model
+
+from chatglm.modeling_chatglm import ChatGLMForConditionalGeneration
+from chatglm.tokenization_chatglm import ChatGLMTokenizer
+from chatglm.data_set import Seq2SeqDataSet, coll_fn
 
 
 def print_trainable_parameters(model):

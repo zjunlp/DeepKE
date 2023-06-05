@@ -5,6 +5,27 @@
 </p>
 
 
+- [InstructionKGC-指令驱动的自适应知识图谱构建](#instructionkgc-指令驱动的自适应知识图谱构建)
+  - [任务目标](#任务目标)
+  - [数据](#数据)
+  - [1.准备](#1准备)
+    - [环境](#环境)
+    - [下载数据](#下载数据)
+    - [模型](#模型)
+  - [2.运行](#2运行)
+    - [LLaMA系列](#llama系列)
+      - [LoRA微调LLaMA](#lora微调llama)
+      - [LoRA微调CaMA](#lora微调cama)
+    - [ChatGLM](#chatglm)
+      - [LoRA微调ChatGLM](#lora微调chatglm)
+      - [P-Tuning微调ChatGLM](#p-tuning微调chatglm)
+  - [3.预测](#3预测)
+  - [4.格式转换](#4格式转换)
+  - [5.硬件](#5硬件)
+  - [6.Acknowledgment](#6acknowledgment)
+  - [7.Citation](#7citation)
+
+
 ## 任务目标
 
 根据用户输入的指令抽取相应类型的实体和关系，构建知识图谱。其中可能包含知识图谱补全任务，即任务需要模型在抽取实体关系三元组的同时对缺失三元组进行补全。
@@ -66,25 +87,17 @@ mkdir data
 * [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
 * [CaMA-13b](https://huggingface.co/zjunlp/CaMA-13B-Diff)
-
-如果你需要使用CaMA请参考[CaMA/2.2 预训练模型权重获取与恢复](https://github.com/zjunlp/CaMA/tree/main)获得完整的CaMA模型权重。
+* [fnlp/moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
+* [openbmb/cpm-bee-5b](https://huggingface.co/openbmb/cpm-bee-5b)
 
 
 ## 2.运行
 
-
-你可以通过下面的脚本使用LoRA方法来finetune模型:
-
-注意: 由于CaMA已经在大量的信息抽取指令数据集上经过LoRA训练, 因此可以跳过这一步直接执行第3步`预测`, 你也可以选择进一步训练。
+### LLaMA系列
+你可以通过下面的命令设置自己的参数使用LoRA方法来微调模型:
 
 ```bash
-bash scripts/run_finetune.bash
-```
-
-或者通过下面的命令设置自己的参数执行:
-
-```bash
-CUDA_VISIBLE_DEVICES="0" python finetune.py \
+CUDA_VISIBLE_DEVICES="0" python finetune_llama.py \
     --base_model 'decapoda-research/llama-7b-hf' \
     --train_path 'data/train.json' \
     --output_dir 'lora/llama-7b-e3-r8' \
@@ -105,11 +118,49 @@ CUDA_VISIBLE_DEVICES="0" python finetune.py \
 1. 你可以使用`--valid_file`提供验证集, 或者什么都不做(在`finetune.py`中, 我们会从train.json中划分`val_set_size`数`量的样本做验证集), 你也可以使用`val_set_size`调整验证集的数量
 2. `batch_size`、`micro_train_batch_size`、`gradient_accumulation_steps`、`GPU数量`的关系是 gradient_accumulation_steps = batch_size // micro_batch_size // GPU数量。micro_train_batch_size才是在每块GPU上执行的真实batch_size。
 
-我们也提供了多GPU版本的LoRA训练脚本:
+我们也提供了多GPU版本的LoRA训练命令:
 
 ```bash
-bash scripts/run_finetune_mul.bash
+CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 finetune_llama.py \
+    --base_model 'decapoda-research/llama-7b-hf' \
+    --train_path 'data/train.json' \
+    --output_dir 'lora/llama-7b-e3-r8' \
+    --batch_size 960 \
+    --micro_train_batch_size 10 \
+    --num_epochs 3 \
+    --learning_rate 1e-4 \
+    --cutoff_len 512 \
+    --val_set_size 1000 \
+    --lora_r 8 \
+    --lora_alpha 16 \
+    --lora_dropout 0.05 \
+    --lora_target_modules '[q_proj,v_proj]' \
+    --train_on_inputs \
+    --group_by_length \
 ```
+
+#### LoRA微调LLaMA
+遵循上面的命令
+
+#### LoRA微调CaMA
+请参考[CaMA/2.2 预训练模型权重获取与恢复](https://github.com/zjunlp/CaMA/tree/main)获得完整的CaMA模型权重。
+
+注意: 由于CaMA已经在大量的信息抽取指令数据集上经过LoRA训练, 因此可以跳过这一步直接执行第3步`预测`, 你也可以选择进一步训练。
+
+大致遵循上面的命令, 仅需做出下列修改
+```bash
+--base_model 'path to CaMA'
+--output_dir 'lora/cama-13b-e3-r8' \
+```
+
+### ChatGLM
+
+#### LoRA微调ChatGLM
+
+
+#### P-Tuning微调ChatGLM
+
+
 
 
 ## 3.预测
@@ -120,16 +171,10 @@ bash scripts/run_finetune_mul.bash
 * [alpaca-13b-lora-ie](https://huggingface.co/zjunlp/alpaca-13b-lora-ie)
 * [CaMA-13B-LoRA](https://huggingface.co/zjunlp/CaMA-13B-LoRA)
 
-你可以通过下面的脚本使用训练好的LoRA模型在比赛测试集上预测输出:
+你可以通过下面的命令设置自己的参数执行来使用训练好的LoRA模型在比赛测试集上预测输出:
 
 ```bash
-bash scripts/run_inference.bash
-```
-
-或者通过下面的命令设置自己的参数执行:
-
-```bash
-CUDA_VISIBLE_DEVICES="0" python inference.py \
+CUDA_VISIBLE_DEVICES="0" python inference_llama.py \
     --base_model 'decapoda-research/llama-7b-hf' \
     --lora_weights 'lora/llama-7b-e3-r8' \
     --input_file 'data/valid.json' \
