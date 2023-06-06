@@ -6,27 +6,27 @@
 
 
 - [InstructionKGC-指令驱动的自适应知识图谱构建](#instructionkgc-指令驱动的自适应知识图谱构建)
-  - [任务目标](#任务目标)
-  - [数据](#数据)
-  - [准备](#准备)
+  - [1.任务目标](#1任务目标)
+  - [2.数据](#2数据)
+  - [3.准备](#3准备)
     - [环境](#环境)
     - [下载数据](#下载数据)
     - [模型](#模型)
-  - [LLaMA系列](#llama系列)
+  - [4.LLaMA系列](#4llama系列)
     - [LoRA微调LLaMA](#lora微调llama)
     - [LoRA微调CaMA](#lora微调cama)
     - [预测](#预测)
-  - [ChatGLM](#chatglm)
+  - [5.ChatGLM](#5chatglm)
     - [LoRA微调ChatGLM](#lora微调chatglm)
     - [P-Tuning微调ChatGLM](#p-tuning微调chatglm)
     - [预测](#预测-1)
-  - [.格式转换](#格式转换)
-  - [硬件](#硬件)
-  - [Acknowledgment](#acknowledgment)
+  - [6.格式转换](#6格式转换)
+  - [7.硬件](#7硬件)
+  - [8.Acknowledgment](#8acknowledgment)
   - [Citation](#citation)
 
 
-## 任务目标
+## 1.任务目标
 
 根据用户输入的指令抽取相应类型的实体和关系，构建知识图谱。其中可能包含知识图谱补全任务，即任务需要模型在抽取实体关系三元组的同时对缺失三元组进行补全。
 
@@ -48,7 +48,7 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 虽然`miss_input`中不包含“协助国家队夺得冠军”这段文字，但是模型能够补齐缺失的三元组，即仍然需要输出`(弗雷泽,属于,国家队)(国家队,夺得,冠军)`。
 
-## 数据
+## 2.数据
 
 比赛数据的训练集每条数据包含如下字段：
 
@@ -63,7 +63,7 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 在测试集中仅包含`id`、`instruction`、`input`三个字段。
 
 
-## 准备
+## 3.准备
 ### 环境
 请参考[DeepKE/example/llm/README_CN.md](../README_CN.md/#环境依赖)创建python虚拟环境, 然后激活该环境 `deepke-llm`:
 ```
@@ -95,7 +95,7 @@ mkdir data
 
 
 
-## LLaMA系列
+## 4.LLaMA系列
 
 ### LoRA微调LLaMA
 
@@ -176,17 +176,18 @@ CUDA_VISIBLE_DEVICES="0" python inference_llama.py \
 ```
 
 
-## ChatGLM
+## 5.ChatGLM
 
 ### LoRA微调ChatGLM
 
 
 ### P-Tuning微调ChatGLM
 
+
 ### 预测
 
 
-## .格式转换
+## 6.格式转换
 上面的 `bash run_inference.bash` 会在 `result` 目录下输出 `output_llama_7b_e3_r8.json` 文件, 文件中不包含 'kg' 字段, 如果需要满足CCKS2023比赛的提交格式还需要从 'output' 中抽取出 'kg', 这里提供一个简单的样例 `convert.py`
 
 ```bash
@@ -196,12 +197,12 @@ python utils/convert.py \
 ```
 
 
-## 硬件
+## 7.硬件
 我们在1块 上对模型进行了finetune
 注意：请确保你的设备或服务器有足够的RAM内存！！！
 
 
-## Acknowledgment
+## 8.Acknowledgment
 
 代码基本来自于[Alpaca-LoRA](https://github.com/tloen/alpaca-lora), 仅做了部分改动, 感谢！
 

@@ -5,27 +5,27 @@
 </p>
 
 - [InstructKGC-CCKS2023 Evaluation of Instruction-based Knowledge Graph Construction](#instructkgc-ccks2023-evaluation-of-instruction-based-knowledge-graph-construction)
-  - [Task Object](#task-object)
-  - [Data](#data)
-  - [Preparation](#preparation)
+  - [1.Task Object](#1task-object)
+  - [2.Data](#2data)
+  - [3.Preparation](#3preparation)
     - [Environment](#environment)
     - [Download data](#download-data)
     - [Model](#model)
-  - [LLaMA-series](#llama-series)
+  - [4.LLaMA-series](#4llama-series)
     - [LoRA Fine-tuning with LLaMA](#lora-fine-tuning-with-llama)
     - [LoRA Fine-tuning with CaMA](#lora-fine-tuning-with-cama)
     - [Predict](#predict)
-  - [ChatGLM](#chatglm)
+  - [5.ChatGLM](#5chatglm)
     - [LoRA Fine-tuning with ChatGLM](#lora-fine-tuning-with-chatglm)
     - [P-Tuning Fine-tuning with ChatGLM](#p-tuning-fine-tuning-with-chatglm)
     - [Predict](#predict-1)
-  - [Format Conversion](#format-conversion)
-  - [Hardware](#hardware)
-  - [Acknowledgment](#acknowledgment)
+  - [6.Format Conversion](#6format-conversion)
+  - [7.Hardware](#7hardware)
+  - [8.Acknowledgment](#8acknowledgment)
   - [Citation](#citation)
 
 
-## Task Object
+## 1.Task Object
 
 Extract relevant entities and relations according to user input instructions to construct a knowledge graph. This task may include knowledge graph completion, where the model is required to complete missing triples while extracting entity-relation triples.
 
@@ -49,7 +49,7 @@ Although the text "协助国家队夺得冠军" is not included in `miss_input`,
 
 
 
-## Data
+## 2.Data
 
 The training dataset for the competition contains the following fields for each data entry:
 
@@ -66,7 +66,7 @@ In the test set, only the three fields `id`, `instruction`, and `input` are incl
 
 
 
-## Preparation
+## 3.Preparation
 
 ### Environment
 Please refer to [DeepKE/example/llm/README.md](../README.md/#requirements) to create a Python virtual environment, and activate the `deepke-llm` environment:
@@ -98,7 +98,7 @@ Here are some models:
 
 
 
-## LLaMA-series
+## 4.LLaMA-series
 
 ### LoRA Fine-tuning with LLaMA
 
@@ -180,7 +180,7 @@ CUDA_VISIBLE_DEVICES="0" python inference.py \
 
 
 
-## ChatGLM
+## 5.ChatGLM
 
 
 ### LoRA Fine-tuning with ChatGLM
@@ -194,7 +194,7 @@ CUDA_VISIBLE_DEVICES="0" python inference.py \
 
 
 
-## Format Conversion
+## 6.Format Conversion
 The `bash run_inference.bash` command mentioned above will output a file named `output_llama_7b_e3_r8.json` in the `result` directory, which does not contain the 'kg' field. If you need to meet the submission format requirements of the CCKS2023 competition, you also need to extract 'kg' from 'output'. Here is a simple example script called `convert.py`.
 
 
@@ -205,12 +205,12 @@ python utils/convert.py \
 ```
 
 
-## Hardware
+## 7.Hardware
 We performed finetune on the model on 1 `RTX3090 24GB`
 Attention: Please ensure that your device or server has sufficient RAM memory!!!
 
 
-## Acknowledgment
+## 8.Acknowledgment
 The code basically comes from [Alpaca-LoRA](https://github.com/tloen/alpaca-lora). Only some changes have been made, many thanks.
 
 ## Citation
