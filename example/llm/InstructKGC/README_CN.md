@@ -190,7 +190,7 @@ deepspeed finetuning_lora.py
 ```bash
     parser = argparse.ArgumentParser()
     parser.add_argument('--train_path', default='data/train.json', type=str, help='')
-    parser.add_argument('--model_dir', default="./model",  type=str, help='')
+    parser.add_argument('--model_dir', default="/model",  type=str, help='')
     parser.add_argument('--num_train_epochs', default=5, type=int, help='')
     parser.add_argument('--train_batch_size', default=1, type=int, help='')
     parser.add_argument('--gradient_accumulation_steps', default=1, type=int, help='')
@@ -248,12 +248,20 @@ CUDA_VISIBLE_DEVICES=0 python inference_chatglm_lora.py
 
 ```bash
     parser = argparse.ArgumentParser()
-    parser.add_argument('--test_path', default='data/test.json', type=str, help='')
-    parser.add_argument('--device', default='0', type=str, help='')
-    parser.add_argument('--model_dir',default="./model", type=str,help='')
+    parser.add_argument('--test_path', default='data/valid.json', type=str, help='')
+    parser.add_argument('--device', default='3', type=str, help='')
+    parser.add_argument('--ori_model_dir',
+                        default="/model", type=str,
+                        help='')
+    parser.add_argument('--model_dir',
+                        default="/output_dir_lora/global_step-/", type=str,
+                        help='')
     parser.add_argument('--max_len', type=int, default=768, help='')
     parser.add_argument('--max_src_len', type=int, default=450, help='')
-    parser.add_argument('--prompt_text', type=str,default="",help='')
+    parser.add_argument('--prompt_text', type=str,
+                        default="",
+                        help='')
+    return parser.parse_args()
 ```
 
 
@@ -267,12 +275,17 @@ CUDA_VISIBLE_DEVICES=0 python inference_chatglm_pt.py
 
 ```bash
     parser = argparse.ArgumentParser()
-    parser.add_argument('--test_path', default='data/test.json', type=str, help='')
-    parser.add_argument('--device', default='0', type=str, help='')
-    parser.add_argument('--model_dir',default="./model", type=str,help='')
+    parser.add_argument('--test_path', default='data/valid.json', type=str, help='')
+    parser.add_argument('--device', default='3', type=str, help='')
+    parser.add_argument('--model_dir',
+                        default="/output_dir_pt/global_step-/", type=str,
+                        help='')
     parser.add_argument('--max_len', type=int, default=768, help='')
     parser.add_argument('--max_src_len', type=int, default=450, help='')
-    parser.add_argument('--prompt_text', type=str,default="",help='')
+    parser.add_argument('--prompt_text', type=str,
+                        default=" ",
+                        help='')
+    return parser.parse_args()
 ```
 
 ## 6.格式转换
