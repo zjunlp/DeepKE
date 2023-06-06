@@ -215,7 +215,9 @@ You can use the P-Tuning method to finetune the model using the following script
 ```bash
 deepspeed finetuning_pt.py
 ```
+
 Alternatively, set your own parameters to execute using the following command:
+
 
 ```bash
     parser = argparse.ArgumentParser()
@@ -235,6 +237,7 @@ Alternatively, set your own parameters to execute using the following command:
                         default="",
                         help='')
     return parser.parse_args()
+```
 
 ### Predict
 You can use the trained LoRA model to predict the output on the competition test set using the following script:
