@@ -96,7 +96,7 @@ def main():
                 "contiguous_gradients": True
             },
             "steps_per_print": args.log_steps
-            }
+    }
 
     print_trainable_parameters(model)
     for name, param in model.named_parameters():

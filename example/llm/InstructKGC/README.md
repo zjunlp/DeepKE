@@ -7,16 +7,23 @@
 - [InstructKGC-CCKS2023 Evaluation of Instruction-based Knowledge Graph Construction](#instructkgc-ccks2023-evaluation-of-instruction-based-knowledge-graph-construction)
   - [Task Object](#task-object)
   - [Data](#data)
-  - [1. Preparation](#1-preparation)
+  - [Preparation](#preparation)
     - [Environment](#environment)
     - [Download data](#download-data)
     - [Model](#model)
-  - [2. Run](#2-run)
-  - [3. Predict or Inference](#3-predict-or-inference)
-  - [4. Format Conversion](#4-format-conversion)
-  - [5. Hardware](#5-hardware)
-  - [6.Acknowledgment](#6acknowledgment)
-  - [7.Citation](#7citation)
+  - [LLaMA-series](#llama-series)
+    - [LoRA Fine-tuning with LLaMA](#lora-fine-tuning-with-llama)
+    - [LoRA Fine-tuning with CaMA](#lora-fine-tuning-with-cama)
+    - [Predict](#predict)
+  - [ChatGLM](#chatglm)
+    - [LoRA Fine-tuning with ChatGLM](#lora-fine-tuning-with-chatglm)
+    - [P-Tuning Fine-tuning with ChatGLM](#p-tuning-fine-tuning-with-chatglm)
+    - [Predict](#predict-1)
+  - [Format Conversion](#format-conversion)
+  - [Hardware](#hardware)
+  - [Acknowledgment](#acknowledgment)
+  - [Citation](#citation)
+
 
 ## Task Object
 
@@ -40,6 +47,8 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 Although the text "协助国家队夺得冠军" is not included in `miss_input`, the model can still complete the missing triples, i.e., it still needs to output `(弗雷泽,属于,国家队)(国家队,夺得,冠军)`.
 
+
+
 ## Data
 
 The training dataset for the competition contains the following fields for each data entry:
@@ -55,7 +64,10 @@ The training dataset for the competition contains the following fields for each 
 In the test set, only the three fields `id`, `instruction`, and `input` are included.
 
 
-## 1. Preparation
+
+
+## Preparation
+
 ### Environment
 Please refer to [DeepKE/example/llm/README.md](../README.md/#requirements) to create a Python virtual environment, and activate the `deepke-llm` environment:
 ```
@@ -79,21 +91,18 @@ Here are some models:
 * [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
 * [CaMA-13b](https://huggingface.co/zjunlp/CaMA-13B-Diff)
-
-If you want to use CaMA, please refer to [CaMA/2.2 Pretrained Model Weights Acquisition and Restoration](https://github.com/zjunlp/CaMA/tree/main) to obtain the complete CaMA model weights.
-
-## 2. Run
-
-You can use the LoRA method to finetune the model using the following script:
-
-Note: Since CaMA has already been trained on a large amount of information extraction instruction datasets using LoRA, you can skip this step and proceed directly to step 3: `Predict`. However, you also have the option to further fine-tune the model if desired.
+* [fnlp/moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
+* [openbmb/cpm-bee-5b](https://huggingface.co/openbmb/cpm-bee-5b)
+* [Linly-AI/ChatFlow-7B](https://huggingface.co/Linly-AI/ChatFlow-7B)
+* [Linly-AI/Chinese-LLaMA-7B](https://huggingface.co/Linly-AI/Chinese-LLaMA-7B)
 
 
-```bash
-bash scripts/run_finetune.bash
-```
 
-Alternatively, set your own parameters to execute using the following command:
+## LLaMA-series
+
+### LoRA Fine-tuning with LLaMA
+
+You can use the LoRA method to fine tune the model by setting your own parameters using the following command:
 
 ```bash
 CUDA_VISIBLE_DEVICES="0" python finetune.py \
@@ -118,28 +127,47 @@ CUDA_VISIBLE_DEVICES="0" python finetune.py \
 2. `gradient_accumulation_steps` = `batch_size` // `micro_batch_size` // Number of GPU
 
 
-We also provide multiple GPU versions of LoRA training scripts:
+We also provide multiple GPU versions of LoRA training commands:
 
 ```bash
-bash scripts/run_finetune_mul.bash
+CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 finetune_llama.py \
+    --base_model 'decapoda-research/llama-7b-hf' \
+    --train_path 'data/train.json' \
+    --output_dir 'lora/llama-7b-e3-r8' \
+    --batch_size 960 \
+    --micro_train_batch_size 10 \
+    --num_epochs 3 \
+    --learning_rate 1e-4 \
+    --cutoff_len 512 \
+    --val_set_size 1000 \
+    --lora_r 8 \
+    --lora_alpha 16 \
+    --lora_dropout 0.05 \
+    --lora_target_modules '[q_proj,v_proj]' \
+    --train_on_inputs \
+    --group_by_length \
 ```
 
 
+### LoRA Fine-tuning with CaMA
+Please refer to [CaMA/2.2 Pre-trained Model Weight Acquisition and Restoration](https://github.com/zjunlp/CaMA/tree/main) to obtain the complete CaMA model weights.
 
-## 3. Predict or Inference
+Note: Since CaMA has already been trained with LoRA on a large-scale information extraction instruction dataset, you can skip this step and proceed directly to Step 3 `Prediction", or you can choose to further train.
+
+Follow the command mentioned above [LoRA Fine-tuning with LLaMA](./README.md/#lora-fine-tuning-with-llama) with the following modifications.
+```bash
+--base_model 'path to CaMA'
+--output_dir 'lora/cama-13b-e3-r8' \
+```
+
+### Predict
 Here are some trained versions of LoRA:
 * [alpaca-7b-lora-ie](https://huggingface.co/zjunlp/alpaca-7b-lora-ie)
 * [llama-7b-lora-ie](https://huggingface.co/zjunlp/llama-7b-lora-ie)
 * [alpaca-13b-lora-ie](https://huggingface.co/zjunlp/alpaca-13b-lora-ie)
 * [CaMA-13B-LoRA](https://huggingface.co/zjunlp/CaMA-13B-LoRA)
 
-You can use the trained LoRA model to predict the output on the competition test set using the following script:
-
-```bash
-bash scripts/run_inference.bash
-```
-
-Alternatively, set your own parameters to execute using the following command:
+You can use the following command to set your own parameters and execute it to make predictions using the trained LoRA model on the competition test set:
 
 ```bash
 CUDA_VISIBLE_DEVICES="0" python inference.py \
@@ -151,7 +179,22 @@ CUDA_VISIBLE_DEVICES="0" python inference.py \
 ```
 
 
-## 4. Format Conversion
+
+## ChatGLM
+
+
+### LoRA Fine-tuning with ChatGLM
+
+
+### P-Tuning Fine-tuning with ChatGLM
+
+### Predict
+
+
+
+
+
+## Format Conversion
 The `bash run_inference.bash` command mentioned above will output a file named `output_llama_7b_e3_r8.json` in the `result` directory, which does not contain the 'kg' field. If you need to meet the submission format requirements of the CCKS2023 competition, you also need to extract 'kg' from 'output'. Here is a simple example script called `convert.py`.
 
 
@@ -162,15 +205,15 @@ python utils/convert.py \
 ```
 
 
-## 5. Hardware
+## Hardware
 We performed finetune on the model on 1 `RTX3090 24GB`
 Attention: Please ensure that your device or server has sufficient RAM memory!!!
 
 
-## 6.Acknowledgment
+## Acknowledgment
 The code basically comes from [Alpaca-LoRA](https://github.com/tloen/alpaca-lora). Only some changes have been made, many thanks.
 
-## 7.Citation
+## Citation
 
 If you use this project, please cite the following papers:
 ```bibtex

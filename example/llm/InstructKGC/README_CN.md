@@ -8,22 +8,22 @@
 - [InstructionKGC-指令驱动的自适应知识图谱构建](#instructionkgc-指令驱动的自适应知识图谱构建)
   - [任务目标](#任务目标)
   - [数据](#数据)
-  - [1.准备](#1准备)
+  - [准备](#准备)
     - [环境](#环境)
     - [下载数据](#下载数据)
     - [模型](#模型)
-  - [2.运行](#2运行)
-    - [LLaMA系列](#llama系列)
-      - [LoRA微调LLaMA](#lora微调llama)
-      - [LoRA微调CaMA](#lora微调cama)
-    - [ChatGLM](#chatglm)
-      - [LoRA微调ChatGLM](#lora微调chatglm)
-      - [P-Tuning微调ChatGLM](#p-tuning微调chatglm)
-  - [3.预测](#3预测)
-  - [4.格式转换](#4格式转换)
-  - [5.硬件](#5硬件)
-  - [6.Acknowledgment](#6acknowledgment)
-  - [7.Citation](#7citation)
+  - [LLaMA系列](#llama系列)
+    - [LoRA微调LLaMA](#lora微调llama)
+    - [LoRA微调CaMA](#lora微调cama)
+    - [预测](#预测)
+  - [ChatGLM](#chatglm)
+    - [LoRA微调ChatGLM](#lora微调chatglm)
+    - [P-Tuning微调ChatGLM](#p-tuning微调chatglm)
+    - [预测](#预测-1)
+  - [.格式转换](#格式转换)
+  - [硬件](#硬件)
+  - [Acknowledgment](#acknowledgment)
+  - [Citation](#citation)
 
 
 ## 任务目标
@@ -63,7 +63,7 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 在测试集中仅包含`id`、`instruction`、`input`三个字段。
 
 
-## 1.准备
+## 准备
 ### 环境
 请参考[DeepKE/example/llm/README_CN.md](../README_CN.md/#环境依赖)创建python虚拟环境, 然后激活该环境 `deepke-llm`:
 ```
@@ -89,11 +89,16 @@ mkdir data
 * [CaMA-13b](https://huggingface.co/zjunlp/CaMA-13B-Diff)
 * [fnlp/moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
 * [openbmb/cpm-bee-5b](https://huggingface.co/openbmb/cpm-bee-5b)
+* [Linly-AI/ChatFlow-7B](https://huggingface.co/Linly-AI/ChatFlow-7B)
+* [Linly-AI/Chinese-LLaMA-7B](https://huggingface.co/Linly-AI/Chinese-LLaMA-7B)
 
 
-## 2.运行
 
-### LLaMA系列
+
+## LLaMA系列
+
+### LoRA微调LLaMA
+
 你可以通过下面的命令设置自己的参数使用LoRA方法来微调模型:
 
 ```bash
@@ -139,32 +144,20 @@ CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 fine
     --group_by_length \
 ```
 
-#### LoRA微调LLaMA
-遵循上面的命令
 
-#### LoRA微调CaMA
+### LoRA微调CaMA
 请参考[CaMA/2.2 预训练模型权重获取与恢复](https://github.com/zjunlp/CaMA/tree/main)获得完整的CaMA模型权重。
 
 注意: 由于CaMA已经在大量的信息抽取指令数据集上经过LoRA训练, 因此可以跳过这一步直接执行第3步`预测`, 你也可以选择进一步训练。
 
-大致遵循上面的命令, 仅需做出下列修改
+大致遵循上面的[LoRA微调LLaMA](./README_CN.md/#lora微调llama)命令, 仅需做出下列修改
 ```bash
 --base_model 'path to CaMA'
 --output_dir 'lora/cama-13b-e3-r8' \
 ```
 
-### ChatGLM
 
-#### LoRA微调ChatGLM
-
-
-#### P-Tuning微调ChatGLM
-
-
-
-
-## 3.预测
-
+### 预测
 以下是训练好的一些LoRA版本:
 * [alpaca-7b-lora-ie](https://huggingface.co/zjunlp/alpaca-7b-lora-ie)
 * [llama-7b-lora-ie](https://huggingface.co/zjunlp/llama-7b-lora-ie)
@@ -183,7 +176,17 @@ CUDA_VISIBLE_DEVICES="0" python inference_llama.py \
 ```
 
 
-## 4.格式转换
+## ChatGLM
+
+### LoRA微调ChatGLM
+
+
+### P-Tuning微调ChatGLM
+
+### 预测
+
+
+## .格式转换
 上面的 `bash run_inference.bash` 会在 `result` 目录下输出 `output_llama_7b_e3_r8.json` 文件, 文件中不包含 'kg' 字段, 如果需要满足CCKS2023比赛的提交格式还需要从 'output' 中抽取出 'kg', 这里提供一个简单的样例 `convert.py`
 
 ```bash
@@ -193,16 +196,16 @@ python utils/convert.py \
 ```
 
 
-## 5.硬件
+## 硬件
 我们在1块 上对模型进行了finetune
 注意：请确保你的设备或服务器有足够的RAM内存！！！
 
 
-## 6.Acknowledgment
+## Acknowledgment
 
 代码基本来自于[Alpaca-LoRA](https://github.com/tloen/alpaca-lora), 仅做了部分改动, 感谢！
 
-## 7.Citation
+## Citation
 
 如果您使用了本项目代码或数据，烦请引用下列论文:
 ```bibtex
