@@ -19,7 +19,7 @@ def set_args():
     parser.add_argument('--max_len', type=int, default=768, help='')
     parser.add_argument('--max_src_len', type=int, default=450, help='')
     parser.add_argument('--prompt_text', type=str,
-                        default="你现在是一个信息抽取模型，请你帮我抽取出关系内容为\"性能故障\", \"部件故障\", \"组成\"和 \"检测工具\"的相关三元组，三元组内部用\"_\"连接，三元组之间用\\n分割。文本：",
+                        default="",
                         help='')
     return parser.parse_args()
 
