@@ -62,6 +62,7 @@
 <br>
 
 # What's New
+* `June, 2023` We have released a LLM [CaMA](https://github.com/zjunlp/CaMA) for knowledge extraction, and provided more LLMs (e.g., ChatGLM, LLaMA-series) support for [DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm).
 * `Apr, 2023` We have added new models, including [CP-NER(IJCAI'23)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/cross), [ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE), provided [event extraction](https://github.com/zjunlp/DeepKE/tree/main/example/ee/standard) capabilities (Chinese and English), and offered compatibility with higher versions of Python packages (e.g., Transformers).
 
 * `Feb, 2023` We have supported using [LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm) (GPT-3) with in-context learning (based on [EasyInstruct](https://github.com/zjunlp/EasyInstruct)) & data generation, added a NER model [W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/w2ner).
@@ -631,7 +632,7 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 7.Make sure the exact versions of requirements in `requirements.txt`.
 
 # To do
-In next version, we plan to release a LLM for KE. 
+In next version, we plan to release a multimodal LLM for KE. 
 
 Meanwhile, we will offer long-term maintenance to **fix bugs**, **solve issues** and meet **new requests**. So if you have any problems, please put issues to us.
 
