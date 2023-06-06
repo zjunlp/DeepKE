@@ -184,13 +184,104 @@ CUDA_VISIBLE_DEVICES="0" python inference.py \
 
 
 ### LoRA Fine-tuning with ChatGLM
+You can use the LoRA method to finetune the model using the following script:
 
+```bash
+deepspeed finetuning_lora.py
+```
+Alternatively, set your own parameters to execute using the following command:
+
+```bash
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--train_path', default='data/train.json', type=str, help='')
+    parser.add_argument('--model_dir', default="/model",  type=str, help='')
+    parser.add_argument('--num_train_epochs', default=5, type=int, help='')
+    parser.add_argument('--train_batch_size', default=1, type=int, help='')
+    parser.add_argument('--gradient_accumulation_steps', default=1, type=int, help='')
+    parser.add_argument('--output_dir', default='output_dir_lora/', type=str, help='')
+    parser.add_argument('--log_steps', type=int, default=10, help='')
+    parser.add_argument('--max_len', type=int, default=400, help='')
+    parser.add_argument('--max_src_len', type=int, default=450, help='')
+    parser.add_argument('--local_rank', type=int, default=0, help='')
+    parser.add_argument('--lora_r', type=int, default=8, help='')
+    parser.add_argument('--prompt_text', type=str,default="",help='')
+    return parser.parse_args()
+
+```
 
 ### P-Tuning Fine-tuning with ChatGLM
+You can use the P-Tuning method to finetune the model using the following script:
+
+```bash
+deepspeed finetuning_pt.py
+```
+Alternatively, set your own parameters to execute using the following command:
+
+```bash
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--train_path', default='data/train.json', type=str, help='')
+    parser.add_argument('--model_dir', default="/model", type=str, help='')
+    parser.add_argument('--num_train_epochs', default=20, type=int, help='')
+    parser.add_argument('--train_batch_size', default=2, type=int, help='')
+    parser.add_argument('--gradient_accumulation_steps', default=1, type=int, help='')
+    parser.add_argument('--output_dir', default='output_dir_pt/', type=str, help='')
+    parser.add_argument('--log_steps', type=int, default=10, help='')
+    parser.add_argument('--max_len', type=int, default=768, help='')
+    parser.add_argument('--max_src_len', type=int, default=450, help='')
+    parser.add_argument('--pre_seq_len', type=int, default=16, help='')
+    parser.add_argument('--prefix_projection', type=bool, default=True, help='')
+    parser.add_argument('--local_rank', type=int, default=0, help='')
+    parser.add_argument('--prompt_text', type=str,
+                        default="",
+                        help='')
+    return parser.parse_args()
 
 ### Predict
+You can use the trained LoRA model to predict the output on the competition test set using the following script:
 
+```bash
+CUDA_VISIBLE_DEVICES=0 python inference_chatglm_lora.py 
+```
+Alternatively, set your own parameters to execute using the following command:
 
+```bash
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--test_path', default='data/valid.json', type=str, help='')
+    parser.add_argument('--device', default='3', type=str, help='')
+    parser.add_argument('--ori_model_dir',
+                        default="/model", type=str,
+                        help='')
+    parser.add_argument('--model_dir',
+                        default="/output_dir_lora/global_step-/", type=str,
+                        help='')
+    parser.add_argument('--max_len', type=int, default=768, help='')
+    parser.add_argument('--max_src_len', type=int, default=450, help='')
+    parser.add_argument('--prompt_text', type=str,
+                        default="",
+                        help='')
+    return parser.parse_args()
+```
+You can use the trained P-Tuning model to predict the output on the competition test set using the following script:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python inference_chatglm_pt.py 
+```
+Alternatively, set your own parameters to execute using the following command:
+
+```bash
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--test_path', default='data/valid.json', type=str, help='')
+    parser.add_argument('--device', default='3', type=str, help='')
+    parser.add_argument('--model_dir',
+                        default="/output_dir_pt/global_step-/", type=str,
+                        help='')
+    parser.add_argument('--max_len', type=int, default=768, help='')
+    parser.add_argument('--max_src_len', type=int, default=450, help='')
+    parser.add_argument('--prompt_text', type=str,
+                        default=" ",
+                        help='')
+    return parser.parse_args()
+```
 
 
 
