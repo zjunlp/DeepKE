@@ -85,9 +85,9 @@ CaMA follows a two-step approach: (1) It performs further full pre-training on L
 For detailed information about the model, please refer to [CaMA: A Chinese-English Bilingual LLaMA Model](https://github.com/zjunlp/CaMA/blob/main/README_EN.md).
 
 
-### Case 1: LoRA Fine-tuning of LLaMA for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md) | [Chinese](./InstructKGC/README_CN.md)
+### Case 1: LoRA Fine-tuning of LLaMA for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md/#lora-fine-tuning-with-llama) | [Chinese](./InstructKGC/README_CN.md/#lora微调llama)
 
-### Case 2: Using CaMA for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md) | [Chinese](./InstructKGC/README_CN.md)
+### Case 2: Using CaMA for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md/#lora-fine-tuning-with-cama) | [Chinese](./InstructKGC/README_CN.md/#lora微调cama)
 
 
 
@@ -97,8 +97,8 @@ For detailed information about the model, please refer to [CaMA: A Chinese-Engli
 <a href="" target="_blank"><img src="assets/chatglm_logo.png" alt="ChatGLM" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
-### Case 1: LoRA Fine-tuning of ChatGLM for CCKS2023 Instruction-based KG Construction [English](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_LORA_EN.md) | [Chinese](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_LORA.md) 
-### Case 2: P-Tuning of ChatGLM for CCKS2023 Instruction-based KG Construction [English](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_PT_EN.md) | [Chinese](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_PT.md)
+### Case 1: LoRA Fine-tuning of ChatGLM for CCKS2023 Instruction-based KG Construction [English](./InstructKGC//README.md/#lora-fine-tuning-with-chatglm) | [Chinese](./InstructKGC//README_CN.md/#lora微调chatglm) 
+### Case 2: P-Tuning of ChatGLM for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md/#p-tuning-fine-tuning-with-chatglm) | [Chinese](./InstructKGC/README_CN.md/#p-tuning微调chatglm)
 
 
 

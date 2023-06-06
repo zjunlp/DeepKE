@@ -85,9 +85,9 @@ CaMA首先（1）使用中文语料首先对LLaMA（13B）进行进一步全量�
 
 模型详细信息请参考[CaMA: A Chinese-English Bilingual LLaMA Model](https://github.com/zjunlp/CaMA/tree/main)
 
-### 案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md) | [中文](./InstructKGC/README_CN.md)
+### 案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-llama) | [中文](./InstructKGC/README_CN.md/#lora微调llama)
 
-### 案例一：使用CaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md) | [中文](./InstructKGC/README_CN.md)
+### 案例一：使用CaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-cama) | [中文](./InstructKGC/README_CN.md/#lora微调cama)
 
 
 
@@ -97,8 +97,8 @@ CaMA首先（1）使用中文语料首先对LLaMA（13B）进行进一步全量�
 <a href="" target="_blank"><img src="assets/chatglm_logo.png" alt="ChatGLM" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
-### 案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_LORA_EN.md) | [中文](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_LORA.md) 
-### 案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_PT_EN.md) | [中文](https://github.com/zjunlp/DeepKE/blob/main/example/llm/chatglm/README_PT.md)
+### 案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#lora-fine-tuning-with-chatglm) | [中文](./InstructKGC//README_CN.md/#lora微调chatglm) 
+### 案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#p-tuning-fine-tuning-with-chatglm) | [中文](./InstructKGC/README_CN.md/#p-tuning微调chatglm)
 
 
 
