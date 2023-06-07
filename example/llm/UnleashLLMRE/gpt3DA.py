@@ -35,7 +35,7 @@ if __name__ == "__main__":
     parser.add_argument('--demo_path', '-dp', type=str, required=True, help="The directory of demonstration data.")
     parser.add_argument('--output_dir', type=str, required=True, help="The output directory of generated data.")
     parser.add_argument('--dataset', type=str, required=True, choices=["tacred", "tacrev", "retacred"])
-    parser.add_argument('--k', type=int, default=1, help="k-shot demonstrations")
+    parser.add_argument('--k', type=int, default=3, help="k-shot demonstrations")
     args = parser.parse_args()
     
     openai.api_key = args.api_key
