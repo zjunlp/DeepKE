@@ -226,7 +226,6 @@ python predict.py
 - transformers == 3.4.0
 - jieba == 0.42.1
 - scikit-learn == 0.24.1
-- pytorch-transformers == 1.2.0
 - seqeval == 1.2.2
 - tqdm == 4.60.0
 - opt-einsum==3.3.0
