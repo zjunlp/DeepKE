@@ -33,7 +33,7 @@
 - [模型](#模型)
   - [LLaMA系列](#llama系列)
     - [案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调llama完成ccks2023指令驱动的知识图谱构建-英文--中文)
-    - [案例一：使用CaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一使用cama完成ccks2023指令驱动的知识图谱构建-英文--中文)
+    - [案例一：使用ZhiXi完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一使用zhixi完成ccks2023指令驱动的知识图谱构建-英文--中文)
   - [ChatGLM](#chatglm)
     - [案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文)
     - [案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例二p-tuning微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文)
@@ -78,16 +78,16 @@ LLaMA，它是一组从7B到65B参数的基础语言模型
 
 
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/cama_logo.jpeg" alt="ZJU-CaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/zhixi_logo.jpeg" alt="ZJU-CaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
-CaMA首先（1）使用中文语料首先对LLaMA（13B）进行进一步全量预训练，在尽可能保留原来的英文和代码能力的前提下，进一步提高模型对于中文理解能力和知识储备；接着（2）使用指令数据集对第一步的模型微调，来提高语言模型对于人类指令的理解。
+ZhiXi首先（1）使用中文语料首先对LLaMA（13B）进行进一步全量预训练，在尽可能保留原来的英文和代码能力的前提下，进一步提高模型对于中文理解能力和知识储备；接着（2）使用指令数据集对第一步的模型微调，来提高语言模型对于人类指令的理解。
 
 模型详细信息请参考[CaMA: A Chinese-English Bilingual LLaMA Model](https://github.com/zjunlp/CaMA/tree/main)
 
 ### 案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-llama) | [中文](./InstructKGC/README_CN.md/#lora微调llama)
 
-### 案例一：使用CaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-cama) | [中文](./InstructKGC/README_CN.md/#lora微调cama)
+### 案例一：使用ZhiXi完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-zhixi) | [中文](./InstructKGC/README_CN.md/#lora微调zhixi)
 
 
 

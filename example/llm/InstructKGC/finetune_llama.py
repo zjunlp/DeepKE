@@ -183,12 +183,10 @@ def train(
     if train_path is not None:
         train_data = Dataset.from_json(
             train_path, 
-            cache_dir=os.environ["HF_DATASETS_CACHE"]
         )
     if valid_path is not None:
         valid_data = Dataset.from_json(
             valid_path, 
-            cache_dir=os.environ["HF_DATASETS_CACHE"]
         )
     elif valid_path is None and train_path is not None:
         train_val = train_data.train_test_split(test_size=val_set_size, shuffle=True, seed=42)

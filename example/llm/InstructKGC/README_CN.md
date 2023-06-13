@@ -14,7 +14,7 @@
     - [模型](#模型)
   - [4.LLaMA系列](#4llama系列)
     - [LoRA微调LLaMA](#lora微调llama)
-    - [LoRA微调CaMA](#lora微调cama)
+    - [LoRA微调ZhiXi](#lora微调zhixi)
     - [预测](#预测)
   - [5.ChatGLM](#5chatglm)
     - [LoRA微调ChatGLM](#lora微调chatglm)
@@ -86,7 +86,7 @@ mkdir data
 * [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
 * [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
-* [CaMA-13b](https://huggingface.co/zjunlp/CaMA-13B-Diff)
+* [zhixi-13b](https://huggingface.co/zjunlp/zhixi-13b-diff)
 * [fnlp/moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
 * [openbmb/cpm-bee-5b](https://huggingface.co/openbmb/cpm-bee-5b)
 * [Linly-AI/ChatFlow-7B](https://huggingface.co/Linly-AI/ChatFlow-7B)
@@ -145,14 +145,14 @@ CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 fine
 ```
 
 
-### LoRA微调CaMA
-请参考[CaMA/2.2 预训练模型权重获取与恢复](https://github.com/zjunlp/CaMA/tree/main)获得完整的CaMA模型权重。
+### LoRA微调ZhiXi
+请参考[KnowLLM2.2预训练模型权重获取与恢复](https://github.com/zjunlp/KnowLLM)获得完整的CaMA模型权重。
 
-注意: 由于CaMA已经在大量的信息抽取指令数据集上经过LoRA训练, 因此可以跳过这一步直接执行第3步`预测`, 你也可以选择进一步训练。
+注意: 由于ZhiXi已经在大量的信息抽取指令数据集上经过LoRA训练, 因此可以跳过这一步直接执行第3步`预测`, 你也可以选择进一步训练。
 
 大致遵循上面的[LoRA微调LLaMA](./README_CN.md/#lora微调llama)命令, 仅需做出下列修改
 ```bash
---base_model 'path to CaMA'
+--base_model 'path to ZhiXi'
 --output_dir 'lora/cama-13b-e3-r8' \
 ```
 
@@ -162,7 +162,7 @@ CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 fine
 * [alpaca-7b-lora-ie](https://huggingface.co/zjunlp/alpaca-7b-lora-ie)
 * [llama-7b-lora-ie](https://huggingface.co/zjunlp/llama-7b-lora-ie)
 * [alpaca-13b-lora-ie](https://huggingface.co/zjunlp/alpaca-13b-lora-ie)
-* [CaMA-13B-LoRA](https://huggingface.co/zjunlp/CaMA-13B-LoRA)
+* [zhixi-13B-LoRA](https://huggingface.co/zjunlp/zhixi-13b-lora/tree/main)
 
 你可以通过下面的命令设置自己的参数执行来使用训练好的LoRA模型在比赛测试集上预测输出:
 

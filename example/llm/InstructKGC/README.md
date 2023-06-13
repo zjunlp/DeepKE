@@ -13,7 +13,7 @@
     - [Model](#model)
   - [4.LLaMA-series](#4llama-series)
     - [LoRA Fine-tuning with LLaMA](#lora-fine-tuning-with-llama)
-    - [LoRA Fine-tuning with CaMA](#lora-fine-tuning-with-cama)
+    - [LoRA Fine-tuning with ZhiXi](#lora-fine-tuning-with-zhixi)
     - [Predict](#predict)
   - [5.ChatGLM](#5chatglm)
     - [LoRA Fine-tuning with ChatGLM](#lora-fine-tuning-with-chatglm)
@@ -90,7 +90,7 @@ Here are some models:
 * [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
 * [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
-* [CaMA-13b](https://huggingface.co/zjunlp/CaMA-13B-Diff)
+* [zhixi-13b](https://huggingface.co/zjunlp/zhixi-13b-diff)
 * [fnlp/moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
 * [openbmb/cpm-bee-5b](https://huggingface.co/openbmb/cpm-bee-5b)
 * [Linly-AI/ChatFlow-7B](https://huggingface.co/Linly-AI/ChatFlow-7B)
@@ -149,14 +149,14 @@ CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 fine
 ```
 
 
-### LoRA Fine-tuning with CaMA
-Please refer to [CaMA/2.2 Pre-trained Model Weight Acquisition and Restoration](https://github.com/zjunlp/CaMA/tree/main) to obtain the complete CaMA model weights.
+### LoRA Fine-tuning with ZhiXi
+Please refer to [KnowLLM2.2Pre-trained Model Weight Acquisition and Restoration](https://github.com/zjunlp/KnowLLM) to obtain the complete ZhiXi model weights.
 
-Note: Since CaMA has already been trained with LoRA on a large-scale information extraction instruction dataset, you can skip this step and proceed directly to Step 3 `Prediction", or you can choose to further train.
+Note: Since ZhiXi has already been trained with LoRA on a large-scale information extraction instruction dataset, you can skip this step and proceed directly to Step 3 `Prediction", or you can choose to further train.
 
 Follow the command mentioned above [LoRA Fine-tuning with LLaMA](./README.md/#lora-fine-tuning-with-llama) with the following modifications.
 ```bash
---base_model 'path to CaMA'
+--base_model 'path to zhixi'
 --output_dir 'lora/cama-13b-e3-r8' \
 ```
 
@@ -165,7 +165,7 @@ Here are some trained versions of LoRA:
 * [alpaca-7b-lora-ie](https://huggingface.co/zjunlp/alpaca-7b-lora-ie)
 * [llama-7b-lora-ie](https://huggingface.co/zjunlp/llama-7b-lora-ie)
 * [alpaca-13b-lora-ie](https://huggingface.co/zjunlp/alpaca-13b-lora-ie)
-* [CaMA-13B-LoRA](https://huggingface.co/zjunlp/CaMA-13B-LoRA)
+* [zhixi-13B-LoRA](https://huggingface.co/zjunlp/zhixi-13b-lora/tree/main)
 
 You can use the following command to set your own parameters and execute it to make predictions using the trained LoRA model on the competition test set:
 

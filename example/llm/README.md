@@ -33,7 +33,7 @@
 - [Models](#models)
   - [LLaMA-series](#llama-series)
     - [Case 1: LoRA Fine-tuning of LLaMA for CCKS2023 Instruction-based KG Construction English | Chinese](#case-1-lora-fine-tuning-of-llama-for-ccks2023-instruction-based-kg-construction-english--chinese)
-    - [Case 2: Using CaMA for CCKS2023 Instruction-based KG Construction English | Chinese](#case-2-using-cama-for-ccks2023-instruction-based-kg-construction-english--chinese)
+    - [Case 2: Using ZhiXi for CCKS2023 Instruction-based KG Construction English | Chinese](#case-2-using-zhixi-for-ccks2023-instruction-based-kg-construction-english--chinese)
   - [ChatGLM](#chatglm)
     - [Case 1: LoRA Fine-tuning of ChatGLM for CCKS2023 Instruction-based KG Construction English | Chinese](#case-1-lora-fine-tuning-of-chatglm-for-ccks2023-instruction-based-kg-construction-english--chinese)
     - [Case 2: P-Tuning of ChatGLM for CCKS2023 Instruction-based KG Construction English | Chinese](#case-2-p-tuning-of-chatglm-for-ccks2023-instruction-based-kg-construction-english--chinese)
@@ -77,17 +77,17 @@ LLaMA, a collection of foundation language models ranging from 7B to 65B paramet
 
 
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/cama_logo.jpeg" alt="ZJU-CaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/zhixi_logo.jpeg" alt="ZJU-CaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
-CaMA follows a two-step approach: (1) It performs further full pre-training on LLaMA (13B) using Chinese corpora to enhance the model's Chinese comprehension and knowledge while preserving its English and code capabilities as much as possible. (2) It fine-tunes the model using an instruction dataset to improve the language model's understanding of human instructions.
+ZhiXi follows a two-step approach: (1) It performs further full pre-training on LLaMA (13B) using Chinese corpora to enhance the model's Chinese comprehension and knowledge while preserving its English and code capabilities as much as possible. (2) It fine-tunes the model using an instruction dataset to improve the language model's understanding of human instructions.
 
 For detailed information about the model, please refer to [CaMA: A Chinese-English Bilingual LLaMA Model](https://github.com/zjunlp/CaMA/blob/main/README_EN.md).
 
 
 ### Case 1: LoRA Fine-tuning of LLaMA for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md/#lora-fine-tuning-with-llama) | [Chinese](./InstructKGC/README_CN.md/#lora微调llama)
 
-### Case 2: Using CaMA for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md/#lora-fine-tuning-with-cama) | [Chinese](./InstructKGC/README_CN.md/#lora微调cama)
+### Case 2: Using ZhiXi for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md/#lora-fine-tuning-with-zhixi) | [Chinese](./InstructKGC/README_CN.md/#lora微调zhixi)
 
 
 
