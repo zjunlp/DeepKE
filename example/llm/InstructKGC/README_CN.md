@@ -179,13 +179,114 @@ CUDA_VISIBLE_DEVICES="0" python inference_llama.py \
 ## 5.ChatGLM
 
 ### LoRA微调ChatGLM
+你可以通过下面的命令使用LoRA方法来finetune模型:
 
+```bash
+deepspeed finetuning_lora.py
+```
+
+可以在finetuning_lora函数中设置自己的参数执行:
+
+```bash
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--train_path', default='data/train.json', type=str, help='')
+    parser.add_argument('--model_dir', default="/model",  type=str, help='')
+    parser.add_argument('--num_train_epochs', default=5, type=int, help='')
+    parser.add_argument('--train_batch_size', default=1, type=int, help='')
+    parser.add_argument('--gradient_accumulation_steps', default=1, type=int, help='')
+    parser.add_argument('--output_dir', default='output_dir_lora/', type=str, help='')
+    parser.add_argument('--log_steps', type=int, default=10, help='')
+    parser.add_argument('--max_len', type=int, default=400, help='')
+    parser.add_argument('--max_src_len', type=int, default=450, help='')
+    parser.add_argument('--local_rank', type=int, default=0, help='')
+    parser.add_argument('--lora_r', type=int, default=8, help='')
+    parser.add_argument('--prompt_text', type=str,default="",help='')
+    return parser.parse_args()
+
+```
 
 ### P-Tuning微调ChatGLM
+你可以通过下面的命令使用P-Tuning方法来finetune模型:
 
+
+```bash
+deepspeed finetuning_pt.py
+```
+
+或者是在finetuning_pt函数中设置自己的参数执行:
+
+```bash
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--train_path', default='data/train.json', type=str, help='')
+    parser.add_argument('--model_dir', default="/model", type=str, help='')
+    parser.add_argument('--num_train_epochs', default=20, type=int, help='')
+    parser.add_argument('--train_batch_size', default=2, type=int, help='')
+    parser.add_argument('--gradient_accumulation_steps', default=1, type=int, help='')
+    parser.add_argument('--output_dir', default='output_dir_pt/', type=str, help='')
+    parser.add_argument('--log_steps', type=int, default=10, help='')
+    parser.add_argument('--max_len', type=int, default=768, help='')
+    parser.add_argument('--max_src_len', type=int, default=450, help='')
+    parser.add_argument('--pre_seq_len', type=int, default=16, help='')
+    parser.add_argument('--prefix_projection', type=bool, default=True, help='')
+    parser.add_argument('--local_rank', type=int, default=0, help='')
+    parser.add_argument('--prompt_text', type=str,
+                        default="",
+                        help='')
+    return parser.parse_args()
+
+```
 
 ### 预测
 
+你可以通过下面的命令使用训练好的LoRA模型在比赛测试集上预测输出:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python inference_chatglm_lora.py 
+```
+
+或者是在predict_lora函数中设置自己的参数执行::
+
+```bash
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--test_path', default='data/valid.json', type=str, help='')
+    parser.add_argument('--device', default='3', type=str, help='')
+    parser.add_argument('--ori_model_dir',
+                        default="/model", type=str,
+                        help='')
+    parser.add_argument('--model_dir',
+                        default="/output_dir_lora/global_step-/", type=str,
+                        help='')
+    parser.add_argument('--max_len', type=int, default=768, help='')
+    parser.add_argument('--max_src_len', type=int, default=450, help='')
+    parser.add_argument('--prompt_text', type=str,
+                        default="",
+                        help='')
+    return parser.parse_args()
+```
+
+
+你可以通过下面的命令使用训练好的P-Tuning模型在比赛测试集上预测输出:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python inference_chatglm_pt.py 
+```
+
+或者是在predict_pt函数中设置自己的参数执行::
+
+```bash
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--test_path', default='data/valid.json', type=str, help='')
+    parser.add_argument('--device', default='3', type=str, help='')
+    parser.add_argument('--model_dir',
+                        default="/output_dir_pt/global_step-/", type=str,
+                        help='')
+    parser.add_argument('--max_len', type=int, default=768, help='')
+    parser.add_argument('--max_src_len', type=int, default=450, help='')
+    parser.add_argument('--prompt_text', type=str,
+                        default=" ",
+                        help='')
+    return parser.parse_args()
+```
 
 ## 6.格式转换
 上面的 `bash run_inference.bash` 会在 `result` 目录下输出 `output_llama_7b_e3_r8.json` 文件, 文件中不包含 'kg' 字段, 如果需要满足CCKS2023比赛的提交格式还需要从 'output' 中抽取出 'kg', 这里提供一个简单的样例 `convert.py`
