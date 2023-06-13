@@ -146,7 +146,7 @@ CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 fine
 
 
 ### LoRA微调ZhiXi
-请参考[KnowLLM2.2预训练模型权重获取与恢复](https://github.com/zjunlp/KnowLLM)获得完整的CaMA模型权重。
+请参考[KnowLLM2.2预训练模型权重获取与恢复](https://github.com/zjunlp/KnowLLM)获得完整的ZhiXi模型权重。
 
 注意: 由于ZhiXi已经在大量的信息抽取指令数据集上经过LoRA训练, 因此可以跳过这一步直接执行第3步`预测`, 你也可以选择进一步训练。
 
