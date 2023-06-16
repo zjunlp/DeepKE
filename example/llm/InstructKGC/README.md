@@ -90,7 +90,7 @@ Here are some models:
 * [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
 * [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
-* [zhixi-13b](https://huggingface.co/zjunlp/zhixi-13b-diff)
+* [zhixi-13b-diff](https://huggingface.co/zjunlp/zhixi-13b-diff)
 * [fnlp/moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
 * [openbmb/cpm-bee-5b](https://huggingface.co/openbmb/cpm-bee-5b)
 * [Linly-AI/ChatFlow-7B](https://huggingface.co/Linly-AI/ChatFlow-7B)

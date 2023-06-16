@@ -14,7 +14,7 @@
     - [模型](#模型)
   - [4.LLaMA系列](#4llama系列)
     - [LoRA微调LLaMA](#lora微调llama)
-    - [LoRA微调ZhiXi](#lora微调zhixi)
+    - [LoRA微调智析](#lora微调智析)
     - [预测](#预测)
   - [5.ChatGLM](#5chatglm)
     - [LoRA微调ChatGLM](#lora微调chatglm)
@@ -86,7 +86,7 @@ mkdir data
 * [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
 * [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
-* [zhixi-13b](https://huggingface.co/zjunlp/zhixi-13b-diff)
+* [zhixi-13b-diff](https://huggingface.co/zjunlp/zhixi-13b-diff)
 * [fnlp/moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
 * [openbmb/cpm-bee-5b](https://huggingface.co/openbmb/cpm-bee-5b)
 * [Linly-AI/ChatFlow-7B](https://huggingface.co/Linly-AI/ChatFlow-7B)
@@ -145,10 +145,10 @@ CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 fine
 ```
 
 
-### LoRA微调ZhiXi
-请参考[KnowLLM2.2预训练模型权重获取与恢复](https://github.com/zjunlp/KnowLLM)获得完整的ZhiXi模型权重。
+### LoRA微调智析
+请参考[KnowLLM2.2预训练模型权重获取与恢复](https://github.com/zjunlp/KnowLLM)获得完整的智析模型权重。
 
-注意: 由于ZhiXi已经在大量的信息抽取指令数据集上经过LoRA训练, 因此可以跳过这一步直接执行第3步`预测`, 你也可以选择进一步训练。
+注意: 由于智析已经在大量的信息抽取指令数据集上经过LoRA训练, 因此可以跳过这一步直接执行第3步`预测`, 你也可以选择进一步训练。
 
 大致遵循上面的[LoRA微调LLaMA](./README_CN.md/#lora微调llama)命令, 仅需做出下列修改
 ```bash
