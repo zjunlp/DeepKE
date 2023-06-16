@@ -72,12 +72,12 @@ pip install -r requirements.txt
 
 ## LLaMA系列
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/llama_logo.jpeg" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/llama_logo.png" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 LLaMA，它是一组从7B到65B参数的基础语言模型
 
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/zhixi_logo.jpeg" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/zhixi_logo.png" alt="ZhiXi" style="width: 50%; min-width: 50px; display: block; margin: auto;"></a>
 </p>
 智析首先（1）使用中文语料首先对LLaMA（13B）进行进一步全量预训练，在尽可能保留原来的英文和代码能力的前提下，进一步提高模型对于中文理解能力和知识储备；接着（2）使用指令数据集对第一步的模型微调，来提高语言模型对于人类指令的理解。
 

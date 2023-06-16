@@ -71,13 +71,15 @@ Please note that the `requirements.txt` file is located in the `example/llm` fol
 ## LLaMA-series
 
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/llama_logo.jpeg" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/llama_logo.png" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 LLaMA, a collection of foundation language models ranging from 7B to 65B parameters
 
+
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/zhixi_logo.jpeg" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/zhixi_logo.png" alt="ZhiXi" style="width: 50%; min-width: 50px; display: block; margin: auto;"></a>
 </p>
+
 ZhiXi follows a two-step approach: (1) It performs further full pre-training on LLaMA (13B) using Chinese corpora to enhance the model's Chinese comprehension and knowledge while preserving its English and code capabilities as much as possible. (2) It fine-tunes the model using an instruction dataset to improve the language model's understanding of human instructions.
 
 For detailed information about the model, please refer to [Knowledgable Large Language Model-Series](https://github.com/zjunlp/KnowLLM).
