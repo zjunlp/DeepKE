@@ -148,7 +148,7 @@ CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 fine
 ### LoRA微调智析
 请参考[KnowLM2.2预训练模型权重获取与恢复](https://github.com/zjunlp/KnowLM#2-2)获得完整的智析模型权重。
 
-注意: 由于智析已经在大量的信息抽取指令数据集上经过LoRA训练, 因此可以跳过这一步直接执行第3步`预测`, 你也可以选择进一步训练。
+注意: 由于智析已经在大量的信息抽取指令数据集上经过LoRA训练, 因此可以跳过这一步直接执行预测, 你也可以选择进一步训练。
 
 大致遵循上面的[LoRA微调LLaMA](./README_CN.md/#lora微调llama)命令, 仅需做出下列修改
 ```bash
@@ -182,27 +182,17 @@ CUDA_VISIBLE_DEVICES="0" python inference_llama.py \
 你可以通过下面的命令使用LoRA方法来finetune模型:
 
 ```bash
-deepspeed finetuning_lora.py
-```
-
-可以在finetuning_lora函数中设置自己的参数执行:
-
-```bash
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--train_path', default='data/train.json', type=str, help='')
-    parser.add_argument('--model_dir', default="/model",  type=str, help='')
-    parser.add_argument('--num_train_epochs', default=5, type=int, help='')
-    parser.add_argument('--train_batch_size', default=1, type=int, help='')
-    parser.add_argument('--gradient_accumulation_steps', default=1, type=int, help='')
-    parser.add_argument('--output_dir', default='output_dir_lora/', type=str, help='')
-    parser.add_argument('--log_steps', type=int, default=10, help='')
-    parser.add_argument('--max_len', type=int, default=400, help='')
-    parser.add_argument('--max_src_len', type=int, default=450, help='')
-    parser.add_argument('--local_rank', type=int, default=0, help='')
-    parser.add_argument('--lora_r', type=int, default=8, help='')
-    parser.add_argument('--prompt_text', type=str,default="",help='')
-    return parser.parse_args()
-
+deepspeed --include localhost:0 finetuning_lora.py \
+  --train_path data/train.json \
+  --model_dir /model \
+  --num_train_epochs 5 \
+  --train_batch_size 1 \
+  --gradient_accumulation_steps 1 \
+  --output_dir output_dir_lora/ \
+  --log_steps 10 \
+  --max_len 400 \
+  --max_src_len 450 \
+  --lora_r 8
 ```
 
 ### P-Tuning微调ChatGLM
@@ -210,30 +200,18 @@ deepspeed finetuning_lora.py
 
 
 ```bash
-deepspeed finetuning_pt.py
-```
-
-或者是在finetuning_pt函数中设置自己的参数执行:
-
-```bash
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--train_path', default='data/train.json', type=str, help='')
-    parser.add_argument('--model_dir', default="/model", type=str, help='')
-    parser.add_argument('--num_train_epochs', default=20, type=int, help='')
-    parser.add_argument('--train_batch_size', default=2, type=int, help='')
-    parser.add_argument('--gradient_accumulation_steps', default=1, type=int, help='')
-    parser.add_argument('--output_dir', default='output_dir_pt/', type=str, help='')
-    parser.add_argument('--log_steps', type=int, default=10, help='')
-    parser.add_argument('--max_len', type=int, default=768, help='')
-    parser.add_argument('--max_src_len', type=int, default=450, help='')
-    parser.add_argument('--pre_seq_len', type=int, default=16, help='')
-    parser.add_argument('--prefix_projection', type=bool, default=True, help='')
-    parser.add_argument('--local_rank', type=int, default=0, help='')
-    parser.add_argument('--prompt_text', type=str,
-                        default="",
-                        help='')
-    return parser.parse_args()
-
+deepspeed --include localhost:0 finetuning_pt.py \
+  --train_path data/train.json \
+  --model_dir /model \
+  --num_train_epochs 20 \
+  --train_batch_size 2 \
+  --gradient_accumulation_steps 1 \
+  --output_dir output_dir_pt \
+  --log_steps 10 \
+  --max_len 768 \
+  --max_src_len 450 \
+  --pre_seq_len 16 \
+  --prefix_projection true
 ```
 
 ### 预测
@@ -241,51 +219,25 @@ deepspeed finetuning_pt.py
 你可以通过下面的命令使用训练好的LoRA模型在比赛测试集上预测输出:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python inference_chatglm_lora.py 
+CUDA_VISIBLE_DEVICES=0 python inference_chatglm_lora.py \
+  --test_path data/valid.json \
+  --device 0 \
+  --ori_model_dir /model \
+  --model_dir /output_dir_lora/global_step- \
+  --max_len 768 \
+  --max_src_len 450
 ```
-
-或者是在predict_lora函数中设置自己的参数执行::
-
-```bash
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--test_path', default='data/valid.json', type=str, help='')
-    parser.add_argument('--device', default='3', type=str, help='')
-    parser.add_argument('--ori_model_dir',
-                        default="/model", type=str,
-                        help='')
-    parser.add_argument('--model_dir',
-                        default="/output_dir_lora/global_step-/", type=str,
-                        help='')
-    parser.add_argument('--max_len', type=int, default=768, help='')
-    parser.add_argument('--max_src_len', type=int, default=450, help='')
-    parser.add_argument('--prompt_text', type=str,
-                        default="",
-                        help='')
-    return parser.parse_args()
-```
-
 
 你可以通过下面的命令使用训练好的P-Tuning模型在比赛测试集上预测输出:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python inference_chatglm_pt.py 
-```
-
-或者是在predict_pt函数中设置自己的参数执行::
-
-```bash
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--test_path', default='data/valid.json', type=str, help='')
-    parser.add_argument('--device', default='3', type=str, help='')
-    parser.add_argument('--model_dir',
-                        default="/output_dir_pt/global_step-/", type=str,
-                        help='')
-    parser.add_argument('--max_len', type=int, default=768, help='')
-    parser.add_argument('--max_src_len', type=int, default=450, help='')
-    parser.add_argument('--prompt_text', type=str,
-                        default=" ",
-                        help='')
-    return parser.parse_args()
+CUDA_VISIBLE_DEVICES=0 python inference_chatglm_pt.py \
+  --test_path data/valid.json \
+  --device 0 \
+  --ori_model_dir /model \
+  --model_dir /output_dir_lora/global_step- \
+  --max_len 768 \
+  --max_src_len 450
 ```
 
 ## 6.格式转换
