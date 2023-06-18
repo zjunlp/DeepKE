@@ -149,8 +149,8 @@ CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 fine
 ```
 
 
-### LoRA Fine-tuning with ZhiXi
-Please refer to [KnowLLM2.2Pre-trained Model Weight Acquisition and Restoration](https://github.com/zjunlp/KnowLLM) to obtain the complete ZhiXi model weights.
+### LoRA Fine-tuning with ZhiXi (智析)
+Please refer to [KnowLM2.2Pre-trained Model Weight Acquisition and Restoration](https://github.com/zjunlp/KnowLM#2-2) to obtain the complete ZhiXi model weights.
 
 Note: Since ZhiXi has already been trained with LoRA on a large-scale information extraction instruction dataset, you can skip this step and proceed directly to Step 3 `Prediction", or you can choose to further train.
 
