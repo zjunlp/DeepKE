@@ -13,12 +13,12 @@
     - [Model](#model)
   - [4.LLaMA-series](#4llama-series)
     - [LoRA Fine-tuning with LLaMA](#lora-fine-tuning-with-llama)
-    - [LoRA Fine-tuning with ZhiXi](#lora-fine-tuning-with-zhixi)
-    - [Predict](#predict)
+    - [LoRA Fine-tuning with ZhiXi (智析)](#lora-fine-tuning-with-zhixi-智析)
+    - [Prediction](#prediction)
   - [5.ChatGLM](#5chatglm)
     - [LoRA Fine-tuning with ChatGLM](#lora-fine-tuning-with-chatglm)
     - [P-Tuning Fine-tuning with ChatGLM](#p-tuning-fine-tuning-with-chatglm)
-    - [Predict](#predict-1)
+    - [Prediction](#prediction-1)
   - [6.Format Conversion](#6format-conversion)
   - [7.Hardware](#7hardware)
   - [8.Acknowledgment](#8acknowledgment)
@@ -82,7 +82,7 @@ mkdir lora
 mkdir data
 ```
 
-Download  `train.json` and `valid.json`  (although the name is valid, this is not a validation set, but a test set for the competition) from official website https://tianchi.aliyun.com/competition/entrance/, and place them in the directory `./data`
+Download  `train.json` and `valid.json`  (although the name is valid, this is not a validation set, but a test set for the competition) from the official website https://tianchi.aliyun.com/competition/entrance/, and place them in the directory `./data`
 
 
 ### Model 
@@ -102,7 +102,7 @@ Here are some models:
 
 ### LoRA Fine-tuning with LLaMA
 
-You can use the LoRA method to fine tune the model by setting your own parameters using the following command:
+You can use the LoRA method to fine-tune the model by setting your own parameters using the following command:
 
 ```bash
 CUDA_VISIBLE_DEVICES="0" python finetune.py \
@@ -152,7 +152,7 @@ CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 fine
 ### LoRA Fine-tuning with ZhiXi (智析)
 Please refer to [KnowLM2.2Pre-trained Model Weight Acquisition and Restoration](https://github.com/zjunlp/KnowLM#2-2) to obtain the complete ZhiXi model weights.
 
-Note: Since ZhiXi has already been trained with LoRA on a large-scale information extraction instruction dataset, you can skip this step and proceed directly to Step 3 `Prediction", or you can choose to further train.
+Note: Since ZhiXi has already been trained with LoRA on a large-scale information extraction instruction dataset, you can skip this step and proceed directly to Step 3 Prediction. If you wish to refine the model further, additional training remains an option.
 
 Follow the command mentioned above [LoRA Fine-tuning with LLaMA](./README.md/#lora-fine-tuning-with-llama) with the following modifications.
 ```bash
@@ -160,14 +160,14 @@ Follow the command mentioned above [LoRA Fine-tuning with LLaMA](./README.md/#lo
 --output_dir 'lora/cama-13b-e3-r8' \
 ```
 
-### Predict
+### Prediction
 Here are some trained versions of LoRA:
 * [alpaca-7b-lora-ie](https://huggingface.co/zjunlp/alpaca-7b-lora-ie)
 * [llama-7b-lora-ie](https://huggingface.co/zjunlp/llama-7b-lora-ie)
 * [alpaca-13b-lora-ie](https://huggingface.co/zjunlp/alpaca-13b-lora-ie)
 * [zhixi-13B-LoRA](https://huggingface.co/zjunlp/zhixi-13b-lora/tree/main)
 
-You can use the following command to set your own parameters and execute it to make predictions using the trained LoRA model on the competition test set:
+You can use the following command to set your own parameters and execute it to make predictions using the trained LoRA model on the competition test dataset:
 
 ```bash
 CUDA_VISIBLE_DEVICES="0" python inference.py \
@@ -187,106 +187,60 @@ CUDA_VISIBLE_DEVICES="0" python inference.py \
 You can use the LoRA method to finetune the model using the following script:
 
 ```bash
-deepspeed finetuning_lora.py
-```
-Alternatively, set your own parameters to execute using the following command:
-
-```bash
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--train_path', default='data/train.json', type=str, help='')
-    parser.add_argument('--model_dir', default="/model",  type=str, help='')
-    parser.add_argument('--num_train_epochs', default=5, type=int, help='')
-    parser.add_argument('--train_batch_size', default=1, type=int, help='')
-    parser.add_argument('--gradient_accumulation_steps', default=1, type=int, help='')
-    parser.add_argument('--output_dir', default='output_dir_lora/', type=str, help='')
-    parser.add_argument('--log_steps', type=int, default=10, help='')
-    parser.add_argument('--max_len', type=int, default=400, help='')
-    parser.add_argument('--max_src_len', type=int, default=450, help='')
-    parser.add_argument('--local_rank', type=int, default=0, help='')
-    parser.add_argument('--lora_r', type=int, default=8, help='')
-    parser.add_argument('--prompt_text', type=str,default="",help='')
-    return parser.parse_args()
-
+deepspeed --include localhost:0 finetuning_lora.py \
+  --train_path data/train.json \
+  --model_dir /model \
+  --num_train_epochs 5 \
+  --train_batch_size 1 \
+  --gradient_accumulation_steps 1 \
+  --output_dir output_dir_lora/ \
+  --log_steps 10 \
+  --max_len 400 \
+  --max_src_len 450 \
+  --lora_r 8
 ```
 
 ### P-Tuning Fine-tuning with ChatGLM
 You can use the P-Tuning method to finetune the model using the following script:
 
 ```bash
-deepspeed finetuning_pt.py
+deepspeed --include localhost:0 finetuning_pt.py \
+  --train_path data/train.json \
+  --model_dir /model \
+  --num_train_epochs 20 \
+  --train_batch_size 2 \
+  --gradient_accumulation_steps 1 \
+  --output_dir output_dir_pt \
+  --log_steps 10 \
+  --max_len 768 \
+  --max_src_len 450 \
+  --pre_seq_len 16 \
+  --prefix_projection true
 ```
 
-Alternatively, set your own parameters to execute using the following command:
-
-
-```bash
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--train_path', default='data/train.json', type=str, help='')
-    parser.add_argument('--model_dir', default="/model", type=str, help='')
-    parser.add_argument('--num_train_epochs', default=20, type=int, help='')
-    parser.add_argument('--train_batch_size', default=2, type=int, help='')
-    parser.add_argument('--gradient_accumulation_steps', default=1, type=int, help='')
-    parser.add_argument('--output_dir', default='output_dir_pt/', type=str, help='')
-    parser.add_argument('--log_steps', type=int, default=10, help='')
-    parser.add_argument('--max_len', type=int, default=768, help='')
-    parser.add_argument('--max_src_len', type=int, default=450, help='')
-    parser.add_argument('--pre_seq_len', type=int, default=16, help='')
-    parser.add_argument('--prefix_projection', type=bool, default=True, help='')
-    parser.add_argument('--local_rank', type=int, default=0, help='')
-    parser.add_argument('--prompt_text', type=str,
-                        default="",
-                        help='')
-    return parser.parse_args()
-```
-
-### Predict
+### Prediction
 You can use the trained LoRA model to predict the output on the competition test set using the following script:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python inference_chatglm_lora.py 
-```
-Alternatively, set your own parameters to execute using the following command:
-
-```bash
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--test_path', default='data/valid.json', type=str, help='')
-    parser.add_argument('--device', default='3', type=str, help='')
-    parser.add_argument('--ori_model_dir',
-                        default="/model", type=str,
-                        help='')
-    parser.add_argument('--model_dir',
-                        default="/output_dir_lora/global_step-/", type=str,
-                        help='')
-    parser.add_argument('--max_len', type=int, default=768, help='')
-    parser.add_argument('--max_src_len', type=int, default=450, help='')
-    parser.add_argument('--prompt_text', type=str,
-                        default="",
-                        help='')
-    return parser.parse_args()
+CUDA_VISIBLE_DEVICES=0 python inference_chatglm_lora.py \
+  --test_path data/valid.json \
+  --device 0 \
+  --ori_model_dir /model \
+  --model_dir /output_dir_lora/global_step- \
+  --max_len 768 \
+  --max_src_len 450
 ```
 You can use the trained P-Tuning model to predict the output on the competition test set using the following script:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python inference_chatglm_pt.py 
+CUDA_VISIBLE_DEVICES=0 python inference_chatglm_pt.py \
+  --test_path data/valid.json \
+  --device 0 \
+  --ori_model_dir /model \
+  --model_dir /output_dir_lora/global_step- \
+  --max_len 768 \
+  --max_src_len 450
 ```
-Alternatively, set your own parameters to execute using the following command:
-
-```bash
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--test_path', default='data/valid.json', type=str, help='')
-    parser.add_argument('--device', default='3', type=str, help='')
-    parser.add_argument('--model_dir',
-                        default="/output_dir_pt/global_step-/", type=str,
-                        help='')
-    parser.add_argument('--max_len', type=int, default=768, help='')
-    parser.add_argument('--max_src_len', type=int, default=450, help='')
-    parser.add_argument('--prompt_text', type=str,
-                        default=" ",
-                        help='')
-    return parser.parse_args()
-```
-
-
 
 ## 6.Format Conversion
 The `bash run_inference.bash` command mentioned above will output a file named `output_llama_7b_e3_r8.json` in the `result` directory, which does not contain the 'kg' field. If you need to meet the submission format requirements of the CCKS2023 competition, you also need to extract 'kg' from 'output'. Here is a simple example script called `convert.py`.
