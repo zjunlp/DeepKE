@@ -73,15 +73,8 @@ pip install -r requirements.txt
 ## LLaMA系列
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/llama_logo.png" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
-</p>
-LLaMA，它是一组从7B到65B参数的基础语言模型
 
-<p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/zhixi_logo.png" alt="ZhiXi" style="width: 50%; min-width: 50px; display: block; margin: auto;"></a>
-</p>
-智析首先（1）使用中文语料首先对LLaMA（13B）进行进一步全量预训练，在尽可能保留原来的英文和代码能力的前提下，进一步提高模型对于中文理解能力和知识储备；接着（2）使用指令数据集对第一步的模型微调，来提高语言模型对于人类指令的理解。
-
-模型详细信息请参考[Knowledgable Large Language Model-Series](https://github.com/zjunlp/KnowLLM).
+LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了基于[KnowLM](https://github.com/zjunlp/KnowLM)框架的抽取大模型`智析`的支持。其首先（1）使用中英双语语料首先对LLaMA（13B）进行进一步全量预训练，在尽可能保留原来的英文和代码能力的前提下，进一步提高模型对于中文理解能力和知识储备；接着（2）使用指令数据集对第一步的模型微调，来提高语言模型对于人类指令的理解。模型详细信息请参考[KnowLM](https://github.com/zjunlp/KnowLM).
 
 ### 案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-llama) | [中文](./InstructKGC/README_CN.md/#lora微调llama)
 
@@ -104,16 +97,16 @@ LLaMA，它是一组从7B到65B参数的基础语言模型
 ## MOSS
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/moss_logo.png" alt="ChatGLM" style="width: 25%; min-width: 25px; display: block; margin: auto;"></a>
-</p>
+
 MOSS是一个支持中英双语和多种插件的开源对话语言模型
 
-计划中！敬请期待！
+开发测试中！敬请期待！
 
 
 ## CPM-Bee
 CPM-Bee是一个完全开源、允许商用的百亿参数中英文基座模型，也是CPM-Live训练的第二个里程碑。
 
-计划中！敬请期待！
+开发测试中！敬请期待！
 
 
 ## GPT系列
