@@ -63,7 +63,7 @@
 
 # 新版特性
 
-* `2023年6月` 为[DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm)新增多个大模型(如ChatGLM, LLaMA-series)支持和提供抽取优化的大模型[智析](https://github.com/zjunlp/KnowLM)。
+* `2023年6月` 为[DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm)新增多个大模型(如[ChatGLM](https://github.com/THUDM/ChatGLM-6B)、LLaMA系列、GPT系列、抽取大模型[智析](https://github.com/zjunlp/KnowLM))支持。
 * `2023年4月` 新增实体关系抽取模型[CP-NER(IJCAI'23)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/cross/README_CN.md), [ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP/README_CN.md), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC/README_CN.md), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE/README_CN.md), 支持[事件抽取](https://github.com/zjunlp/DeepKE/blob/main/example/ee/standard/README_CN.md)(中文、英文), 提供对Python库高级版本的支持 (例如Transformers)。
 
 * `2023年2月` 支持[大模型](https://github.com/zjunlp/DeepKE/blob/main/example/llm/README_CN.md) (GPT-3)，包含In-context Learning (基于 [EasyInstruct](https://github.com/zjunlp/EasyInstruct))和数据生成，新增实体识别模型[W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/README_CN.md)。
