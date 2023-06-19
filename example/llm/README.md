@@ -73,7 +73,7 @@ Please note that the `requirements.txt` file is located in the `example/llm` fol
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/llama_logo.png" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 
-LLaMA, a collection of foundation language models ranging from 7B to 65B parameters. We also provide a bilingual LLM for knowledge extraction named `ZhiXi (智析)` based on [KnowLM](https://github.com/zjunlp/KnowLM).
+LLaMA, a collection of foundation language models ranging from 7B to 65B parameters. We also provide a bilingual LLM for knowledge extraction named `ZhiXi (智析)` (which means intelligent analysis of data for knowledge extraction) based on [KnowLM](https://github.com/zjunlp/KnowLM).
 
 ZhiXi follows a two-step approach: (1) It performs further full pre-training on `LLaMA (13B)` using Chinese/English corpora to enhance the model's Chinese comprehension and knowledge while preserving its English and code capabilities as much as possible. (2) It fine-tunes the model using an instruction dataset to improve the language model's understanding of human instructions. For detailed information about the model, please refer to [KnowLM](https://github.com/zjunlp/KnowLM).
 
