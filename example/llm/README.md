@@ -71,7 +71,7 @@ Please note that the `requirements.txt` file is located in the `example/llm` fol
 ## LLaMA-series
 
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/llama_logo.png" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/llama.jpg" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 
 LLaMA, a collection of foundation language models ranging from 7B to 65B parameters. We also provide a bilingual LLM for knowledge extraction named `ZhiXi (智析)` (which means intelligent analysis of data for knowledge extraction) based on [KnowLM](https://github.com/zjunlp/KnowLM).
 
