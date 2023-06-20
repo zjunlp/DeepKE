@@ -82,7 +82,7 @@ mkdir lora
 mkdir data
 ```
 
-Download  `train.json` and `valid.json`  (although the name is valid, this is not a validation set, but a test set for the competition) from the official website https://tianchi.aliyun.com/competition/entrance/, and place them in the directory `./data`
+Download  `train.json` and `valid.json`  (although the name is valid, this is not a validation set, but a test set for the competition) from the official website https://tianchi.aliyun.com/competition/entrance/532080/information, and place them in the directory `./data`
 
 
 ### Model 
