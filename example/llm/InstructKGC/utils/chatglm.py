@@ -13,7 +13,7 @@ class ChatGLMDataCollatorForSeq2Seq(DataCollatorForSeq2Seq):
         longest = max(len_ids)
         input_ids = []
         labels_list = []
-        for ids_l, feature in zip(len_ids, features):
+        for ids_l, feature in sorted(zip(len_ids, features), key=lambda x: - x[0]):
             ids = feature["input_ids"]
             seq_len = feature["seq_len"]
             labels = (

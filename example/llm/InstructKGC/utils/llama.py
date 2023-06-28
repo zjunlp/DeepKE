@@ -1,5 +1,3 @@
-from dataclasses import dataclass
-
 def llama_tokenize(prompt, tokenizer, options):
     result = tokenizer(
         prompt,
