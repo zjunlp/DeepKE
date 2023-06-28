@@ -1,8 +1,8 @@
 defaults:
   - train
 
-data_name: ACE # [ACE, DuEE]
-model_name_or_path: ./exp/ACE/role/bert-base-uncased
+data_name: DuEE # [ACE, DuEE]
+model_name_or_path: ./exp/DuEE/role/bert-base-chinese
 task_name: role # the trigger prediction is done during the training process.
 do_train: False
 do_eval: True
@@ -12,5 +12,5 @@ do_pipeline_predict: True
 overwrite_cache: True
 
 
-dev_trigger_pred_file: ./exp/ACE/trigger/bert-base-uncased/eval_pred.json
-test_trigger_pred_file: ./exp/ACE/trigger/bert-base-uncased/test_pred.json
+dev_trigger_pred_file: ./exp/DuEE/trigger/bert-base-chinese/eval_pred.json # change to your pred file of trigger classification
+test_trigger_pred_file: ./exp/DuEE/trigger/bert-base-chinese/test_pred.json

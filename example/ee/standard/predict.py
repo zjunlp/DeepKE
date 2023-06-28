@@ -46,8 +46,8 @@ def main(args):
     args.data_dir = os.path.join(args.cwd, "./data/" + args.data_name + "/" + args.task_name)
     args.tag_path = os.path.join(args.cwd, "./data/" + args.data_name + "/schema")
     args.model_name_or_path = os.path.join(args.cwd, args.model_name_or_path)
-    args.dev_trigger_pred_file = os.path.join(args.cwd, args.dev_trigger_pred_file) if args.do_pipeline_predict else None
-    args.test_trigger_pred_file = os.path.join(args.cwd, args.test_trigger_pred_file) if args.do_pipeline_predict else None
+    args.dev_trigger_pred_file = os.path.join(args.cwd, args.dev_trigger_pred_file) if args.do_pipeline_predict and args.task_name=="role" else None
+    args.test_trigger_pred_file = os.path.join(args.cwd, args.test_trigger_pred_file) if args.do_pipeline_predict and args.task_name=="role" else None
     args.do_predict = True if args.data_name == "ACE" else False
 
     # Setup CUDA, GPU & distributed training
@@ -75,8 +75,10 @@ def main(args):
     args.model_type = args.model_type.lower()
     config_class, model_class, tokenizer_class = MODEL_CLASSES[args.model_type]
 
+    config = config_class.from_pretrained(args.model_name_or_path)
     tokenizer = tokenizer_class.from_pretrained(args.model_name_or_path, do_lower_case=args.do_lower_case)
-    model = model_class.from_pretrained(args.model_name_or_path)
+    model = model_class.from_pretrained(args.model_name_or_path, config=config)
+    logger.info(f"label_nums:{config.num_labels}")
     model.to(device)
 
     pad_token_label_id = -100
@@ -91,7 +93,7 @@ def main(args):
 
     raw_path = "/".join(args.data_dir.split("/")[:-1])
     if args.do_eval:
-        if args.dev_trigger_pred_file is not None:
+        if args.task_name=="role" and args.dev_trigger_pred_file is not None:
             processor.process_dev_with_pred_trigger(args, raw_path, "dev_with_pred_trigger.tsv")
             eval_examples = processor.get_examples(os.path.join(args.data_dir, "dev_with_pred_trigger.tsv"), "dev")
         else:
@@ -99,7 +101,7 @@ def main(args):
         eval_dataset = load_and_cache_examples(args, eval_examples , tokenizer, labels, pad_token_label_id, mode="dev")
 
     if args.do_predict:
-        if args.test_trigger_pred_file is not None:
+        if args.task_name=="role" and args.test_trigger_pred_file is not None:
             processor.process_test_with_pred_trigger(args, raw_path, "test_with_pred_trigger.tsv")
             test_examples = processor.get_examples(os.path.join(args.data_dir, "test_with_pred_trigger.tsv"), "test")
         else:
