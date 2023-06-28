@@ -88,6 +88,7 @@ Download  `train.json` and `valid.json`  (although the name is valid, this is no
 ### Model 
 Here are some models:
 * [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
+* [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b)
 * [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
 * [zhixi-13b-diff](https://huggingface.co/zjunlp/zhixi-13b-diff)
