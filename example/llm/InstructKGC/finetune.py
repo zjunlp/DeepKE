@@ -183,14 +183,14 @@ def train(options):
 
 
     train_data = train_data.shuffle().map(
-        coll_fn_glm, 
+        coll_fn, 
         num_proc=options.preprocessing_num_workers, 
         remove_columns=train_data.column_names,
         load_from_cache_file=True,
         fn_kwargs=fn_kwargs,
     )
     valid_data = valid_data.shuffle().map(
-        coll_fn_glm, 
+        coll_fn, 
         num_proc=options.preprocessing_num_workers, 
         remove_columns=valid_data.column_names,
         load_from_cache_file=True,
