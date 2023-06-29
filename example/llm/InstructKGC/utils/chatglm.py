@@ -1,6 +1,6 @@
 import os
 import torch
-from transformers import DataCollatorForSeq2Seq, Trainer
+from transformers import DataCollatorForSeq2Seq
 from dataclasses import dataclass
 
 
@@ -53,21 +53,3 @@ def coll_fn_glm(example, prompter, tokenizer, options):
 
     return result
 
-
-
-class ChatGLMTrainer(Trainer):
-    def compute_loss(self, model, inputs, return_outputs=False):
-        return model(
-            input_ids=inputs["input_ids"],
-            labels=inputs["labels"],
-        ).loss
-
-    def save_model(self, output_dir=None, _internal_call=False):
-        from transformers.trainer import TRAINING_ARGS_NAME
-
-        os.makedirs(output_dir, exist_ok=True)
-        torch.save(self.args, os.path.join(output_dir, TRAINING_ARGS_NAME))
-        saved_params = {
-            k: v.to("cpu") for k, v in self.model.named_parameters() if v.requires_grad
-        }
-        torch.save(saved_params, os.path.join(output_dir, "adapter_model.bin"))
