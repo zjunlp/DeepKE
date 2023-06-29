@@ -74,8 +74,7 @@ def add_args():
     parse.add_argument('--num_epochs', type=int, default=3)
     parse.add_argument('--learning_rate', type=float, default=3e-4)
     parse.add_argument('--cutoff_len', type=int, default=256)
-    parse.add_argument('--val_set_size', type=int, default=None)
-    parse.add_argument('--val_set_ratio', type=float, default=0.2)
+    parse.add_argument('--val_set_size', type=int, default=1000)
     parse.add_argument('--preprocessing_num_workers', type=int, default=8)
     parse.add_argument('--resume_from_checkpoint', type=str, default=None, help="either training checkpoint or final adapter")
     parse.add_argument('--prompt_template_name', type=str, default="alpaca", help="The prompt template to use, will default to alpaca.")
@@ -145,18 +144,16 @@ def train(options):
     model.print_trainable_parameters()
 
 
+    valid_data = None
     if options.train_path is not None:
         train_data = Dataset.from_json(options.train_path)
     if options.valid_path is not None:
         valid_data = Dataset.from_json(options.valid_path)
     else:
-        if options.val_set_size is None:
-            val_set_size = int(len(train_data) * options.val_set_size)
-        else:
-            val_set_size = options.val_set_size
-        train_val = train_data.train_test_split(test_size=val_set_size, shuffle=True, seed=42)
-        train_data = train_val["train"]
-        valid_data = train_val["test"]
+        if options.val_set_size > 0:
+            train_val = train_data.train_test_split(test_size=options.val_set_size, shuffle=True, seed=42)
+            train_data = train_val["train"]
+            valid_data = train_val["test"]
     
     
     model_name = get_model_name(options.base_model)
@@ -182,20 +179,22 @@ def train(options):
     logger.info(f"BOS:{tokenizer.bos_token_id},{tokenizer.bos_token}\tEOS:{tokenizer.eos_token_id},{tokenizer.eos_token}\tPAD:{tokenizer.pad_token_id},{tokenizer.pad_token}")
 
 
-    train_data = train_data.shuffle().map(
-        coll_fn, 
-        num_proc=options.preprocessing_num_workers, 
-        remove_columns=train_data.column_names,
-        load_from_cache_file=True,
-        fn_kwargs=fn_kwargs,
-    )
-    valid_data = valid_data.shuffle().map(
-        coll_fn, 
-        num_proc=options.preprocessing_num_workers, 
-        remove_columns=valid_data.column_names,
-        load_from_cache_file=True,
-        fn_kwargs=fn_kwargs,
-    )
+    if train_data:
+        train_data = train_data.shuffle().map(
+            coll_fn_glm, 
+            num_proc=options.preprocessing_num_workers, 
+            remove_columns=train_data.column_names,
+            load_from_cache_file=True,
+            fn_kwargs=fn_kwargs,
+        )
+    if valid_data:
+        valid_data = valid_data.shuffle().map(
+            coll_fn_glm, 
+            num_proc=options.preprocessing_num_workers, 
+            remove_columns=valid_data.column_names,
+            load_from_cache_file=True,
+            fn_kwargs=fn_kwargs,
+        )
 
 
     resume_from_checkpoint = options.resume_from_checkpoint
@@ -240,7 +239,7 @@ def train(options):
             fp16=True,
             logging_steps=50,
             optim="adamw_torch",
-            evaluation_strategy="epoch",
+            evaluation_strategy="epoch" if options.val_set_size > 0 else "no",
             save_strategy="epoch",
             output_dir=options.output_dir,
             save_total_limit=options.save_total_limit,
