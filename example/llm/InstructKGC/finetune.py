@@ -16,12 +16,20 @@ from peft import (
 )
 
 from datasets import Dataset
-from transformers import AutoTokenizer, AutoModel, Trainer, DataCollatorForSeq2Seq, TrainingArguments
+from transformers import (
+    AutoTokenizer, 
+    AutoModel, 
+    Trainer,
+    TrainingArguments, 
+    Seq2SeqTrainer, 
+    Seq2SeqTrainingArguments, 
+    DataCollatorForSeq2Seq, 
+)
 
 from utils import MODEL_DICT
 from utils.prompter import Prompter
 from utils.llama import coll_fn_llama
-from utils.chatglm import coll_fn_glm, ChatGLMDataCollatorForSeq2Seq, ChatGLMTrainer
+from utils.chatglm import coll_fn_glm, ChatGLMDataCollatorForSeq2Seq
 
 os.environ["WANDB_DISABLED"] = "true"
 logger = logging.getLogger("__main__")
@@ -163,6 +171,7 @@ def train(options):
     fn_kwargs = {"prompter":prompter, "tokenizer":tokenizer, "options":options}
     data_collator = DataCollatorForSeq2Seq(tokenizer, pad_to_multiple_of=8, return_tensors="pt", padding=True)
     ModifyTrainer = Trainer
+    ModifyArgument = TrainingArguments
     if model_name == 'falcon':
         tokenizer.pad_token_id = tokenizer.eos_token_id
         tokenizer.padding_side = "left"
@@ -173,7 +182,8 @@ def train(options):
         tokenizer.padding_side = "left"
     elif model_name == "chatglm":
         coll_fn = coll_fn_glm
-        ModifyTrainer = ChatGLMTrainer
+        ModifyTrainer = Seq2SeqTrainer
+        ModifyArgument = Seq2SeqTrainingArguments
         data_collator = ChatGLMDataCollatorForSeq2Seq(tokenizer=tokenizer)
     logger.info(f"model_name: {model_name}\ncoll_fn: {coll_fn}\ndata_collator: {data_collator}\nModifyTrainer: {ModifyTrainer}\n")
     logger.info(f"BOS:{tokenizer.bos_token_id},{tokenizer.bos_token}\tEOS:{tokenizer.eos_token_id},{tokenizer.eos_token}\tPAD:{tokenizer.pad_token_id},{tokenizer.pad_token}")
@@ -230,7 +240,7 @@ def train(options):
         model=model,
         train_dataset=train_data,
         eval_dataset=valid_data,
-        args=TrainingArguments(
+        args=ModifyArgument(
             per_device_train_batch_size=options.micro_train_batch_size,
             per_device_eval_batch_size=options.micro_eval_batch_size,
             gradient_accumulation_steps=gradient_accumulation_steps,
@@ -239,7 +249,7 @@ def train(options):
             fp16=True,
             logging_steps=50,
             optim="adamw_torch",
-            evaluation_strategy="epoch" if options.val_set_size > 0 else "no",
+            evaluation_strategy="epoch",
             save_strategy="epoch",
             output_dir=options.output_dir,
             save_total_limit=options.save_total_limit,

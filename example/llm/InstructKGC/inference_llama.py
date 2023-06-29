@@ -10,8 +10,9 @@ from peft import (
     set_peft_model_state_dict,
 )
 from peft.utils import WEIGHTS_NAME
-from transformers import GenerationConfig, LlamaForCausalLM, LlamaTokenizer
+from transformers import GenerationConfig, AutoTokenizer, AutoModel
 from utils.prompter import Prompter
+from utils import MODEL_DICT
 
 if torch.cuda.is_available():
     device = "cuda"
@@ -28,6 +29,14 @@ os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
 os.environ["WANDB_DISABLED"] = "true"
 
 
+def get_model_name(model_name):
+    model_name = model_name.lower()
+    for key, values in MODEL_DICT.items():
+        for v in values:
+            if v in model_name:
+                return key
+    return ""
+
 
 def main(
     load_8bit: bool = False,
@@ -43,15 +52,16 @@ def main(
     ), "Please specify a --base_model, e.g. --base_model='huggyllama/llama-7b'"
 
     prompter = Prompter(prompt_template)
-    tokenizer = LlamaTokenizer.from_pretrained(base_model)
+    tokenizer = AutoTokenizer.from_pretrained(base_model)
     
-    if device == "cuda":
-        model = LlamaForCausalLM.from_pretrained(
-            base_model,
-            load_in_8bit=load_8bit,
-            torch_dtype=torch.float16,
-            device_map="auto",
-        )
+    model = AutoModel.from_pretrained(
+        base_model,
+        load_in_8bit=load_8bit,
+        torch_dtype=torch.float16,
+        device_map="auto",
+        trust_remote_code=True,
+    )
+    if lora_weights is not None:
         if load_8bit:
             config = LoraConfig.from_pretrained(lora_weights)
             model = get_peft_model(model, config) 
@@ -61,36 +71,20 @@ def main(
             model = PeftModel.from_pretrained(
                 model,
                 lora_weights,
-                torch_dtype=torch.float16,
-                device_map={"": device},
             )
-    elif device == "mps":
-        model = LlamaForCausalLM.from_pretrained(
-            base_model,
-            device_map={"": device},
-            torch_dtype=torch.float16,
-        )
-        model = PeftModel.from_pretrained(
-            model,
-            lora_weights,
-            device_map={"": device},
-            torch_dtype=torch.float16,
-        )
-    else:
-        model = LlamaForCausalLM.from_pretrained(
-            base_model, device_map={"": device}, low_cpu_mem_usage=True
-        )
-        model = PeftModel.from_pretrained(
-            model,
-            lora_weights,
-            device_map={"": device},
-        )
 
-    # unwind broken decapoda-research config
-    model.config.pad_token_id = tokenizer.pad_token_id = 0  # unk
-    model.config.bos_token_id = tokenizer.bos_token_id = 1
-    model.config.eos_token_id = tokenizer.eos_token_id = 2
-    tokenizer.padding_side = "left"
+    model_name = get_model_name(base_model)
+    print("model_name", model_name)
+    if  model_name == 'falcon':
+        tokenizer.pad_token_id = tokenizer.eos_token_id
+        tokenizer.padding_side = "left"
+    elif model_name == 'llama':
+        model.config.pad_token_id = tokenizer.pad_token_id = 0  # unk
+        model.config.bos_token_id = tokenizer.bos_token_id = 1
+        model.config.eos_token_id = tokenizer.eos_token_id = 2
+        tokenizer.padding_side = "left"
+    print(f"BOS:{tokenizer.bos_token_id},{tokenizer.bos_token}\tEOS:{tokenizer.eos_token_id},{tokenizer.eos_token}\tPAD:{tokenizer.pad_token_id},{tokenizer.pad_token}")
+
 
     if not load_8bit:
         model.half()  # seems to fix bugs for some users.
