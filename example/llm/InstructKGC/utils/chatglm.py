@@ -56,13 +56,13 @@ def coll_fn_glm(example, prompter, tokenizer, options):
 
 
 class ChatGLMTrainer(Trainer):
-    def compute_loss(self, model, inputs):
+    def compute_loss(self, model, inputs, return_outputs=False):
         return model(
             input_ids=inputs["input_ids"],
             labels=inputs["labels"],
         ).loss
 
-    def save_model(self, output_dir=None):
+    def save_model(self, output_dir=None, _internal_call=False):
         from transformers.trainer import TRAINING_ARGS_NAME
 
         os.makedirs(output_dir, exist_ok=True)
