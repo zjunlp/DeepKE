@@ -152,16 +152,14 @@ def train(options):
     model.print_trainable_parameters()
 
 
-    valid_data = None
     if options.train_path is not None:
         train_data = Dataset.from_json(options.train_path)
     if options.valid_path is not None:
         valid_data = Dataset.from_json(options.valid_path)
-    else:
-        if options.val_set_size > 0:
-            train_val = train_data.train_test_split(test_size=options.val_set_size, shuffle=True, seed=42)
-            train_data = train_val["train"]
-            valid_data = train_val["test"]
+    elif options.valid_path is None and options.train_path is not None:
+        train_val = train_data.train_test_split(test_size=options.val_set_size, shuffle=True, seed=42)
+        train_data = train_val["train"]
+        valid_data = train_val["test"]
     
     
     model_name = get_model_name(options.base_model)
@@ -189,22 +187,21 @@ def train(options):
     logger.info(f"BOS:{tokenizer.bos_token_id},{tokenizer.bos_token}\tEOS:{tokenizer.eos_token_id},{tokenizer.eos_token}\tPAD:{tokenizer.pad_token_id},{tokenizer.pad_token}")
 
 
-    if train_data:
-        train_data = train_data.shuffle().map(
-            coll_fn_glm, 
-            num_proc=options.preprocessing_num_workers, 
-            remove_columns=train_data.column_names,
-            load_from_cache_file=True,
-            fn_kwargs=fn_kwargs,
-        )
-    if valid_data:
-        valid_data = valid_data.shuffle().map(
-            coll_fn_glm, 
-            num_proc=options.preprocessing_num_workers, 
-            remove_columns=valid_data.column_names,
-            load_from_cache_file=True,
-            fn_kwargs=fn_kwargs,
-        )
+
+    train_data = train_data.shuffle().map(
+        coll_fn_glm, 
+        num_proc=options.preprocessing_num_workers, 
+        remove_columns=train_data.column_names,
+        load_from_cache_file=True,
+        fn_kwargs=fn_kwargs,
+    )
+    valid_data = valid_data.shuffle().map(
+        coll_fn_glm, 
+        num_proc=options.preprocessing_num_workers, 
+        remove_columns=valid_data.column_names,
+        load_from_cache_file=True,
+        fn_kwargs=fn_kwargs,
+    )
 
 
     resume_from_checkpoint = options.resume_from_checkpoint
@@ -244,6 +241,7 @@ def train(options):
             per_device_train_batch_size=options.micro_train_batch_size,
             per_device_eval_batch_size=options.micro_eval_batch_size,
             gradient_accumulation_steps=gradient_accumulation_steps,
+            warmup_steps=0.06,
             num_train_epochs=options.num_epochs,
             learning_rate=options.learning_rate,
             fp16=True,

@@ -52,7 +52,7 @@ def main(
     ), "Please specify a --base_model, e.g. --base_model='huggyllama/llama-7b'"
 
     prompter = Prompter(prompt_template)
-    tokenizer = AutoTokenizer.from_pretrained(base_model)
+    tokenizer = AutoTokenizer.from_pretrained(base_model, trust_remote_code=True)
     
     model = AutoModel.from_pretrained(
         base_model,
@@ -75,10 +75,7 @@ def main(
 
     model_name = get_model_name(base_model)
     print("model_name", model_name)
-    if  model_name == 'falcon':
-        tokenizer.pad_token_id = tokenizer.eos_token_id
-        tokenizer.padding_side = "left"
-    elif model_name == 'llama':
+    if model_name == 'llama':
         model.config.pad_token_id = tokenizer.pad_token_id = 0  # unk
         model.config.bos_token_id = tokenizer.bos_token_id = 1
         model.config.eos_token_id = tokenizer.eos_token_id = 2
