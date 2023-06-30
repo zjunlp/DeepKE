@@ -10,7 +10,7 @@ from peft import (
     set_peft_model_state_dict,
 )
 from peft.utils import WEIGHTS_NAME
-from transformers import GenerationConfig, AutoTokenizer, AutoModel, LlamaTokenizer, LlamaForCausalLM
+from transformers import GenerationConfig, LlamaTokenizer, LlamaForCausalLM
 from utils.prompter import Prompter
 from utils import MODEL_DICT
 
@@ -29,15 +29,6 @@ os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
 os.environ["WANDB_DISABLED"] = "true"
 
 
-def get_model_name(model_name):
-    model_name = model_name.lower()
-    for key, values in MODEL_DICT.items():
-        for v in values:
-            if v in model_name:
-                return key
-    return ""
-
-
 def main(
     load_8bit: bool = False,
     base_model: str = "decapoda-research/llama-7b-hf",
@@ -50,27 +41,14 @@ def main(
     assert (
         base_model
     ), "Please specify a --base_model, e.g. --base_model='huggyllama/llama-7b'"
-    model_name = get_model_name(base_model)
-
-
     prompter = Prompter(prompt_template)
-    if model_name == "llama":
-        tokenizer = LlamaTokenizer.from_pretrained(base_model)
-        model = LlamaForCausalLM.from_pretrained(
-            base_model,
-            load_in_8bit=load_8bit,
-            torch_dtype=torch.float16,
-            device_map="auto",
-        )
-    else:
-        tokenizer = AutoTokenizer.from_pretrained(base_model, trust_remote_code=True)
-        model = AutoModel.from_pretrained(
-            base_model,
-            load_in_8bit=load_8bit,
-            torch_dtype=torch.float16,
-            device_map="auto",
-            trust_remote_code=True,
-        )
+    tokenizer = LlamaTokenizer.from_pretrained(base_model)
+    model = LlamaForCausalLM.from_pretrained(
+        base_model,
+        load_in_8bit=load_8bit,
+        torch_dtype=torch.float16,
+        device_map="auto",
+    )
 
 
     if lora_weights is not None:
@@ -85,12 +63,11 @@ def main(
                 lora_weights,
             )
 
-    print("model_name", model_name)
-    if model_name == 'llama':
-        model.config.pad_token_id = tokenizer.pad_token_id = 0  # unk
-        model.config.bos_token_id = tokenizer.bos_token_id = 1
-        model.config.eos_token_id = tokenizer.eos_token_id = 2
-        tokenizer.padding_side = "left"
+
+    model.config.pad_token_id = tokenizer.pad_token_id = 0  # unk
+    model.config.bos_token_id = tokenizer.bos_token_id = 1
+    model.config.eos_token_id = tokenizer.eos_token_id = 2
+    tokenizer.padding_side = "left"
     print(f"BOS:{tokenizer.bos_token_id},{tokenizer.bos_token}\tEOS:{tokenizer.eos_token_id},{tokenizer.eos_token}\tPAD:{tokenizer.pad_token_id},{tokenizer.pad_token}")
 
 
