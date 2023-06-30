@@ -10,7 +10,7 @@ from peft import (
     set_peft_model_state_dict,
 )
 from peft.utils import WEIGHTS_NAME
-from transformers import GenerationConfig, AutoTokenizer, AutoModel
+from transformers import GenerationConfig, AutoTokenizer, AutoModel, LlamaTokenizer, LlamaForCausalLM
 from utils.prompter import Prompter
 from utils import MODEL_DICT
 
@@ -50,17 +50,29 @@ def main(
     assert (
         base_model
     ), "Please specify a --base_model, e.g. --base_model='huggyllama/llama-7b'"
+    model_name = get_model_name(base_model)
+
 
     prompter = Prompter(prompt_template)
-    tokenizer = AutoTokenizer.from_pretrained(base_model, trust_remote_code=True)
-    
-    model = AutoModel.from_pretrained(
-        base_model,
-        load_in_8bit=load_8bit,
-        torch_dtype=torch.float16,
-        device_map="auto",
-        trust_remote_code=True,
-    )
+    if model_name == "llama":
+        tokenizer = LlamaTokenizer.from_pretrained(base_model)
+        model = LlamaForCausalLM.from_pretrained(
+            base_model,
+            load_in_8bit=load_8bit,
+            torch_dtype=torch.float16,
+            device_map="auto",
+        )
+    else:
+        tokenizer = AutoTokenizer.from_pretrained(base_model, trust_remote_code=True)
+        model = AutoModel.from_pretrained(
+            base_model,
+            load_in_8bit=load_8bit,
+            torch_dtype=torch.float16,
+            device_map="auto",
+            trust_remote_code=True,
+        )
+
+
     if lora_weights is not None:
         if load_8bit:
             config = LoraConfig.from_pretrained(lora_weights)
@@ -73,7 +85,6 @@ def main(
                 lora_weights,
             )
 
-    model_name = get_model_name(base_model)
     print("model_name", model_name)
     if model_name == 'llama':
         model.config.pad_token_id = tokenizer.pad_token_id = 0  # unk
