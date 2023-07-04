@@ -1,8 +1,9 @@
+
 def llama_tokenize(prompt, tokenizer, options):
     result = tokenizer(
         prompt,
         truncation=True,
-        max_length=options.cutoff_len,
+        max_length=options.max_source_length,
         padding=False,
     )
     if (
@@ -17,7 +18,7 @@ def llama_tokenize(prompt, tokenizer, options):
     return result
 
 
-def coll_fn_llama(example, prompter, tokenizer, options):
+def preprocess_llama(example, prompter, tokenizer, options):
     full_prompt = prompter.generate_prompt(
         example["instruction"],
         example["input"],
@@ -33,7 +34,10 @@ def coll_fn_llama(example, prompter, tokenizer, options):
 
         if options.add_eos_token:
             user_prompt_len -= 1
-
-        tokenized_full_prompt["labels"] = [-100] * user_prompt_len + tokenized_full_prompt["labels"][user_prompt_len:] 
+        tokenized_full_prompt["labels"] = [-100] * user_prompt_len + tokenized_full_prompt["labels"][user_prompt_len:]
+        
     return tokenized_full_prompt
     
+
+def coll_fn_llama(stage = "sft"):
+    return preprocess_llama
