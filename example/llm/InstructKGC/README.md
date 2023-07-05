@@ -19,9 +19,11 @@
     - [LoRA Fine-tuning with ChatGLM](#lora-fine-tuning-with-chatglm)
     - [P-Tuning Fine-tuning with ChatGLM](#p-tuning-fine-tuning-with-chatglm)
     - [Prediction](#prediction-1)
-  - [6.Format Conversion](#6format-conversion)
-  - [7.Hardware](#7hardware)
-  - [8.Acknowledgment](#8acknowledgment)
+  - [6.CPM-Bee](#6cpm-bee)
+    - [OpenDelta Fine-tuning with CPM-Bee](#OpenDelta-fine-tuning-with-cpm-bee)
+  - [7.Format Conversion](#7format-conversion)
+  - [8.Hardware](#8hardware)
+  - [9.Acknowledgment](#9acknowledgment)
   - [Citation](#citation)
 
 
@@ -184,7 +186,7 @@ CUDA_VISIBLE_DEVICES="0" python inference.py \
 ## 5.ChatGLM
 
 
-### LoRA Fine-tuning with ChatGLM
+### Lora Fine-tuning with ChatGLM
 You can use the LoRA method to finetune the model using the following script:
 
 ```bash
@@ -243,7 +245,90 @@ CUDA_VISIBLE_DEVICES=0 python inference_chatglm_pt.py \
   --max_src_len 450
 ```
 
-## 6.Format Conversion
+## 6.CPM-Bee
+### OpenDelta fine-tuning with CPM-Bee
+First you need to convert the event's trans.json into the format required by cpm-bee and extract 20% of the sample to be used as testers
+
+```python
+import json
+import random
+
+with open('train.json', 'r', encoding='utf-8') as f:
+    data = [json.loads(line.strip()) for line in f]
+
+num_data = len(data)
+num_eval = int(num_data * 0.2)  # 20%作为验证集
+eval_data = random.sample(data, num_eval)
+
+with open('train.jsonl', 'w', encoding='utf-8') as f:
+    for d in data:
+        if d not in eval_data:
+            cpm_d={"input":d["input"],"prompt":d["instruction"],"<ans>":d["output"]}
+            json.dump(cpm_d, f, ensure_ascii=False)
+            f.write('\n')
+
+with open('eval.jsonl', 'w', encoding='utf-8') as f:
+    for d in eval_data:
+        cpm_d={"input":d["input"],"prompt":d["instruction"],"<ans>":d["output"]}
+        json.dump(cpm_d, f, ensure_ascii=False)
+        f.write('\n')
+```
+
+put it in bee_data/ ,and use the data process tool privided by [CPM-Bee](https://github.com/OpenBMB/CPM-Bee/tree/main/tutorials/basic_task_finetune)
+
+```bash
+python ../../src/preprocess_dataset.py --input bee_data --output_path bin_data --output_name ccpm_data
+```
+
+Modify the model fine-tuning script scripts scripts/finetune_cpm_bee.sh to
+
+```bash
+#! /bin/bash
+# 四卡微调
+export CUDA_VISIBLE_DEVICES=0,1,2,3
+GPUS_PER_NODE=4
+
+NNODES=1
+MASTER_ADDR="localhost"
+MASTER_PORT=12346
+
+OPTS=""
+OPTS+=" --use-delta"  # 使用增量微调（delta-tuning）
+OPTS+=" --model-config config/cpm-bee-10b.json"  # 模型配置文件
+OPTS+=" --dataset ../tutorials/basic_task_finetune/bin_data/train"  # 训练集路径
+OPTS+=" --eval_dataset ../tutorials/basic_task_finetune/bin_data/eval"  # 验证集路径
+OPTS+=" --epoch 5"  # 训练epoch数
+OPTS+=" --batch-size 5"    # 数据批次大小
+OPTS+=" --train-iters 100"  # 用于lr_schedular
+OPTS+=" --save-name cpm_bee_finetune"  # 保存名称
+OPTS+=" --max-length 2048" # 最大长度
+OPTS+=" --save results/"  # 保存路径
+OPTS+=" --lr 0.0001"    # 学习率
+OPTS+=" --inspect-iters 100"  # 每100个step进行一次检查(bmtrain inspect)
+OPTS+=" --warmup-iters 1". # 预热学习率的步数为1
+OPTS+=" --eval-interval 50"  # 每50步验证一次
+OPTS+=" --early-stop-patience 5"  # 如果验证集loss连续5次不降，停止微调
+OPTS+=" --lr-decay-style noam"  # 选择noam方式调度学习率
+OPTS+=" --weight-decay 0.01"  # 优化器权重衰减率为0.01
+OPTS+=" --clip-grad 1.0"  # 半精度训练的grad clip
+OPTS+=" --loss-scale 32768"  # 半精度训练的loss scale
+OPTS+=" --start-step 0"  # 用于加载lr_schedular的中间状态
+OPTS+=" --load ckpts/pytorch_model.bin"  # 模型参数文件
+
+CMD="torchrun --nnodes=${NNODES} --nproc_per_node=${GPUS_PER_NODE} --rdzv_id=1 --rdzv_backend=c10d --rdzv_endpoint=${MASTER_ADDR}:${MASTER_PORT} finetune_cpm_bee.py ${OPTS}"
+
+echo ${CMD}
+$CMD
+```
+run the bash
+```bash
+cd ../../src
+bash scripts/finetune_cpm_bee.sh
+```
+For more details check out the [official tutoris](https://github.com/OpenBMB/CPM-Bee/tree/main/tutorials/basic_task_finetune)
+
+
+## 7.Format Conversion
 The `bash run_inference.bash` command mentioned above will output a file named `output_llama_7b_e3_r8.json` in the `result` directory, which does not contain the 'kg' field. If you need to meet the submission format requirements of the CCKS2023 competition, you also need to extract 'kg' from 'output'. Here is a simple example script called `convert.py`.
 
 
@@ -254,12 +339,12 @@ python utils/convert.py \
 ```
 
 
-## 7.Hardware
+## 8.Hardware
 We performed finetune on the model on 1 `RTX3090 24GB`
 Attention: Please ensure that your device or server has sufficient RAM memory!!!
 
 
-## 8.Acknowledgment
+## 9.Acknowledgment
 The code basically comes from [Alpaca-LoRA](https://github.com/tloen/alpaca-lora). Only some changes have been made, many thanks.
 
 ## Citation
