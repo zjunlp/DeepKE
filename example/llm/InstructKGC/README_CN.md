@@ -325,7 +325,7 @@ bash scripts/finetune_cpm_bee.sh
 详见CPM[官方微调教程](https://github.com/OpenBMB/CPM-Bee/tree/main/tutorials/basic_task_finetune)
 
 
-## 6.格式转换
+## 7.格式转换
 上面的 `bash run_inference.bash` 会在 `result` 目录下输出 `output_llama_7b_e3_r8.json` 文件, 文件中不包含 'kg' 字段, 如果需要满足CCKS2023比赛的提交格式还需要从 'output' 中抽取出 'kg', 这里提供一个简单的样例 `convert.py`
 
 ```bash
@@ -335,12 +335,12 @@ python utils/convert.py \
 ```
 
 
-## 7.硬件
+## 8.硬件
 我们在1块 上对模型进行了finetune
 注意：请确保你的设备或服务器有足够的RAM内存！！！
 
 
-## 8.Acknowledgment
+## 9.Acknowledgment
 
 代码基本来自于[Alpaca-LoRA](https://github.com/tloen/alpaca-lora), 仅做了部分改动, 感谢！
 

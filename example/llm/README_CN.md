@@ -104,10 +104,7 @@ MOSS是一个支持中英双语和多种插件的开源对话语言模型
 
 
 ## CPM-Bee
-CPM-Bee是一个完全开源、允许商用的百亿参数中英文基座模型，也是CPM-Live训练的第二个里程碑。
-
-开发测试中！敬请期待！
-
+### 案例一: OpenDelta微调CPM-Bee完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#opendelta-fine-tuning-with-cpm-bee) | [中文](./InstructKGC//README_CN.md/#opendelta微调cpm-bee) 
 
 ## GPT系列
 
