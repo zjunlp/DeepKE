@@ -21,7 +21,7 @@
     - [P-Tuning微调ChatGLM](#p-tuning微调chatglm)
     - [预测](#预测-1)
   - [6.CPM-Bee](#6cpm-bee)
-    - [OpenDelta Fine-tuning with CPM-Bee](#OpenDelta微调cpm-bee)
+    - [OpenDelta微调CPM-Bee](#opendelta微调cpm-bee)
   - [7.格式转换](#7格式转换)
   - [8.硬件](#8硬件)
   - [9.Acknowledgment](#9acknowledgment)
@@ -155,8 +155,9 @@ CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 fine
 大致遵循上面的[LoRA微调LLaMA](./README_CN.md/#lora微调llama)命令, 仅需做出下列修改
 ```bash
 --base_model 'path to ZhiXi'
---output_dir 'lora/cama-13b-e3-r8' \
+--output_dir 'lora/cama-13b-e3-r8' 
 ```
+
 
 
 ### 预测
@@ -177,6 +178,13 @@ CUDA_VISIBLE_DEVICES="0" python inference.py \
     --load_8bit \
 ```
 
+base_model与lora_weights的对应关系:
+
+| base_model   | lora_weights   |
+| ------ | ------ |
+| llama-7b  | llama-7b-lora  |
+| alpaca-7b | alpaca-7b-lora |
+| zhixi-13b | zhixi-13b-lora |
 
 ## 5.ChatGLM
 

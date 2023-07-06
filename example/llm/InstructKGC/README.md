@@ -16,11 +16,11 @@
     - [LoRA Fine-tuning with ZhiXi (智析)](#lora-fine-tuning-with-zhixi-智析)
     - [Prediction](#prediction)
   - [5.ChatGLM](#5chatglm)
-    - [LoRA Fine-tuning with ChatGLM](#lora-fine-tuning-with-chatglm)
+    - [Lora Fine-tuning with ChatGLM](#lora-fine-tuning-with-chatglm)
     - [P-Tuning Fine-tuning with ChatGLM](#p-tuning-fine-tuning-with-chatglm)
     - [Prediction](#prediction-1)
   - [6.CPM-Bee](#6cpm-bee)
-    - [OpenDelta Fine-tuning with CPM-Bee](#OpenDelta-fine-tuning-with-cpm-bee)
+    - [OpenDelta fine-tuning with CPM-Bee](#opendelta-fine-tuning-with-cpm-bee)
   - [7.Format Conversion](#7format-conversion)
   - [8.Hardware](#8hardware)
   - [9.Acknowledgment](#9acknowledgment)
@@ -160,7 +160,7 @@ Note: Since ZhiXi has already been trained with LoRA on a large-scale informatio
 Follow the command mentioned above [LoRA Fine-tuning with LLaMA](./README.md/#lora-fine-tuning-with-llama) with the following modifications.
 ```bash
 --base_model 'path to zhixi'
---output_dir 'lora/cama-13b-e3-r8' \
+--output_dir 'lora/cama-13b-e3-r8' 
 ```
 
 ### Prediction
