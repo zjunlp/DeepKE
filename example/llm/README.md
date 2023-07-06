@@ -106,9 +106,7 @@ Under developement and will be released soon!
 
 
 ## CPM-Bee
-CPM-Bee is a fully open-source, commercially-usable Chinese-English bilingual base model with a capacity of ten billion parameters. It is the second milestone achieved through the training process of CPM-Live. 
-
-Under developement and will be released soon!
+### Case 1: OpenDelta Fine-tuning of CPM-Bee for CCKS2023 Instruction-based KG Construction [English](./InstructKGC//README.md/#opendelta-fine-tuning-with-cpm-bee) | [Chinese](./InstructKGC//README_CN.md/#opendelta微调cpm-bee) 
 
 
 

@@ -39,6 +39,7 @@
     - [案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例二p-tuning微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文)
   - [MOSS](#moss)
   - [CPM-Bee](#cpm-bee)
+    - [案例一: OpenDelta微调CPM-Bee完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一OpenDelta微调cpm-bee完成CCKS2023指令驱动的知识图谱构建-英文--中文)
   - [GPT系列](#gpt系列)
     - [案例一：ICL使用大语言模型进行信息抽取 英文 | 中文](#案例一icl使用大语言模型进行信息抽取-英文--中文)
     - [案例二：ICL使用大语言模型进行数据增强 英文 | 中文](#案例二icl使用大语言模型进行数据增强-英文--中文)
@@ -104,10 +105,7 @@ MOSS是一个支持中英双语和多种插件的开源对话语言模型
 
 
 ## CPM-Bee
-CPM-Bee是一个完全开源、允许商用的百亿参数中英文基座模型，也是CPM-Live训练的第二个里程碑。
-
-开发测试中！敬请期待！
-
+### 案例一：OpenDelta微调CPM-Bee完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#opendelta-fine-tuning-with-cpm-bee) | [中文](./InstructKGC//README_CN.md/#opendelta微调cpm-bee) 
 
 ## GPT系列
 
