@@ -131,7 +131,7 @@ CUDA_VISIBLE_DEVICES="0" python finetune.py \
 We also provide multiple GPU versions of LoRA training commands:
 
 ```bash
-CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 finetune_llama.py \
+CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 finetune.py \
     --base_model 'decapoda-research/llama-7b-hf' \
     --train_path 'data/train.json' \
     --output_dir 'lora/llama-7b-e3-r8' \

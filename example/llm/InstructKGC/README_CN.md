@@ -102,7 +102,7 @@ mkdir data
 你可以通过下面的命令设置自己的参数使用LoRA方法来微调模型:
 
 ```bash
-CUDA_VISIBLE_DEVICES="0" python finetune_llama.py \
+CUDA_VISIBLE_DEVICES="0" python finetune.py \
     --base_model 'decapoda-research/llama-7b-hf' \
     --train_path 'data/train.json' \
     --output_dir 'lora/llama-7b-e3-r8' \
@@ -126,7 +126,7 @@ CUDA_VISIBLE_DEVICES="0" python finetune_llama.py \
 我们也提供了多GPU版本的LoRA训练命令:
 
 ```bash
-CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 finetune_llama.py \
+CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 finetune.py \
     --base_model 'decapoda-research/llama-7b-hf' \
     --train_path 'data/train.json' \
     --output_dir 'lora/llama-7b-e3-r8' \
@@ -167,7 +167,7 @@ CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 fine
 你可以通过下面的命令设置自己的参数执行来使用训练好的LoRA模型在比赛测试集上预测输出:
 
 ```bash
-CUDA_VISIBLE_DEVICES="0" python inference_llama.py \
+CUDA_VISIBLE_DEVICES="0" python inference.py \
     --base_model 'decapoda-research/llama-7b-hf' \
     --lora_weights 'lora/llama-7b-e3-r8' \
     --input_file 'data/valid.json' \
