@@ -19,12 +19,16 @@
   - [5.ChatGLM](#5chatglm)
     - [LoRA微调ChatGLM](#lora微调chatglm)
     - [P-Tuning微调ChatGLM](#p-tuning微调chatglm)
+    - [LoRA微调ChatGLM2](#lora微调chatglm2)
     - [预测](#预测-1)
-  - [6.CPM-Bee](#6cpm-bee)
+  - [6.Moss](#6Moss)
+    - [LoRA微调Moss](#lora微调moss)
+    - [预测](#预测-2)
+  - [7.CPM-Bee](#7cpm-bee)
     - [OpenDelta微调CPM-Bee](#opendelta微调cpm-bee)
-  - [7.格式转换](#7格式转换)
-  - [8.硬件](#8硬件)
-  - [9.Acknowledgment](#9acknowledgment)
+  - [8.格式转换](#8格式转换)
+  - [9.硬件](#9硬件)
+  - [10.Acknowledgment](#10acknowledgment)
   - [Citation](#citation)
 
 
@@ -223,7 +227,23 @@ deepspeed --include localhost:0 finetuning_pt.py \
   --pre_seq_len 16 \
   --prefix_projection true
 ```
-
+### LoRA微调ChatGLM2
+你可以通过下面的命令使用LoRA方法来finetune模型:
+```
+CUDA_VISIBLE_DEVICES=4,5 python finetune.py \
+    --tokenized_dataset simple_math_4op \
+    --lora_rank 8 \
+    --per_device_train_batch_size 10 \
+    --gradient_accumulation_steps 1 \
+    --max_steps 100000 \
+    --save_steps 200 \
+    --save_total_limit 2 \
+    --learning_rate 1e-4 \
+    --fp16 \
+    --remove_unused_columns false \
+    --logging_steps 50 \
+    --output_dir weights/simple_math_4op
+```
 ### 预测
 
 你可以通过下面的命令使用训练好的LoRA模型在比赛测试集上预测输出:
@@ -249,8 +269,38 @@ CUDA_VISIBLE_DEVICES=0 python inference_chatglm_pt.py \
   --max_len 768 \
   --max_src_len 450
 ```
+## 6.Moss
 
-## 6.CPM-Bee
+### LoRA微调Moss
+你可以通过下面的命令使用LoRA方法来finetune模型:
+
+```bash
+CUDA_VISIBLE_DEVICES=4,5 python finetune_moss.py \
+  --train_path 'data/train.json'
+  --model_dir "/model"
+  --epoch  5
+  --batch_size 1
+  --data_dir ''
+  --output_dir 'output_dir_lora/'
+```
+
+### 预测
+
+你可以通过下面的命令使用训练好的LoRA模型在比赛测试集上预测输出:
+
+```bash
+CUDA_VISIBLE_DEVICES=4,5 python finetune_moss.py \
+  --train_path 'data/train.json'
+  --model_dir "/model"
+  --epoch  5
+  --batch_size 1
+  --data_dir ''
+  --output_dir 'output_dir_lora/'
+  --save_dir 'save_dir_lora/'
+```
+
+
+## 7.CPM-Bee
 ### OpenDelta微调CPM-Bee
 首先，你需要将比赛的的trans.json转换为cpm-bee所要求的格式，并提取20%的样本作为测试集使用。
 
@@ -333,7 +383,7 @@ bash scripts/finetune_cpm_bee.sh
 详见CPM[官方微调教程](https://github.com/OpenBMB/CPM-Bee/tree/main/tutorials/basic_task_finetune)
 
 
-## 7.格式转换
+## 8.格式转换
 上面的 `bash run_inference.bash` 会在 `result` 目录下输出 `output_llama_7b_e3_r8.json` 文件, 文件中不包含 'kg' 字段, 如果需要满足CCKS2023比赛的提交格式还需要从 'output' 中抽取出 'kg', 这里提供一个简单的样例 `convert.py`
 
 ```bash
@@ -343,12 +393,12 @@ python utils/convert.py \
 ```
 
 
-## 8.硬件
+## 9.硬件
 我们在1块 上对模型进行了finetune
 注意：请确保你的设备或服务器有足够的RAM内存！！！
 
 
-## 9.Acknowledgment
+## 10.Acknowledgment
 
 代码基本来自于[Alpaca-LoRA](https://github.com/tloen/alpaca-lora), 仅做了部分改动, 感谢！
 
