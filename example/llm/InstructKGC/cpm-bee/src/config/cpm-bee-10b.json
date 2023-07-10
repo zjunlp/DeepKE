@@ -1,0 +1,14 @@
+{
+    "vocab_size": 86583,
+    "dim_model": 4096,
+    "dim_ff" : 10240,
+    "num_layers" : 48,
+    "num_heads": 32,
+    "dim_head" : 128,
+    "dropout_p" : 0.0,
+    "position_bias_num_buckets" : 256,
+    "position_bias_num_segment_buckets": 256,
+    "position_bias_max_distance" : 2048,
+    "eps" : 1e-6,
+    "half" : true
+}

@@ -81,7 +81,7 @@ LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了�
 ### 案例一：Lora微调Moss完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#lora微调Moss) | [中文](./InstructKGC//README_CN.md/#lora微调Moss) 
 
 ## CPM-Bee
-### 案例一：OpenDelta微调CPM-Bee完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#opendelta-fine-tuning-with-cpm-bee) | [中文](./InstructKGC//README_CN.md/#opendelta微调cpm-bee) 
+### 案例一：OpenDelta微调CPM-Bee完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//cpm-bee//README.md) | [中文](./InstructKGC//cpm-bee//README_CN.md) 
 
 ## GPT系列
 
