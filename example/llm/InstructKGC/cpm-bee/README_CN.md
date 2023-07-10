@@ -1,14 +1,15 @@
-### 1.Install all libs needed 
+### 1、安装需要的包
 
-Notice   torch and python version requirements(torch>=1.10 ,<2.0.0,python>=3.7)
+注意torch和python的版本要求（torch>=1.10 ,<2.0.0,python>=3.7）。
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2.Data reformat
 
-Since the CPM-Bee prompt data needs to be in a specific format,we choose  the case Text  generation and convert the event's trans.json into the format required by cpm-bee and extract 20% of the sample to be used as validation set.
-CPM-Bee Text generation format
+
+### 2、数据格式转化
+
+由于CPM-Bee的提示数据需要特定的格式，我们选择文本生成类型，将事件的trans.json转换为cpm-bee所要求的格式，并提取20%的样本作为验证集。
 ```
 "文本生成": {"input": "今天天气很好，我和妈妈一起去公园，", "prompt": "往后写约100字", "<ans>": ""}
 #数据转化前后
@@ -18,12 +19,17 @@ CPM-Bee Text generation format
 ```bash
 python data_reformate.py
 ```
-put train.jsonl ,eval.jsonl in bee_data, and use the data process tool to conversion to binary format
+
+将处理好的数据放入bee_data文件夹，并用preprocess_dataset.py提供的数据处理方法将其转为二进制文件
+
 ```bash
 python preprocess_dataset.py --input bee_data --output_path bin_data --output_name ccpm_data
 ```
-### 3.Delta-tuning
-download the CPM-Bee model from [CPM-Bee](https://github.com/OpenBMB/CPM-Bee/tree/main/tutorials/basic_task_finetune) ,you can choose 1B,2B,5B,10B verson as you like and update finetune_cpm_bee.sh  according to the path address of the model file
+
+
+### 3、模型微调
+从[CPM-Bee](https://github.com/OpenBMB/CPM-Bee/tree/main/tutorials/basic_task_finetune)下载CPM-Bee模型，你可以选择1B,2B,5B,10B版本，并根据模型文件的路径地址更新finetune_cpm_bee.sh。
+
 ```bash
 #! /bin/bash
 export CUDA_VISIBLE_DEVICES=0,1,2,3
@@ -59,25 +65,23 @@ OPTS+=" --load path/to/your/model.pt"
 CMD="torchrun --nnodes=${NNODES} --nproc_per_node=${GPUS_PER_NODE} --rdzv_id=1 --rdzv_backend=c10d --rdzv_endpoint=${MASTER_ADDR}:${MASTER_PORT} finetune_cpm_bee.py ${OPTS}"
 
 echo ${CMD}
-$CMD
+```
 
+
+
+运行脚本
 
 ```
-run the bash
-```bash
 bash scripts/finetune_cpm_bee.sh
 ```
-
-if it runs without faults,you can get the checkpoint of model in the path you set in the bash above
-### 4.Text-Generation
-
-Use the text generation tool provided to generate the event text and you can get cpm_bee_TG.json
+如果运行没有问题，你可以在上面的bash中设置的路径中获得微调后的模型。
+### 4.文本推理
+使用提供的文本生成工具来生成事件文本，你可以得到cpm_bee_TG.json
 ```bash
 python text_generation.py
 ```
-### 5.Competition format conversion
-
-The above bash run_inference.bash will output cpm_bee_TG.json in the result directory without the kg' field, if you need to meet the CCKS2023 submission format you will need to extract the kg from output', here is a simple example convert.py
+### 5.比赛数据格式转换
+上面的bash run_inference.bash会在结果目录中输出没有kg'字段的cpm_bee_TG.json，如果你需要满足CCKS2023的提交格式，你需要从output'中提取kg，下面是一个简单的例子convert.py
 ```bash
 python ../../utils/convert.py
 -pred_path "cpm_bee_TG.json"

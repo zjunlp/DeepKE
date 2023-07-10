@@ -1,0 +1,22 @@
+[
+    {
+        "dataset_name": "pretrain",
+        "task_name": "mlm",
+        "weight": 1.0,
+        "path": "/path/to/dataset",
+        "transforms": [
+            {
+                "answer": "$answer",
+                "document": "$source"
+            },
+            {
+                "answer": "$answer",
+                "query": "$source"
+            },
+            {
+                "answer": "$answer",
+                "input": "$source"
+            }
+        ]
+    }
+]

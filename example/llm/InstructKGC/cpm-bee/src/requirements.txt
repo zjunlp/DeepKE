@@ -1,0 +1,8 @@
+torch>=1.10,<2.0.0
+bmtrain>=0.2.1
+jieba
+tqdm
+tensorboard
+numpy>=1.21.0
+spacy
+opendelta

@@ -1,21 +1,4 @@
-<p align="center">
-    <a href="https://github.com/zjunlp/deepke"> <img src="assets/LLM_logo.png" width="400"/></a>
-<p>
-<p align="center">  
-    <a href="http://deepke.zjukg.cn">
-        <img alt="Documentation" src="https://img.shields.io/badge/demo-website-blue">
-    </a>
-    <a href="https://pypi.org/project/deepke/#files">
-        <img alt="PyPI" src="https://img.shields.io/pypi/v/deepke">
-    </a>
-    <a href="https://github.com/zjunlp/DeepKE/blob/master/LICENSE">
-        <img alt="GitHub" src="https://img.shields.io/github/license/zjunlp/deepke">
-    </a>
-    <a href="http://zjunlp.github.io/DeepKE">
-        <img alt="Documentation" src="https://img.shields.io/badge/doc-website-red">
-    </a>
-    <a href="https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing">
-        <img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg">
+@@ -19,67 +19,70 @@
     </a>
 </p>
 
@@ -34,12 +17,12 @@
   - [LLaMA系列](#llama系列)
     - [案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调llama完成ccks2023指令驱动的知识图谱构建-英文--中文)
     - [案例一：使用智析完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一使用智析完成ccks2023指令驱动的知识图谱构建-英文--中文)
-  - [ChatGLM](#chatglm)
     - [案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文)
     - [案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例二p-tuning微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文)
   - [MOSS](#moss)
+    - [案例一：Lora微调Moss完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调moss完成ccks2023指令驱动的知识图谱构建-英文--中文)
   - [CPM-Bee](#cpm-bee)
-    - [案例一: OpenDelta微调CPM-Bee完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一OpenDelta微调cpm-bee完成CCKS2023指令驱动的知识图谱构建-英文--中文)
+    - [案例一：OpenDelta微调CPM-Bee完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一opendelta微调cpm-bee完成ccks2023指令驱动的知识图谱构建-英文--中文)
   - [GPT系列](#gpt系列)
     - [案例一：ICL使用大语言模型进行信息抽取 英文 | 中文](#案例一icl使用大语言模型进行信息抽取-英文--中文)
     - [案例二：ICL使用大语言模型进行数据增强 英文 | 中文](#案例二icl使用大语言模型进行数据增强-英文--中文)
@@ -51,7 +34,7 @@
   - [方法二：LoRA](#方法二lora)
   - [方法三：P-Tuning](#方法三p-tuning)
 - [引用](#引用)
- 
+
 ---
 
 # 环境依赖
@@ -60,7 +43,6 @@
 ```
 conda create -n deepke-llm python=3.9
 conda activate deepke-llm
-
 cd example/llm
 pip install -r requirements.txt
 ```
@@ -82,9 +64,6 @@ LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了�
 ### 案例一：使用智析完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-zhixi) | [中文](./InstructKGC/README_CN.md/#lora微调智析)
 
 
-
-
-## ChatGLM
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/chatglm_logo.png" alt="ChatGLM" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
@@ -99,13 +78,10 @@ LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了�
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/moss_logo.png" alt="ChatGLM" style="width: 25%; min-width: 25px; display: block; margin: auto;"></a>
 
-MOSS是一个支持中英双语和多种插件的开源对话语言模型
-
-开发测试中！敬请期待！
-
+### 案例一：Lora微调Moss完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#lora微调Moss) | [中文](./InstructKGC//README_CN.md/#lora微调Moss) 
 
 ## CPM-Bee
-### 案例一：OpenDelta微调CPM-Bee完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#opendelta-fine-tuning-with-cpm-bee) | [中文](./InstructKGC//README_CN.md/#opendelta微调cpm-bee) 
+### 案例一：OpenDelta微调CPM-Bee完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//cpm-bee//README.md) | [中文](./InstructKGC//cpm-bee//README_CN.md) 
 
 ## GPT系列
 
@@ -148,10 +124,3 @@ PT方法，即P-Tuning方法，参考[ChatGLM官方代码](https://link.zhihu.co
 ```bibtex
 @article{deepke-llm,
   author = {Ningyu Zhang, Jintian Zhang, Xiaohan Wang, Honghao Gui, Yinuo Jiang, Xiang Chen, Shengyu Mao, Shuofei Qiao, Zhen Bi, Jing Chen, Xiaozhuan Liang, Yixin Ou, Ruinan Fang, Zekun Xi, Xin Xu, Liankuan Tao, Lei Li, Peng Wang, Zhoubo Li, Guozhou Zheng, Huajun Chen},
-  title = {DeepKE-LLM: A Large Language Model Based Knowledge Extraction Toolkit},
-  year = {2023},
-  publisher = {GitHub},
-  journal = {GitHub repository},
-  howpublished = {\url{https://github.com/}},
-}
-```
