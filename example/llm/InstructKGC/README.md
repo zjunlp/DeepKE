@@ -19,11 +19,9 @@
     - [Lora Fine-tuning with ChatGLM](#lora-fine-tuning-with-chatglm)
     - [P-Tuning Fine-tuning with ChatGLM](#p-tuning-fine-tuning-with-chatglm)
     - [Prediction](#prediction-1)
-  - [6.CPM-Bee](#6cpm-bee)
-    - [OpenDelta fine-tuning with CPM-Bee](#opendelta-fine-tuning-with-cpm-bee)
-  - [7.Format Conversion](#7format-conversion)
-  - [8.Hardware](#8hardware)
-  - [9.Acknowledgment](#9acknowledgment)
+  - [6.Format Conversion](#7format-conversion)
+  - [7.Hardware](#8hardware)
+  - [8.Acknowledgment](#9acknowledgment)
   - [Citation](#citation)
 
 
