@@ -308,7 +308,7 @@ You can use the following command to set your own parameters and execute it to m
 ```bash
 CUDA_VISIBLE_DEVICES="0" python src/inference.py \
     --model_name_or_path 'Path or name to model' \
-    --model_name 'llama' \
+    --model_name 'model name' \
     --lora_weights 'Path to LoRA weights dictory' \
     --input_file 'data/valid.json' \
     --output_file 'results/results_valid.json' \
@@ -316,7 +316,7 @@ CUDA_VISIBLE_DEVICES="0" python src/inference.py \
     --bits 8 
 ```
 
-1. Attention!!! `--fp16` or `--bf16`, `--bits 8`, and `prompt_template_name` must be set the same as the ones used during the fine-tuning process.
+1. Attention!!! `--fp16` or `--bf16`, `--bits`、`--prompt_template_name` and `--model_name` must be set the same as the ones used during the fine-tuning process.
 
 
 ## 5.P-Tuning Fine-tuning

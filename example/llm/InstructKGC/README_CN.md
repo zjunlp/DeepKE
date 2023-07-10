@@ -333,14 +333,14 @@ base_model与lora_weights的对应关系:
 ```bash
 CUDA_VISIBLE_DEVICES="0" python src/inference.py \
     --model_name_or_path 'Path or name to model' \
-    --model_name 'llama' \
+    --model_name 'model name' \
     --lora_weights 'Path to LoRA weights dictory' \
     --input_file 'data/valid.json' \
     --output_file 'results/results_valid.json' \
     --fp16 \
     --bits 8 
 ```
-1.注意！！`--fp16` 或 `--bf16`、`--bits 8`、`prompt_template_name` 一定要与微调时设置的一样
+1.注意！！`--fp16` 或 `--bf16`、`--bits`、`--prompt_template_name`、`--model_name`一定要与微调时设置的一样
 
 
 ## 5.P-Tuning微调
