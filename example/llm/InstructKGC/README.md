@@ -77,6 +77,14 @@ Please refer to [DeepKE/example/llm/README.md](../README.md/#requirements) to cr
 conda activate deepke-llm
 ```
 
+!!! Attention: To accommodate the `qlora` technique, we have upgraded the versions of the `transformers`, `accelerate`, `bitsandbytes`, and `peft` libraries in the original deepke-llm codebase.
+
+1. transformers 0.17.1 -> 4.30.2
+2. accelerate 4.28.1 -> 0.20.3
+3. bitsandbytes 0.37.2 -> 0.39.1
+4. peft 0.2.0 -> 0.4.0dev
+
+
 ### Download data
 
 ```bash

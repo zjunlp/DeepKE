@@ -74,6 +74,14 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 conda activate deepke-llm
 ```
 
+！！！注意，为适配`qlora`技术，我们升高了原deepke-llm中`transformers`、`accelerate`、`bitsandbytes`、`peft`库的版本
+
+1. transformers 0.17.1 -> 4.30.2
+2. accelerate 4.28.1 -> 0.20.3
+3. bitsandbytes 0.37.2 -> 0.39.1
+4. peft 0.2.0 -> 0.4.0dev
+
+
 
 ### 下载数据
 ```bash
