@@ -84,7 +84,7 @@ ZhiXi follows a two-step approach: (1) It performs further full pre-training on 
 
 ### Case 1: LoRA Fine-tuning of LLaMA for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md/#lora-fine-tuning-with-llama) | [Chinese](./InstructKGC/README_CN.md/#lora微调llama)
 
-### Case 2: Using ZhiXi for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md/#lora-fine-tuning-with-zhixi) | [Chinese](./InstructKGC/README_CN.md/#lora微调zhixi)
+### Case 2: Using ZhiXi for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md/#lora-fine-tuning-with-zhixi-智析) | [Chinese](./InstructKGC/README_CN.md/#lora微调智析)
 
 
 
@@ -105,7 +105,7 @@ ZhiXi follows a two-step approach: (1) It performs further full pre-training on 
 <a href="" target="_blank"><img src="assets/moss_logo.png" alt="ChatGLM" style="width: 25%; min-width: 25px; display: block; margin: auto;"></a>
 
 
-### Case 1: OpenDelta Fine-tuning of Moss for CCKS2023 Instruction-based KG Construction [English](./InstructKGC//README.md/#lora微调Moss) | [Chinese](./InstructKGC//README_CN.md/#lora微调Moss) 
+### Case 1: OpenDelta Fine-tuning of Moss for CCKS2023 Instruction-based KG Construction [English](./InstructKGC//README.md/#lora-fine-tuning-with-moss) | [Chinese](./InstructKGC//README_CN.md/#lora微调moss) 
 
 
 

@@ -19,7 +19,7 @@
     - [Lora Fine-tuning with Moss](#lora-fine-tuning-with-moss)
     - [Prediction](#prediction)
   - [5.P-Tuning Fine-tuning](#5p-tuning-fine-tuning)
-    - [Lora Fine-tuning with ChatGLM](#lora-fine-tuning-with-chatglm-1)
+    - [P-Tuning Fine-tuning with ChatGLM](#p-tuning-fine-tuning-with-chatglm)
     - [Prediction](#prediction-1)
   - [6.CPM-Bee](#6cpm-bee)
     - [OpenDelta微调CPM-Bee](#opendelta微调cpm-bee)
@@ -322,7 +322,7 @@ CUDA_VISIBLE_DEVICES="0" python src/inference.py \
 ## 5.P-Tuning Fine-tuning
 
 
-### Lora Fine-tuning with ChatGLM
+### P-Tuning Fine-tuning with ChatGLM
 
 You can use the following command to fine-tune the model using the P-Tuning method:
 ```bash
