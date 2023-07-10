@@ -1,9 +1,7 @@
 torch==1.13.0
-accelerate==0.17.1
-transformers==4.28.1
-bitsandbytes==0.37.2
-peft==0.2.0
-gradio
+accelerate==0.20.3
+transformers==4.30.2
+bitsandbytes==0.39.1
+peft @ git+https://github.com/huggingface/peft.git
 datasets
 sentencepiece
-fire

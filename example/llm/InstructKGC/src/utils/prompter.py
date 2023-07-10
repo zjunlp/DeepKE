@@ -1,6 +1,7 @@
 """
 A dedicated helper to manage templates and prompt building.
 """
+
 import json
 import os.path as osp
 from typing import Union
@@ -12,7 +13,6 @@ class Prompter(object):
     def __init__(self, template_name: str = "", verbose: bool = False):
         self._verbose = verbose
         if not template_name:
-            # Enforce the default here, so the constructor can be called with '' and will not break.
             template_name = "alpaca"
         file_name = osp.join("templates", f"{template_name}.json")
         if not osp.exists(file_name):

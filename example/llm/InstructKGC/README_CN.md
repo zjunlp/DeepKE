@@ -12,23 +12,21 @@
     - [环境](#环境)
     - [下载数据](#下载数据)
     - [模型](#模型)
-  - [4.LLaMA系列](#4llama系列)
+  - [4.LoRA微调](#4lora微调)
     - [LoRA微调LLaMA](#lora微调llama)
+    - [LoRA微调Alpaca](#lora微调alpaca)
     - [LoRA微调智析](#lora微调智析)
-    - [预测](#预测)
-  - [5.ChatGLM](#5chatglm)
+    - [LoRA微调Vicuna](#lora微调vicuna)
     - [LoRA微调ChatGLM](#lora微调chatglm)
-    - [P-Tuning微调ChatGLM](#p-tuning微调chatglm)
-    - [LoRA微调ChatGLM2](#lora微调chatglm2)
-    - [预测](#预测-1)
-  - [6.Moss](#6Moss)
     - [LoRA微调Moss](#lora微调moss)
-    - [预测](#预测-2)
-  - [7.CPM-Bee](#7cpm-bee)
+    - [预测](#预测)
+  - [5.P-Tuning微调](#5p-tuning微调)
+    - [P-Tuning微调ChatGLM](#p-tuning微调chatglm)
+    - [预测](#预测-1)
+  - [6.CPM-Bee](#6cpm-bee)
     - [OpenDelta微调CPM-Bee](#opendelta微调cpm-bee)
-  - [8.格式转换](#8格式转换)
-  - [9.硬件](#9硬件)
-  - [10.Acknowledgment](#10acknowledgment)
+  - [7.格式转换](#7格式转换)
+  - [8.Acknowledgment](#8acknowledgment)
   - [Citation](#citation)
 
 
@@ -79,7 +77,7 @@ conda activate deepke-llm
 
 ### 下载数据
 ```bash
-mkdir result
+mkdir results
 mkdir lora
 mkdir data
 ```
@@ -89,78 +87,231 @@ mkdir data
 
 ### 模型
 下面是一些模型
-* [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
-* [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
-* [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
+* [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf) | [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
+* [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b) | [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
+* [Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1) | [Vicuna-13b-delta-v1.1](https://huggingface.co/lmsys/vicuna-13b-delta-v1.1)
 * [zhixi-13b-diff](https://huggingface.co/zjunlp/zhixi-13b-diff)
-* [fnlp/moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
-* [openbmb/cpm-bee-5b](https://huggingface.co/openbmb/cpm-bee-5b)
-* [Linly-AI/ChatFlow-7B](https://huggingface.co/Linly-AI/ChatFlow-7B)
-* [Linly-AI/Chinese-LLaMA-7B](https://huggingface.co/Linly-AI/Chinese-LLaMA-7B)
+* [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)
+* [moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
+* [cpm-bee-5b](https://huggingface.co/openbmb/cpm-bee-5b)
+* [ChatFlow-7B](https://huggingface.co/Linly-AI/ChatFlow-7B)
+* [Chinese-LLaMA-7B](https://huggingface.co/Linly-AI/Chinese-LLaMA-7B)
 
 
 
-
-## 4.LLaMA系列
+## 4.LoRA微调
 
 ### LoRA微调LLaMA
 
-你可以通过下面的命令设置自己的参数使用LoRA方法来微调模型:
-
+你可以通过下面的命令设置自己的参数使用LoRA方法来微调Llama模型:
 ```bash
-CUDA_VISIBLE_DEVICES="0" python finetune.py \
-    --base_model 'decapoda-research/llama-7b-hf' \
+output_dir='path to save Llama Lora'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/test_finetune.py \
+    --do_train --do_eval \
+    --model_name_or_path 'path or name to Llama' \
+    --model_name 'llama' \
     --train_path 'data/train.json' \
-    --output_dir 'lora/llama-7b-e3-r8' \
-    --batch_size 128 \
-    --micro_train_batch_size 4 \
-    --num_epochs 3 \
+    --output_dir=${output_dir}  \
+    --per_device_train_batch_size 16 \
+    --per_device_eval_batch_size 16 \
+    --gradient_accumulation_steps 8 \
+    --preprocessing_num_workers 8 \
+    --num_train_epochs 10 \
     --learning_rate 1e-4 \
+    --optim "adamw_torch" \
     --cutoff_len 512 \
     --val_set_size 1000 \
+    --evaluation_strategy "epoch" \
+    --save_strategy "epoch" \
+    --save_total_limit 10 \
     --lora_r 8 \
     --lora_alpha 16 \
     --lora_dropout 0.05 \
-    --lora_target_modules '[q_proj,v_proj]' \
-    --train_on_inputs \
-    --group_by_length \
+    --fp16 \
+    --bits 8 \
+    | tee ${output_dir}/train.log \
+    2> ${output_dir}/train.err
 ```
 
-1. 你可以使用`--valid_file`提供验证集, 或者什么都不做(在`finetune.py`中, 我们会从train.json中划分`val_set_size`数`量的样本做验证集), 你也可以使用`val_set_size`调整验证集的数量
-2. `batch_size`、`micro_train_batch_size`、`gradient_accumulation_steps`、`GPU数量`的关系是 gradient_accumulation_steps = batch_size // micro_batch_size // GPU数量。micro_train_batch_size才是在每块GPU上执行的真实batch_size。
+1、Llama模型我们采用[LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
+2、你可以使用`--valid_file`提供验证集, 或者什么都不做（在`finetune.py`中, 我们会从train.json中划分`val_set_size`数量的样本做验证集）, 你也可以使用`val_set_size`调整验证集的数量。
+3、`prompt_template_name`我们采用默认的`alpaca`模版, 详见 `templates/alpaca.json`
+4、更详细的参数信息请参考 `utils/args.py`
+5、我们在 `RTX3090` 上跑通了llama-lora微调代码
 
-我们也提供了多GPU版本的LoRA训练命令:
+相应的脚本在 `scripts/fine_llama.bash`
+
+
+
+### LoRA微调Alpaca
+
+微调指令大致遵循上面的[LoRA微调LLaMA](./README_CN.md/#lora微调llama)命令, 仅需对`scripts/fine_llama.bash`做出下列修改
 
 ```bash
-CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 finetune.py \
-    --base_model 'decapoda-research/llama-7b-hf' \
-    --train_path 'data/train.json' \
-    --output_dir 'lora/llama-7b-e3-r8' \
-    --batch_size 960 \
-    --micro_train_batch_size 10 \
-    --num_epochs 3 \
-    --learning_rate 1e-4 \
-    --cutoff_len 512 \
-    --val_set_size 1000 \
-    --lora_r 8 \
-    --lora_alpha 16 \
-    --lora_dropout 0.05 \
-    --lora_target_modules '[q_proj,v_proj]' \
-    --train_on_inputs \
-    --group_by_length \
+output_dir='path to save Alpaca Lora'
+--model_name_or_path 'path or name to Alpaca' \
+--model_name 'alpaca' \
 ```
+
+1、Alpaca模型我们采用[Alpaca-7b](https://huggingface.co/circulus/alpaca-7b)
+2、`prompt_template_name`我们采用默认的`alpaca`模版, 详见 `templates/alpaca.json`
+3、我们在 `RTX3090` 上跑通了alpaca-lora微调代码
+
+
 
 
 ### LoRA微调智析
-请参考[KnowLM2.2预训练模型权重获取与恢复](https://github.com/zjunlp/KnowLM#2-2)获得完整的智析模型权重。
 
+首先！！请参考[KnowLM2.2预训练模型权重获取与恢复](https://github.com/zjunlp/KnowLM#2-2)获得完整的智析模型权重。
 注意: 由于智析已经在大量的信息抽取指令数据集上经过LoRA训练, 因此可以跳过这一步直接执行预测, 你也可以选择进一步训练。
 
-大致遵循上面的[LoRA微调LLaMA](./README_CN.md/#lora微调llama)命令, 仅需做出下列修改
+微调指令大致遵循上面的[LoRA微调LLaMA](./README_CN.md/#lora微调llama)命令, 仅需对`scripts/fine_llama.bash`做出下列修改
+
 ```bash
---base_model 'path to ZhiXi'
---output_dir 'lora/cama-13b-e3-r8' 
+output_dir='path to save Zhixi Lora'
+--per_device_train_batch_size 4 \
+--per_device_eval_batch_size 4 \
+--model_name_or_path 'path or name to Zhixi' \
+--model_name 'zhixi' \
 ```
+
+1、由于Zhixi目前只有13b的模型, 因此需要相应减小batch size
+2、`prompt_template_name`我们采用默认的`alpaca`模版, 详见 `templates/alpaca.json`
+3、我们在 `RTX3090` 上跑通了ZhiXi-lora微调代码
+
+
+
+
+### LoRA微调Vicuna
+
+你可以通过下面的命令设置自己的参数使用LoRA方法来微调Vicuna模型:
+```bash
+output_dir='path to save Vicuna Lora'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/test_finetune.py \
+    --do_train --do_eval \
+    --model_name_or_path 'path or name to Vicuna' \
+    --model_file 'vicuna' \
+    --prompt_template_name 'vicuna' \
+    --train_path 'data/train.json' \
+    --output_dir=${output_dir}  \
+    --per_device_train_batch_size 16 \
+    --per_device_eval_batch_size 16 \
+    --gradient_accumulation_steps 8 \
+    --preprocessing_num_workers 8 \
+    --num_train_epochs 10 \
+    --learning_rate 1e-4 \
+    --optim "adamw_torch" \
+    --cutoff_len 512 \
+    --val_set_size 1000 \
+    --evaluation_strategy "epoch" \
+    --save_strategy "epoch" \
+    --save_total_limit 10 \
+    --lora_r 8 \
+    --lora_alpha 16 \
+    --lora_dropout 0.05 \
+    --fp16 \
+    --bits 8 \
+    | tee ${output_dir}/train.log \
+    2> ${output_dir}/train.err
+```
+
+1、Vicuna模型我们采用[Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1)
+2、由于Vicuna-7b-delta-v1.1所使用的prompt_template_name与`alpaca`模版不同, 因此需要设置 `--prompt_template_name 'vicuna'`, 详见 `templates/vicuna.json`
+3、我们在 `RTX3090` 上跑通了vicuna-lora微调代码
+
+相应的脚本在 `scripts/fine_vicuna.bash`
+
+
+
+
+### LoRA微调ChatGLM
+
+你可以通过下面的命令设置自己的参数使用LoRA方法来微调ChatGLM模型:
+```bash
+output_dir='path to save ChatGLM Lora'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/test_finetune.py \
+    --do_train --do_eval \
+    --model_name_or_path 'path or name to ChatGLM' \
+    --model_name 'chatglm' \
+    --train_file 'data/train.json' \
+    --output_dir=${output_dir}  \
+    --per_device_train_batch_size 4 \
+    --per_device_eval_batch_size 4 \
+    --gradient_accumulation_steps 8 \
+    --preprocessing_num_workers 8 \
+    --num_train_epochs 10 \
+    --learning_rate 1e-5 \
+    --weight_decay 5e-4 \
+    --adam_beta2 0.95 \
+    --optim "adamw_torch" \
+    --max_source_length 512 \
+    --max_target_length 256 \
+    --val_set_size 1000 \
+    --evaluation_strategy "epoch" \
+    --save_strategy "epoch" \
+    --save_total_limit 10 \
+    --lora_r 8 \
+    --lora_alpha 16 \
+    --lora_dropout 0.1 \
+    --fp16 \
+    | tee ${output_dir}/train.log \
+    2> ${output_dir}/train.err
+```
+
+1、ChatGLM模型我们采用[THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)
+2、`prompt_template_name`我们采用默认的`alpaca`模版, 详见 `templates/alpaca.json`
+3、由于使用8bits量化后训练得到的模型效果不佳, 因此对于ChatGLM我们没有采用量化策略
+4、我们在 `RTX3090` 上跑通了chatglm-lora微调代码
+
+相应的脚本在 `scripts/fine_chatglm.bash`
+
+
+### LoRA微调Moss
+
+你可以通过下面的命令设置自己的参数使用LoRA方法来微调Moss模型:
+```bash
+output_dir='path to save Moss Lora'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/test_finetune.py \
+    --do_train --do_eval \
+    --model_name_or_path 'path or name to Moss' \
+    --model_file 'moss' \
+    --prompt_template_name 'moss' \
+    --train_path 'data/train.json' \
+    --output_dir=${output_dir}  \
+    --per_device_train_batch_size 4 \
+    --per_device_eval_batch_size 4 \
+    --gradient_accumulation_steps 8 \
+    --preprocessing_num_workers 8 \
+    --num_train_epochs 10 \
+    --learning_rate 2e-4 \
+    --optim "paged_adamw_32bit" \
+    --max_grad_norm 0.3 \
+    --lr_scheduler_type 'constant' \
+    --max_source_length 512 \
+    --max_target_length 256 \
+    --val_set_size 1000 \
+    --evaluation_strategy "epoch" \
+    --save_strategy "epoch" \
+    --save_total_limit 10 \
+    --lora_r 16 \
+    --lora_alpha 64 \
+    --lora_dropout 0.05 \
+    --fp16 \
+    --bits 4 \
+    | tee ${output_dir}/train.log \
+    2> ${output_dir}/train.err
+```
+
+1、Moss模型我们采用[moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
+2、prompt_template_name在alpaca模版的基础上做了一些修改, 详见 `templates/moss.json`, 因此需要设置 `--prompt_template_name 'moss'`
+3、由于 `RTX3090` 显存限制, 我们采用`qlora`技术进行4bits量化, 你也可以在`V100`、`A100`上尝试8bits量化和不量化策略
+4、我们在 `RTX3090` 上跑通了moss-lora微调代码
+
+相应的脚本在 `scripts/fine_moss.bash`
 
 
 
@@ -171,50 +322,35 @@ CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 fine
 * [alpaca-13b-lora-ie](https://huggingface.co/zjunlp/alpaca-13b-lora-ie)
 * [zhixi-13B-LoRA](https://huggingface.co/zjunlp/zhixi-13b-lora/tree/main)
 
-你可以通过下面的命令设置自己的参数执行来使用训练好的LoRA模型在比赛测试集上预测输出:
-
-```bash
-CUDA_VISIBLE_DEVICES="0" python inference.py \
-    --base_model 'decapoda-research/llama-7b-hf' \
-    --lora_weights 'lora/llama-7b-e3-r8' \
-    --input_file 'data/valid.json' \
-    --output_file 'result/output_llama_7b_e3_r8.json' \
-    --load_8bit \
-```
-
 base_model与lora_weights的对应关系:
-
 | base_model   | lora_weights   |
 | ------ | ------ |
 | llama-7b  | llama-7b-lora  |
 | alpaca-7b | alpaca-7b-lora |
 | zhixi-13b | zhixi-13b-lora |
 
-## 5.ChatGLM
 
-### LoRA微调ChatGLM
-你可以通过下面的命令使用LoRA方法来finetune模型:
-
+你可以通过下面的命令设置自己的参数执行来使用训练好的LoRA模型在比赛测试集上预测输出:
 ```bash
-deepspeed --include localhost:0 finetuning_lora.py \
-  --train_path data/train.json \
-  --model_dir /model \
-  --num_train_epochs 5 \
-  --train_batch_size 1 \
-  --gradient_accumulation_steps 1 \
-  --output_dir output_dir_lora/ \
-  --log_steps 10 \
-  --max_len 400 \
-  --max_src_len 450 \
-  --lora_r 8
+CUDA_VISIBLE_DEVICES="0" python src/inference.py \
+    --model_name_or_path 'Path or name to model' \
+    --model_name 'llama' \
+    --lora_weights 'Path to LoRA weights dictory' \
+    --input_file 'data/valid.json' \
+    --output_file 'results/results_valid.json' \
+    --fp16 \
+    --bits 8 
 ```
+1、注意！！`--fp16` 或 `--bf16`、`--bits 8`、`prompt_template_name` 一定要与微调时设置的一样
+
+
+## 5.P-Tuning微调
+
 
 ### P-Tuning微调ChatGLM
 你可以通过下面的命令使用P-Tuning方法来finetune模型:
-
-
 ```bash
-deepspeed --include localhost:0 finetuning_pt.py \
+deepspeed --include localhost:0 src/finetuning_pt.py \
   --train_path data/train.json \
   --model_dir /model \
   --num_train_epochs 20 \
@@ -227,41 +363,13 @@ deepspeed --include localhost:0 finetuning_pt.py \
   --pre_seq_len 16 \
   --prefix_projection true
 ```
-### LoRA微调ChatGLM2
-你可以通过下面的命令使用LoRA方法来finetune模型:
-```
-CUDA_VISIBLE_DEVICES=4,5 python finetune.py \
-    --tokenized_dataset simple_math_4op \
-    --lora_rank 8 \
-    --per_device_train_batch_size 10 \
-    --gradient_accumulation_steps 1 \
-    --max_steps 100000 \
-    --save_steps 200 \
-    --save_total_limit 2 \
-    --learning_rate 1e-4 \
-    --fp16 \
-    --remove_unused_columns false \
-    --logging_steps 50 \
-    --output_dir weights/simple_math_4op
-```
+
+
 ### 预测
-
-你可以通过下面的命令使用训练好的LoRA模型在比赛测试集上预测输出:
-
-```bash
-CUDA_VISIBLE_DEVICES=0 python inference_chatglm_lora.py \
-  --test_path data/valid.json \
-  --device 0 \
-  --ori_model_dir /model \
-  --model_dir /output_dir_lora/global_step- \
-  --max_len 768 \
-  --max_src_len 450
-```
 
 你可以通过下面的命令使用训练好的P-Tuning模型在比赛测试集上预测输出:
-
 ```bash
-CUDA_VISIBLE_DEVICES=0 python inference_chatglm_pt.py \
+CUDA_VISIBLE_DEVICES=0 python src/inference_pt.py \
   --test_path data/valid.json \
   --device 0 \
   --ori_model_dir /model \
@@ -269,39 +377,14 @@ CUDA_VISIBLE_DEVICES=0 python inference_chatglm_pt.py \
   --max_len 768 \
   --max_src_len 450
 ```
-## 6.Moss
-
-### LoRA微调Moss
-你可以通过下面的命令使用LoRA方法来finetune模型:
-
-```bash
-CUDA_VISIBLE_DEVICES=4,5 python finetune_moss.py \
-  --train_path 'data/train.json'
-  --model_dir "/model"
-  --epoch  5
-  --batch_size 1
-  --data_dir ''
-  --output_dir 'output_dir_lora/'
-```
-
-### 预测
-
-你可以通过下面的命令使用训练好的LoRA模型在比赛测试集上预测输出:
-
-```bash
-CUDA_VISIBLE_DEVICES=4,5 python finetune_moss.py \
-  --train_path 'data/train.json'
-  --model_dir "/model"
-  --epoch  5
-  --batch_size 1
-  --data_dir ''
-  --output_dir 'output_dir_lora/'
-  --save_dir 'save_dir_lora/'
-```
 
 
-## 7.CPM-Bee
+
+
+## 6.CPM-Bee
+
 ### OpenDelta微调CPM-Bee
+
 首先，你需要将比赛的的trans.json转换为cpm-bee所要求的格式，并提取20%的样本作为测试集使用。
 
 ```python
@@ -383,24 +466,23 @@ bash scripts/finetune_cpm_bee.sh
 详见CPM[官方微调教程](https://github.com/OpenBMB/CPM-Bee/tree/main/tutorials/basic_task_finetune)
 
 
-## 8.格式转换
+
+
+## 7.格式转换
 上面的 `bash run_inference.bash` 会在 `result` 目录下输出 `output_llama_7b_e3_r8.json` 文件, 文件中不包含 'kg' 字段, 如果需要满足CCKS2023比赛的提交格式还需要从 'output' 中抽取出 'kg', 这里提供一个简单的样例 `convert.py`
 
 ```bash
-python utils/convert.py \
+python src/utils/convert.py \
     --pred_path "result/output_llama_7b_e3_r8.json" \
     --tgt_path "result/result_llama_7b_e3_r8.json" 
 ```
 
 
-## 9.硬件
-我们在1块 上对模型进行了finetune
-注意：请确保你的设备或服务器有足够的RAM内存！！！
 
+## 8.Acknowledgment
 
-## 10.Acknowledgment
+部分代码来自于 [Alpaca-LoRA](https://github.com/tloen/alpaca-lora)、[qlora](https://github.com/artidoro/qlora.git), 感谢！
 
-代码基本来自于[Alpaca-LoRA](https://github.com/tloen/alpaca-lora), 仅做了部分改动, 感谢！
 
 ## Citation
 

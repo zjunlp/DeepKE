@@ -16,7 +16,8 @@
 - [模型](#模型)
   - [LLaMA系列](#llama系列)
     - [案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调llama完成ccks2023指令驱动的知识图谱构建-英文--中文)
-    - [案例一：使用智析完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一使用智析完成ccks2023指令驱动的知识图谱构建-英文--中文)
+    - [案例二：使用智析完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例二使用智析完成ccks2023指令驱动的知识图谱构建-英文--中文)
+  - [ChatGLM](#chatglm)
     - [案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文)
     - [案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例二p-tuning微调chatglm完成ccks2023指令驱动的知识图谱构建-英文--中文)
   - [MOSS](#moss)
@@ -52,7 +53,6 @@ pip install -r requirements.txt
 
 
 
-
 ## LLaMA系列
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/llama.jpg" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
@@ -61,9 +61,11 @@ LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了�
 
 ### 案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-llama) | [中文](./InstructKGC/README_CN.md/#lora微调llama)
 
-### 案例一：使用智析完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-zhixi) | [中文](./InstructKGC/README_CN.md/#lora微调智析)
+### 案例二：使用智析完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-zhixi) | [中文](./InstructKGC/README_CN.md/#lora微调智析)
 
 
+
+## ChatGLM
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/chatglm_logo.png" alt="ChatGLM" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
@@ -80,8 +82,14 @@ LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了�
 
 ### 案例一：Lora微调Moss完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#lora微调Moss) | [中文](./InstructKGC//README_CN.md/#lora微调Moss) 
 
+
+
+
 ## CPM-Bee
 ### 案例一：OpenDelta微调CPM-Bee完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//cpm-bee//README.md) | [中文](./InstructKGC//cpm-bee//README_CN.md) 
+
+
+
 
 ## GPT系列
 
@@ -105,6 +113,7 @@ LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了�
 
 
 
+
 # 方法
 
 ## 方法一：In-Context Learning(ICL)
@@ -117,6 +126,9 @@ LoRA通过学习秩分解矩阵对来减少可训练参数的数量，同时冻�
 PT方法，即P-Tuning方法，参考[ChatGLM官方代码](https://link.zhihu.com/?target=https%3A//github.com/THUDM/ChatGLM-6B/blob/main/ptuning/README.md) ，是一种针对于大模型的soft-prompt方法。
 [P-Tuning](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2103.10385)，仅对大模型的Embedding加入新的参数。
 [P-Tuning-V2](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2110.07602)，将大模型的Embedding和每一层前都加上新的参数。
+
+
+
 
 # 引用
 

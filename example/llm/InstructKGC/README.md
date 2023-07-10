@@ -11,19 +11,20 @@
     - [Environment](#environment)
     - [Download data](#download-data)
     - [Model](#model)
-  - [4.LLaMA-series](#4llama-series)
+  - [4.LoRA Fine-tuning](#4lora-fine-tuning)
     - [LoRA Fine-tuning with LLaMA](#lora-fine-tuning-with-llama)
+    - [LoRA Fine-tuning with Alpaca](#lora-fine-tuning-with-alpaca)
     - [LoRA Fine-tuning with ZhiXi (智析)](#lora-fine-tuning-with-zhixi-智析)
-    - [Prediction](#prediction)
-  - [5.ChatGLM](#5chatglm)
     - [Lora Fine-tuning with ChatGLM](#lora-fine-tuning-with-chatglm)
-    - [P-Tuning Fine-tuning with ChatGLM](#p-tuning-fine-tuning-with-chatglm)
+    - [Lora Fine-tuning with Moss](#lora-fine-tuning-with-moss)
+    - [Prediction](#prediction)
+  - [5.P-Tuning Fine-tuning](#5p-tuning-fine-tuning)
+    - [Lora Fine-tuning with ChatGLM](#lora-fine-tuning-with-chatglm-1)
     - [Prediction](#prediction-1)
   - [6.CPM-Bee](#6cpm-bee)
-    - [OpenDelta fine-tuning with CPM-Bee](#opendelta-fine-tuning-with-cpm-bee)
-  - [7.Format Conversion](#7format-conversion)
-  - [8.Hardware](#8hardware)
-  - [9.Acknowledgment](#9acknowledgment)
+    - [OpenDelta微调CPM-Bee](#opendelta微调cpm-bee)
+  - [7. Format Conversion](#7-format-conversion)
+  - [8.Acknowledgment](#8acknowledgment)
   - [Citation](#citation)
 
 
@@ -79,7 +80,7 @@ conda activate deepke-llm
 ### Download data
 
 ```bash
-mkdir result
+mkdir results
 mkdir lora
 mkdir data
 ```
@@ -89,40 +90,82 @@ Download  `train.json` and `valid.json`  (although the name is valid, this is no
 
 ### Model 
 Here are some models:
-* [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
-* [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b)
-* [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
-* [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
+* [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf) | [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
+* [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b) | [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
+* [Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1) | [Vicuna-13b-delta-v1.1](https://huggingface.co/lmsys/vicuna-13b-delta-v1.1)
 * [zhixi-13b-diff](https://huggingface.co/zjunlp/zhixi-13b-diff)
-Expand All
-	@@ -101,11 +100,12 @@ Here are some models:
+* [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)
+* [moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
+* [cpm-bee-5b](https://huggingface.co/openbmb/cpm-bee-5b)
+* [ChatFlow-7B](https://huggingface.co/Linly-AI/ChatFlow-7B)
+* [Chinese-LLaMA-7B](https://huggingface.co/Linly-AI/Chinese-LLaMA-7B)
 
 
 
-## 4.LLaMA-series
+
+## 4.LoRA Fine-tuning
 
 ### LoRA Fine-tuning with LLaMA
 
-You can use the LoRA method to fine-tune the model by setting your own parameters using the following command:
+You can use the following command to configure your own parameters and fine-tune the Llama model using the LoRA method:
 
 ```bash
-CUDA_VISIBLE_DEVICES="0" python finetune.py \
-Expand All
-	@@ -126,11 +126,10 @@ CUDA_VISIBLE_DEVICES="0" python finetune.py \
-    --group_by_length \
+output_dir='path to save Llama Lora'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/test_finetune.py \
+    --do_train --do_eval \
+    --model_name_or_path 'path or name to Llama' \
+    --model_name 'llama' \
+    --train_path 'data/train.json' \
+    --output_dir=${output_dir}  \
+    --per_device_train_batch_size 16 \
+    --per_device_eval_batch_size 16 \
+    --gradient_accumulation_steps 8 \
+    --preprocessing_num_workers 8 \
+    --num_train_epochs 10 \
+    --learning_rate 1e-4 \
+    --optim "adamw_torch" \
+    --cutoff_len 512 \
+    --val_set_size 1000 \
+    --evaluation_strategy "epoch" \
+    --save_strategy "epoch" \
+    --save_total_limit 10 \
+    --lora_r 8 \
+    --lora_alpha 16 \
+    --lora_dropout 0.05 \
+    --fp16 \
+    --bits 8 \
+    | tee ${output_dir}/train.log \
+    2> ${output_dir}/train.err
 ```
 
-1. You can use `--valid_file` provides a validation set, or does nothing at all (in `finetune.py`, we will divide the number of samples with `val_set_size` from train.json as the validation set), you can also use `val_set_size` adjust the number of validation sets
-2. `gradient_accumulation_steps` = `batch_size` // `micro_batch_size` // Number of GPU
+1. We use the [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf) model for Llama.
+2. You can provide a validation set using the `--valid_file` option, or you can do nothing (in `finetune.py`, we will split a specified number of samples from `train.json` as the validation set using `val_set_size`). You can also adjust the number of samples in the validation set using `val_set_size`.
+3. We use the default `alpaca` template for the `prompt_template_name`. Please refer to `templates/alpaca.json` for more details.
+4. For more detailed parameter information, please refer to `utils/args.py`.
+5. We have successfully run the Llama-LoRA fine-tuning code on an `RTX3090` GPU.
+
+The corresponding script can be found at `scripts/fine_llama.bash`.
 
 
-We also provide multiple GPU versions of LoRA training commands:
+
+
+### LoRA Fine-tuning with Alpaca
+
+To fine-tune Alpaca using the LoRA method, you can make the following modifications to the `scripts/fine_llama.bash` script, following the instructions outlined in [LoRA Fine-tuning with LLaMA](./README.md/#lora-fine-tuning-with-llama):
+
 
 ```bash
-CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 finetune.py \
-Expand All
-	@@ -152,25 +151,27 @@ CUDA_VISIBLE_DEVICES="0,1,2" torchrun --nproc_per_node=3 --master_port=1331 fine
+output_dir='path to save Alpaca Lora'
+--model_name_or_path 'path or name to Alpaca' \
+--model_name 'alpaca' \
 ```
+
+1. We use the [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b) model for Alpaca.
+2. We use the default `alpaca` template for the `prompt_template_name`. Please refer to `templates/alpaca.json` for more details.
+3. We have successfully run the Alpaca-LoRA fine-tuning code on an `RTX3090` GPU.
+
+
 
 
 ### LoRA Fine-tuning with ZhiXi (智析)
@@ -130,11 +173,118 @@ Please refer to [KnowLM2.2Pre-trained Model Weight Acquisition and Restoration](
 
 Note: Since ZhiXi has already been trained with LoRA on a large-scale information extraction instruction dataset, you can skip this step and proceed directly to Step 3 Prediction. If you wish to refine the model further, additional training remains an option.
 
-Follow the command mentioned above [LoRA Fine-tuning with LLaMA](./README.md/#lora-fine-tuning-with-llama) with the following modifications.
+
+To fine-tune ZhiXi using the LoRA method, you can make the following modifications to the `scripts/fine_llama.bash` script, following the instructions outlined in [LoRA Fine-tuning with LLaMA](./README.md/#lora-fine-tuning-with-llama):
+
+
 ```bash
---base_model 'path to zhixi'
---output_dir 'lora/cama-13b-e3-r8' 
+output_dir='path to save Zhixi Lora'
+--per_device_train_batch_size 4 \
+--per_device_eval_batch_size 4 \
+--model_name_or_path 'path or name to Zhixi' \
+--model_name 'zhixi' \
 ```
+
+1. Since Zhixi currently only has a 13b model, you will need to decrease the batch size accordingly to accommodate the model's memory requirements.
+2. We will continue to use the default `alpaca` template for the `prompt_template_name`. Please refer to `templates/alpaca.json` for more details.
+3. We have successfully run the ZhiXi-LoRA fine-tuning code on an `RTX3090` GPU.
+
+
+
+
+### Lora Fine-tuning with ChatGLM
+
+You can use the following command to configure your own parameters and fine-tune the ChatGLM model using the LoRA method:
+
+```bash
+output_dir='path to save ChatGLM Lora'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/test_finetune.py \
+    --do_train --do_eval \
+    --model_name_or_path 'path or name to ChatGLM' \
+    --model_name 'chatglm' \
+    --train_file 'data/train.json' \
+    --output_dir=${output_dir}  \
+    --per_device_train_batch_size 4 \
+    --per_device_eval_batch_size 4 \
+    --gradient_accumulation_steps 8 \
+    --preprocessing_num_workers 8 \
+    --num_train_epochs 10 \
+    --learning_rate 1e-5 \
+    --weight_decay 5e-4 \
+    --adam_beta2 0.95 \
+    --optim "adamw_torch" \
+    --max_source_length 512 \
+    --max_target_length 256 \
+    --val_set_size 1000 \
+    --evaluation_strategy "epoch" \
+    --save_strategy "epoch" \
+    --save_total_limit 10 \
+    --lora_r 8 \
+    --lora_alpha 16 \
+    --lora_dropout 0.1 \
+    --fp16 \
+    | tee ${output_dir}/train.log \
+    2> ${output_dir}/train.err
+```
+
+1. We use the [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b) model for ChatGLM.
+2. We use the default `alpaca` template for the `prompt_template_name`. Please refer to `templates/alpaca.json` for more details.
+3. Due to unsatisfactory performance with 8-bit quantization, we did not apply quantization to the ChatGLM model.
+4. We have successfully run the ChatGLM-LoRA fine-tuning code on an `RTX3090` GPU.
+
+The corresponding script can be found at `scripts/fine_chatglm.bash`.
+
+
+
+
+### Lora Fine-tuning with Moss
+
+You can use the following command to configure your own parameters and fine-tune the Moss model using the LoRA method:
+
+```bash
+output_dir='path to save Moss Lora'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/test_finetune.py \
+    --do_train --do_eval \
+    --model_name_or_path 'path or name to Moss' \
+    --model_file 'moss' \
+    --prompt_template_name 'moss' \
+    --train_path 'data/train.json' \
+    --output_dir=${output_dir}  \
+    --per_device_train_batch_size 4 \
+    --per_device_eval_batch_size 4 \
+    --gradient_accumulation_steps 8 \
+    --preprocessing_num_workers 8 \
+    --num_train_epochs 10 \
+    --learning_rate 2e-4 \
+    --optim "paged_adamw_32bit" \
+    --max_grad_norm 0.3 \
+    --lr_scheduler_type 'constant' \
+    --max_source_length 512 \
+    --max_target_length 256 \
+    --val_set_size 1000 \
+    --evaluation_strategy "epoch" \
+    --save_strategy "epoch" \
+    --save_total_limit 10 \
+    --lora_r 16 \
+    --lora_alpha 64 \
+    --lora_dropout 0.05 \
+    --fp16 \
+    --bits 4 \
+    | tee ${output_dir}/train.log \
+    2> ${output_dir}/train.err
+```
+
+1. We use the [moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft) model for Moss.
+2. The `prompt_template_name` has been modified based on the alpaca template. Please refer to `templates/moss.json` for more details. Therefore, you need to set `--prompt_template_name 'moss'`.
+3. Due to memory limitations on the `RTX3090`, we use the `qlora` technique for 4-bit quantization. However, you can try 8-bit quantization or non-quantization strategies on `V100` or `A100` GPUs.
+4. We have successfully run the Moss-LoRA fine-tuning code on an `RTX3090` GPU.
+
+The corresponding script can be found at `scripts/fine_moss.bash`.
+
+
+
 
 ### Prediction
 Here are some trained versions of LoRA:
@@ -143,57 +293,110 @@ Here are some trained versions of LoRA:
 * [alpaca-13b-lora-ie](https://huggingface.co/zjunlp/alpaca-13b-lora-ie)
 * [zhixi-13B-LoRA](https://huggingface.co/zjunlp/zhixi-13b-lora/tree/main)
 
+
+Correspondence between `base_model` and `lora_weights`:
+| base_model   | lora_weights   |
+| ------ | ------ |
+| llama-7b  | llama-7b-lora  |
+| alpaca-7b | alpaca-7b-lora |
+| zhixi-13b | zhixi-13b-lora |
+
+
+
 You can use the following command to set your own parameters and execute it to make predictions using the trained LoRA model on the competition test dataset:
 
 ```bash
-CUDA_VISIBLE_DEVICES="0" python inference.py \
-Expand All
-	@@ -181,13 +182,18 @@ CUDA_VISIBLE_DEVICES="0" python inference.py \
-    --load_8bit \
+CUDA_VISIBLE_DEVICES="0" python src/inference.py \
+    --model_name_or_path 'Path or name to model' \
+    --model_name 'llama' \
+    --lora_weights 'Path to LoRA weights dictory' \
+    --input_file 'data/valid.json' \
+    --output_file 'results/results_valid.json' \
+    --fp16 \
+    --bits 8 
 ```
 
+1. Attention!!! `--fp16` or `--bf16`, `--bits 8`, and `prompt_template_name` must be set the same as the ones used during the fine-tuning process.
 
 
-## 5.ChatGLM
+## 5.P-Tuning Fine-tuning
 
 
 ### Lora Fine-tuning with ChatGLM
-You can use the LoRA method to finetune the model using the following script:
 
+You can use the following command to fine-tune the model using the P-Tuning method:
 ```bash
-deepspeed --include localhost:0 finetuning_lora.py \
-Expand All
-	@@ -203,8 +209,9 @@ deepspeed --include localhost:0 finetuning_lora.py \
-  --lora_r 8
-```
-
-### P-Tuning Fine-tuning with ChatGLM
-You can use the P-Tuning method to finetune the model using the following script:
-
-```bash
-deepspeed --include localhost:0 finetuning_pt.py \
-Expand All
-	@@ -220,9 +227,26 @@ deepspeed --include localhost:0 finetuning_pt.py \
+deepspeed --include localhost:0 src/finetuning_pt.py \
+  --train_path data/train.json \
+  --model_dir /model \
+  --num_train_epochs 20 \
+  --train_batch_size 2 \
+  --gradient_accumulation_steps 1 \
+  --output_dir output_dir_pt \
+  --log_steps 10 \
+  --max_len 768 \
+  --max_src_len 450 \
   --pre_seq_len 16 \
   --prefix_projection true
 ```
 
 ### Prediction
-You can use the trained LoRA model to predict the output on the competition test set using the following script:
 
+You can use the following command to predict the output on the competition test set using a trained P-Tuning model:
 ```bash
-CUDA_VISIBLE_DEVICES=0 python inference_chatglm_lora.py \
-Expand All
-	@@ -233,7 +257,8 @@ CUDA_VISIBLE_DEVICES=0 python inference_chatglm_lora.py \
+CUDA_VISIBLE_DEVICES=0 python src/inference_pt.py \
+  --test_path data/valid.json \
+  --device 0 \
+  --ori_model_dir /model \
+  --model_dir /output_dir_lora/global_step- \
   --max_len 768 \
   --max_src_len 450
 ```
-You can use the trained P-Tuning model to predict the output on the competition test set using the following script:
+
+
+## 6.CPM-Bee
+
+### OpenDelta微调CPM-Bee
+
+
+
+## 7. Format Conversion
+The above bash run_inference.bash command will output the `output_llama_7b_e3_r8.json` file in the result directory. This file does not include the `kg` field. If you need to meet the submission format for the CCKS2023 competition, you will also need to extract the `kg` field from the `output` field. Here is a simple example convert.py script:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python inference_chatglm_pt.py \
-Expand All
-	@@ -244,10 +269,40 @@ CUDA_VISIBLE_DEVICES=0 python inference_chatglm_pt.py \
-  --max_len 768 \
-  --max_src_len 450
+python src/utils/convert.py \
+    --pred_path "result/output_llama_7b_e3_r8.json" \
+    --tgt_path "result/result_llama_7b_e3_r8.json" 
+```
+
+
+
+
+## 8.Acknowledgment
+
+Part of the code comes from [Alpaca-LoRA](https://github.com/tloen/alpaca-lora)、[qlora](https://github.com/artidoro/qlora.git) many thanks.
+
+
+
+## Citation
+
+If you have used the code or data of this project, please refer to the following papers:
+```bibtex
+@article{DBLP:journals/corr/abs-2305-11527,
+  author       = {Honghao Gui and
+                  Jintian Zhang and
+                  Hongbin Ye and
+                  Ningyu Zhang},
+  title        = {InstructIE: {A} Chinese Instruction-based Information Extraction Dataset},
+  journal      = {CoRR},
+  volume       = {abs/2305.11527},
+  year         = {2023},
+  url          = {https://doi.org/10.48550/arXiv.2305.11527},
+  doi          = {10.48550/arXiv.2305.11527},
+  eprinttype    = {arXiv},
+  eprint       = {2305.11527},
+  timestamp    = {Thu, 25 May 2023 15:41:47 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2305-11527.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
 ```
