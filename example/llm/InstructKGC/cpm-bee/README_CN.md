@@ -1,6 +1,5 @@
+### 1、安装需要的包
 
-
-###1、安装需要的包
 注意torch和python的版本要求（torch>=1.10 ,<2.0.0,python>=3.7）。
 ```bash
 pip install -r requirements.txt
@@ -8,7 +7,7 @@ pip install -r requirements.txt
 
 
 
-###2、数据格式转化
+### 2、数据格式转化
 
 由于CPM-Bee的提示数据需要特定的格式，我们选择文本生成类型，将事件的trans.json转换为cpm-bee所要求的格式，并提取20%的样本作为验证集。
 ```
@@ -28,7 +27,7 @@ python preprocess_dataset.py --input bee_data --output_path bin_data --output_na
 ```
 
 
-###3、模型微调
+### 3、模型微调
 从[CPM-Bee](https://github.com/OpenBMB/CPM-Bee/tree/main/tutorials/basic_task_finetune)下载CPM-Bee模型，你可以选择1B,2B,5B,10B版本，并根据模型文件的路径地址更新finetune_cpm_bee.sh。
 
 ```bash
@@ -76,12 +75,12 @@ echo ${CMD}
 bash scripts/finetune_cpm_bee.sh
 ```
 如果运行没有问题，你可以在上面的bash中设置的路径中获得微调后的模型。
-###4.文本推理
+### 4.文本推理
 使用提供的文本生成工具来生成事件文本，你可以得到cpm_bee_TG.json
 ```bash
 python text_generation.py
 ```
-###5.比赛数据格式转换
+### 5.比赛数据格式转换
 上面的bash run_inference.bash会在结果目录中输出没有kg'字段的cpm_bee_TG.json，如果你需要满足CCKS2023的提交格式，你需要从output'中提取kg，下面是一个简单的例子convert.py
 ```bash
 python ../../utils/convert.py

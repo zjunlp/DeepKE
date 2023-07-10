@@ -1,10 +1,12 @@
-###1.Install all libs needed 
+### 1.Install all libs needed 
+
 Notice   torch and python version requirements(torch>=1.10 ,<2.0.0,python>=3.7)
 ```bash
 pip install -r requirements.txt
 ```
 
-###2.Data reformat
+### 2.Data reformat
+
 Since the CPM-Bee prompt data needs to be in a specific format,we choose  the case Text  generation and convert the event's trans.json into the format required by cpm-bee and extract 20% of the sample to be used as validation set.
 CPM-Bee Text generation format
 ```
@@ -20,7 +22,7 @@ put train.jsonl ,eval.jsonl in bee_data, and use the data process tool to conver
 ```bash
 python preprocess_dataset.py --input bee_data --output_path bin_data --output_name ccpm_data
 ```
-###3.Delta-tuning
+### 3.Delta-tuning
 download the CPM-Bee model from [CPM-Bee](https://github.com/OpenBMB/CPM-Bee/tree/main/tutorials/basic_task_finetune) ,you can choose 1B,2B,5B,10B verson as you like and update finetune_cpm_bee.sh  according to the path address of the model file
 ```bash
 #! /bin/bash
@@ -67,12 +69,14 @@ bash scripts/finetune_cpm_bee.sh
 ```
 
 if it runs without faults,you can get the checkpoint of model in the path you set in the bash above
-###4.Text-Generation
+### 4.Text-Generation
+
 Use the text generation tool provided to generate the event text and you can get cpm_bee_TG.json
 ```bash
 python text_generation.py
 ```
-###5.Competition format conversion
+### 5.Competition format conversion
+
 The above bash run_inference.bash will output cpm_bee_TG.json in the result directory without the kg' field, if you need to meet the CCKS2023 submission format you will need to extract the kg from output', here is a simple example convert.py
 ```bash
 python ../../utils/convert.py
