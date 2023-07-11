@@ -136,6 +136,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/te
     --lora_r 8 \
     --lora_alpha 16 \
     --lora_dropout 0.05 \
+    --max_memory_MB 24000 \
     --fp16 \
     --bits 8 \
     | tee ${output_dir}/train.log \
@@ -144,11 +145,12 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/te
 
 1. Llama模型我们采用[LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
 2. 你可以使用`--valid_file`提供验证集, 或者什么都不做（在`finetune.py`中, 我们会从train.json中划分`val_set_size`数量的样本做验证集）, 你也可以使用`val_set_size`调整验证集的数量。
-3. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 `templates/alpaca.json`
-4. 更详细的参数信息请参考 `utils/args.py`
-5. 我们在 `RTX3090` 上跑通了llama-lora微调代码
+3. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates/alpaca.json)
+4. 更详细的参数信息请参考 [src/utils/args.py](./src/utils/args.py)
+5. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
+6. 我们在 `RTX3090` 上跑通了llama-lora微调代码
 
-相应的脚本在 `scripts/fine_llama.bash`
+相应的脚本在 [scripts/fine_llama.bash](./scripts/fine_llama.bash)
 
 
 
@@ -163,7 +165,7 @@ output_dir='path to save Alpaca Lora'
 ```
 
 1. Alpaca模型我们采用[Alpaca-7b](https://huggingface.co/circulus/alpaca-7b)
-2. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 `templates/alpaca.json`
+2. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates/alpaca.json)
 3. 我们在 `RTX3090` 上跑通了alpaca-lora微调代码
 
 
@@ -185,7 +187,7 @@ output_dir='path to save Zhixi Lora'
 ```
 
 1. 由于Zhixi目前只有13b的模型, 因此需要相应减小batch size
-2. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 `templates/alpaca.json`
+2. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates//alpaca.json)
 3. 我们在 `RTX3090` 上跑通了ZhiXi-lora微调代码
 
 
@@ -219,6 +221,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/te
     --lora_r 8 \
     --lora_alpha 16 \
     --lora_dropout 0.05 \
+    --max_memory_MB 24000 \
     --fp16 \
     --bits 8 \
     | tee ${output_dir}/train.log \
@@ -226,10 +229,11 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/te
 ```
 
 1. Vicuna模型我们采用[Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1)
-2. 由于Vicuna-7b-delta-v1.1所使用的prompt_template_name与`alpaca`模版不同, 因此需要设置 `--prompt_template_name 'vicuna'`, 详见 `templates/vicuna.json`
-3. 我们在 `RTX3090` 上跑通了vicuna-lora微调代码
+2. 由于Vicuna-7b-delta-v1.1所使用的prompt_template_name与`alpaca`模版不同, 因此需要设置 `--prompt_template_name 'vicuna'`, 详见 [templates/vicuna.json](./templates//vicuna.json)
+3. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
+4. 我们在 `RTX3090` 上跑通了vicuna-lora微调代码
 
-相应的脚本在 `scripts/fine_vicuna.bash`
+相应的脚本在 [scripts/fine_vicuna.bash](./scripts//fine_vicuna.bash)
 
 
 
@@ -264,17 +268,19 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/te
     --lora_r 8 \
     --lora_alpha 16 \
     --lora_dropout 0.1 \
+    --max_memory_MB 24000 \
     --fp16 \
     | tee ${output_dir}/train.log \
     2> ${output_dir}/train.err
 ```
 
 1. ChatGLM模型我们采用[THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)
-2. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 `templates/alpaca.json`
+2. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates/alpaca.json)
 3. 由于使用8bits量化后训练得到的模型效果不佳, 因此对于ChatGLM我们没有采用量化策略
-4. 我们在 `RTX3090` 上跑通了chatglm-lora微调代码
+4. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
+5. 我们在 `RTX3090` 上跑通了chatglm-lora微调代码
 
-相应的脚本在 `scripts/fine_chatglm.bash`
+相应的脚本在 [scripts/fine_chatglm.bash](./scripts//fine_chatglm.bash)
 
 
 ### LoRA微调Moss
@@ -308,6 +314,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/te
     --lora_r 16 \
     --lora_alpha 64 \
     --lora_dropout 0.05 \
+    --max_memory_MB 24000 \
     --fp16 \
     --bits 4 \
     | tee ${output_dir}/train.log \
@@ -315,11 +322,12 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/te
 ```
 
 1. Moss模型我们采用[moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
-2. prompt_template_name在alpaca模版的基础上做了一些修改, 详见 `templates/moss.json`, 因此需要设置 `--prompt_template_name 'moss'`
+2. prompt_template_name在alpaca模版的基础上做了一些修改, 详见 [templates/moss.json](./templates/moss.json), 因此需要设置 `--prompt_template_name 'moss'`
 3. 由于 `RTX3090` 显存限制, 我们采用`qlora`技术进行4bits量化, 你也可以在`V100`、`A100`上尝试8bits量化和不量化策略
-4. 我们在 `RTX3090` 上跑通了moss-lora微调代码
+4. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
+5. 我们在 `RTX3090` 上跑通了moss-lora微调代码
 
-相应的脚本在 `scripts/fine_moss.bash`
+相应的脚本在 [scripts/fine_moss.bash](./scripts/fine_moss.bash)
 
 
 

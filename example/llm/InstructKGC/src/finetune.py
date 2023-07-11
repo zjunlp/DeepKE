@@ -60,11 +60,17 @@ def get_specific(model_name, tokenizer, model, args):
 
 
 def get_accelerate_model(args, model_class):
+    n_gpus = torch.cuda.device_count()
+    max_memory = f'{args.max_memory_MB}MB'
+    max_memory = {i: max_memory for i in range(n_gpus)}
     device_map = "auto"
+
     # if we are in a distributed setting, we need to set the device map and max memory per device
     if os.environ.get('LOCAL_RANK') is not None:
         local_rank = int(os.environ.get('LOCAL_RANK', '0'))
         device_map = {'': local_rank}
+        max_memory = {'': max_memory[local_rank]}
+
 
     if args.full_finetune: assert args.bits in [16, 32]
 
@@ -76,6 +82,8 @@ def get_accelerate_model(args, model_class):
         load_in_4bit=args.bits == 4,
         load_in_8bit=args.bits == 8,
         device_map=device_map,
+        max_memory=max_memory,
+        offload_folder="./cache",      # If the `device_map` contains any value `"disk"`, the folder where we will offload weights.
         quantization_config=BitsAndBytesConfig(     
             load_in_4bit=args.bits == 4,
             load_in_8bit=args.bits == 8,

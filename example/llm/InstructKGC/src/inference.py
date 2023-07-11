@@ -73,6 +73,7 @@ def inference(options):
         load_in_4bit=options.bits == 4,
         load_in_8bit=options.bits == 8,
         device_map=device_setting,
+        offload_folder="./cache",    # If the `device_map` contains any value `"disk"`, the folder where we will offload weights.
         quantization_config=BitsAndBytesConfig(     
             load_in_4bit=options.bits == 4,
             load_in_8bit=options.bits == 8,

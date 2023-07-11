@@ -61,7 +61,7 @@ LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了�
 
 ### 案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-llama) | [中文](./InstructKGC/README_CN.md/#lora微调llama)
 
-### 案例二：使用智析完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-zhixi) | [中文](./InstructKGC/README_CN.md/#lora微调智析)
+### 案例二：使用智析完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-zhixi-智析) | [中文](./InstructKGC/README_CN.md/#lora微调智析)
 
 
 
@@ -71,7 +71,7 @@ LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了�
 </p>
 
 ### 案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#lora-fine-tuning-with-chatglm) | [中文](./InstructKGC//README_CN.md/#lora微调chatglm) 
-### 案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#) | [中文](./InstructKGC/README_CN.md/#p-tuning微调chatglm)
+### 案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-chatglm) | [中文](./InstructKGC/README_CN.md/#p-tuning微调chatglm)
 
 
 
@@ -80,7 +80,7 @@ LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了�
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/moss_logo.png" alt="ChatGLM" style="width: 25%; min-width: 25px; display: block; margin: auto;"></a>
 
-### 案例一：Lora微调Moss完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#lora微调Moss) | [中文](./InstructKGC//README_CN.md/#lora微调Moss) 
+### 案例一：Lora微调Moss完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#lora-fine-tuning-with-moss) | [中文](./InstructKGC//README_CN.md/#lora微调Moss) 
 
 
 

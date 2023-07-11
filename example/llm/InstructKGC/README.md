@@ -151,7 +151,8 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/te
 2. You can provide a validation set using the `--valid_file` option, or you can do nothing (in `finetune.py`, we will split a specified number of samples from `train.json` as the validation set using `val_set_size`). You can also adjust the number of samples in the validation set using `val_set_size`.
 3. We use the default `alpaca` template for the `prompt_template_name`. Please refer to `templates/alpaca.json` for more details.
 4. For more detailed parameter information, please refer to `utils/args.py`.
-5. We have successfully run the Llama-LoRA fine-tuning code on an `RTX3090` GPU.
+5. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
+6. We have successfully run the Llama-LoRA fine-tuning code on an `RTX3090` GPU.
 
 The corresponding script can be found at `scripts/fine_llama.bash`.
 
@@ -239,7 +240,8 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/te
 1. We use the [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b) model for ChatGLM.
 2. We use the default `alpaca` template for the `prompt_template_name`. Please refer to `templates/alpaca.json` for more details.
 3. Due to unsatisfactory performance with 8-bit quantization, we did not apply quantization to the ChatGLM model.
-4. We have successfully run the ChatGLM-LoRA fine-tuning code on an `RTX3090` GPU.
+4. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
+5. We have successfully run the ChatGLM-LoRA fine-tuning code on an `RTX3090` GPU.
 
 The corresponding script can be found at `scripts/fine_chatglm.bash`.
 
@@ -287,7 +289,8 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/te
 1. We use the [moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft) model for Moss.
 2. The `prompt_template_name` has been modified based on the alpaca template. Please refer to `templates/moss.json` for more details. Therefore, you need to set `--prompt_template_name 'moss'`.
 3. Due to memory limitations on the `RTX3090`, we use the `qlora` technique for 4-bit quantization. However, you can try 8-bit quantization or non-quantization strategies on `V100` or `A100` GPUs.
-4. We have successfully run the Moss-LoRA fine-tuning code on an `RTX3090` GPU.
+4. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
+5. We have successfully run the Moss-LoRA fine-tuning code on an `RTX3090` GPU.
 
 The corresponding script can be found at `scripts/fine_moss.bash`.
 

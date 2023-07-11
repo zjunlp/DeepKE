@@ -25,6 +25,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     --lora_r 16 \
     --lora_alpha 64 \
     --lora_dropout 0.05 \
+    --max_memory_MB 24000 \
     --fp16 \
     --bits 4 \
     | tee ${output_dir}/train.log \
