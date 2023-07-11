@@ -141,6 +141,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/te
     --lora_r 8 \
     --lora_alpha 16 \
     --lora_dropout 0.05 \
+    --max_memory_MB 24000 \
     --fp16 \
     --bits 8 \
     | tee ${output_dir}/train.log \
@@ -232,6 +233,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/te
     --lora_r 8 \
     --lora_alpha 16 \
     --lora_dropout 0.1 \
+    --max_memory_MB 24000 \
     --fp16 \
     | tee ${output_dir}/train.log \
     2> ${output_dir}/train.err
@@ -280,6 +282,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/te
     --lora_r 16 \
     --lora_alpha 64 \
     --lora_dropout 0.05 \
+    --max_memory_MB 24000 \
     --fp16 \
     --bits 4 \
     | tee ${output_dir}/train.log \
