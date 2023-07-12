@@ -1,13 +1,12 @@
 # -*- coding:utf-8 -*-
 import torch
 import json
-from modeling_chatglm import ChatGLMForConditionalGeneration
-from tokenization_chatglm import ChatGLMTokenizer
 from tqdm import tqdm
 import time
 import os
 import argparse
 
+from transformers import AutoTokenizer, AutoModel
 
 def set_args():
     parser = argparse.ArgumentParser()
@@ -26,8 +25,8 @@ def set_args():
 
 def main():
     args = set_args()
-    model = ChatGLMForConditionalGeneration.from_pretrained(args.model_dir)
-    tokenizer = ChatGLMTokenizer.from_pretrained(args.model_dir)
+    model = AutoModel.from_pretrained(args.model_dir, trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(args.model_dir, trust_remote_code=True)
     model.half().to("cuda:{}".format(args.device))
     model.eval()
     save_data = []
