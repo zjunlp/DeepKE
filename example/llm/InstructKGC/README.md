@@ -21,10 +21,8 @@
   - [5.P-Tuning Fine-tuning](#5p-tuning-fine-tuning)
     - [P-Tuning Fine-tuning with ChatGLM](#p-tuning-fine-tuning-with-chatglm)
     - [Prediction](#prediction-1)
-  - [6.CPM-Bee](#6cpm-bee)
-    - [OpenDelta微调CPM-Bee](#opendelta微调cpm-bee)
-  - [7. Format Conversion](#7-format-conversion)
-  - [8.Acknowledgment](#8acknowledgment)
+  - [6. Format Conversion](#6-format-conversion)
+  - [7.Acknowledgment](#7acknowledgment)
   - [Citation](#citation)
 
 
@@ -368,93 +366,8 @@ CUDA_VISIBLE_DEVICES=0 python src/inference_pt.py \
 ```
 
 
-## 6.CPM-Bee
 
-### OpenDelta微调CPM-Bee
-
-首先，你需要将比赛的的trans.json转换为cpm-bee所要求的格式，并提取20%的样本作为测试集使用。
-
-```python
-import json
-import random
-
-with open('train.json', 'r', encoding='utf-8') as f:
-    data = [json.loads(line.strip()) for line in f]
-
-num_data = len(data)
-num_eval = int(num_data * 0.2)  # 20%作为验证集
-eval_data = random.sample(data, num_eval)
-
-with open('train.jsonl', 'w', encoding='utf-8') as f:
-    for d in data:
-        if d not in eval_data:
-            cpm_d={"input":d["input"],"prompt":d["instruction"],"<ans>":d["output"]}
-            json.dump(cpm_d, f, ensure_ascii=False)
-            f.write('\n')
-
-with open('eval.jsonl', 'w', encoding='utf-8') as f:
-    for d in eval_data:
-        cpm_d={"input":d["input"],"prompt":d["instruction"],"<ans>":d["output"]}
-        json.dump(cpm_d, f, ensure_ascii=False)
-        f.write('\n')
-```
-
-将处理好的数据放入bee_data/文件夹，并且[CPM-Bee](https://github.com/OpenBMB/CPM-Bee/tree/main/tutorials/basic_task_finetune)提供的数据处理方法将其转为二进制文件
-
-```bash
-python ../../src/preprocess_dataset.py --input bee_data --output_path bin_data --output_name ccpm_data
-```
-
-修改模型微调脚本scripts/finetune_cpm_bee.sh
-
-```bash
-#! /bin/bash
-# 四卡微调
-export CUDA_VISIBLE_DEVICES=0,1,2,3
-GPUS_PER_NODE=4
-
-NNODES=1
-MASTER_ADDR="localhost"
-MASTER_PORT=12346
-
-OPTS=""
-OPTS+=" --use-delta"  # 使用增量微调（delta-tuning）
-OPTS+=" --model-config config/cpm-bee-10b.json"  # 模型配置文件
-OPTS+=" --dataset ../tutorials/basic_task_finetune/bin_data/train"  # 训练集路径
-OPTS+=" --eval_dataset ../tutorials/basic_task_finetune/bin_data/eval"  # 验证集路径
-OPTS+=" --epoch 5"  # 训练epoch数
-OPTS+=" --batch-size 5"    # 数据批次大小
-OPTS+=" --train-iters 100"  # 用于lr_schedular
-OPTS+=" --save-name cpm_bee_finetune"  # 保存名称
-OPTS+=" --max-length 2048" # 最大长度
-OPTS+=" --save results/"  # 保存路径
-OPTS+=" --lr 0.0001"    # 学习率
-OPTS+=" --inspect-iters 100"  # 每100个step进行一次检查(bmtrain inspect)
-OPTS+=" --warmup-iters 1". # 预热学习率的步数为1
-OPTS+=" --eval-interval 50"  # 每50步验证一次
-OPTS+=" --early-stop-patience 5"  # 如果验证集loss连续5次不降，停止微调
-OPTS+=" --lr-decay-style noam"  # 选择noam方式调度学习率
-OPTS+=" --weight-decay 0.01"  # 优化器权重衰减率为0.01
-OPTS+=" --clip-grad 1.0"  # 半精度训练的grad clip
-OPTS+=" --loss-scale 32768"  # 半精度训练的loss scale
-OPTS+=" --start-step 0"  # 用于加载lr_schedular的中间状态
-OPTS+=" --load ckpts/pytorch_model.bin"  # 模型参数文件
-
-CMD="torchrun --nnodes=${NNODES} --nproc_per_node=${GPUS_PER_NODE} --rdzv_id=1 --rdzv_backend=c10d --rdzv_endpoint=${MASTER_ADDR}:${MASTER_PORT} finetune_cpm_bee.py ${OPTS}"
-
-echo ${CMD}
-$CMD
-```
-运行脚本
-```bash
-cd ../../src
-bash scripts/finetune_cpm_bee.sh
-```
-详见CPM[官方微调教程](https://github.com/OpenBMB/CPM-Bee/tree/main/tutorials/basic_task_finetune)
-
-
-
-## 7. Format Conversion
+## 6. Format Conversion
 The above bash run_inference.bash command will output the `output_llama_7b_e3_r8.json` file in the result directory. This file does not include the `kg` field. If you need to meet the submission format for the CCKS2023 competition, you will also need to extract the `kg` field from the `output` field. Here is a simple example convert.py script:
 
 ```bash
@@ -466,7 +379,7 @@ python src/utils/convert.py \
 
 
 
-## 8.Acknowledgment
+## 7.Acknowledgment
 
 Part of the code comes from [Alpaca-LoRA](https://github.com/tloen/alpaca-lora)、[qlora](https://github.com/artidoro/qlora.git) many thanks.
 
