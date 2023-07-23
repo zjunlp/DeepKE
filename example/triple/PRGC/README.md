@@ -46,7 +46,7 @@ cd DeepKE/example/triple/PRGC
 
     ```bash
     wget 120.27.214.45/Data/triple/PRGC/CMeIE.zip
-    tar -xzvf data.tar.gz
+    unzip ./CMeIE.zip
     ```
 
   - The dataset [CMeIE](https://tianchi.aliyun.com/dataset/95414)/ [NYT](https://drive.google.com/file/d/1kAVwR051gjfKn3p6oKc7CzNT9g2Cjy6N/view)/ [NYT*](https://github.com/weizhepei/CasRel/tree/master/data/NYT)/ [WebNLG](https://github.com/yubowen-ph/JointER/tree/master/dataset/WebNLG/data)/ [WebNLG*](https://github.com/weizhepei/CasRel/tree/master/data/WebNLG) is stored in `data`:
