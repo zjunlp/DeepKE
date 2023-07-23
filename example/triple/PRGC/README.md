@@ -45,7 +45,7 @@ cd DeepKE/example/triple/PRGC
   - Download the dataset to this directory.
 
     ```bash
-    wget 120.27.214.45/Data/triple/PRGC/data.tar.gz
+    wget 120.27.214.45/Data/triple/PRGC/CMeIE.zip
     tar -xzvf data.tar.gz
     ```
 

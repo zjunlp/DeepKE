@@ -42,7 +42,7 @@ cd DeepKE/example/triple/PRGC
 
 ### 使用数据进行训练预测
 
-- 存放数据： 可先下载数据 ```wget 120.27.214.45/Data/triple/PRGC/data.tar.gz```在此目录下
+- 存放数据： 可先下载数据 ```wget 120.27.214.45/Data/triple/PRGC/CMeIE.zip```在此目录下
 
   - 数据集 [CMeIE](https://tianchi.aliyun.com/dataset/95414)/ [NYT](https://drive.google.com/file/d/1kAVwR051gjfKn3p6oKc7CzNT9g2Cjy6N/view)/ [NYT*](https://github.com/weizhepei/CasRel/tree/master/data/NYT)/ [WebNLG](https://github.com/yubowen-ph/JointER/tree/master/dataset/WebNLG/data)/ [WebNLG*](https://github.com/weizhepei/CasRel/tree/master/data/WebNLG) 被保存在`data`文件夹下:
     - `rel2id.json`：存放关系种类
