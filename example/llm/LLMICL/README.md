@@ -133,7 +133,39 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 Although the text "协助国家队夺得冠军" is not included in `miss_input`, the model can still complete the missing triples, i.e., it still needs to output `(弗雷泽,属于,国家队)(国家队,夺得,冠军)`.
 
-### Data
+### Datasets
+
+| 名称                  | 下载                                                                                                                     | 数量     | 描述                                                                                                                                                       |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| kg_train.json       | [Google drive](https://drive.google.com/file/d/1W9HKpQxBGGERdP006ivjoDH5Q-1dNCSE/view?usp=sharing)                     | 281860 | [InstructIE](https://arxiv.org/abs/2305.11527) 中提到的数据集                                                                                                   |
+| instruct_train.json | [Google drive](https://drive.google.com/file/d/1WQVD_99_4XoUcoRDWRibZfO5jJdhjTQ1/view?usp=sharing)                     | 281860 | [KnowLM](https://github.com/zjunlp/KnowLM) 训练中涉及到的信息抽取指令数据，由kg_train.json改造而来                                                                            |
+| train.json, valid.json          | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing)                     | 5000   | [CCKS2023 开放环境下的知识图谱构建与补全评测任务一：指令驱动的自适应知识图谱构建](https://tianchi.aliyun.com/competition/entrance/532080/introduction) 中的初赛训练集，从 instruct_train.json 中随机选出的 |
+
+
+`kg_train.json`：包含 `id`(唯一标识符)、`cate`(文本主题)、`input`(输入文本)、`kg`(三元组)字段，可以通过`kg`自由构建抽取的指令和输出。
+
+`instruct_train.json`：`instruction`(抽取指令)、`input`(输入文本)、`output`(输出文本)字段，`instruction`有16种格式(4种prompt+4种输出格式)，`output`是按照`instruction`中指定的输出格式生成的文本。
+
+`train.json`：包含 `id`(唯一标识符)、`cate`(文本主题)、`instruction`(抽取指令)、`input`(输入文本)、`output`(输出文本)字段、`kg`(三元组)字段，`instruction`、`output`都只有1种格式，也可以通过`kg`自由构建抽取的指令和输出。
+
+`valid.json`：字段含义同`train.json`，但是经过众包标注，更加准确。
+
+```
+relation_template =  {
+    0:'已知候选的关系列表：{s_schema}，请你根据关系列表，从以下输入中抽取出可能存在的头实体与尾实体，并给出对应的关系三元组。请按照{s_format}的格式回答。',
+    1:'我将给你个输入，请根据关系列表：{s_schema}，从输入中抽取出可能包含的关系三元组，并以{s_format}的形式回答。',
+    2:'我希望你根据关系列表从给定的输入中抽取可能的关系三元组，并以{s_format}的格式回答，关系列表={s_schema}。',
+    3:'给定的关系列表是：{s_schema}\n根据关系列表抽取关系三元组，在这个句子中可能包含哪些关系三元组？请以{s_format}的格式回答。',
+}
+
+relation_out_format = {
+    0:'"(头实体,关系,尾实体)"',
+    1:'"头实体是\n关系是\n尾实体是\n\n"',
+    2:'"关系：头实体,尾实体\n"',
+    3:"JSON字符串[{'head':'', 'relation':'', 'tail':''}, ]",
+}
+```
+
 
 The training dataset for the competition contains the following fields for each data entry:
 
@@ -146,6 +178,9 @@ The training dataset for the competition contains the following fields for each 
 |     kg      |             Knowledge graph involved in the input             |
 
 In the test set, only the three fields `id`, `instruction`, and `input` are included.
+
+
+
 
 ### Config Setup
 
