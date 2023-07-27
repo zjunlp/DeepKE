@@ -5,3 +5,4 @@ bitsandbytes==0.39.1
 peft @ git+https://github.com/huggingface/peft.git
 datasets
 sentencepiece
+scipy
