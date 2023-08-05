@@ -14,7 +14,7 @@ huggingface_hub==0.11.0
 tensorboardX==2.5.1
 nltk==3.8
 protobuf==3.20.1
-numpy==1.23.0
+numpy==1.21.0
 ipdb==0.13.11
 pytorch-crf==0.7.2
 openai
