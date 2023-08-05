@@ -31,4 +31,4 @@ WORKDIR /root/DeepKE
 RUN /bin/bash -c "pip install --upgrade setuptools && pip install setuptools_scm"
 RUN /bin/bash -c "source ~/.bashrc && python -m pip install --upgrade pip"
 RUN /bin/bash -c "source ~/.bashrc && pip install -r requirements.txt"
-RUN /bin/bash -c "python setup_docker.py install && python setup_docker.py develop"
+RUN /bin/bash -c "python new_docker/setup_docker.py install && python new_docker/setup_docker.py develop"
