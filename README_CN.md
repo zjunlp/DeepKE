@@ -139,7 +139,7 @@ DeepKE支持pip安装使用，以常规全监督设定关系抽取为例，经�
 
 **Step 1**：下载代码 ```git clone --depth 1 https://github.com/zjunlp/DeepKE.git```（别忘记star和fork哈！！！）
 
-**Step 2**：使用anaconda创建虚拟环境，进入虚拟环境（提供[Dockerfile](https://github.com/zjunlp/DeepKE/tree/main/new_docker)源码和[教程](https://github.com/zjunlp/DeepKE/issues/320)可自行创建镜像；可参考[备注（常见问题）](#备注常见问题)使用镜像加速）
+**Step 2**：使用anaconda创建虚拟环境，进入虚拟环境（提供[Dockerfile](https://github.com/zjunlp/DeepKE/tree/main/docker)源码和[教程](https://github.com/zjunlp/DeepKE/issues/320)可自行创建镜像；可参考[备注（常见问题）](#备注常见问题)使用镜像加速）
 
 ```
 conda create -n deepke python=3.8

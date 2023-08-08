@@ -144,7 +144,7 @@ git clone --depth 1 https://github.com/zjunlp/DeepKE.git
 
 **Step2** Create a virtual environment using `Anaconda` and enter it.<br>
 
- - **❗NOTE: We release a new version of [Dockerfile](https://github.com/zjunlp/DeepKE/blob/main/new_docker) with [tutorials](https://github.com/zjunlp/DeepKE/issues/320), please refer to the [Tips](#tips) to speed up installation**
+ - **❗NOTE: We release a new version of [Dockerfile](https://github.com/zjunlp/DeepKE/blob/main/docker) with [tutorials](https://github.com/zjunlp/DeepKE/issues/320), please refer to the [Tips](#tips) to speed up installation**
 
 ```bash
 conda create -n deepke python=3.8
