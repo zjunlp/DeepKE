@@ -219,7 +219,7 @@ You can use the following command to configure your own parameters and fine-tune
 ```bash
 output_dir='path to save ChatGLM Lora'
 mkdir -p ${output_dir}
-CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/test_finetune.py \
+CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/test_finetune.py \
     --do_train --do_eval \
     --model_name_or_path 'path or name to ChatGLM' \
     --model_name 'chatglm' \
