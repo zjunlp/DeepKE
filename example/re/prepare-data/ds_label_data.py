@@ -10,15 +10,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='ds_label_data')
     parser.add_argument('--language', type=str, default='en', choices=['en', 'cn'])
     parser.add_argument('--source_file', type=str, default='source_data.json')
-    parser.add_argument('--dict_file', type=str, default='dict.csv')
+    parser.add_argument('--triple_file', type=str, default='triple_file.csv')
     parser.add_argument('--train_rate', type=float, default=0.8)
     parser.add_argument('--dev_rate', type=float, default=0.1)
     parser.add_argument('--test_rate', type=float, default=0.1)
     args = parser.parse_args()
     print(args)
     
-    dic = csv.reader(open(os.path.join(os.getcwd(), args.dict_file), 'r', encoding='utf-8'))  # read dict
-    dic = dic[1:]  # remove the header
+    dic = csv.reader(open(os.path.join(os.getcwd(), args.triple_file), 'r', encoding='utf-8'))  # read dict
+    dic = list(dic)[1:]  # remove the header
 
     source = json.load(open(os.path.join(os.getcwd(), args.source_file), 'r', encoding='utf-8'))
 
