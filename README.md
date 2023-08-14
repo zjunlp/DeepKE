@@ -134,7 +134,9 @@ pip install -r requirements.txt
 Please note that the `requirements.txt` file is located in the `example/llm` folder.
 
 ## DeepKE
-*DeepKE* supports `pip install deepke`. <br>Take the fully supervised relation extraction for example.
+- *DeepKE* supports `pip install deepke`. <br>Take the fully supervised relation extraction for example.
+- *DeepKE* supports both **manual** and **docker image** environment configuration, you can choose the appropriate way to build.
+#### 🔧Manual Environment Configuration
 
 **Step1** Download the basic code
 
@@ -143,8 +145,6 @@ git clone --depth 1 https://github.com/zjunlp/DeepKE.git
 ```
 
 **Step2** Create a virtual environment using `Anaconda` and enter it.<br>
-
- - **❗NOTE: We release a new version of [Dockerfile](https://github.com/zjunlp/DeepKE/blob/main/docker) with [tutorials](https://github.com/zjunlp/DeepKE/issues/320), please refer to the [Tips](#tips) to speed up installation**
 
 ```bash
 conda create -n deepke python=3.8
@@ -200,6 +200,24 @@ python predict.py
 ```
 
  - **❗NOTE: if you encounter any errors, please refer to the [Tips](#tips) or submit a GitHub issue.**
+
+
+
+#### 🐳Building With Docker Images
+**Step1** Install the Docker client
+
+Install Docker and start the Docker service.
+
+**Step2** Pull the docker image and run the container
+
+```bash
+docker pull zjunlp/deepke:v1
+docker run -it zjunlp/deepke:v1 /bin/bash
+```
+
+The remaining steps are the same as **Step 3 and onwards** in **Manual Environment Configuration**.
+
+ - **❗NOTE: You can refer to the [Tips](#tips) to speed up installation**
 
 ## Requirements
 
