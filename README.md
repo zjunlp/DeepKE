@@ -152,7 +152,7 @@ conda create -n deepke python=3.8
 conda activate deepke
 ```
 
-1. Install *DeepKE* with source code (**Recommended**)
+1. Install *DeepKE* with source code (**Recommended!!!**)
 
    ```bash
    python setup.py install
