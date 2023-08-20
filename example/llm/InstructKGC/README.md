@@ -78,6 +78,8 @@ The training dataset for the competition contains the following fields for each 
 
 In the test set, only the three fields `id`, `instruction`, and `input` are included.
 
+* For more detailed information on IE templates, data format conversion, and data extraction, please refer to [kg2instruction/README. md](./kg2instruction/README.md)
+
 
 ## 3.Preparation
 

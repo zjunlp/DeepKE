@@ -96,6 +96,8 @@ relation_out_format = {
 
 在测试集中仅包含`id`、`instruction`、`input`三个字段。
 
+* 更详细的关于IE模版、数据格式转换、数据提取请参考[kg2instruction/README_CN.md](./kg2instruction/README_CN.md)
+
 
 ## 3.准备
 ### 环境
