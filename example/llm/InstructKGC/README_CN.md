@@ -40,17 +40,30 @@ input="2006年，弗雷泽出战中国天津举行的女子水球世界杯，协
 output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗雷泽,属于,国家队)(弗雷泽,国家,澳大利亚)(弗雷泽,参加,北京奥运会女子水球比赛)(中国,包含行政领土,天津)(中国,邦交国,澳大利亚)(北京奥运会女子水球比赛,举办地点,北京)(女子水球世界杯,体育运动,水球)(国家队,夺得,冠军)"
 ```
 
-知识图谱补齐的含义是，在输入`miss_input`（`input`中缺失了一段文字）和`instruction`的情况下，模型仍然能够补齐缺失的三元组，输出`output`。下面是一个例子：
-
-```python
-instruction="使用自然语言抽取三元组,已知下列句子,请从句子中抽取出可能的实体、关系,抽取实体类型为{'专业','时间','人类','组织','地理地区','事件'},关系类型为{'体育运动','包含行政领土','参加','国家','邦交国','夺得','举办地点','属于','获奖'},你可以先识别出实体再判断实体之间的关系,以(头实体,关系,尾实体)的形式回答"
-miss_input="2006年，弗雷泽出战中国天津举行的女子水球世界杯。2008年，弗雷泽代表澳大利亚参加北京奥运会女子水球比赛，赢得铜牌。"。
-output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗雷泽,属于,国家队)(弗雷泽,国家,澳大利亚)(弗雷泽,参加,北京奥运会女子水球比赛)(中国,包含行政领土,天津)(中国,邦交国,澳大利亚)(北京奥运会女子水球比赛,举办地点,北京)(女子水球世界杯,体育运动,水球)(国家队,夺得,冠军)"
-```
-
-虽然`miss_input`中不包含“协助国家队夺得冠军”这段文字，但是模型能够补齐缺失的三元组，即仍然需要输出`(弗雷泽,属于,国家队)(国家队,夺得,冠军)`。
 
 ## 2.数据
+
+模型的输入需要包含`instruction`和`input`(可选)字段, 我们在 [kg2instruction/convert.py](./kg2instruction/convert.py) 提供了一个脚本，用于将数据统一转换为可以直接输入模型的格式。
+
+* 请注意！在执行 `convert.py` 之前，请参考 `data` 目录, 其中包含了每种任务的预期数据格式。
+
+```bash
+python kg2instruction/convert.py \
+  --src_path data/NER/sample.json \
+  --tgt_path data/NER/processed.json \
+  --schema_path data/NER/schema.json \
+  --language zh \       # 不同语言使用的template及转换脚本不同
+  --task NER \          # ['RE', 'NER', 'EE']三种任务
+  --sample 0 \          # 若为-1, 则从4种指令和4种输出格式中随机采样其中一种, 否则即为指定的指令格式, -1<=sample<=3
+  --all                 # 是否将指令中指定的抽取类型列表设置为全部schema
+```
+
+
+* 更详细的关于IE模版、数据格式转换、数据提取请参考[kg2instruction/README_CN.md](./kg2instruction/README_CN.md)
+
+* 您也可以自行构建包含`instruction`和`input`字段的数据
+
+下面是一些现成的处理后的数据：
 
 | 名称                  | 下载                                                                                                                     | 数量     | 描述                                                                                                                                                       |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -68,8 +81,7 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 `valid.json`：字段含义同`train.json`，但是经过众包标注，更加准确。
 
 
-
-比赛数据的训练集每条数据包含如下字段：
+以下是各字段的说明：
 
 |    字段     |                          说明                          |
 | :---------: | :----------------------------------------------------: |
@@ -79,15 +91,14 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 | output      | 模型期望输出，以(ent1,relation,ent2)形式组成的输出文本 |
 |     kg      |                  input中涉及的知识图谱                  |
 
-在测试集中仅包含`id`、`instruction`、`input`三个字段。
 
-* 更详细的关于IE模版、数据格式转换、数据提取请参考[kg2instruction/README_CN.md](./kg2instruction/README_CN.md)
 
 
 ## 3.准备
 ### 环境
 请参考[DeepKE/example/llm/README_CN.md](../README_CN.md/#环境依赖)创建python虚拟环境, 然后激活该环境 `deepke-llm`:
-```
+
+```bash
 conda activate deepke-llm
 ```
 
@@ -107,7 +118,7 @@ mkdir lora
 mkdir data
 ```
 
-从官网https://tianchi.aliyun.com/competition/entrance/532080/information 下载文件 `train.json` 和 `valid.json` (虽然名字是valid, 但这不是验证集, 而是比赛的测试集)并放在目录 `./data` 中.
+数据放在目录 `./data` 中。
 
 
 ### 模型
@@ -115,7 +126,7 @@ mkdir data
 * [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf) | [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b) | [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
 * [Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1) | [Vicuna-13b-delta-v1.1](https://huggingface.co/lmsys/vicuna-13b-delta-v1.1)
-* [zhixi-13b-diff](https://huggingface.co/zjunlp/zhixi-13b-diff)
+* [zjunlp/knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0)(需搭配相应的IE Lora) | [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi)(无需Lora即可直接预测) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)(无需Lora, IE能力更强, 但通用性有所削弱)
 * [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)
 * [moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
 * [cpm-bee-5b](https://huggingface.co/openbmb/cpm-bee-5b)
@@ -300,6 +311,8 @@ CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/test
 相应的脚本在 [scripts/fine_chatglm.bash](./scripts//fine_chatglm.bash)
 
 
+
+
 ### LoRA微调Moss
 
 你可以通过下面的命令设置自己的参数使用LoRA方法来微调Moss模型:
@@ -360,10 +373,11 @@ base_model与lora_weights的对应关系:
 | ------ | ------ |
 | llama-7b  | llama-7b-lora  |
 | alpaca-7b | alpaca-7b-lora |
-| zhixi-13b | zhixi-13b-lora |
+| zjunlp/knowlm-13b-base-v1.0 | zhixi-13b-lora |
 
 
 你可以通过下面的命令设置自己的参数执行来使用训练好的LoRA模型在比赛测试集上预测输出:
+
 ```bash
 CUDA_VISIBLE_DEVICES="0" python src/inference.py \
     --model_name_or_path 'Path or name to model' \
@@ -374,7 +388,24 @@ CUDA_VISIBLE_DEVICES="0" python src/inference.py \
     --fp16 \
     --bits 8 
 ```
+
 1.注意！！`--fp16` 或 `--bf16`、`--bits`、`--prompt_template_name`、`--model_name`一定要与微调时设置的一样
+
+
+也可以使用训练好的模型(无Lora或Lora已合并进模型参数中)在比赛测试集上预测输出:
+
+```bash
+CUDA_VISIBLE_DEVICES="0" python src/inference.py \
+    --model_name_or_path 'Path or name to model' \
+    --model_name 'model name' \
+    --input_file 'data/valid.json' \
+    --output_file 'results/results_valid.json' \
+    --fp16 \
+    --bits 8 
+```
+以下模型支持上述方法：
+[zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)
+
 
 
 ## 5.P-Tuning微调
@@ -414,16 +445,16 @@ CUDA_VISIBLE_DEVICES=0 python src/inference_pt.py \
 
 
 
-
-## 6.格式转换
-上面的 `bash run_inference.bash` 会在 `result` 目录下输出 `output_llama_7b_e3_r8.json` 文件, 文件中不包含 'kg' 字段, 如果需要满足CCKS2023比赛的提交格式还需要从 'output' 中抽取出 'kg', 这里提供一个简单的样例 `convert.py`
+## 6.模型输出转换&计算F1
+我们提供 [evaluate.py](./kg2instruction/evaluate.py) 的脚本，用于将模型的字符串输出转换为列表并计算 F1 分数。
 
 ```bash
-python src/utils/convert.py \
-    --pred_path "result/output_llama_7b_e3_r8.json" \
-    --tgt_path "result/result_llama_7b_e3_r8.json" 
+python kg2instruction/evaluate.py \
+  --standard_path data/NER/processed.json \
+  --submit_path data/NER/processed.json \
+  --task ner \
+  --language zh
 ```
-
 
 
 ## 7.Acknowledgment

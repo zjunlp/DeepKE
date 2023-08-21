@@ -38,19 +38,30 @@ input="2006年，弗雷泽出战中国天津举行的女子水球世界杯，协
 output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗雷泽,属于,国家队)(弗雷泽,国家,澳大利亚)(弗雷泽,参加,北京奥运会女子水球比赛)(中国,包含行政领土,天津)(中国,邦交国,澳大利亚)(北京奥运会女子水球比赛,举办地点,北京)(女子水球世界杯,体育运动,水球)(国家队,夺得,冠军)"
 ```
 
-The meaning of knowledge graph completion is that, when given an input `miss_input` (a portion of the text is missing) and an `instruction`, the model is still able to complete the missing triples and output `output`. Here is an example:
-
-```python
-instruction="使用自然语言抽取三元组,已知下列句子,请从句子中抽取出可能的实体、关系,抽取实体类型为{'专业','时间','人类','组织','地理地区','事件'},关系类型为{'体育运动','包含行政领土','参加','国家','邦交国','夺得','举办地点','属于','获奖'},你可以先识别出实体再判断实体之间的关系,以(头实体,关系,尾实体)的形式回答"
-miss_input="2006年，弗雷泽出战中国天津举行的女子水球世界杯。2008年，弗雷泽代表澳大利亚参加北京奥运会女子水球比赛，赢得铜牌。"。
-output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗雷泽,属于,国家队)(弗雷泽,国家,澳大利亚)(弗雷泽,参加,北京奥运会女子水球比赛)(中国,包含行政领土,天津)(中国,邦交国,澳大利亚)(北京奥运会女子水球比赛,举办地点,北京)(女子水球世界杯,体育运动,水球)(国家队,夺得,冠军)"
-```
-
-Although the text "协助国家队夺得冠军" is not included in `miss_input`, the model can still complete the missing triples, i.e., it still needs to output `(弗雷泽,属于,国家队)(国家队,夺得,冠军)`.
-
 
 
 ## 2.Data
+
+The model's input should include the `instruction` and  the `input`(optionally) field. We have provided a script, [kg2instruction/convert.py](./kg2instruction/convert.py), which is used to transform the data into a format suitable for direct input into the model.
+
+* Note! Before executing convert.py, please refer to the data directory for the expected data format for each task.
+
+```bash
+python kg2instruction/convert.py \
+  --src_path data/NER/sample.json \
+  --tgt_path data/NER/processed.json \
+  --schema_path data/NER/schema.json \
+  --language zh \
+  --task NER \
+  --sample 0 \
+  --all
+```
+
+* For more detailed information about IE templates, data format conversion, and data extraction, please refer to [kg2instruction/README_CN.md](./kg2instruction/README_CN.md).
+
+* Alternatively, you can independently create data that includes the `instruction` and `input` fields.
+
+Here are some readily processed datasets:
 
 | Name                   | Download                                                     | Quantity | Description                                                  |
 | ---------------------- | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ |
@@ -66,7 +77,9 @@ Although the text "协助国家队夺得冠军" is not included in `miss_input`,
 
 `valid.json`: Same fields as `train.json`, but with more accurate annotations achieved through crowdsourcing.
 
-The training dataset for the competition contains the following fields for each data entry:
+
+
+Here is an explanation of each field:
 
 |    Field    |                         Description                          |
 | :---------: | :----------------------------------------------------------: |
@@ -76,16 +89,15 @@ The training dataset for the competition contains the following fields for each 
 |    output   | Expected model output, in the form of output text composed of (ent1, relation, ent2) |
 |     kg      |             Knowledge graph involved in the input             |
 
-In the test set, only the three fields `id`, `instruction`, and `input` are included.
 
-* For more detailed information on IE templates, data format conversion, and data extraction, please refer to [kg2instruction/README. md](./kg2instruction/README.md)
 
 
 ## 3.Preparation
 
 ### Environment
 Please refer to [DeepKE/example/llm/README.md](../README.md/#requirements) to create a Python virtual environment, and activate the `deepke-llm` environment:
-```
+
+```bash
 conda activate deepke-llm
 ```
 
@@ -105,7 +117,7 @@ mkdir lora
 mkdir data
 ```
 
-Download  `train.json` and `valid.json`  (although the name is valid, this is not a validation set, but a test set for the competition) from the official website https://tianchi.aliyun.com/competition/entrance/532080/information, and place them in the directory `./data`
+Place the data in the directory `./data`
 
 
 ### Model 
@@ -113,7 +125,7 @@ Here are some models:
 * [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf) | [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b) | [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
 * [Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1) | [Vicuna-13b-delta-v1.1](https://huggingface.co/lmsys/vicuna-13b-delta-v1.1)
-* [zhixi-13b-diff](https://huggingface.co/zjunlp/zhixi-13b-diff)
+* [zjunlp/knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0) (requires corresponding IE Lora) | [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi) (can predict directly without Lora) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie) (stronger IE capabilities, but with reduced generalization, no need for Lora)
 * [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)
 * [moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
 * [cpm-bee-5b](https://huggingface.co/openbmb/cpm-bee-5b)
@@ -345,6 +357,24 @@ CUDA_VISIBLE_DEVICES="0" python src/inference.py \
 1. Attention!!! `--fp16` or `--bf16`, `--bits`、`--prompt_template_name` and `--model_name` must be set the same as the ones used during the fine-tuning process.
 
 
+
+You can also use trained models (without Lora or with Lora merged into model parameters) to predict outputs on competition test sets:
+
+
+```bash
+CUDA_VISIBLE_DEVICES="0" python src/inference.py \
+    --model_name_or_path 'Path or name to model' \
+    --model_name 'model name' \
+    --input_file 'data/valid.json' \
+    --output_file 'results/results_valid.json' \
+    --fp16 \
+    --bits 8 
+```
+
+The following models support the aforementioned approach:
+
+[zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)
+
 ## 5.P-Tuning Fine-tuning
 
 
@@ -381,16 +411,16 @@ CUDA_VISIBLE_DEVICES=0 python src/inference_pt.py \
 
 
 
-## 6. Format Conversion
-The above bash run_inference.bash command will output the `output_llama_7b_e3_r8.json` file in the result directory. This file does not include the `kg` field. If you need to meet the submission format for the CCKS2023 competition, you will also need to extract the `kg` field from the `output` field. Here is a simple example convert.py script:
+## 6. Model Output Conversion & F1 Calculation
+We provide a script, [evaluate.py](./kg2instruction/evaluate.py), to convert the model's string outputs into lists and calculate the F1 score.
 
 ```bash
-python src/utils/convert.py \
-    --pred_path "result/output_llama_7b_e3_r8.json" \
-    --tgt_path "result/result_llama_7b_e3_r8.json" 
+python kg2instruction/evaluate.py \
+  --standard_path data/NER/processed.json \
+  --submit_path data/NER/processed.json \
+  --task ner \
+  --language zh
 ```
-
-
 
 
 ## 7.Acknowledgment
