@@ -18,7 +18,6 @@ MODEL_DICT = {
     "falcon":["falcon"],
     "chatglm":["chatglm"],
     "moss": ["moss"],
-    "cpm-bee": ["cpm-bee"],
 }
 
 LORA_TARGET_MODULES_DICT = {
@@ -26,7 +25,6 @@ LORA_TARGET_MODULES_DICT = {
     "falcon":["query_key_value"],
     "chatglm":["query_key_value"],
     "moss": ['q_proj', 'v_proj'],
-    "cpm-bee": ["project_q", "project_v"],
 }
 
 def get_model_tokenizer(model_name):
@@ -34,8 +32,6 @@ def get_model_tokenizer(model_name):
         return LlamaForCausalLM, LlamaTokenizer, Trainer
     elif model_name == 'chatglm':
         return AutoModel, AutoTokenizer, Seq2SeqTrainer
-    #elif model_name == 'cpm-bee':
-        #return AutoModelForCausalLM, AutoTokenizer, CPMBeeTrainer
     else:
         return AutoModelForCausalLM, AutoTokenizer, Trainer
     

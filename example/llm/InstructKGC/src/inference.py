@@ -60,7 +60,7 @@ def inference(options):
     print(options)
     prompter = Prompter(options.prompt_template_name)
     model_name = get_model_name(options.model_name)
-    device_setting = {"": 0} if model_name == "cpm-bee" else "auto"
+    device_setting = "auto"
     model_class, tokenizer_class, _ = get_model_tokenizer(model_name)
     tokenizer = tokenizer_class.from_pretrained(
         options.model_name_or_path, 
@@ -141,28 +141,14 @@ def inference(options):
         )
 
         with torch.no_grad():
-            if model_name == "cpm-bee":
-                data = {"input": instruction + "\n" + input, "<ans>":""}
-                generation_config = GenerationConfig.from_pretrained(options.model_name_or_path)
-                generation_config.update(**{"temperature":temperature, "top_p":top_p, "top_k":top_k, "num_beams":num_beams, "max_new_tokens": max_new_tokens})
-                generation_output = model.generate(   # def generate(self, **kwargs):
-                    data_list=data,
-                    tokenizer=tokenizer,
-                    generation_config=generation_config,
-                )
-            else:
-                generation_output = model.generate(
-                    input_ids=input_ids,
-                    generation_config=generation_config,
-                    **kwargs,
-                )
-
-        if model_name == "cpm-bee":
-            output = generation_output[0]["<ans>"].strip()
-        else:
-            generation_output = generation_output.sequences[0]
-            output = tokenizer.decode(generation_output, skip_special_tokens=True)
-            output = prompter.get_response(output)
+            generation_output = model.generate(
+                input_ids=input_ids,
+                generation_config=generation_config,
+                **kwargs,
+            )
+        generation_output = generation_output.sequences[0]
+        output = tokenizer.decode(generation_output, skip_special_tokens=True)
+        output = prompter.get_response(output)
         return output
 
     records = []
