@@ -83,7 +83,7 @@ python text_generation.py
 ### 5.比赛数据格式转换
 上面的bash run_inference.bash会在结果目录中输出没有kg'字段的cpm_bee_TG.json，如果你需要满足CCKS2023的提交格式，你需要从output'中提取kg，下面是一个简单的例子convert.py
 ```bash
-python ../../utils/convert.py
+python ../InstructKGC/utils/convert.py
 -pred_path "cpm_bee_TG.json"
 -tgt_path "cpm_bee_TG_kg.json'
 ```

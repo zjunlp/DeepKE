@@ -111,7 +111,7 @@ ZhiXi follows a two-step approach: (1) It performs further full pre-training on 
 
 
 ## CPM-Bee
-### Case 1: OpenDelta Fine-tuning of CPM-Bee for CCKS2023 Instruction-based KG Construction [English](./InstructKGC//cpm-bee//README.md) | [Chinese](./InstructKGC//cpm-bee//README_CN.md) 
+### Case 1: OpenDelta Fine-tuning of CPM-Bee for CCKS2023 Instruction-based KG Construction [English](./CPM-Bee/README.md) | [Chinese](./CPM-Bee/README_CN.md) 
 
 
 

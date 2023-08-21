@@ -103,7 +103,7 @@ LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了�
 
 
 ## CPM-Bee
-### 案例一：OpenDelta微调CPM-Bee完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//cpm-bee//README.md) | [中文](./InstructKGC//cpm-bee//README_CN.md) 
+### 案例一：OpenDelta微调CPM-Bee完成CCKS2023指令驱动的知识图谱构建 [英文](./CPM-Bee/README.md) | [中文](./CPM-Bee/README_CN.md) 
 
 
 

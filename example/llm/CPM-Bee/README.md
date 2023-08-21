@@ -79,7 +79,7 @@ python text_generation.py
 
 The above bash run_inference.bash will output cpm_bee_TG.json in the result directory without the kg' field, if you need to meet the CCKS2023 submission format you will need to extract the kg from output', here is a simple example convert.py
 ```bash
-python ../../utils/convert.py
+python ../InstructKGC/convert.py
 -pred_path "cpm_bee_TG.json"
 -tgt_path "cpm_bee_TG_kg.json'
 ```
