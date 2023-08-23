@@ -67,16 +67,14 @@ python kg2instruction/convert.py \
 
 | 名称                  | 下载                                                                                                                     | 数量     | 描述                                                                                                                                                       |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| kg_train.json       | [Google drive](https://drive.google.com/file/d/1W9HKpQxBGGERdP006ivjoDH5Q-1dNCSE/view?usp=sharing)                     | 281860 | [InstructIE](https://arxiv.org/abs/2305.11527) 中提到的数据集                                                                                                   |
-| instruct_train.json | [Google drive](https://drive.google.com/file/d/1WQVD_99_4XoUcoRDWRibZfO5jJdhjTQ1/view?usp=sharing)                     | 281860 | [KnowLM](https://github.com/zjunlp/KnowLM) 训练中涉及到的信息抽取指令数据，由kg_train.json改造而来                                                                            |
-| train.json, valid.json          | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing)                     | 5000   | [CCKS2023 开放环境下的知识图谱构建与补全评测任务一：指令驱动的自适应知识图谱构建](https://tianchi.aliyun.com/competition/entrance/532080/introduction) 中的初赛训练集，从 instruct_train.json 中随机选出的 |
+| KnowLM-IE.json       | [Google drive](https://drive.google.com/file/d/1hY_R6aFgW4Ga7zo41VpOVOShbTgBqBbL/view?usp=sharing) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)      | 281860 | [InstructIE](https://arxiv.org/abs/2305.11527) 中提到的数据集                                                                                     |
+| train.json, valid.json          | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing)                     | 5000   | [CCKS2023 开放环境下的知识图谱构建与补全评测任务一：指令驱动的自适应知识图谱构建](https://tianchi.aliyun.com/competition/entrance/532080/introduction) 中的初赛训练集及测试集，从 KnowLM-IE.json 中随机选出的 |
 
 
-`kg_train.json`：包含 `id`(唯一标识符)、`cate`(文本主题)、`input`(输入文本)、`kg`(三元组)字段，可以通过`kg`自由构建抽取的指令和输出。
+`KnowLM-IE.json`：包含 `'id'`(唯一标识符)、`'cate'`(文本主题)、`'instruction'`(抽取指令)、`'input'`(输入文本)、`'output'`(输出文本)字段、`'relation'`(三元组)字段，可以通过`'relation'`自由构建抽取的指令和输出，`'instruction'`有16种格式(4种prompt * 4种输出格式)，`'output'`是按照`'instruction'`中指定的输出格式生成的文本。。
 
-`instruct_train.json`：`instruction`(抽取指令)、`input`(输入文本)、`output`(输出文本)字段，`instruction`有16种格式(4种prompt+4种输出格式)，`output`是按照`instruction`中指定的输出格式生成的文本。
 
-`train.json`：包含 `id`(唯一标识符)、`cate`(文本主题)、`instruction`(抽取指令)、`input`(输入文本)、`output`(输出文本)字段、`kg`(三元组)字段，`instruction`、`output`都只有1种格式，也可以通过`kg`自由构建抽取的指令和输出。
+`train.json`：字段含义同`train.json`，`'instruction'`、`'output'`都只有1种格式，也可以通过`'relation'`自由构建抽取的指令和输出。
 
 `valid.json`：字段含义同`train.json`，但是经过众包标注，更加准确。
 
@@ -89,7 +87,7 @@ python kg2instruction/convert.py \
 |    input    |    模型输入文本（需要抽取其中涉及的所有关系三元组）    |
 | instruction |                 模型进行抽取任务的指令                 |
 | output      | 模型期望输出，以(ent1,relation,ent2)形式组成的输出文本 |
-|     kg      |                  input中涉及的知识图谱                  |
+| relation    |                  input中涉及的关系三元组               |
 
 
 

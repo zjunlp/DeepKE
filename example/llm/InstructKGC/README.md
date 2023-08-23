@@ -65,15 +65,12 @@ Here are some readily processed datasets:
 
 | Name                   | Download                                                     | Quantity | Description                                                  |
 | ---------------------- | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ |
-| kg_train.json          | [Google drive](https://drive.google.com/file/d/1W9HKpQxBGGERdP006ivjoDH5Q-1dNCSE/view?usp=sharing) | 281,860  | Dataset mentioned in [InstructIE](https://arxiv.org/abs/2305.11527) |
-| instruct_train.json    | [Google drive](https://drive.google.com/file/d/1WQVD_99_4XoUcoRDWRibZfO5jJdhjTQ1/view?usp=sharing) | 281,860  | Information extraction instruction data used in training [KnowLM](https://github.com/zjunlp/KnowLM), adapted from kg_train.json |
+| KnowLM-IE.json          | [Google drive](https://drive.google.com/file/d/1W9HKpQxBGGERdP006ivjoDH5Q-1dNCSE/view?usp=sharing) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)  | 281,860  | Dataset mentioned in [InstructIE](https://arxiv.org/abs/2305.11527) |
 | train.json, valid.json | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing) | 5,000    | Preliminary training set for the task "Instruction-Driven Adaptive Knowledge Graph Construction" in [CCKS2023 Open Knowledge Graph Challenge](https://tianchi.aliyun.com/competition/entrance/532080/introduction), randomly selected from instruct_train.json |
 
-`kg_train.json`: Contains `id` (unique identifier), `cate` (text category), `input` (input text), and `kg` (triples) fields, allowing for the flexible construction of extraction instructions and outputs through `kg`.
+`KnowLM-IE.json`: Contains `'id'` (unique identifier), `'cate'` (text category), `'instruction'` (extraction instruction), `'input'` (input text), `'output'` (output text) and `'relation'` (triples) fields, allowing for the flexible construction of extraction instructions and outputs through `'relation'`, `'instruction'` has 16 formats (4 prompts * 4 output formats), and `'output'` is generated according to the specified output format in `'instruction'`.
 
-`instruct_train.json`: Contains `instruction` (extraction instruction), `input` (input text), and `output` (output text) fields. `instruction` has 16 formats (4 prompts + 4 output formats), and `output` is generated according to the specified output format in `instruction`.
-
-`train.json`: Contains `id` (unique identifier), `cate` (text category), `instruction` (extraction instruction), `input` (input text), `output` (output text) fields, and `kg` (triples) field. `instruction` and `output` have only one format, and extraction instructions and outputs can also be freely constructed through `kg`.
+`train.json`: Same fields as `KnowLM-IE.json`, `'instruction'` and `'output'` have only one format, and extraction instructions and outputs can also be freely constructed through `'relation'`.
 
 `valid.json`: Same fields as `train.json`, but with more accurate annotations achieved through crowdsourcing.
 
@@ -87,7 +84,7 @@ Here is an explanation of each field:
 |    input    | Model input text (need to extract all triples involved within) |
 | instruction |   Instruction for the model to perform the extraction task   |
 |    output   | Expected model output, in the form of output text composed of (ent1, relation, ent2) |
-|     kg      |             Knowledge graph involved in the input             |
+|     relation      |             Relation triples involved in the input             |
 
 
 
