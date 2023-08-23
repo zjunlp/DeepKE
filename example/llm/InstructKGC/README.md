@@ -66,7 +66,7 @@ Here are some readily processed datasets:
 | Name                   | Download                                                     | Quantity | Description                                                  |
 | ---------------------- | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ |
 | KnowLM-IE.json          | [Google drive](https://drive.google.com/file/d/1W9HKpQxBGGERdP006ivjoDH5Q-1dNCSE/view?usp=sharing) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)  | 281,860  | Dataset mentioned in [InstructIE](https://arxiv.org/abs/2305.11527) |
-| train.json, valid.json | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing) | 5,000    | Preliminary training set for the task "Instruction-Driven Adaptive Knowledge Graph Construction" in [CCKS2023 Open Knowledge Graph Challenge](https://tianchi.aliyun.com/competition/entrance/532080/introduction), randomly selected from instruct_train.json |
+| train.json, valid.json | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing) | 5,000    | Preliminary training set and test set for the task "Instruction-Driven Adaptive Knowledge Graph Construction" in [CCKS2023 Open Knowledge Graph Challenge](https://tianchi.aliyun.com/competition/entrance/532080/introduction), randomly selected from instruct_train.json |
 
 `KnowLM-IE.json`: Contains `'id'` (unique identifier), `'cate'` (text category), `'instruction'` (extraction instruction), `'input'` (input text), `'output'` (output text) and `'relation'` (triples) fields, allowing for the flexible construction of extraction instructions and outputs through `'relation'`, `'instruction'` has 16 formats (4 prompts * 4 output formats), and `'output'` is generated according to the specified output format in `'instruction'`.
 
@@ -80,11 +80,12 @@ Here is an explanation of each field:
 
 |    Field    |                         Description                          |
 | :---------: | :----------------------------------------------------------: |
-|     id      |                   Sample unique identifier                   |
+|     id      |                   Unique identifier                   |
+|    cate     |     text category of input (12 categories in total)                        |
 |    input    | Model input text (need to extract all triples involved within) |
 | instruction |   Instruction for the model to perform the extraction task   |
-|    output   | Expected model output, in the form of output text composed of (ent1, relation, ent2) |
-|     relation      |             Relation triples involved in the input             |
+|    output   | Expected model output |
+|   relation  |             Relation triples(head, relation, tail) involved in the input             |
 
 
 

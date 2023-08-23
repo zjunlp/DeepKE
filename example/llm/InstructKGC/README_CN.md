@@ -83,11 +83,12 @@ python kg2instruction/convert.py \
 
 |    字段     |                          说明                          |
 | :---------: | :----------------------------------------------------: |
-|     id      |                     样本唯一标识符                     |
+|     id      |                     唯一标识符                     |
+|    cate     |     文本input对应的主题(共12种)                          |
 |    input    |    模型输入文本（需要抽取其中涉及的所有关系三元组）    |
 | instruction |                 模型进行抽取任务的指令                 |
-| output      | 模型期望输出，以(ent1,relation,ent2)形式组成的输出文本 |
-| relation    |                  input中涉及的关系三元组               |
+| output      | 模型期望输出 |
+| relation    |                  input中涉及的关系三元组(head, relation, tail)               |
 
 
 
