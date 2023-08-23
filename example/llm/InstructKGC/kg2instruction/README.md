@@ -11,7 +11,7 @@ entity_template_zh =  {
 entity_int_out_format_zh = {
     0:['"(实体,实体类型)"', entity_convert_target0],
     1:['"实体是\n实体类型是\n\n"', entity_convert_target1],
-    2:['"实体：实体类型\n"', entity_convert_target2],
+    2:['"实体类型：实体\n"', entity_convert_target2],
     3:["JSON字符串[{'entity':'', 'entity_type':''}, ]", entity_convert_target3],
 }
 
