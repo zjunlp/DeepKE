@@ -11,6 +11,8 @@ from re_template import relation_template_zh, relation_int_out_format_zh, relati
 from ee_template import event_template_zh, event_int_out_format_zh, event_template_en, event_int_out_format_en
 
 
+
+
 def get_schema(src_path, task):    # 从数据集中统计类型列表形成schema
     type_set = set()
     role_set = set()
@@ -31,6 +33,8 @@ def get_schema(src_path, task):    # 从数据集中统计类型列表形成sche
             else:
                 raise KeyError
     return list(type_set), list(role_set)
+
+
 
 
 def process(src_path, tgt_path, schema_path, language='zh', task='RE', sample=-1, all=True):
@@ -80,21 +84,21 @@ def process(src_path, tgt_path, schema_path, language='zh', task='RE', sample=-1
             elif task == 'RE':
                 if all:
                     record['relation'], rels_type, _ = neg_sampler.negative_sample(record['relation'], 'RE')
-                new_rels, rels_type = rel_sort(record['text'], record['relation'])    # 按关系、头实体、尾实体随机排序
+                new_rels, rels_type = rel_sort(record['input'], record['relation'])    # 按关系、头实体、尾实体随机排序
                 output_template = relation_int_out_format[rand2]
                 output_text = output_template[1](new_rels)
                 sinstruct = relation_template[rand1].format(s_format=output_template[0], s_schema=list(rels_type))
             elif task == 'NER':
                 if all:
                     record['entity'], ents_type, _ = neg_sampler.negative_sample(record['entity'], 'NER')
-                new_ents, ents_type = ent_sort(record['text'], record['entity'])      # 按实体类型、实体随机排序
+                new_ents, ents_type = ent_sort(record['input'], record['entity'])      # 按实体类型、实体随机排序
                 output_template = entity_int_out_format[rand2]
                 output_text = output_template[1](new_ents)
                 sinstruct = entity_template[rand1].format(s_format=output_template[0], s_schema=list(ents_type))
             else:
                 raise KeyError
 
-            record2 = {'id': cnt,'instruction': sinstruct, 'input': record['text'], 'output': output_text}
+            record2 = {'id': cnt,'instruction': sinstruct, 'input': record['input'], 'output': output_text}
             writer.write(json.dumps(record2, ensure_ascii=False)+"\n")
             cnt += 1
 
