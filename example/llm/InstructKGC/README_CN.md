@@ -91,7 +91,7 @@ python kg2instruction/convert.py \
 | relation    |                  input中涉及的关系三元组(head, relation, tail)               |
 
 
-
+此处 [schema](./kg2instruction/schema.py) 提供了12种文本主题, 以及该主题下常见的关系类型。
 
 ## 3.准备
 ### 环境

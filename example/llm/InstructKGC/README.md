@@ -81,14 +81,14 @@ Here is an explanation of each field:
 |    Field    |                         Description                          |
 | :---------: | :----------------------------------------------------------: |
 |     id      |                   Unique identifier                   |
-|    cate     |     text category of input (12 categories in total)                        |
+|    cate     |     text topic of input (12 topics in total)                        |
 |    input    | Model input text (need to extract all triples involved within) |
 | instruction |   Instruction for the model to perform the extraction task   |
 |    output   | Expected model output |
 |   relation  |             Relation triples(head, relation, tail) involved in the input             |
 
 
-
+Here [schema](./kg2instruction/schema.py) provides 12 text topics and common relationship types under the topic.
 
 ## 3.Preparation
 
