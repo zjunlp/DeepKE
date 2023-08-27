@@ -23,8 +23,8 @@
   - [5.P-Tuning微调](#5p-tuning微调)
     - [P-Tuning微调ChatGLM](#p-tuning微调chatglm)
     - [预测](#预测-1)
-  - [6.格式转换](#7格式转换)
-  - [7.Acknowledgment](#8acknowledgment)
+  - [6.模型输出转换\&计算F1](#6模型输出转换计算f1)
+  - [7.Acknowledgment](#7acknowledgment)
   - [Citation](#citation)
 
 
@@ -45,7 +45,7 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 模型的输入需要包含`instruction`和`input`(可选)字段, 我们在 [kg2instruction/convert.py](./kg2instruction/convert.py) 提供了一个脚本，用于将数据统一转换为可以直接输入模型的格式。
 
-* 请注意！在执行 `convert.py` 之前，请参考 `data` 目录, 其中包含了每种任务的预期数据格式。
+* 请注意！在执行 [kg2instruction/convert.py](./kg2instruction/convert.py) 之前，请参考 [data](./data) 目录, 其中包含了每种任务的预期数据格式。
 
 ```bash
 python kg2instruction/convert.py \

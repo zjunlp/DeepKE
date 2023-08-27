@@ -21,7 +21,7 @@
   - [5.P-Tuning Fine-tuning](#5p-tuning-fine-tuning)
     - [P-Tuning Fine-tuning with ChatGLM](#p-tuning-fine-tuning-with-chatglm)
     - [Prediction](#prediction-1)
-  - [6. Format Conversion](#6-format-conversion)
+  - [6. Model Output Conversion \& F1 Calculation](#6-model-output-conversion--f1-calculation)
   - [7.Acknowledgment](#7acknowledgment)
   - [Citation](#citation)
 
@@ -44,7 +44,7 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 The model's input should include the `instruction` and  the `input`(optionally) field. We have provided a script, [kg2instruction/convert.py](./kg2instruction/convert.py), which is used to transform the data into a format suitable for direct input into the model.
 
-* Note! Before executing convert.py, please refer to the data directory for the expected data format for each task.
+* Note! Before executing [kg2instruction/convert.py](./kg2instruction/convert.py), please refer to the [data](./data) directory for the expected data format for each task.
 
 ```bash
 python kg2instruction/convert.py \
@@ -57,7 +57,7 @@ python kg2instruction/convert.py \
   --all
 ```
 
-* For more detailed information about IE templates, data format conversion, and data extraction, please refer to [kg2instruction/README_CN.md](./kg2instruction/README_CN.md).
+* For more detailed information about IE templates, data format conversion, and data extraction, please refer to [kg2instruction/README.md](./kg2instruction/README.md).
 
 * Alternatively, you can independently create data that includes the `instruction` and `input` fields.
 
