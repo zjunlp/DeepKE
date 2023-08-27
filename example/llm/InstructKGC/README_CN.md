@@ -43,9 +43,10 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 ## 2.数据
 
-模型的输入需要包含`instruction`和`input`(可选)字段, 我们在 [kg2instruction/convert.py](./kg2instruction/convert.py) 提供了一个脚本，用于将数据统一转换为可以直接输入模型的格式。
+模型的输入需要包含`instruction`和`input`(可选)字段, 我们在 [kg2instruction/convert.py](./kg2instruction/convert.py)、[kg2instruction/convert_test.py](./kg2instruction/convert_test.py) 提供了一个脚本，用于将数据统一转换为可以直接输入模型的格式。
 
 * 请注意！在执行 [kg2instruction/convert.py](./kg2instruction/convert.py) 之前，请参考 [data](./data) 目录, 其中包含了每种任务的预期数据格式。
+
 
 ```bash
 python kg2instruction/convert.py \
@@ -56,6 +57,18 @@ python kg2instruction/convert.py \
   --task NER \          # ['RE', 'NER', 'EE']三种任务
   --sample 0 \          # 若为-1, 则从4种指令和4种输出格式中随机采样其中一种, 否则即为指定的指令格式, -1<=sample<=3
   --all                 # 是否将指令中指定的抽取类型列表设置为全部schema
+```
+
+[kg2instruction/convert_test.py](./kg2instruction/convert_test.py) 不要求数据具有标签(`entity`、`relation`、`event`)字段, 只需要具有 `input` 字段, 以及提供 `schema_path`, 适合用来处理测试数据。
+
+```bash
+python kg2instruction/convert_test.py \
+    --src_path data/NER/sample.json \
+    --tgt_path data/NER/processed.json \
+    --schema_path data/NER/schema.json \
+    --language zh \      
+    --task NER \          
+    --sample 0 
 ```
 
 

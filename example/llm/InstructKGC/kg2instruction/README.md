@@ -70,8 +70,7 @@ Moreover, in the [schema](./kg2instruction/schema.py) provided, we have listed c
 
 # 3.Convert script
 
-A script named [convert.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert.py) is provided to facilitate the uniform conversion of data into KnowLM instructions. The [data](https://github.com/zjunlp/DeepKE/tree/main/example/llm/InstructKGC/data) directory contains the expected data format for each task before executing convert.py.
-
+A script named [convert.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert.py)、[convert_test.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert_test.py) is provided to facilitate the uniform conversion of data into KnowLM instructions. The [data](https://github.com/zjunlp/DeepKE/tree/main/example/llm/InstructKGC/data) directory contains the expected data format for each task before executing convert.py.
 
 ```bash
 python kg2instruction/convert.py \
@@ -83,6 +82,20 @@ python kg2instruction/convert.py \
   --sample 0 \
   --all
 ```
+
+[convert_test.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert_test.py) does not require data to have label (`entity`, `relation`, `event`) fields, only needs to have an `input` field and provide a `schema_path` is suitable for processing test data.
+
+```bash
+python kg2instruction/convert_test.py \
+    --src_path data/NER/sample.json \
+    --tgt_path data/NER/processed.json \
+    --schema_path data/NER/schema.json \
+    --language zh \      
+    --task NER \          
+    --sample 0 
+```
+
+
 
 # 4.Evaluate
 

@@ -42,7 +42,7 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 ## 2.Data
 
-The model's input should include the `instruction` and  the `input`(optionally) field. We have provided a script, [kg2instruction/convert.py](./kg2instruction/convert.py), which is used to transform the data into a format suitable for direct input into the model.
+The model's input should include the `instruction` and  the `input`(optionally) field. We have provided a script, [kg2instruction/convert.py](./kg2instruction/convert.py)、[kg2instruction/convert_test.py](./kg2instruction/convert_test.py), which is used to transform the data into a format suitable for direct input into the model.
 
 * Note! Before executing [kg2instruction/convert.py](./kg2instruction/convert.py), please refer to the [data](./data) directory for the expected data format for each task.
 
@@ -56,6 +56,20 @@ python kg2instruction/convert.py \
   --sample 0 \
   --all
 ```
+
+[kg2instruction/convert_test.py](./kg2instruction/convert_test.py) does not require data to have label (`entity`, `relation`, `event`) fields, only needs to have an `input` field and provide a `schema_path` is suitable for processing test data.
+
+```bash
+python kg2instruction/convert_test.py \
+    --src_path data/NER/sample.json \
+    --tgt_path data/NER/processed.json \
+    --schema_path data/NER/schema.json \
+    --language zh \      
+    --task NER \          
+    --sample 0 
+```
+
+
 
 * For more detailed information about IE templates, data format conversion, and data extraction, please refer to [kg2instruction/README.md](./kg2instruction/README.md).
 

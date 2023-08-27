@@ -71,18 +71,31 @@ entity_int_out_format_en = {
 
 # 3. 转换脚本
 
-提供一个名为 [convert.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert.py) 的脚本，用于将数据统一转换为可以直接输入 KnowLM 的指令。在执行 convert.py 之前，请参考 [data](https://github.com/zjunlp/DeepKE/tree/main/example/llm/InstructKGC/data) 目录中包含了每个任务的预期数据格式。
+提供一个名为 [convert.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert.py)、[convert_test.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert_test.py) 的脚本，用于将数据统一转换为可以直接输入 KnowLM 的指令。在执行 convert.py 之前，请参考 [data](https://github.com/zjunlp/DeepKE/tree/main/example/llm/InstructKGC/data) 目录中包含了每个任务的预期数据格式。
 
 ```bash
 python kg2instruction/convert.py \
   --src_path data/NER/sample.json \
   --tgt_path data/NER/processed.json \
   --schema_path data/NER/schema.json \
-  --language zh \
-  --task NER \
-  --sample 0 \
-  --all
+  --language zh \       # 不同语言使用的template及转换脚本不同
+  --task NER \          # ['RE', 'NER', 'EE']三种任务
+  --sample 0 \          # 若为-1, 则从4种指令和4种输出格式中随机采样其中一种, 否则即为指定的指令格式, -1<=sample<=3
+  --all                 # 是否将指令中指定的抽取类型列表设置为全部schema
 ```
+
+[convert_test.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert_test.py) 不要求数据具有标签(`entity`、`relation`、`event`)字段, 只需要具有 `input` 字段, 以及提供 `schema_path`, 适合用来处理测试数据。
+
+```bash
+python kg2instruction/convert_test.py \
+    --src_path data/NER/sample.json \
+    --tgt_path data/NER/processed.json \
+    --schema_path data/NER/schema.json \
+    --language zh \      
+    --task NER \          
+    --sample 0 
+```
+
 
 # 4. 评估
 我们提供一个位于 [evaluate.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/evaluate.py) 的脚本，用于将模型的字符串输出转换为列表并计算 F1 分数。
