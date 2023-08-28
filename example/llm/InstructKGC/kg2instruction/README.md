@@ -96,8 +96,25 @@ python kg2instruction/convert_test.py \
 ```
 
 
+# 4.Datasets
 
-# 4.Evaluate
+
+Below are some readily processed datasets:
+
+| Name                | Download Links                                                                                                           | Quantity | Description                                                                                                                                         |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| KnowLM-IE.json       | [Google Drive](https://drive.google.com/file/d/1hY_R6aFgW4Ga7zo41VpOVOShbTgBqBbL/view?usp=sharing) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)      | 281860 | Dataset mentioned in [InstructIE](https://arxiv.org/abs/2305.11527)                                                                                 |
+| KnowLM-ke         | [HuggingFace](hhttps://huggingface.co/datasets/zjunlp/knowlm-ke)                     | XXXX   | Contains all instruction data (General, IE, Code, COT, etc.) used for training [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi) |
+
+
+`KnowLM-IE.json`: Contains fields such as `'id'` (unique identifier), `'cate'` (text category), `'instruction'` (extraction instruction), `'input'` (input text), `'output'` (output text), and `'relation'` (triples). The `'relation'` field can be used to construct extraction instructions and outputs freely. `'instruction'` has 16 formats (4 prompts * 4 output formats), and `'output'` is generated in the specified format from `'instruction'`.
+
+`KnowLM-ke`: Contains fields `'instruction'`, `'input'`, and `'output'` only. The files `ee-en.json`, `ee_train.json`, `ner-en.json`, `ner_train.json`, `re-en.json`, and `re_train.json` under its directory contain Chinese-English IE instruction data.
+
+
+
+
+# 5.Evaluate
 
 We provide a script at [evaluate.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/evaluate.py) to convert the string output of the model into a list and calculate F1
 

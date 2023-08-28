@@ -97,7 +97,24 @@ python kg2instruction/convert_test.py \
 ```
 
 
-# 4. 评估
+# 4.现成数据集
+
+下面是一些现成的处理后的数据：
+
+| 名称                  | 下载                                                                                                                     | 数量     | 描述                                                                                                                                                       |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| KnowLM-IE.json       | [Google drive](https://drive.google.com/file/d/1hY_R6aFgW4Ga7zo41VpOVOShbTgBqBbL/view?usp=sharing) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)      | 281860 | [InstructIE](https://arxiv.org/abs/2305.11527) 中提到的数据集                                                                                     |
+| KnowLM-ke         | [HuggingFace](hhttps://huggingface.co/datasets/zjunlp/knowlm-ke)                     | XXXX   | 训练[zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi)所用到的所有指令数据(通用、IE、Code、COT等) |
+
+
+`KnowLM-IE.json`：包含 `'id'`(唯一标识符)、`'cate'`(文本主题)、`'instruction'`(抽取指令)、`'input'`(输入文本)、`'output'`(输出文本)字段、`'relation'`(三元组)字段，可以通过`'relation'`自由构建抽取的指令和输出，`'instruction'`有16种格式(4种prompt * 4种输出格式)，`'output'`是按照`'instruction'`中指定的输出格式生成的文本。
+
+
+`KnowLM-ke`：仅包含`'instruction'`、`'input'`、`'output'`字段。其目录下的`ee-en.json`、`ee_train.json`、`ner-en.json`、`ner_train.json`、`re-en.json`、`re_train.json`为中英文IE指令数据。
+
+
+
+# 5. 评估
 我们提供一个位于 [evaluate.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/evaluate.py) 的脚本，用于将模型的字符串输出转换为列表并计算 F1 分数。
 
 ```bash
