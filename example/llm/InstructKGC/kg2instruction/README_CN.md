@@ -1,4 +1,11 @@
-# 1. 信息抽取模板
+- [1.信息抽取模板](#1信息抽取模板)
+- [2.常见文本主题及其schema](#2常见文本主题及其schema)
+- [3.转换脚本](#3转换脚本)
+- [4.现成数据集](#4现成数据集)
+- [5.评估](#5评估)
+
+
+# 1.信息抽取模板
 命名实体识别（NER）支持以下模板：
 
 ```python
@@ -69,7 +76,7 @@ entity_int_out_format_en = {
 ```
 
 
-# 3. 转换脚本
+# 3.转换脚本
 
 提供一个名为 [convert.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert.py)、[convert_test.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert_test.py) 的脚本，用于将数据统一转换为可以直接输入 KnowLM 的指令。在执行 convert.py 之前，请参考 [data](https://github.com/zjunlp/DeepKE/tree/main/example/llm/InstructKGC/data) 目录中包含了每个任务的预期数据格式。
 
@@ -114,7 +121,7 @@ python kg2instruction/convert_test.py \
 
 
 
-# 5. 评估
+# 5.评估
 我们提供一个位于 [evaluate.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/evaluate.py) 的脚本，用于将模型的字符串输出转换为列表并计算 F1 分数。
 
 ```bash

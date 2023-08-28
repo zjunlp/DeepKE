@@ -1,3 +1,11 @@
+
+
+- [1.IE template](#1ie-template)
+- [2. Common text topics and their schemas](#2-common-text-topics-and-their-schemas)
+- [3.Convert script](#3convert-script)
+- [4.Datasets](#4datasets)
+- [5.Evaluate](#5evaluate)
+
 # 1.IE template
 NER supports the following templates:
 ```python
@@ -31,7 +39,7 @@ Both the schema and format placeholders ({s_schema} and {s_format}) are embedded
 For a more comprehensive understanding of the templates, please refer to the files [ner_template.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/ner_template.py)、[re_template.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/re_template.py)、[ee_template.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/ee_template.py) .
 
 
-# 2. Common text topics and their schemas
+# 2.Common text topics and their schemas
 
 According to statistical analysis, we have categorized text into the following 12 topics:
 
