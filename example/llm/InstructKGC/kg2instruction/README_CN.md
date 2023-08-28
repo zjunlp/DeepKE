@@ -111,7 +111,7 @@ python kg2instruction/convert_test.py \
 | 名称                  | 下载                                                                                                                     | 数量     | 描述                                                                                                                                                       |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | KnowLM-IE.json       | [Google drive](https://drive.google.com/file/d/1hY_R6aFgW4Ga7zo41VpOVOShbTgBqBbL/view?usp=sharing) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)      | 281860 | [InstructIE](https://arxiv.org/abs/2305.11527) 中提到的数据集                                                                                     |
-| KnowLM-ke         | [HuggingFace](hhttps://huggingface.co/datasets/zjunlp/knowlm-ke)                     | XXXX   | 训练[zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi)所用到的所有指令数据(通用、IE、Code、COT等) |
+| KnowLM-ke         | [HuggingFace](https://huggingface.co/datasets/zjunlp/knowlm-ke)                     | XXXX   | 训练[zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi)所用到的所有指令数据(通用、IE、Code、COT等) |
 
 
 `KnowLM-IE.json`：包含 `'id'`(唯一标识符)、`'cate'`(文本主题)、`'instruction'`(抽取指令)、`'input'`(输入文本)、`'output'`(输出文本)字段、`'relation'`(三元组)字段，可以通过`'relation'`自由构建抽取的指令和输出，`'instruction'`有16种格式(4种prompt * 4种输出格式)，`'output'`是按照`'instruction'`中指定的输出格式生成的文本。

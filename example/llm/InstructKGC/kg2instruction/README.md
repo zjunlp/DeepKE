@@ -1,7 +1,7 @@
 
 
 - [1.IE template](#1ie-template)
-- [2. Common text topics and their schemas](#2-common-text-topics-and-their-schemas)
+- [2.Common text topics and their schemas](#2common-text-topics-and-their-schemas)
 - [3.Convert script](#3convert-script)
 - [4.Datasets](#4datasets)
 - [5.Evaluate](#5evaluate)
@@ -112,7 +112,7 @@ Below are some readily processed datasets:
 | Name                | Download Links                                                                                                           | Quantity | Description                                                                                                                                         |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | KnowLM-IE.json       | [Google Drive](https://drive.google.com/file/d/1hY_R6aFgW4Ga7zo41VpOVOShbTgBqBbL/view?usp=sharing) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)      | 281860 | Dataset mentioned in [InstructIE](https://arxiv.org/abs/2305.11527)                                                                                 |
-| KnowLM-ke         | [HuggingFace](hhttps://huggingface.co/datasets/zjunlp/knowlm-ke)                     | XXXX   | Contains all instruction data (General, IE, Code, COT, etc.) used for training [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi) |
+| KnowLM-ke         | [HuggingFace](https://huggingface.co/datasets/zjunlp/knowlm-ke)                     | XXXX   | Contains all instruction data (General, IE, Code, COT, etc.) used for training [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi) |
 
 
 `KnowLM-IE.json`: Contains fields such as `'id'` (unique identifier), `'cate'` (text category), `'instruction'` (extraction instruction), `'input'` (input text), `'output'` (output text), and `'relation'` (triples). The `'relation'` field can be used to construct extraction instructions and outputs freely. `'instruction'` has 16 formats (4 prompts * 4 output formats), and `'output'` is generated in the specified format from `'instruction'`.
