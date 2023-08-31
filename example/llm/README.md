@@ -158,7 +158,7 @@ If you use this project, please cite the following papers:
 
 ```bibtex
 @misc{knowlm,
-  author = {Ningyu Zhang, Jintian Zhang, Xiaohan Wang, Honghao Gui, Kangwei Liu, Yinuo Jiang, Xiang Chen, Shengyu Mao, Shuofei Qiao, Yuqi Zhu, Zhen Bi, Jing Chen, Xiaozhuan Liang, Yixin Ou, Ruinan Fang, Zekun Xi, Xin Xu, Lei Li, Peng Wang, Guozhou Zheng, Huajun Chen},
+  author = {Ningyu Zhang, Jintian Zhang, Xiaohan Wang, Honghao Gui, Kangwei Liu, Yinuo Jiang, Xiang Chen, Shengyu Mao, Shuofei Qiao, Yuqi Zhu, Zhen Bi, Jing Chen, Xiaozhuan Liang, Yixin Ou, Runnan Fang, Zekun Xi, Xin Xu, Lei Li, Peng Wang, Mengru Wang, Yunzhi Yao, Yin Fang, Guozhou Zheng, Huajun Chen},
   title = {KnowLM: An Open-sourced Knowledgeable Large Langugae Model Framework},
   year = {2023},
  url = {http://knowlm.zjukg.cn/},
