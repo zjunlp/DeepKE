@@ -280,7 +280,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/te
 
 ### LoRA微调ChatGLM
 
-你可以通过下面的命令设置自己的参数使用LoRA方法来微调ChatGLM模型:
+你可以通过下面的命令设置自己的参数使用LoRA方法来微调ChatGLM模型，注意⚠️目前chatglm更新速度较快，请您确保您的模型与chatglm最新模型保持一致:
 ```bash
 output_dir='path to save ChatGLM Lora'
 mkdir -p ${output_dir}
