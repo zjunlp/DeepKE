@@ -157,12 +157,10 @@ The PT (P-Tuning) method, as referred to in the official code of ChatGLM, is a s
 If you use this project, please cite the following papers:
 
 ```bibtex
-@article{knowlm,
-  author = {Ningyu Zhang, Jintian Zhang, Xiaohan Wang, Honghao Gui, Kangwei Liu, Yinuo Jiang, Xiang Chen, Shengyu Mao, Shuofei Qiao, Yuqi Zhu, Zhen Bi, Jing Chen, Xiaozhuan Liang, Yixin Ou, Ruinan Fang, Zekun Xi, Xin Xu, Lei Li, Peng Wang, Guozhou Zheng, Huajun Chen},
-  title = {KnowLM: An Open-sourced Knowledgable Large Langugae Model Framework},
+@misc{knowlm,
+  author = {Ningyu Zhang and Jintian Zhang and Xiaohan Wang and Honghao Gui and Kangwei Liu and Yinuo Jiang and Xiang Chen and Shengyu Mao and Shuofei Qiao and Yuqi Zhu and Zhen Bi and Jing Chen and Xiaozhuan Liang and Yixin Ou and Runnan Fang and Zekun Xi and Xin Xu and Lei Li and Peng Wang and Mengru Wang and Yunzhi Yao and Bozhong Tian and Yin Fang and Guozhou Zheng and Huajun Chen},
+  title = {KnowLM: An Open-sourced Knowledgeable Large Langugae Model Framework},
   year = {2023},
-  publisher = {GitHub},
-  journal = {GitHub repository},
-  howpublished = {\url{https://github.com/}},
+ url = {http://knowlm.zjukg.cn/},
 }
 ```
