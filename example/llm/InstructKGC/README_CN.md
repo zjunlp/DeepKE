@@ -155,7 +155,7 @@ mkdir data
 ```bash
 output_dir='path to save Llama Lora'
 mkdir -p ${output_dir}
-CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/test_finetune.py \
+CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
     --do_train --do_eval \
     --model_name_or_path 'path or name to Llama' \
     --model_name 'llama' \
@@ -239,7 +239,7 @@ output_dir='path to save Zhixi Lora'
 ```bash
 output_dir='path to save Vicuna Lora'
 mkdir -p ${output_dir}
-CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/test_finetune.py \
+CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
     --do_train --do_eval \
     --model_name_or_path 'path or name to Vicuna' \
     --model_file 'vicuna' \
@@ -284,7 +284,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/te
 ```bash
 output_dir='path to save ChatGLM Lora'
 mkdir -p ${output_dir}
-CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/test_finetune.py \
+CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/finetune.py \
     --do_train --do_eval \
     --model_name_or_path 'path or name to ChatGLM' \
     --model_name 'chatglm' \
@@ -331,7 +331,7 @@ CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/test
 ```bash
 output_dir='path to save Moss Lora'
 mkdir -p ${output_dir}
-CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/test_finetune.py \
+CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
     --do_train --do_eval \
     --model_name_or_path 'path or name to Moss' \
     --model_file 'moss' \
