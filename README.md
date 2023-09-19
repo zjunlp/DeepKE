@@ -653,7 +653,7 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 7.Make sure the exact versions of requirements in `requirements.txt`.
 
 # To do
-In next version, we plan to release a multimodal LLM for KE. 
+In next version, we plan to release a stronger LLM for KE. 
 
 Meanwhile, we will offer long-term maintenance to **fix bugs**, **solve issues** and meet **new requests**. So if you have any problems, please put issues to us.
 
