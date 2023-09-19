@@ -33,7 +33,7 @@
 - ❗Want to use Large Language Models with DeepKE? Try [DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm) with [KnowLM](https://github.com/zjunlp/KnowLM), have fun!
 - ❗Want to train supervised models? Try [Quick Start](#quick-start), we provide the NER models (e.g, [LightNER(COLING'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/few-shot), [W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/w2ner)), relation extraction models (e.g., [KnowPrompt(WWW'22)](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot)), relational triple extraction models (e.g., [ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE)), and release off-the-shelf  models at [DeepKE-cnSchema](https://github.com/zjunlp/DeepKE/tree/main/example/triple/cnschema), have fun!
 
-**If you encounter any issues during the installation of DeepKE and DeepKE-LLM, please promptly submit an [issue](https://github.com/zjunlp/DeepKE/issues), and we will assist you with resolving the problem!**
+**If you encounter any issues during the installation of DeepKE and DeepKE-LLM, please check [Tips](https://github.com/zjunlp/DeepKE#tips) or promptly submit an [issue](https://github.com/zjunlp/DeepKE/issues), and we will assist you with resolving the problem!**
 
 
 # Table of Contents
