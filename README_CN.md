@@ -205,8 +205,8 @@ python predict.py
 **Step2** 拉取镜像并运行容器
 
 ```bash
-docker pull zjunlp/deepke:v1
-docker run -it zjunlp/deepke:v1 /bin/bash
+docker pull zjunlp/deepke:latest
+docker run -it zjunlp/deepke:latest /bin/bash
 ```
 
 剩余步骤同**手动环境部署**一节中的**Step 3**及后续步骤相同

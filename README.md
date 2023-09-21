@@ -216,8 +216,8 @@ Install Docker and start the Docker service.
 **Step2** Pull the docker image and run the container
 
 ```bash
-docker pull zjunlp/deepke:v1
-docker run -it zjunlp/deepke:v1 /bin/bash
+docker pull zjunlp/deepke:latest
+docker run -it zjunlp/deepke:latest /bin/bash
 ```
 
 The remaining steps are the same as **Step 3 and onwards** in **Manual Environment Configuration**.
