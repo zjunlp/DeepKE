@@ -155,9 +155,11 @@ conda create -n deepke python=3.8
 conda activate deepke
 ```
 
-1. Install *DeepKE* with source code (**Recommended!!!**)
+1. Install *DeepKE* with source code
 
    ```bash
+   pip install -r requirements.txt
+   
    python setup.py install
    
    python setup.py develop
@@ -241,18 +243,31 @@ The remaining steps are the same as **Step 3 and onwards** in **Manual Environme
 ### DeepKE
 > python == 3.8
 
-- torch == 1.5
-- hydra-core == 1.0.6
-- tensorboard == 2.4.1
-- matplotlib == 3.4.1
-- transformers == 3.4.0
-- jieba == 0.42.1
-- scikit-learn == 0.24.1
-- seqeval == 1.2.2
-- tqdm == 4.60.0
+- torch>=1.5,<=1.11
+- hydra-core==1.0.6
+- tensorboard==2.4.1
+- matplotlib==3.4.1
+- transformers==4.26.0
+- jieba==0.42.1
+- scikit-learn==0.24.1
+- seqeval==1.2.2
 - opt-einsum==3.3.0
 - wandb==0.12.7
-- ujson
+- ujson==5.6.0
+- huggingface_hub==0.11.0
+- tensorboardX==2.5.1
+- nltk==3.8
+- protobuf==3.20.1
+- numpy==1.21.0
+- ipdb==0.13.11
+- pytorch-crf==0.7.2
+- tqdm==4.66.1
+- openai==0.28.0
+- Jinja2==3.1.2
+- datasets==2.13.2
+- pyhocon==0.3.60
+
+<br>
 
 ## Introduction of Three Functions
 
@@ -646,7 +661,7 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 
 4.The old version of *DeepKE* is in the [deepke-v1.0](https://github.com/zjunlp/DeepKE/tree/deepke-v1.0) branch. Users can change the branch to use the old version. The old version has been totally transfered to the standard relation extraction ([example/re/standard](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README.md)).
 
-5.It's recommended to install *DeepKE* with source codes. Because user may meet some problems in Windows system with 'pip',and the source code modification will not work,see[issue](https://github.com/zjunlp/DeepKE/issues/117)
+5.If you want to modify the source code, it's recommended to install *DeepKE* with source codes. If not, the modification will not work. See [issue](https://github.com/zjunlp/DeepKE/issues/117)
 
 6.More related low-resource knowledge extraction  works can be found in [Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective](https://arxiv.org/pdf/2202.08063.pdf).
 

@@ -144,20 +144,22 @@ pip install -r requirements.txt
 
 **Step 2**：使用anaconda创建虚拟环境，进入虚拟环境（提供[Dockerfile](https://github.com/zjunlp/DeepKE/tree/main/docker)源码和[教程](https://github.com/zjunlp/DeepKE/issues/320)可自行创建镜像；可参考[备注（常见问题）](#备注常见问题)使用镜像加速）
 
-```
+```bash
 conda create -n deepke python=3.8
 
 conda activate deepke
 ```
 1） 基于pip安装，直接使用
 
-```
+```bash
 pip install deepke
 ```
 
-2） 基于源码安装 (**强烈建议使用源码安装**)
+2） 基于源码安装
 
-```
+```bash
+pip install -r requirements.txt
+
 python setup.py install
 
 python setup.py develop
@@ -233,17 +235,29 @@ docker run -it zjunlp/deepke:v1 /bin/bash
 
 > python == 3.8
 
-- torch == 1.5
-- hydra-core == 1.0.6
-- tensorboard == 2.4.1
-- matplotlib == 3.4.1
-- transformers == 3.4.0
-- jieba == 0.42.1
-- scikit-learn == 0.24.1
-- seqeval == 1.2.2
-- tqdm == 4.60.0
+- torch>=1.5,<=1.11
+- hydra-core==1.0.6
+- tensorboard==2.4.1
+- matplotlib==3.4.1
+- transformers==4.26.0
+- jieba==0.42.1
+- scikit-learn==0.24.1
+- seqeval==1.2.2
 - opt-einsum==3.3.0
-- ujson
+- wandb==0.12.7
+- ujson==5.6.0
+- huggingface_hub==0.11.0
+- tensorboardX==2.5.1
+- nltk==3.8
+- protobuf==3.20.1
+- numpy==1.21.0
+- ipdb==0.13.11
+- pytorch-crf==0.7.2
+- tqdm==4.66.1
+- openai==0.28.0
+- Jinja2==3.1.2
+- datasets==2.13.2
+- pyhocon==0.3.60
 
 <br>
 
@@ -633,9 +647,9 @@ docker run -it zjunlp/deepke:v1 /bin/bash
 
 5.DeepKE老版本位于[deepke-v1.0](https://github.com/zjunlp/DeepKE/tree/deepke-v1.0)分支，用户可切换分支使用老版本，老版本的能力已全部迁移到标准设定关系抽取([example/re/standard](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README.md))中。
 
-6.推荐使用`python setup.py install`方式安装*DeepKE*,如未使用该方式安装，源码修改部分不会生效,见[问题](https://github.com/zjunlp/DeepKE/issues/117)
+6.如果您需要在源码的基础上进行修改，建议使用`python setup.py install`方式安装*DeepKE*，如未使用该方式安装，源码修改部分不会生效，见[问题](https://github.com/zjunlp/DeepKE/issues/117)。
 
-7.更多的低资源抽取工作可查阅论文 [Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective](https://arxiv.org/pdf/2202.08063.pdf).
+7.更多的低资源抽取工作可查阅论文 [Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective](https://arxiv.org/pdf/2202.08063.pdf)。
 
 8.确保使用requirements.txt中对应的各依赖包的版本。
 
