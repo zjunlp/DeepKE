@@ -149,6 +149,8 @@ Here are some models:
 
 ## 4.LoRA Fine-tuning
 
+注意！！以下所有命令都应在`InstrctKGC`目录下执行！！例如运行微调脚本是：`bash scripts/fine_llama.bash`
+
 ### LoRA Fine-tuning with LLaMA
 
 You can use the following command to configure your own parameters and fine-tune the Llama model using the LoRA method:
