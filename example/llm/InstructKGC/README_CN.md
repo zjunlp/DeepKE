@@ -149,6 +149,8 @@ mkdir data
 
 ## 4.LoRA微调
 
+注意！！以下所有命令都应在`InstrctKGC`目录下执行！！例如运行微调脚本是：`bash scripts/fine_llama.bash`
+
 ### LoRA微调LLaMA
 
 你可以通过下面的命令设置自己的参数使用LoRA方法来微调Llama模型:
