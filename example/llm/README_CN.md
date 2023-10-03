@@ -154,7 +154,7 @@ PT方法，即P-Tuning方法，参考[ChatGLM官方代码](https://link.zhihu.co
 ```bibtex
 @misc{knowlm,
   author = {Ningyu Zhang and Jintian Zhang and Xiaohan Wang and Honghao Gui and Kangwei Liu and Yinuo Jiang and Xiang Chen and Shengyu Mao and Shuofei Qiao and Yuqi Zhu and Zhen Bi and Jing Chen and Xiaozhuan Liang and Yixin Ou and Runnan Fang and Zekun Xi and Xin Xu and Lei Li and Peng Wang and Mengru Wang and Yunzhi Yao and Bozhong Tian and Yin Fang and Guozhou Zheng and Huajun Chen},
-  title = {KnowLM: An Open-sourced Knowledgeable Large Langugae Model Framework},
+  title = {KnowLM Technical Report},
   year = {2023},
  url = {http://knowlm.zjukg.cn/},
 }
