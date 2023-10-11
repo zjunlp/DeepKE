@@ -16,6 +16,7 @@ from transformers import (
 MODEL_DICT = {
     "llama":["llama", "alpaca", "vicuna", "zhixi"],
     "falcon":["falcon"],
+    "baichuan":["baichuan"],
     "chatglm":["chatglm"],
     "moss": ["moss"],
 }
@@ -23,6 +24,7 @@ MODEL_DICT = {
 LORA_TARGET_MODULES_DICT = {
     "llama":['q_proj','v_proj'],
     "falcon":["query_key_value"],
+    "baichuan":['W_pack','o_proj','gate_proj','down_proj','up_proj'],
     "chatglm":["query_key_value"],
     "moss": ['q_proj', 'v_proj'],
 }

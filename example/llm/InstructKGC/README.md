@@ -17,10 +17,11 @@
     - [LoRA Fine-tuning with ZhiXi (智析)](#lora-fine-tuning-with-zhixi-智析)
     - [Lora Fine-tuning with ChatGLM](#lora-fine-tuning-with-chatglm)
     - [Lora Fine-tuning with Moss](#lora-fine-tuning-with-moss)
-    - [Prediction](#prediction)
+    - [LoRA Fine-tuning with Baichuan](#lora-fine-tuning-with-baichuan)
   - [5.P-Tuning Fine-tuning](#5p-tuning-fine-tuning)
     - [P-Tuning Fine-tuning with ChatGLM](#p-tuning-fine-tuning-with-chatglm)
-    - [Prediction](#prediction-1)
+    - [Prediction of Lora](#prediction-of-lora)
+    - [Prediction of P-Tuning](#prediction-of-p-tuning)
   - [6. Model Output Conversion \& F1 Calculation](#6-model-output-conversion--f1-calculation)
   - [7.Acknowledgment](#7acknowledgment)
   - [Citation](#citation)
@@ -140,10 +141,8 @@ Here are some models:
 * [zjunlp/knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0) (requires corresponding IE Lora) | [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi) (can predict directly without Lora) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie) (stronger IE capabilities, but with reduced generalization, no need for Lora)
 * [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)
 * [moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
-* [cpm-bee-5b](https://huggingface.co/openbmb/cpm-bee-5b)
-* [ChatFlow-7B](https://huggingface.co/Linly-AI/ChatFlow-7B)
 * [Chinese-LLaMA-7B](https://huggingface.co/Linly-AI/Chinese-LLaMA-7B)
-
+* [baichuan-inc/Baichuan-7B](https://huggingface.co/baichuan-inc/Baichuan-7B) | [baichuan-inc/Baichuan-13B-Base](https://huggingface.co/baichuan-inc/Baichuan-13B-Base) | [baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base) | [baichuan-inc/Baichuan2-13B-Base](https://huggingface.co/baichuan-inc/Baichuan2-13B-Base)
 
 
 
@@ -337,8 +336,80 @@ The corresponding script can be found at `scripts/fine_moss.bash`.
 
 
 
+### LoRA Fine-tuning with Baichuan
 
-### Prediction
+You can use the following command to configure your own parameters and fine-tune the Llama model using the LoRA method:
+
+```bash
+output_dir='path to save Llama Lora'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
+    --do_train --do_eval \
+    --model_name_or_path 'path or name to Llama' \
+    --model_name 'llama' \
+    --train_path 'data/train.json' \
+    --output_dir=${output_dir}  \
+    --per_device_train_batch_size 16 \
+    --per_device_eval_batch_size 16 \
+    --gradient_accumulation_steps 8 \
+    --preprocessing_num_workers 8 \
+    --num_train_epochs 10 \
+    --learning_rate 1e-4 \
+    --optim "adamw_torch" \
+    --cutoff_len 512 \
+    --val_set_size 1000 \
+    --evaluation_strategy "epoch" \
+    --save_strategy "epoch" \
+    --save_total_limit 10 \
+    --lora_r 8 \
+    --lora_alpha 16 \
+    --lora_dropout 0.05 \
+    --max_memory_MB 24000 \
+    --fp16 \
+    --bits 8 \
+    | tee ${output_dir}/train.log \
+    2> ${output_dir}/train.err
+```
+
+1. We use the [baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base) model for Llama.
+2. There are currently some issues with evaluation, so we use `evaluation_strategy` 'no'.
+3. We use the default `alpaca` template for the `prompt_template_name`. Please refer to `templates/alpaca.json` for more details.
+4. For more detailed parameter information, please refer to `utils/args.py`.
+5. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
+6. We have successfully run the Llama-LoRA fine-tuning code on an `RTX3090` GPU.
+
+The corresponding script can be found at `scripts/fine_baichuan.bash`.
+
+
+
+
+## 5.P-Tuning Fine-tuning
+
+
+### P-Tuning Fine-tuning with ChatGLM
+
+You can use the following command to fine-tune the model using the P-Tuning method:
+```bash
+deepspeed --include localhost:0 src/finetuning_pt.py \
+  --train_path data/train.json \
+  --model_dir /model \
+  --num_train_epochs 20 \
+  --train_batch_size 2 \
+  --gradient_accumulation_steps 1 \
+  --output_dir output_dir_pt \
+  --log_steps 10 \
+  --max_len 768 \
+  --max_src_len 450 \
+  --pre_seq_len 16 \
+  --prefix_projection true
+```
+
+
+
+
+
+
+### Prediction of Lora
 Here are some trained versions of LoRA:
 * [alpaca-7b-lora-ie](https://huggingface.co/zjunlp/alpaca-7b-lora-ie)
 * [llama-7b-lora-ie](https://huggingface.co/zjunlp/llama-7b-lora-ie)
@@ -368,8 +439,7 @@ CUDA_VISIBLE_DEVICES="0" python src/inference.py \
     --bits 8 
 ```
 
-1. Attention!!! `--fp16` or `--bf16`, `--bits`、`--prompt_template_name` and `--model_name` must be set the same as the ones used during the fine-tuning process.
-
+1. Attention!!! `--fp16` or `--bf16`, `--bits`、`--prompt_template_name` and `--model_name` must be set the same as the ones used during the [4.LoRA Fine-tuning](./README.md/#4lora-fine-tuning) process.
 
 
 You can also use trained models (without Lora or with Lora merged into model parameters) to predict outputs on competition test sets:
@@ -389,28 +459,10 @@ The following models support the aforementioned approach:
 
 [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)
 
-## 5.P-Tuning Fine-tuning
 
 
-### P-Tuning Fine-tuning with ChatGLM
 
-You can use the following command to fine-tune the model using the P-Tuning method:
-```bash
-deepspeed --include localhost:0 src/finetuning_pt.py \
-  --train_path data/train.json \
-  --model_dir /model \
-  --num_train_epochs 20 \
-  --train_batch_size 2 \
-  --gradient_accumulation_steps 1 \
-  --output_dir output_dir_pt \
-  --log_steps 10 \
-  --max_len 768 \
-  --max_src_len 450 \
-  --pre_seq_len 16 \
-  --prefix_projection true
-```
-
-### Prediction
+### Prediction of P-Tuning
 
 You can use the following command to predict the output on the competition test set using a trained P-Tuning model:
 ```bash

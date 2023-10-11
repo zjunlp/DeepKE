@@ -19,12 +19,14 @@
     - [LoRA微调Vicuna](#lora微调vicuna)
     - [LoRA微调ChatGLM](#lora微调chatglm)
     - [LoRA微调Moss](#lora微调moss)
-    - [预测](#预测)
+    - [LoRA微调Baichuan](#lora微调baichuan)
   - [5.P-Tuning微调](#5p-tuning微调)
     - [P-Tuning微调ChatGLM](#p-tuning微调chatglm)
-    - [预测](#预测-1)
-  - [6.模型输出转换\&计算F1](#6模型输出转换计算f1)
-  - [7.Acknowledgment](#7acknowledgment)
+  - [6.预测](#6预测)
+      - [LoRA预测](#lora预测)
+    - [P-Tuning预测](#p-tuning预测)
+  - [7.模型输出转换\&计算F1](#7模型输出转换计算f1)
+  - [8.Acknowledgment](#8acknowledgment)
   - [Citation](#citation)
 
 
@@ -137,14 +139,12 @@ mkdir data
 下面是一些模型
 * [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf) | [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b) | [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
-* [Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1) | [Vicuna-13b-delta-v1.1](https://huggingface.co/lmsys/vicuna-13b-delta-v1.1)
+* [Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1) | [Vicuna-13b-delta-v1.1](https://huggingface.co/lmsys/vicuna-13b-delta-v1.1) | 
 * [zjunlp/knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0)(需搭配相应的IE Lora) | [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi)(无需Lora即可直接预测) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)(无需Lora, IE能力更强, 但通用性有所削弱)
 * [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)
 * [moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
-* [cpm-bee-5b](https://huggingface.co/openbmb/cpm-bee-5b)
-* [ChatFlow-7B](https://huggingface.co/Linly-AI/ChatFlow-7B)
 * [Chinese-LLaMA-7B](https://huggingface.co/Linly-AI/Chinese-LLaMA-7B)
-
+* [baichuan-inc/Baichuan-7B](https://huggingface.co/baichuan-inc/Baichuan-7B) | [baichuan-inc/Baichuan-13B-Base](https://huggingface.co/baichuan-inc/Baichuan-13B-Base) | [baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base) | [baichuan-inc/Baichuan2-13B-Base](https://huggingface.co/baichuan-inc/Baichuan2-13B-Base)
 
 
 ## 4.LoRA微调
@@ -375,7 +375,77 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 
 
 
-### 预测
+
+### LoRA微调Baichuan
+
+你可以通过下面的命令设置自己的参数使用LoRA方法来微调Baichuan模型:
+```bash
+CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
+    --do_train --do_eval \
+    --model_name_or_path 'path or name to Baichuan' \
+    --model_name 'baichuan' \
+    --train_path 'data/train.json' \
+    --output_dir=${output_dir}  \
+    --per_device_train_batch_size 6 \
+    --per_device_eval_batch_size 6 \
+    --gradient_accumulation_steps 8 \
+    --preprocessing_num_workers 8 \
+    --num_train_epochs 10 \
+    --learning_rate 5e-5 \
+    --optim "adamw_torch" \
+    --cutoff_len 512 \
+    --val_set_size 1000 \
+    --evaluation_strategy "no" \
+    --save_strategy "epoch" \
+    --save_total_limit 10 \
+    --lora_r 8 \
+    --lora_alpha 16 \
+    --lora_dropout 0.05 \
+    --max_memory_MB 24000 \
+    --fp16 \
+    --bits 4 \
+    | tee ${output_dir}/train.log \
+    2> ${output_dir}/train.err
+```
+
+1. Baichuan模型我们采用[baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base)
+2. 目前在evaluation方面存在一些问题, 因此我们使用`evaluation_strategy` "no"
+3. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates/alpaca.json)
+4. 更详细的参数信息请参考 [src/utils/args.py](./src/utils/args.py)
+5. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
+6. 我们在 `RTX3090` 上跑通了baichuan-lora微调代码
+
+相应的脚本在 [scripts/fine_baichuan.bash](./scripts/fine_baichuan.bash)
+
+
+
+## 5.P-Tuning微调
+
+
+### P-Tuning微调ChatGLM
+你可以通过下面的命令使用P-Tuning方法来finetune模型:
+```bash
+deepspeed --include localhost:0 src/finetuning_pt.py \
+  --train_path data/train.json \
+  --model_dir /model \
+  --num_train_epochs 20 \
+  --train_batch_size 2 \
+  --gradient_accumulation_steps 1 \
+  --output_dir output_dir_pt \
+  --log_steps 10 \
+  --max_len 768 \
+  --max_src_len 450 \
+  --pre_seq_len 16 \
+  --prefix_projection true
+```
+
+
+
+
+## 6.预测
+
+
+#### LoRA预测
 以下是训练好的一些LoRA版本:
 * [alpaca-7b-lora-ie](https://huggingface.co/zjunlp/alpaca-7b-lora-ie)
 * [llama-7b-lora-ie](https://huggingface.co/zjunlp/llama-7b-lora-ie)
@@ -403,8 +473,7 @@ CUDA_VISIBLE_DEVICES="0" python src/inference.py \
     --bits 8 
 ```
 
-1.注意！！`--fp16` 或 `--bf16`、`--bits`、`--prompt_template_name`、`--model_name`一定要与微调时设置的一样
-
+1.注意！！`--fp16` 或 `--bf16`、`--bits`、`--prompt_template_name`、`--model_name`一定要与[4.LoRA微调](./README_CN.md/#4lora微调)时设置的一样
 
 也可以使用训练好的模型(无Lora或Lora已合并进模型参数中)在比赛测试集上预测输出:
 
@@ -422,28 +491,7 @@ CUDA_VISIBLE_DEVICES="0" python src/inference.py \
 
 
 
-## 5.P-Tuning微调
-
-
-### P-Tuning微调ChatGLM
-你可以通过下面的命令使用P-Tuning方法来finetune模型:
-```bash
-deepspeed --include localhost:0 src/finetuning_pt.py \
-  --train_path data/train.json \
-  --model_dir /model \
-  --num_train_epochs 20 \
-  --train_batch_size 2 \
-  --gradient_accumulation_steps 1 \
-  --output_dir output_dir_pt \
-  --log_steps 10 \
-  --max_len 768 \
-  --max_src_len 450 \
-  --pre_seq_len 16 \
-  --prefix_projection true
-```
-
-
-### 预测
+### P-Tuning预测
 
 你可以通过下面的命令使用训练好的P-Tuning模型在比赛测试集上预测输出:
 ```bash
@@ -459,7 +507,8 @@ CUDA_VISIBLE_DEVICES=0 python src/inference_pt.py \
 
 
 
-## 6.模型输出转换&计算F1
+
+## 7.模型输出转换&计算F1
 我们提供 [evaluate.py](./kg2instruction/evaluate.py) 的脚本，用于将模型的字符串输出转换为列表并计算 F1 分数。
 
 ```bash
@@ -471,7 +520,7 @@ python kg2instruction/evaluate.py \
 ```
 
 
-## 7.Acknowledgment
+## 8.Acknowledgment
 
 部分代码来自于 [Alpaca-LoRA](https://github.com/tloen/alpaca-lora)、[qlora](https://github.com/artidoro/qlora.git), 感谢！
 
