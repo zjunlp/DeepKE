@@ -33,6 +33,8 @@
 - ❗想用大模型做抽取吗？试试[DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm/README_CN.md)和[KnowLM](https://github.com/zjunlp/KnowLM)！
 - ❗想自己全监督训抽取模型吗？试试[快速上手](#快速上手), 我们提供实体识别模型 (例如[LightNER(COLING'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/few-shot/README_CN.md), [W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/w2ner/README_CN.md))、关系抽取模型(例如[KnowPrompt(WWW'22)](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/README_CN.md))、实体关系联合抽取模型(例如[ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP/README_CN.md), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC/README_CN.md), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE/README_CN.md)), 和基于cnSchema的开箱即用模型[DeepKE-cnSchema](https://github.com/zjunlp/DeepKE/tree/main/example/triple/cnschema/README_CN.md)！
 
+**如果您在安装DeepKE和DeepKE-LLM中遇到任何问题（一般是包的版本兼容性问题）不用心急，您可以查阅[常见问题](https://github.com/zjunlp/DeepKE/blob/main/README_CN.md#%E5%A4%87%E6%B3%A8%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)或直接提[Issue](https://github.com/zjunlp/DeepKE/issues)，我们会尽全力帮助您解决问题**！
+
 # 目录
 
 - [目录](#目录)
@@ -135,26 +137,29 @@ pip install -r requirements.txt
 注意！！是example/llm文件夹下的 `requirements.txt`
 
 ## DeepKE
-DeepKE支持pip安装使用，以常规全监督设定关系抽取为例，经过以下6个步骤就可以实现一个常规关系抽取模型
-
+- DeepKE支持pip安装使用，下以常规关系抽取场景为例
+- DeepKE支持手动环境部署与容器部署，您可任选一种方法进行安装
+#### 🔧 手动环境部署
 **Step 1**：下载代码 ```git clone --depth 1 https://github.com/zjunlp/DeepKE.git```（别忘记star和fork哈！！！）
 
 **Step 2**：使用anaconda创建虚拟环境，进入虚拟环境（提供[Dockerfile](https://github.com/zjunlp/DeepKE/tree/main/docker)源码和[教程](https://github.com/zjunlp/DeepKE/issues/320)可自行创建镜像；可参考[备注（常见问题）](#备注常见问题)使用镜像加速）
 
-```
+```bash
 conda create -n deepke python=3.8
 
 conda activate deepke
 ```
 1） 基于pip安装，直接使用
 
-```
+```bash
 pip install deepke
 ```
 
-2） 基于源码安装 (**强烈建议使用源码安装**)
+2） 基于源码安装
 
-```
+```bash
+pip install -r requirements.txt
+
 python setup.py install
 
 python setup.py develop
@@ -191,6 +196,22 @@ python predict.py
 ```
 - **❗注意: 如果您在安装或使用过程中遇到任何问题，您可以查看[备注（常见问题）](#备注常见问题) 或提交 GitHub issue.**
 
+#### 🐳 基于容器部署
+
+**Step1** 下载Docker客户端
+
+从官网下载Docker客户端并启动Docker服务
+
+**Step2** 拉取镜像并运行容器
+
+```bash
+docker pull zjunlp/deepke:latest
+docker run -it zjunlp/deepke:latest /bin/bash
+```
+
+剩余步骤同**手动环境部署**一节中的**Step 3**及后续步骤相同
+
+ - **❗注意: 您可以参考 [Tips](#tips) 来加速您的部署**
 <br>
 
 ## 环境依赖
@@ -214,17 +235,29 @@ python predict.py
 
 > python == 3.8
 
-- torch == 1.5
-- hydra-core == 1.0.6
-- tensorboard == 2.4.1
-- matplotlib == 3.4.1
-- transformers == 3.4.0
-- jieba == 0.42.1
-- scikit-learn == 0.24.1
-- seqeval == 1.2.2
-- tqdm == 4.60.0
+- torch>=1.5,<=1.11
+- hydra-core==1.0.6
+- tensorboard==2.4.1
+- matplotlib==3.4.1
+- transformers==4.26.0
+- jieba==0.42.1
+- scikit-learn==0.24.1
+- seqeval==1.2.2
 - opt-einsum==3.3.0
-- ujson
+- wandb==0.12.7
+- ujson==5.6.0
+- huggingface_hub==0.11.0
+- tensorboardX==2.5.1
+- nltk==3.8
+- protobuf==3.20.1
+- numpy==1.21.0
+- ipdb==0.13.11
+- pytorch-crf==0.7.2
+- tqdm==4.66.1
+- openai==0.28.0
+- Jinja2==3.1.2
+- datasets==2.13.2
+- pyhocon==0.3.60
 
 <br>
 
@@ -614,9 +647,9 @@ python predict.py
 
 5.DeepKE老版本位于[deepke-v1.0](https://github.com/zjunlp/DeepKE/tree/deepke-v1.0)分支，用户可切换分支使用老版本，老版本的能力已全部迁移到标准设定关系抽取([example/re/standard](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README.md))中。
 
-6.推荐使用`python setup.py install`方式安装*DeepKE*,如未使用该方式安装，源码修改部分不会生效,见[问题](https://github.com/zjunlp/DeepKE/issues/117)
+6.如果您需要在源码的基础上进行修改，建议使用`python setup.py install`方式安装*DeepKE*，如未使用该方式安装，源码修改部分不会生效，见[问题](https://github.com/zjunlp/DeepKE/issues/117)。
 
-7.更多的低资源抽取工作可查阅论文 [Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective](https://arxiv.org/pdf/2202.08063.pdf).
+7.更多的低资源抽取工作可查阅论文 [Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective](https://arxiv.org/pdf/2202.08063.pdf)。
 
 8.确保使用requirements.txt中对应的各依赖包的版本。
 
@@ -624,7 +657,7 @@ python predict.py
 
 # 未来计划
 
-- 在DeepKE的下一个版本中发布中英双语抽取大模型
+- 在DeepKE的下一个版本中发布优化后的中英双语抽取大模型
 - 我们提供长期技术维护和答疑解惑。如有疑问，请提交issues
 
 
