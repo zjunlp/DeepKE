@@ -80,16 +80,25 @@ Here are some readily processed datasets:
 
 | Name                   | Download                                                     | Quantity | Description                                                  |
 | ---------------------- | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ |
-| KnowLM-IE.json          | [Google drive](https://drive.google.com/file/d/1hY_R6aFgW4Ga7zo41VpOVOShbTgBqBbL/view?usp=sharing) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)  | 281,860  | Dataset mentioned in [InstructIE](https://arxiv.org/abs/2305.11527) |
+| InstructIE-train          | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [Baidu Netdisk,Code: 85x6](https://pan.baidu.com/s/1mBKDYm8aaLjQHezUW3aiBQ?pwd=85x6)  | 30w+  | InstructIE train set |
+| InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [Baidu Netdisk,Code: 71ie](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)     | 2000+ | InstructIE validation set                                                                                     |
+| InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)  <br/> [Baidu Netdisk,Code: cyr9](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE test set                                                                                    |
 | train.json, valid.json | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing) | 5,000    | Preliminary training set and test set for the task "Instruction-Driven Adaptive Knowledge Graph Construction" in [CCKS2023 Open Knowledge Graph Challenge](https://tianchi.aliyun.com/competition/entrance/532080/introduction), randomly selected from instruct_train.json |
 
-`KnowLM-IE.json`: Contains `'id'` (unique identifier), `'cate'` (text category), `'instruction'` (extraction instruction), `'input'` (input text), `'output'` (output text) and `'relation'` (triples) fields, allowing for the flexible construction of extraction instructions and outputs through `'relation'`, `'instruction'` has 16 formats (4 prompts * 4 output formats), and `'output'` is generated according to the specified output format in `'instruction'`.
+``: Contains `'id'` (unique identifier), `'cate'` (text category), `'instruction'` (extraction instruction), `'input'` (input text), `'output'` (output text) and `'relation'` (triples) fields, allowing for the flexible construction of extraction instructions and outputs through `'relation'`, `'instruction'` has 16 formats (4 prompts * 4 output formats), and `'output'` is generated according to the specified output format in `'instruction'`.
 
 `train.json`: Same fields as `KnowLM-IE.json`, `'instruction'` and `'output'` have only one format, and extraction instructions and outputs can also be freely constructed through `'relation'`.
 
 `valid.json`: Same fields as `train.json`, but with more accurate annotations achieved through crowdsourcing.
 
 
+`InstrumentIE-train` contains two files: `InstrumentIE-zh.json` and `InstrumentIE-en.json`, each of which contains the following fields: `'id'` (unique identifier), `'cate'` (text category), `'entity'` and `'relation'` (triples) fields. The extracted instructions and output can be freely constructed through `'entity'` and `'relation'`.
+
+`InstrumentIE-valid` and `InstrumentIE-test` are validation sets and test sets, respectively, including bilingual `zh` and `en`.
+
+`train.json`: Same fields as `KnowLM-IE.json`, `'instruction'` and `'output'` have only one format, and extraction instructions and outputs can also be freely constructed through `'relation'`.
+
+`valid.json`: Same fields as `train.json`, but with more accurate annotations achieved through crowdsour
 
 Here is an explanation of each field:
 

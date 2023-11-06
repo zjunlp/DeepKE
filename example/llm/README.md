@@ -39,6 +39,8 @@
     - [Case 2: P-Tuning of ChatGLM for CCKS2023 Instruction-based KG Construction English | Chinese](#case-2-p-tuning-of-chatglm-for-ccks2023-instruction-based-kg-construction-english--chinese)
   - [MOSS](#moss)
     - [Case 1: OpenDelta Fine-tuning of Moss for CCKS2023 Instruction-based KG Construction English | Chinese](#case-1-opendelta-fine-tuning-of-moss-for-ccks2023-instruction-based-kg-construction-english--chinese)
+  - [Baichuan](#baichuan)
+    - [Case 1: OpenDelta Fine-tuning of Baichuan for CCKS2023 Instruction-based KG Construction English | Chinese](#case-1-opendelta-fine-tuning-of-baichuan-for-ccks2023-instruction-based-kg-construction-english--chinese)
   - [CPM-Bee](#cpm-bee)
     - [Case 1: OpenDelta Fine-tuning of CPM-Bee for CCKS2023 Instruction-based KG Construction English | Chinese](#case-1-opendelta-fine-tuning-of-cpm-bee-for-ccks2023-instruction-based-kg-construction-english--chinese)
   - [GPT-series](#gpt-series)
@@ -106,6 +108,18 @@ ZhiXi follows a two-step approach: (1) It performs further full pre-training on 
 
 
 ### Case 1: OpenDelta Fine-tuning of Moss for CCKS2023 Instruction-based KG Construction [English](./InstructKGC//README.md/#lora-fine-tuning-with-moss) | [Chinese](./InstructKGC//README_CN.md/#lora微调moss) 
+
+
+
+
+
+## Baichuan
+<p align="center" width="100%">
+<a href="" target="_blank"><img src="assets/baichuan_logo.png" alt="Baichuan" style="width: 25%; min-width: 25px; display: block; margin: auto;"></a>
+
+
+### Case 1: OpenDelta Fine-tuning of Baichuan for CCKS2023 Instruction-based KG Construction [English](./InstructKGC//README.md/#lora-fine-tuning-with-baichuan) | [Chinese](./InstructKGC//README_CN.md/#lora微调baichuan) 
+
 
 
 

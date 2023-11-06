@@ -82,15 +82,16 @@ python kg2instruction/convert_test.py \
 
 | 名称                  | 下载                                                                                                                     | 数量     | 描述                                                                                                                                                       |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| KnowLM-IE.json       | [Google drive](https://drive.google.com/file/d/1hY_R6aFgW4Ga7zo41VpOVOShbTgBqBbL/view?usp=sharing) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)      | 281860 | [InstructIE](https://arxiv.org/abs/2305.11527) 中提到的数据集                                                                                     |
-| train.json, valid.json          | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing)                     | 5000   | [CCKS2023 开放环境下的知识图谱构建与补全评测任务一：指令驱动的自适应知识图谱构建](https://tianchi.aliyun.com/competition/entrance/532080/introduction) 中的初赛训练集及测试集，从 KnowLM-IE.json 中随机选出的 |
+| InstructIE-train       | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘,提取码: 85x6](https://pan.baidu.com/s/1mBKDYm8aaLjQHezUW3aiBQ?pwd=85x6)    | 30w+ | InstructIE训练集                                                                                     |
+| InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘,提取码: 71ie](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)    | 2000+ | InstructIE验证集                                                                                     |
+| InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘,提取码: cyr9](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE测试集                                                                                     |
+| train.json, valid.json          | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing)                     | 5000   | [CCKS2023 开放环境下的知识图谱构建与补全评测任务一：指令驱动的自适应知识图谱构建](https://tianchi.aliyun.com/competition/entrance/532080/introduction) 中的初赛训练集及测试集 |
 
 
-`KnowLM-IE.json`：包含 `'id'`(唯一标识符)、`'cate'`(文本主题)、`'instruction'`(抽取指令)、`'input'`(输入文本)、`'output'`(输出文本)字段、`'relation'`(三元组)字段，可以通过`'relation'`自由构建抽取的指令和输出，`'instruction'`有16种格式(4种prompt * 4种输出格式)，`'output'`是按照`'instruction'`中指定的输出格式生成的文本。。
-
+`InstructIE-train`包含`InstructIE-zh.json`、`InstructIE-en.json`两个文件, 每个文件均包含以下字段：`'id'`(唯一标识符)、`'cate'`(文本主题)、`'entity'`、`'relation'`(三元组)字段，可以通过`'entity'`、`'relation'`自由构建抽取的指令和输出。
+`InstructIE-valid`、`InstructIE-test`分别是验证集和测试集, 包含`zh`和`en`双语。
 
 `train.json`：字段含义同`train.json`，`'instruction'`、`'output'`都只有1种格式，也可以通过`'relation'`自由构建抽取的指令和输出。
-
 `valid.json`：字段含义同`train.json`，但是经过众包标注，更加准确。
 
 
@@ -98,12 +99,13 @@ python kg2instruction/convert_test.py \
 
 |    字段     |                          说明                          |
 | :---------: | :----------------------------------------------------: |
-|     id      |                     唯一标识符                     |
-|    cate     |     文本input对应的主题(共12种)                          |
-|    input    |    模型输入文本（需要抽取其中涉及的所有关系三元组）    |
-| instruction |                 模型进行抽取任务的指令                 |
-| output      | 模型期望输出 |
-| relation    |                  input中涉及的关系三元组(head, relation, tail)               |
+|     id      |                     唯一标识符                           |
+|    cate     |     文本input对应的主题(共12种)                           |
+|    input    |    模型输入文本（需要抽取其中涉及的所有关系三元组）            |
+| instruction |                 模型进行抽取任务的指令                     |
+| output      |                   模型期望输出                           |
+| entity      |            实体(entity, entity_type)                    |
+| relation    |     input中涉及的关系三元组(head, relation, tail)         |
 
 
 此处 [schema](./kg2instruction/schema.py) 提供了12种文本主题, 以及该主题下常见的关系类型。
