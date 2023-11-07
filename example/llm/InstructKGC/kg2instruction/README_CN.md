@@ -6,16 +6,9 @@
 
 
 # 1.信息抽取模板
-命名实体识别（NER）支持以下模板：
+命名实体识别（NER）支持以下输出格式, prompt模版请参考[configs](../configs)：
 
 ```python
-entity_template_zh = {
-    0: '已知候选的实体类型列表：{s_schema}，请你根据实体类型列表，从以下输入中抽取出可能存在的实体。请按照{s_format}的格式回答。',
-    1: '我将给你个输入，请根据实体类型列表：{s_schema}，从输入中抽取出可能包含的实体，并以{s_format}的形式回答。',
-    2: '我希望你根据实体类型列表从给定的输入中抽取可能的实体，并以{s_format}的格式回答，实体类型列表={s_schema}。',
-    3: '给定的实体类型列表是{s_schema}\n根据实体类型列表抽取，在这个句子中可能包含哪些实体？你可以先别出实体，再判断实体类型。请以{s_format}的格式回答。',
-}
-
 entity_int_out_format_zh = {
     0: ['"(实体,实体类型)"', entity_convert_target0],
     1: ['"实体是\n实体类型是\n\n"', entity_convert_target1],
@@ -23,20 +16,17 @@ entity_int_out_format_zh = {
     3: ["JSON字符串[{'entity':'', 'entity_type':''}, ]", entity_convert_target3],
 }
 
-entity_template_en = {
-    0: 'Identify the entities and types in the following text and where entity type list {s_schema}. Please provide your answer in the form of {s_format}.',
-    1: 'From the given text, extract the possible entities and types. The types are {s_schema}. Please format your answer in the form of {s_format}.',
-}
-
 entity_int_out_format_en = {
-    0: ['(Entity, Type)', entity_convert_target0_en],
-    1: ["{'Entity':'', 'Type':''}", entity_convert_target1_en],
-}
+    0:['(Entity,Entity Type)\n', entity_convert_target0],
+    1:['Entity is,Entity Type is\n', entity_convert_target1_en],
+    2:['Entity Type：Entity\n', entity_convert_target2],
+    3:["{'entity':'', 'entity_type':''}\n", entity_convert_target3],
+} 
 ```
 
 
 这些模板中的schema（{s_schema}）和输出格式 （{s_format}）占位符被嵌入在模板中，用户必须指定。
-有关模板的更全面理解，请参阅文件  [ner_template.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/ner_template.py)、[re_template.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/re_template.py)、[ee_template.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/ee_template.py) .
+有关模板的更全面理解，请参阅文件  [ner_converter.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert/converter/ner_converter.py)、[re_converter.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert/converter/re_converter.py)、[ee_converter.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert/converter/ee_converter.py) .
 
 
 # 2.常见文本主题及其schema
@@ -59,19 +49,19 @@ entity_int_out_format_en = {
 并且在 [schema](./kg2instruction/schema.py) 中我们提供了每个主题下常见的关系类型。
 
 ```python
-{
-    '组织': ['别名', '位于', '类型', '成立时间', '解散时间', '成员', '创始人', '事件', '子组织', '产品', '成就', '运营'], 
-    '医学': ['别名', '病因', '症状', '可能后果', '包含', '发病部位'], 
-    '事件': ['别名', '类型', '发生时间', '发生地点', '参与者', '主办方', '提名者', '获奖者', '赞助者', '获奖作品', '获胜者', '奖项'], 
-    '运输': ['别名', '位于', '类型', '属于', '途径', '开通时间', '创建时间', '车站等级', '长度', '面积'], 
-    '人造物件': ['别名', '类型', '受众', '成就', '品牌', '产地', '长度', '宽度', '高度', '重量', '价值', '制造商', '型号', '生产时间', '材料', '用途', '发现者或发明者'], 
-    '生物': ['别名', '学名', '类型', '分布', '父级分类单元', '主要食物来源', '用途', '长度', '宽度', '高度', '重量', '特征'], 
-    '建筑': ['别名', '类型', '位于', '临近', '名称由来', '长度', '宽度', '高度', '面积', '创建时间', '创建者', '成就', '事件'], 
-    '自然科学': ['别名', '类型', '性质', '生成物', '用途', '组成', '产地', '发现者或发明者'], 
-    '地理地区': ['别名', '类型', '所在行政领土', '接壤', '事件', '面积', '人口', '行政中心', '产业', '气候'], 
-    '作品': ['别名', '类型', '受众', '产地', '成就', '导演', '编剧', '演员', '平台', '制作者', '改编自', '包含', '票房', '角色', '作曲者', '作词者', '表演者', '出版时间', '出版商', '作者'], 
-    '人物': ['别名', '籍贯', '国籍', '民族', '朝代', '出生时间', '出生地点', '死亡时间', '死亡地点', '专业', '学历', '作品', '职业', '职务', '成就', '所属组织', '父母', '配偶', '兄弟姊妹', '亲属', '同事', '参与'], 
-    '天文对象': ['别名', '类型', '坐标', '发现者', '发现时间', '名称由来', '属于', '直径', '质量', '公转周期', '绝对星等', '临近']
+wiki_cate_schema_zh = {
+    '人物': ['出生地点', '出生日期', '国籍', '职业', '作品', '成就', '籍贯', '职务', '配偶', '父母', '别名', '所属组织', '死亡日期', '兄弟姊妹', '墓地'], 
+    '地理地区': ['位于', '别名', '人口', '行政中心', '面积', '成就', '长度', '宽度', '海拔'], 
+    '建筑': ['位于', '别名', '成就', '事件', '创建时间', '宽度', '长度', '创建者', '高度', '面积', '名称由来'], 
+    '作品': ['作者', '出版时间', '别名', '产地', '改编自', '演员', '出版商', '成就', '表演者', '导演', '制片人', '编剧', '曲目', '作曲者', '作词者', '制作商', '票房', '出版平台'], 
+    '生物': ['分布', '父级分类单元', '长度', '主要食物来源', '别名', '学名', '重量', '宽度', '高度'], 
+    '人造物件': ['别名', '品牌', '生产时间', '材料', '产地', '用途', '制造商', '发现者或发明者'], 
+    '自然科学': ['别名', '性质', '组成', '生成物', '用途', '产地', '发现者或发明者'], 
+    '组织': ['位于', '别名', '子组织', '成立时间', '产品', '成就', '成员', '创始人', '解散时间', '事件'], 
+    '运输': ['位于', '创建时间', '线路', '开通时间', '途经', '面积', '别名', '长度', '宽度', '成就', '车站等级'], 
+    '事件': ['参与者', '发生地点', '发生时间', '别名', '赞助者', '伤亡人数', '起因', '导致', '主办方', '所获奖项', '获胜者'], 
+    '天文对象': ['别名', '属于', '发现或发明时间', '发现者或发明者', '名称由来', '绝对星等', '直径', '质量'], 
+    '医学': ['症状', '别名', '发病部位', '可能后果', '病因']
 }
 ```
 
@@ -85,10 +75,12 @@ python kg2instruction/convert.py \
   --src_path data/NER/sample.json \
   --tgt_path data/NER/processed.json \
   --schema_path data/NER/schema.json \
-  --language zh \       # 不同语言使用的template及转换脚本不同
-  --task NER \          # ['RE', 'NER', 'EE']三种任务
-  --sample 0 \          # 若为-1, 则从4种指令和4种输出格式中随机采样其中一种, 否则即为指定的指令格式, -1<=sample<=3
-  --all                 # 是否将指令中指定的抽取类型列表设置为全部schema
+  --language zh \      # 不同语言使用的template及转换脚本不同
+  --task NER \         # ['RE', 'NER', 'EE', 'EET', 'EEA'] 5种任务
+  --sample -1 \        # 若为-1, 则从20种指令和4种输出格式中随机采样其中一种, 否则即为指定的指令格式, -1<=sample<20
+  --neg_ratio 1 \      # 表示所有样本的负采样比例
+  --neg_schema 1 \     # 表示从schema中负采样的比例
+  --random_sort        # 是否对指令中的schema列表进行随机排序
 ```
 
 [convert_test.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert_test.py) 不要求数据具有标签(`entity`、`relation`、`event`)字段, 只需要具有 `input` 字段, 以及提供 `schema_path`, 适合用来处理测试数据。
@@ -110,14 +102,31 @@ python kg2instruction/convert_test.py \
 
 | 名称                  | 下载                                                                                                                     | 数量     | 描述                                                                                                                                                       |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| KnowLM-IE.json       | [Google drive](https://drive.google.com/file/d/1hY_R6aFgW4Ga7zo41VpOVOShbTgBqBbL/view?usp=sharing) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)      | 281860 | [InstructIE](https://arxiv.org/abs/2305.11527) 中提到的数据集                                                                                     |
-| KnowLM-ke         | [HuggingFace](https://huggingface.co/datasets/zjunlp/knowlm-ke)                     | XXXX   | 训练[zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi)所用到的所有指令数据(通用、IE、Code、COT等) |
+| InstructIE-train       | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘,提取码: x4s7](https://pan.baidu.com/s/1xXVrjkinw4cyKKFBR8BwQw?pwd=x4s7)    | 30w+ | InstructIE训练集                                                                                     |
+| InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘,提取码: 71ie](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)    | 2000+ | InstructIE验证集                                                                                     |
+| InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘,提取码: cyr9](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE测试集                                                                                     |
+| train.json, valid.json          | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing)                     | 5000   | [CCKS2023 开放环境下的知识图谱构建与补全评测任务一：指令驱动的自适应知识图谱构建](https://tianchi.aliyun.com/competition/entrance/532080/introduction) 中的初赛训练集及测试集 |
 
 
-`KnowLM-IE.json`：包含 `'id'`(唯一标识符)、`'cate'`(文本主题)、`'instruction'`(抽取指令)、`'input'`(输入文本)、`'output'`(输出文本)字段、`'relation'`(三元组)字段，可以通过`'relation'`自由构建抽取的指令和输出，`'instruction'`有16种格式(4种prompt * 4种输出格式)，`'output'`是按照`'instruction'`中指定的输出格式生成的文本。
+`InstructIE-train`包含`InstructIE-zh.json`、`InstructIE-en.json`两个文件, 每个文件均包含以下字段：`'id'`(唯一标识符)、`'cate'`(文本主题)、`'entity'`、`'relation'`(三元组)字段，可以通过`'entity'`、`'relation'`自由构建抽取的指令和输出。
+`InstructIE-valid`、`InstructIE-test`分别是验证集和测试集, 包含`zh`和`en`双语。
+
+`train.json`：字段含义同`train.json`，`'instruction'`、`'output'`都只有1种格式，也可以通过`'relation'`自由构建抽取的指令和输出。
+`valid.json`：字段含义同`train.json`，但是经过众包标注，更加准确。
 
 
-`KnowLM-ke`：仅包含`'instruction'`、`'input'`、`'output'`字段。其目录下的`ee-en.json`、`ee_train.json`、`ner-en.json`、`ner_train.json`、`re-en.json`、`re_train.json`为中英文IE指令数据。
+以下是各字段的说明：
+
+|    字段     |                          说明                          |
+| :---------: | :----------------------------------------------------: |
+|     id      |                     唯一标识符                           |
+|    cate     |     文本input对应的主题(共12种)                           |
+|    input    |    模型输入文本（需要抽取其中涉及的所有关系三元组）            |
+| instruction |                 模型进行抽取任务的指令                     |
+| output      |                   模型期望输出                           |
+| entity      |            实体(entity, entity_type)                    |
+| relation    |     input中涉及的关系三元组(head, relation, tail)         |
+
 
 
 
@@ -128,7 +137,7 @@ python kg2instruction/convert_test.py \
 python kg2instruction/evaluate.py \
   --standard_path data/NER/processed.json \
   --submit_path data/NER/processed.json \
-  --task ner \
+  --task NER \
   --language zh
 ```
 

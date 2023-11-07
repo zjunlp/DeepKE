@@ -7,15 +7,10 @@
 - [5.Evaluate](#5evaluate)
 
 # 1.IE template
-NER supports the following templates:
-```python
-entity_template_zh =  {
-    0:'已知候选的实体类型列表：{s_schema}，请你根据实体类型列表，从以下输入中抽取出可能存在的实体。请按照{s_format}的格式回答。',
-    1:'我将给你个输入，请根据实体类型列表：{s_schema}，从输入中抽取出可能包含的实体，并以{s_format}的形式回答。',
-    2:'我希望你根据实体类型列表从给定的输入中抽取可能的实体，并以{s_format}的格式回答，实体类型列表={s_schema}。',
-    3:'给定的实体类型列表是{s_schema}\n根据实体类型列表抽取，在这个句子中可能包含哪些实体？你可以先别出实体, 再判断实体类型。请以{s_format}的格式回答。',
-}
 
+Named Entity Recognition (NER) supports the following output formats, please refer to the [configs](../configs) for prompt templates:
+
+```python
 entity_int_out_format_zh = {
     0:['"(实体,实体类型)"', entity_convert_target0],
     1:['"实体是\n实体类型是\n\n"', entity_convert_target1],
@@ -23,20 +18,17 @@ entity_int_out_format_zh = {
     3:["JSON字符串[{'entity':'', 'entity_type':''}, ]", entity_convert_target3],
 }
 
-entity_template_en =  {
-    0:'Identify the entities and types in the following text and where entity type list {s_schema}. Please provide your answerin the form of {s_format}.',
-    1:'From the given text, extract the possible entities and types . The types are {s_schema}. Please format your answerin the form of {s_format}.', 
-}
-
-entity_int_out_format_en = {
-    0:['(Entity, Type)', entity_convert_target0_en],
-    1:["{'Entity':'', 'Type':''}", entity_convert_target1_en],
-}
+self.entity_int_out_format_en = {
+    0:['(Entity,Entity Type)\n', self.entity_convert_target0],
+    1:['Entity is,Entity Type is\n', self.entity_convert_target1_en],
+    2:['Entity Type：Entity\n', self.entity_convert_target2],
+    3:["{'entity':'', 'entity_type':''}\n", self.entity_convert_target3],
+} 
 ```
 
 Both the schema and format placeholders ({s_schema} and {s_format}) are embedded within the templates and must be specified by users.
 
-For a more comprehensive understanding of the templates, please refer to the files [ner_template.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/ner_template.py)、[re_template.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/re_template.py)、[ee_template.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/ee_template.py) .
+For a more comprehensive understanding of the templates, please refer to the files [ner_converter.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert/converter/ner_converter.py)、[re_converter.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert/converter/re_converter.py)、[ee_converter.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert/converter/ee_converter.py)  .
 
 
 # 2.Common text topics and their schemas
@@ -59,19 +51,19 @@ According to statistical analysis, we have categorized text into the following 1
 Moreover, in the [schema](./kg2instruction/schema.py) provided, we have listed common relationship types under each topic.
 
 ```python
-{
-    '组织': ['别名', '位于', '类型', '成立时间', '解散时间', '成员', '创始人', '事件', '子组织', '产品', '成就', '运营'], 
-    '医学': ['别名', '病因', '症状', '可能后果', '包含', '发病部位'], 
-    '事件': ['别名', '类型', '发生时间', '发生地点', '参与者', '主办方', '提名者', '获奖者', '赞助者', '获奖作品', '获胜者', '奖项'], 
-    '运输': ['别名', '位于', '类型', '属于', '途径', '开通时间', '创建时间', '车站等级', '长度', '面积'], 
-    '人造物件': ['别名', '类型', '受众', '成就', '品牌', '产地', '长度', '宽度', '高度', '重量', '价值', '制造商', '型号', '生产时间', '材料', '用途', '发现者或发明者'], 
-    '生物': ['别名', '学名', '类型', '分布', '父级分类单元', '主要食物来源', '用途', '长度', '宽度', '高度', '重量', '特征'], 
-    '建筑': ['别名', '类型', '位于', '临近', '名称由来', '长度', '宽度', '高度', '面积', '创建时间', '创建者', '成就', '事件'], 
-    '自然科学': ['别名', '类型', '性质', '生成物', '用途', '组成', '产地', '发现者或发明者'], 
-    '地理地区': ['别名', '类型', '所在行政领土', '接壤', '事件', '面积', '人口', '行政中心', '产业', '气候'], 
-    '作品': ['别名', '类型', '受众', '产地', '成就', '导演', '编剧', '演员', '平台', '制作者', '改编自', '包含', '票房', '角色', '作曲者', '作词者', '表演者', '出版时间', '出版商', '作者'], 
-    '人物': ['别名', '籍贯', '国籍', '民族', '朝代', '出生时间', '出生地点', '死亡时间', '死亡地点', '专业', '学历', '作品', '职业', '职务', '成就', '所属组织', '父母', '配偶', '兄弟姊妹', '亲属', '同事', '参与'], 
-    '天文对象': ['别名', '类型', '坐标', '发现者', '发现时间', '名称由来', '属于', '直径', '质量', '公转周期', '绝对星等', '临近']
+wiki_cate_schema_en =  {
+    'Person': ['place of birth', 'date of birth', 'country of citizenship', 'occupation', 'work', 'achievement', 'ancestral home', 'position', 'spouse', 'parent', 'alternative name', 'affiliated organization', 'date of death', 'sibling', 'place of death'], 
+    'Geographic_Location': ['located in', 'alternative name', 'population', 'capital', 'area', 'achievement', 'length', 'width', 'elevation'], 
+    'Building': ['located in', 'alternative name', 'achievement', 'event', 'creation time', 'width', 'length', 'creator', 'height', 'area', 'named after'], 
+    'Works': ['author', 'publication date', 'alternative name', 'country of origin', 'based on', 'cast member', 'publisher', 'achievement', 'performer', 'director', 'producer', 'screenwriter', 'tracklist', 'composer', 'lyricist', 'production company', 'box office', 'publishing platform'], 
+    'Creature': ['distribution', 'parent taxon', 'length', 'main food source', 'alternative name', 'taxon name', 'weight', 'width', 'height'], 
+    'Artificial_Object': ['alternative name', 'brand', 'production date', 'made from material', 'country of origin', 'has use', 'manufacturer', 'discoverer or inventor'], 
+    'Natural_Science': ['alternative name', 'properties', 'composition', 'product', 'has use', 'country of origin', 'discoverer or inventor', 'causes'], 
+    'Organization': ['located in', 'alternative name', 'has subsidiary', 'date of incorporation', 'product', 'achievement', 'member', 'founded by', 'dissolution time', 'event'], 
+    'Transport': ['located in', 'inception', 'connecting line', 'date of official opening', 'pass', 'area', 'alternative name', 'length', 'width', 'achievement', 'class of station'], 
+    'Event': ['participant', 'scene', 'occurrence time', 'alternative name', 'sponsor', 'casualties', 'has cause', 'has effect', 'organizer', 'award received', 'winner'], 
+    'Astronomy': ['alternative name', 'of', 'time of discovery or invention', 'discoverer or inventor', 'name after', 'absolute magnitude', 'diameter', 'mass'], 
+    'Medicine': ['symptoms', 'alternative name', 'affected body part', 'possible consequences', 'etiology']
 }
 ```
 
@@ -85,10 +77,13 @@ python kg2instruction/convert.py \
   --src_path data/NER/sample.json \
   --tgt_path data/NER/processed.json \
   --schema_path data/NER/schema.json \
-  --language zh \
-  --task NER \
-  --sample 0 \
-  --all
+  --language zh \      # Different templates and conversion scripts are used for different languages
+  --task NER \         # 5 types of tasks: ['RE', 'NER', 'EE', 'EET', 'EEA']
+  --sample -1 \        # If -1, randomly sample one from 20 instruction types and 4 output formats, otherwise it is the specified instruction format, -1<=sample<20
+  --neg_ratio 1 \      # Indicates the negative sampling ratio for all samples
+  --neg_schema 1 \     # Indicates the negative sampling ratio from the schema
+  --random_sort        # Whether to randomly sort the schema list in the instructions
+
 ```
 
 [convert_test.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/kg2instruction/convert_test.py) does not require data to have label (`entity`, `relation`, `event`) fields, only needs to have an `input` field and provide a `schema_path` is suitable for processing test data.
@@ -109,16 +104,39 @@ python kg2instruction/convert_test.py \
 
 Below are some readily processed datasets:
 
-| Name                | Download Links                                                                                                           | Quantity | Description                                                                                                                                         |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| KnowLM-IE.json       | [Google Drive](https://drive.google.com/file/d/1hY_R6aFgW4Ga7zo41VpOVOShbTgBqBbL/view?usp=sharing) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)      | 281860 | Dataset mentioned in [InstructIE](https://arxiv.org/abs/2305.11527)                                                                                 |
-| KnowLM-ke         | [HuggingFace](https://huggingface.co/datasets/zjunlp/knowlm-ke)                     | XXXX   | Contains all instruction data (General, IE, Code, COT, etc.) used for training [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi) |
+| Name                   | Download                                                     | Quantity | Description                                                  |
+| ---------------------- | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ |
+| InstructIE-train          | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [Baidu Netdisk,Code: x4s7](https://pan.baidu.com/s/1xXVrjkinw4cyKKFBR8BwQw?pwd=x4s7)  | 30w+  | InstructIE train set |
+| InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [Baidu Netdisk,Code: 71ie](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)     | 2000+ | InstructIE validation set                                                                                     |
+| InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)  <br/> [Baidu Netdisk,Code: cyr9](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE test set                                                                                    |
+| train.json, valid.json | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing) | 5,000    | Preliminary training set and test set for the task "Instruction-Driven Adaptive Knowledge Graph Construction" in [CCKS2023 Open Knowledge Graph Challenge](https://tianchi.aliyun.com/competition/entrance/532080/introduction), randomly selected from instruct_train.json |
+
+``: Contains `'id'` (unique identifier), `'cate'` (text category), `'instruction'` (extraction instruction), `'input'` (input text), `'output'` (output text) and `'relation'` (triples) fields, allowing for the flexible construction of extraction instructions and outputs through `'relation'`, `'instruction'` has 16 formats (4 prompts * 4 output formats), and `'output'` is generated according to the specified output format in `'instruction'`.
+
+`train.json`: Same fields as `KnowLM-IE.json`, `'instruction'` and `'output'` have only one format, and extraction instructions and outputs can also be freely constructed through `'relation'`.
+
+`valid.json`: Same fields as `train.json`, but with more accurate annotations achieved through crowdsourcing.
 
 
-`KnowLM-IE.json`: Contains fields such as `'id'` (unique identifier), `'cate'` (text category), `'instruction'` (extraction instruction), `'input'` (input text), `'output'` (output text), and `'relation'` (triples). The `'relation'` field can be used to construct extraction instructions and outputs freely. `'instruction'` has 16 formats (4 prompts * 4 output formats), and `'output'` is generated in the specified format from `'instruction'`.
+`InstrumentIE-train` contains two files: `InstrumentIE-zh.json` and `InstrumentIE-en.json`, each of which contains the following fields: `'id'` (unique identifier), `'cate'` (text category), `'entity'` and `'relation'` (triples) fields. The extracted instructions and output can be freely constructed through `'entity'` and `'relation'`.
 
-`KnowLM-ke`: Contains fields `'instruction'`, `'input'`, and `'output'` only. The files `ee-en.json`, `ee_train.json`, `ner-en.json`, `ner_train.json`, `re-en.json`, and `re_train.json` under its directory contain Chinese-English IE instruction data.
+`InstrumentIE-valid` and `InstrumentIE-test` are validation sets and test sets, respectively, including bilingual `zh` and `en`.
 
+`train.json`: Same fields as `KnowLM-IE.json`, `'instruction'` and `'output'` have only one format, and extraction instructions and outputs can also be freely constructed through `'relation'`.
+
+`valid.json`: Same fields as `train.json`, but with more accurate annotations achieved through crowdsour
+
+Here is an explanation of each field:
+
+|    Field    |                         Description                          |
+| :---------: | :----------------------------------------------------------: |
+|     id      |                   Unique identifier                   |
+|    cate     |     text topic of input (12 topics in total)                        |
+|    input    | Model input text (need to extract all triples involved within) |
+| instruction |   Instruction for the model to perform the extraction task   |
+|    output   | Expected model output |
+| entity      |            entities(entity, entity_type)                    |
+|   relation  |             Relation triples(head, relation, tail) involved in the input             |
 
 
 
@@ -130,7 +148,7 @@ We provide a script at [evaluate.py](https://github.com/zjunlp/DeepKE/blob/main/
 python kg2instruction/evaluate.py \
   --standard_path data/NER/processed.json \
   --submit_path data/NER/processed.json \
-  --task ner \
+  --task NER \
   --language zh
 ```
 

@@ -52,12 +52,13 @@ python kg2instruction/convert.py \
   --src_path data/NER/sample.json \
   --tgt_path data/NER/processed.json \
   --schema_path data/NER/schema.json \
-  --language zh \      # 不同语言使用的template及转换脚本不同
-  --task NER \         # ['RE', 'NER', 'EE', 'EET', 'EEA'] 5种任务
-  --sample -1 \        # 若为-1, 则从20种指令和4种输出格式中随机采样其中一种, 否则即为指定的指令格式, -1<=sample<20
-  --neg_ratio 1 \      # 表示所有样本的负采样比例
-  --neg_schema 1 \     # 表示从schema中负采样的比例
-  --random_sort        # 是否对指令中的schema列表进行随机排序
+  --language zh \      # Different templates and conversion scripts are used for different languages
+  --task NER \         # 5 types of tasks: ['RE', 'NER', 'EE', 'EET', 'EEA']
+  --sample -1 \        # If -1, randomly sample one from 20 instruction types and 4 output formats otherwise it is the specified instruction format, -1<=sample<20
+  --neg_ratio 1 \      # Indicates the negative sampling ratio for all samples
+  --neg_schema 1 \     # Indicates the negative sampling ratio from the schema
+  --random_sort        # Whether to randomly sort the schema list in the instructions
+
 ```
 
 [kg2instruction/convert_test.py](./kg2instruction/convert_test.py) does not require data to have label (`entity`, `relation`, `event`) fields, only needs to have an `input` field and provide a `schema_path` is suitable for processing test data.
@@ -111,10 +112,12 @@ Here is an explanation of each field:
 |    input    | Model input text (need to extract all triples involved within) |
 | instruction |   Instruction for the model to perform the extraction task   |
 |    output   | Expected model output |
+| entity      |            entities(entity, entity_type)                    |
 |   relation  |             Relation triples(head, relation, tail) involved in the input             |
 
 
 Here [schema](./kg2instruction/convert/utils.py) provides 12 text topics and common relationship types under the topic.
+
 
 ## 3.Preparation
 
