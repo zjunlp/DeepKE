@@ -52,10 +52,12 @@ python kg2instruction/convert.py \
   --src_path data/NER/sample.json \
   --tgt_path data/NER/processed.json \
   --schema_path data/NER/schema.json \
-  --language zh \
-  --task NER \
-  --sample 0 \
-  --all
+  --language zh \      # 不同语言使用的template及转换脚本不同
+  --task NER \         # ['RE', 'NER', 'EE', 'EET', 'EEA'] 5种任务
+  --sample -1 \        # 若为-1, 则从20种指令和4种输出格式中随机采样其中一种, 否则即为指定的指令格式, -1<=sample<20
+  --neg_ratio 1 \      # 表示所有样本的负采样比例
+  --neg_schema 1 \     # 表示从schema中负采样的比例
+  --random_sort        # 是否对指令中的schema列表进行随机排序
 ```
 
 [kg2instruction/convert_test.py](./kg2instruction/convert_test.py) does not require data to have label (`entity`, `relation`, `event`) fields, only needs to have an `input` field and provide a `schema_path` is suitable for processing test data.
@@ -80,7 +82,7 @@ Here are some readily processed datasets:
 
 | Name                   | Download                                                     | Quantity | Description                                                  |
 | ---------------------- | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ |
-| InstructIE-train          | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [Baidu Netdisk,Code: 85x6](https://pan.baidu.com/s/1mBKDYm8aaLjQHezUW3aiBQ?pwd=85x6)  | 30w+  | InstructIE train set |
+| InstructIE-train          | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [Baidu Netdisk,Code: x4s7](https://pan.baidu.com/s/1xXVrjkinw4cyKKFBR8BwQw?pwd=x4s7)  | 30w+  | InstructIE train set |
 | InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [Baidu Netdisk,Code: 71ie](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)     | 2000+ | InstructIE validation set                                                                                     |
 | InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)  <br/> [Baidu Netdisk,Code: cyr9](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE test set                                                                                    |
 | train.json, valid.json | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing) | 5,000    | Preliminary training set and test set for the task "Instruction-Driven Adaptive Knowledge Graph Construction" in [CCKS2023 Open Knowledge Graph Challenge](https://tianchi.aliyun.com/competition/entrance/532080/introduction), randomly selected from instruct_train.json |
@@ -112,7 +114,7 @@ Here is an explanation of each field:
 |   relation  |             Relation triples(head, relation, tail) involved in the input             |
 
 
-Here [schema](./kg2instruction/schema.py) provides 12 text topics and common relationship types under the topic.
+Here [schema](./kg2instruction/convert/utils.py) provides 12 text topics and common relationship types under the topic.
 
 ## 3.Preparation
 
@@ -201,7 +203,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 5. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
 6. We have successfully run the Llama-LoRA fine-tuning code on an `RTX3090` GPU.
 
-The corresponding script can be found at `scripts/fine_llama.bash`.
+The corresponding script can be found at `ft_scripts/fine_llama.bash`.
 
 
 
@@ -291,7 +293,7 @@ CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/fine
 4. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
 5. We have successfully run the ChatGLM-LoRA fine-tuning code on an `RTX3090` GPU.
 
-The corresponding script can be found at `scripts/fine_chatglm.bash`.
+The corresponding script can be found at `ft_scripts/fine_chatglm.bash`.
 
 
 
@@ -341,7 +343,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 4. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
 5. We have successfully run the Moss-LoRA fine-tuning code on an `RTX3090` GPU.
 
-The corresponding script can be found at `scripts/fine_moss.bash`.
+The corresponding script can be found at `ft_scripts/fine_moss.bash`.
 
 
 
@@ -387,7 +389,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 5. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
 6. We have successfully run the Llama-LoRA fine-tuning code on an `RTX3090` GPU.
 
-The corresponding script can be found at `scripts/fine_baichuan.bash`.
+The corresponding script can be found at `ft_scripts/fine_baichuan.bash`.
 
 
 
@@ -493,7 +495,7 @@ We provide a script, [evaluate.py](./kg2instruction/evaluate.py), to convert the
 python kg2instruction/evaluate.py \
   --standard_path data/NER/processed.json \
   --submit_path data/NER/processed.json \
-  --task ner \
+  --task NER \
   --language zh
 ```
 

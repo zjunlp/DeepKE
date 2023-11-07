@@ -70,8 +70,6 @@ pip install -r requirements.txt
 
 # 模型
 
-
-
 ## LLaMA系列
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/llama.jpg" alt="LLaMA" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>

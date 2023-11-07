@@ -1,5 +1,12 @@
 import random
 import json
+import hashlib
+
+
+def stable_hash(input_str):
+    sha256 = hashlib.sha256()
+    sha256.update(input_str.encode('utf-8'))
+    return sha256.hexdigest()
 
 
 def match_sublist(the_list, to_match):

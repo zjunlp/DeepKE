@@ -4,62 +4,93 @@ import argparse
 import json
 import os
 import random
+from typing import Dict
 random.seed(42)
-from utils import FullSampler
-from ner_template import entity_template_zh, entity_int_out_format_zh, entity_template_en, entity_int_out_format_en
-from re_template import relation_template_zh, relation_int_out_format_zh, relation_template_en, relation_int_out_format_en
-from ee_template import event_template_zh, event_int_out_format_zh, event_template_en, event_int_out_format_en
+
+from convert.sampler import Sampler
+from convert.converter import NERConverter, REConverter, EEAConverter, EETConverter, EEConverter
+from utils import stable_hash
 
 
+def convert_ie( 
+        sample:int, 
+        task:str, 
+        neg_sampler,
+        converter,
+    ):
+    if sample == -1:           # 从4种指令和4种输出格式(共16种)中随机采样其中一种
+        rand1 = random.randint(0,19)
+        rand2 = random.randint(0,3)
+    else:                      # 使用sample指定的指令和数据格式
+        rand1 = sample
+        rand2 = sample
 
-def process(src_path, tgt_path, schema_path, language='zh', task='RE', sample=-1, all=True):
-    if language == 'zh':
-        event_template, event_int_out_format = event_template_zh, event_int_out_format_zh 
-        relation_template, relation_int_out_format = relation_template_zh, relation_int_out_format_zh 
-        entity_template, entity_int_out_format = entity_template_zh, entity_int_out_format_zh 
+    if task == 'EE':
+        sinstruct, output_text = converter.convert([], rand1, rand2, s_schema1=neg_sampler.type_role_dict)
+    elif task == 'EEA':
+        sinstruct, output_text = converter.convert([], rand1, rand2, s_schema1=neg_sampler.type_role_dict, s_schema2="")
+    elif task == 'EET':
+        sinstruct, output_text = converter.convert([], rand1, rand2, s_schema1=list(neg_sampler.type_list))
+    elif task == 'RE':
+        sinstruct, output_text = converter.convert([], rand1, rand2, s_schema1=list(neg_sampler.role_list))
+    elif task == 'NER':
+        sinstruct, output_text = converter.convert([], rand1, rand2, s_schema1=list(neg_sampler.type_list))
     else:
-        event_template, event_int_out_format = event_template_en, event_int_out_format_en
-        relation_template, relation_int_out_format = relation_template_en, relation_int_out_format_en
-        entity_template, entity_int_out_format = entity_template_en, entity_int_out_format_en
+        raise KeyError
+    return sinstruct, output_text
 
-    if os.path.exists(schema_path):
-        neg_sampler = FullSampler.read_from_file(schema_path)      # 加载该数据集的schema, schema_path文件内容参见utils.py FullSampler.read_from_file
-    else:
+
+
+def process(
+        src_path, 
+        tgt_path, 
+        schema_path, 
+        language='zh', 
+        task='RE', 
+        sample=-1,
+        random_sort=True,
+    ):
+    if os.path.exists(schema_path):         # 加载该数据集的schema, schema_path文件内容参见utils.py FullSampler.read_from_file
+        neg_sampler = Sampler.read_from_file(schema_path, negative=-1)
+    else:                                   # 未指定schema_path, 则从数据集中统计得到schema
         raise FileNotFoundError
 
-    cnt = 0
+    if task == 'EE':
+        converter = EEConverter(language, NAN='NAN', prefix='')
+    elif task == 'RE':
+        converter = REConverter(language, NAN='NAN', prefix='')
+    elif task == 'NER':
+        converter = NERConverter(language, NAN='NAN', prefix='')
+    elif task == 'EET':
+        converter = EETConverter(language, NAN='NAN', prefix='')
+    elif task == 'EEA':
+        converter = EEAConverter(language, NAN='NAN', prefix='')
+    else:
+        raise KeyError
+    
     writer = open(tgt_path, "w", encoding="utf-8")
     with open(src_path, "r", encoding="utf-8") as reader:
         for line in reader:
             record = json.loads(line)
-            if sample == -1:           # 从4种指令和4种输出格式(共16种)中随机采样其中一种
-                rand1 = random.randint(0,3)
-                rand2 = random.randint(0,3)
-            else:                      # 使用sample指定的指令和数据格式
-                rand1 = sample
-                rand2 = sample
-            if task == 'EE':
-                event_type= list(neg_sampler.type_list)
-                role = list(neg_sampler.role_list)
-                output_template = event_int_out_format[rand2]
-                sinstruct = event_template[rand1].format(s_format=output_template[0], s_schema1=event_type, s_schema2=role)
-            elif task == 'RE':
-                rels_type = list(neg_sampler.role_list)
-                output_template = relation_int_out_format[rand2]
-                sinstruct = relation_template[rand1].format(s_format=output_template[0], s_schema=list(rels_type))
-            elif task == 'NER':
-                ents_type = list(neg_sampler.type_list)
-                output_template = entity_int_out_format[rand2]
-                sinstruct = entity_template[rand1].format(s_format=output_template[0], s_schema=list(ents_type))
-            else:
-                raise KeyError
-
-            record2 = {'id': cnt,'instruction': sinstruct, 'input': record['input']}
-            writer.write(json.dumps(record2, ensure_ascii=False)+"\n")
-            cnt += 1
+            sinstruct, _ = convert_ie(
+                sample, 
+                task, 
+                neg_sampler,
+                converter,
+            )
+            new_record = {'id': stable_hash(record['input']),'instruction': sinstruct, 'input': record['input']}
+            writer.write(json.dumps(new_record, ensure_ascii=False)+"\n")
 
 
-
+'''
+python kg2instruction/convert_test.py \
+  --src_path data/NER/sample.json \
+  --tgt_path data/NER/processed.json \
+  --schema_path data/NER/schema.json \
+  --language zh \
+  --task NER \
+  --sample 0
+'''
 
 if __name__ == "__main__":
     parse = argparse.ArgumentParser()
@@ -67,7 +98,7 @@ if __name__ == "__main__":
     parse.add_argument("--tgt_path", type=str, default="data/NER/processed.json")
     parse.add_argument("--schema_path", type=str, default='data/NER/schema.json')
     parse.add_argument("--language", type=str, default='zh', choices=['zh', 'en'], help="不同语言使用的template及转换脚本不同")
-    parse.add_argument("--task", type=str, default="NER", choices=['RE', 'NER', 'EE'])
+    parse.add_argument("--task", type=str, default="NER", choices=['RE', 'NER', 'EE', 'EET', 'EEA'])
     parse.add_argument("--sample", type=int, default=0, help="若为-1, 则从4种指令和4种输出格式中随机采样其中一种, 否则即为指定的指令格式, -1<=sample<=3")
     
     options = parse.parse_args()

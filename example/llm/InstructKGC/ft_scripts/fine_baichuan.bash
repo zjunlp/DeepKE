@@ -1,3 +1,5 @@
+output_dir='lora/Baichuan-7B-Base-4bit'
+mkdir -p ${output_dir}
 CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
     --do_train --do_eval \
     --model_name_or_path 'path or name to Baichuan' \

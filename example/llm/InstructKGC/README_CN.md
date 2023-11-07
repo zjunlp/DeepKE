@@ -45,32 +45,34 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 ## 2.数据
 
-模型的输入需要包含`instruction`和`input`(可选)字段, 我们在 [kg2instruction/convert.py](./kg2instruction/convert.py)、[kg2instruction/convert_test.py](./kg2instruction/convert_test.py) 提供了一个脚本，用于将数据统一转换为可以直接输入模型的格式。
+模型的输入需要包含`instruction`和`input`(可选)字段, 我们在 [kg2instruction/convert.py](./kg2instruction/convert.py) 提供了一个脚本，用于将数据统一转换为可以直接输入模型的格式。
 
 * 请注意！在执行 [kg2instruction/convert.py](./kg2instruction/convert.py) 之前，请参考 [data](./data) 目录, 其中包含了每种任务的预期数据格式。
 
 
-```bash
+```bash              
 python kg2instruction/convert.py \
   --src_path data/NER/sample.json \
   --tgt_path data/NER/processed.json \
   --schema_path data/NER/schema.json \
-  --language zh \       # 不同语言使用的template及转换脚本不同
-  --task NER \          # ['RE', 'NER', 'EE']三种任务
-  --sample 0 \          # 若为-1, 则从4种指令和4种输出格式中随机采样其中一种, 否则即为指定的指令格式, -1<=sample<=3
-  --all                 # 是否将指令中指定的抽取类型列表设置为全部schema
+  --language zh \      # 不同语言使用的template及转换脚本不同
+  --task NER \         # ['RE', 'NER', 'EE', 'EET', 'EEA'] 5种任务
+  --sample -1 \        # 若为-1, 则从20种指令和4种输出格式中随机采样其中一种, 否则即为指定的指令格式, -1<=sample<20
+  --neg_ratio 1 \      # 表示所有样本的负采样比例
+  --neg_schema 1 \     # 表示从schema中负采样的比例
+  --random_sort        # 是否对指令中的schema列表进行随机排序
 ```
 
 [kg2instruction/convert_test.py](./kg2instruction/convert_test.py) 不要求数据具有标签(`entity`、`relation`、`event`)字段, 只需要具有 `input` 字段, 以及提供 `schema_path`, 适合用来处理测试数据。
 
 ```bash
 python kg2instruction/convert_test.py \
-    --src_path data/NER/sample.json \
-    --tgt_path data/NER/processed.json \
-    --schema_path data/NER/schema.json \
-    --language zh \      
-    --task NER \          
-    --sample 0 
+  --src_path data/NER/sample.json \
+  --tgt_path data/NER/processed.json \
+  --schema_path data/NER/schema.json \
+  --language zh \
+  --task NER \
+  --sample 0
 ```
 
 
@@ -82,7 +84,7 @@ python kg2instruction/convert_test.py \
 
 | 名称                  | 下载                                                                                                                     | 数量     | 描述                                                                                                                                                       |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| InstructIE-train       | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘,提取码: 85x6](https://pan.baidu.com/s/1mBKDYm8aaLjQHezUW3aiBQ?pwd=85x6)    | 30w+ | InstructIE训练集                                                                                     |
+| InstructIE-train       | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘,提取码: x4s7](https://pan.baidu.com/s/1xXVrjkinw4cyKKFBR8BwQw?pwd=x4s7)    | 30w+ | InstructIE训练集                                                                                     |
 | InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘,提取码: 71ie](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)    | 2000+ | InstructIE验证集                                                                                     |
 | InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘,提取码: cyr9](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE测试集                                                                                     |
 | train.json, valid.json          | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing)                     | 5000   | [CCKS2023 开放环境下的知识图谱构建与补全评测任务一：指令驱动的自适应知识图谱构建](https://tianchi.aliyun.com/competition/entrance/532080/introduction) 中的初赛训练集及测试集 |
@@ -108,7 +110,7 @@ python kg2instruction/convert_test.py \
 | relation    |     input中涉及的关系三元组(head, relation, tail)         |
 
 
-此处 [schema](./kg2instruction/schema.py) 提供了12种文本主题, 以及该主题下常见的关系类型。
+此处 [schema](./kg2instruction/convert/utils.py) 提供了12种文本主题, 以及该主题下常见的关系类型。
 
 ## 3.准备
 ### 环境
@@ -194,7 +196,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 5. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
 6. 我们在 `RTX3090` 上跑通了llama-lora微调代码
 
-相应的脚本在 [scripts/fine_llama.bash](./scripts/fine_llama.bash)
+相应的脚本在 [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash)
 
 
 
@@ -277,7 +279,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 3. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
 4. 我们在 `RTX3090` 上跑通了vicuna-lora微调代码
 
-相应的脚本在 [scripts/fine_vicuna.bash](./scripts//fine_vicuna.bash)
+相应的脚本在 [ft_scripts/fine_vicuna.bash](./ft_scripts//fine_vicuna.bash)
 
 
 
@@ -324,7 +326,7 @@ CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/fine
 4. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
 5. 我们在 `RTX3090` 上跑通了chatglm-lora微调代码
 
-相应的脚本在 [scripts/fine_chatglm.bash](./scripts//fine_chatglm.bash)
+相应的脚本在 [ft_scripts/fine_chatglm.bash](./ft_scripts//fine_chatglm.bash)
 
 
 
@@ -373,7 +375,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 4. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
 5. 我们在 `RTX3090` 上跑通了moss-lora微调代码
 
-相应的脚本在 [scripts/fine_moss.bash](./scripts/fine_moss.bash)
+相应的脚本在 [ft_scripts/fine_moss.bash](./ft_scripts/fine_moss.bash)
 
 
 
@@ -417,7 +419,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 5. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
 6. 我们在 `RTX3090` 上跑通了baichuan-lora微调代码
 
-相应的脚本在 [scripts/fine_baichuan.bash](./scripts/fine_baichuan.bash)
+相应的脚本在 [ft_scripts/fine_baichuan.bash](./ft_scripts/fine_baichuan.bash)
 
 
 
@@ -517,7 +519,7 @@ CUDA_VISIBLE_DEVICES=0 python src/inference_pt.py \
 python kg2instruction/evaluate.py \
   --standard_path data/NER/processed.json \
   --submit_path data/NER/processed.json \
-  --task ner \
+  --task NER \
   --language zh
 ```
 
