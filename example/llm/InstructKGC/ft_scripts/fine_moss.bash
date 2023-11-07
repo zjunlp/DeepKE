@@ -5,7 +5,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     --model_name_or_path 'models/moss-moon-003-sft' \
     --model_file 'moss' \
     --prompt_template_name 'moss' \
-    --train_path 'data/train.json' \
+    --train_file 'data/train.json' \
     --output_dir=${output_dir}  \
     --per_device_train_batch_size 4 \
     --per_device_eval_batch_size 4 \

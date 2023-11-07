@@ -159,7 +159,15 @@ Here are some models:
 
 ## 4.LoRA Fine-tuning
 
-Attention!! All the following commands should be executed in the `InstrctKGC` directory!! For example, running a fine-tuning script would be: `bash scripts/fine_llama.bash`.
+Basic Parameters:
+* `--model_name`: The current code supports the following models ["llama", "falcon", "baichuan", "chatglm", "moss", "alpaca", "vicuna", "zhixi"], note the distinction from `model_name_or_path`.
+* `--train_file`, `--valid_file` (optional): Training and validation set file paths (JSON format files), if `valid_file` is not specified, we will default to partitioning a `val_set_size` number of samples from the `train_file` to use as a validation set. You can also use `val_set_size` to adjust the number of samples in the validation set.
+* `--output_dir`: Path for saving Lora weight parameters.
+* `--val_set_size`: Number of samples in the validation set, default is 1000.
+* `--prompt_template_name`: Template name, currently supports three types of templates [alpaca, vicuna, moss], with the default being the alpaca template.
+
+
+> Attention!! All the following commands should be executed in the `InstrctKGC` directory!! For example, running a fine-tuning script would be: `bash scripts/fine_llama.bash`.
 
 ### LoRA Fine-tuning with LLaMA
 
@@ -172,7 +180,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     --do_train --do_eval \
     --model_name_or_path 'path or name to Llama' \
     --model_name 'llama' \
-    --train_path 'data/train.json' \
+    --train_file 'data/train.json' \
     --output_dir=${output_dir}  \
     --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 16 \
@@ -202,6 +210,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 4. For more detailed parameter information, please refer to `utils/args.py`.
 5. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
 6. We have successfully run the Llama-LoRA fine-tuning code on an `RTX3090` GPU.
+7. model_name = llama(The same for llama2)
 
 The corresponding script can be found at `ft_scripts/fine_llama.bash`.
 
@@ -222,6 +231,7 @@ output_dir='path to save Alpaca Lora'
 1. We use the [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b) model for Alpaca.
 2. We use the default `alpaca` template for the `prompt_template_name`. Please refer to `templates/alpaca.json` for more details.
 3. We have successfully run the Alpaca-LoRA fine-tuning code on an `RTX3090` GPU.
+4. model_name = alpaca
 
 
 
@@ -246,6 +256,7 @@ output_dir='path to save Zhixi Lora'
 1. Since Zhixi currently only has a 13b model, you will need to decrease the batch size accordingly to accommodate the model's memory requirements.
 2. We will continue to use the default `alpaca` template for the `prompt_template_name`. Please refer to `templates/alpaca.json` for more details.
 3. We have successfully run the ZhiXi-LoRA fine-tuning code on an `RTX3090` GPU.
+4. model_name = zhixi
 
 
 
@@ -292,6 +303,7 @@ CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/fine
 3. Due to unsatisfactory performance with 8-bit quantization, we did not apply quantization to the ChatGLM model.
 4. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
 5. We have successfully run the ChatGLM-LoRA fine-tuning code on an `RTX3090` GPU.
+6. model_name = chatglm
 
 The corresponding script can be found at `ft_scripts/fine_chatglm.bash`.
 
@@ -308,9 +320,9 @@ mkdir -p ${output_dir}
 CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
     --do_train --do_eval \
     --model_name_or_path 'path or name to Moss' \
-    --model_file 'moss' \
+    --model_name 'moss' \
     --prompt_template_name 'moss' \
-    --train_path 'data/train.json' \
+    --train_file 'data/train.json' \
     --output_dir=${output_dir}  \
     --per_device_train_batch_size 4 \
     --per_device_eval_batch_size 4 \
@@ -342,6 +354,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 3. Due to memory limitations on the `RTX3090`, we use the `qlora` technique for 4-bit quantization. However, you can try 8-bit quantization or non-quantization strategies on `V100` or `A100` GPUs.
 4. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
 5. We have successfully run the Moss-LoRA fine-tuning code on an `RTX3090` GPU.
+6. model_name = moss
 
 The corresponding script can be found at `ft_scripts/fine_moss.bash`.
 
@@ -358,7 +371,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     --do_train --do_eval \
     --model_name_or_path 'path or name to Llama' \
     --model_name 'llama' \
-    --train_path 'data/train.json' \
+    --train_file 'data/train.json' \
     --output_dir=${output_dir}  \
     --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 16 \
@@ -388,6 +401,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 4. For more detailed parameter information, please refer to `utils/args.py`.
 5. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
 6. We have successfully run the Llama-LoRA fine-tuning code on an `RTX3090` GPU.
+7. model_name = baichuan
 
 The corresponding script can be found at `ft_scripts/fine_baichuan.bash`.
 

@@ -4,7 +4,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     --do_train --do_eval \
     --model_name_or_path 'path or name to Baichuan' \
     --model_name 'baichuan' \
-    --train_path 'data/train.json' \
+    --train_file 'data/train.json' \
     --output_dir=${output_dir}  \
     --per_device_train_batch_size 6 \
     --per_device_eval_batch_size 6 \

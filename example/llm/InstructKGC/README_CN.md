@@ -153,7 +153,14 @@ mkdir data
 
 ## 4.LoRA微调
 
-注意！！以下所有命令都应在`InstrctKGC`目录下执行！！例如运行微调脚本是：`bash scripts/fine_llama.bash`
+基础参数:
+* `--model_name`: 当前代码支持的模型, 包括以下模型["llama", "falcon", "baichuan", "chatglm", "moss", "alpaca", "vicuna", "zhixi"], 注意与`model_name_or_path`区分。
+* `--train_file`、`--valid_file`(可选): 训练集和验证集文件路径(json格式文件), 如果没有指定valid_file, 我们默认会从* `train_file`中划分`val_set_size`数量的样本做验证集）, 你也可以使用`val_set_size`调整验证集的数量。
+* `--output_dir`: Lora权重参数保存路径。
+* `--val_set_size`: 验证集样本数量, 默认1000。
+* `--prompt_template_name`: 模版名称, 目前支持[alpaca, vicuna, moss]三种模版类型, 默认alpaca模版
+
+> 注意！！以下所有命令都应在`InstrctKGC`目录下执行！！例如运行微调脚本的命令是：`bash scripts/fine_llama.bash`
 
 ### LoRA微调LLaMA
 
@@ -165,7 +172,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     --do_train --do_eval \
     --model_name_or_path 'path or name to Llama' \
     --model_name 'llama' \
-    --train_path 'data/train.json' \
+    --train_file 'data/train.json' \
     --output_dir=${output_dir}  \
     --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 16 \
@@ -195,6 +202,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 4. 更详细的参数信息请参考 [src/utils/args.py](./src/utils/args.py)
 5. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
 6. 我们在 `RTX3090` 上跑通了llama-lora微调代码
+7. model_name = llama (llama2也是llama)
 
 相应的脚本在 [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash)
 
@@ -213,6 +221,7 @@ output_dir='path to save Alpaca Lora'
 1. Alpaca模型我们采用[Alpaca-7b](https://huggingface.co/circulus/alpaca-7b)
 2. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates/alpaca.json)
 3. 我们在 `RTX3090` 上跑通了alpaca-lora微调代码
+4. model_name = alpaca
 
 
 
@@ -235,6 +244,7 @@ output_dir='path to save Zhixi Lora'
 1. 由于Zhixi目前只有13b的模型, 因此需要相应减小batch size
 2. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates//alpaca.json)
 3. 我们在 `RTX3090` 上跑通了ZhiXi-lora微调代码
+4. model_name = zhixi
 
 
 
@@ -248,9 +258,9 @@ mkdir -p ${output_dir}
 CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
     --do_train --do_eval \
     --model_name_or_path 'path or name to Vicuna' \
-    --model_file 'vicuna' \
+    --model_name 'vicuna' \
     --prompt_template_name 'vicuna' \
-    --train_path 'data/train.json' \
+    --train_file 'data/train.json' \
     --output_dir=${output_dir}  \
     --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 16 \
@@ -278,6 +288,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 2. 由于Vicuna-7b-delta-v1.1所使用的prompt_template_name与`alpaca`模版不同, 因此需要设置 `--prompt_template_name 'vicuna'`, 详见 [templates/vicuna.json](./templates//vicuna.json)
 3. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
 4. 我们在 `RTX3090` 上跑通了vicuna-lora微调代码
+5. model_name = vicuna
 
 相应的脚本在 [ft_scripts/fine_vicuna.bash](./ft_scripts//fine_vicuna.bash)
 
@@ -325,6 +336,7 @@ CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/fine
 3. 由于使用8bits量化后训练得到的模型效果不佳, 因此对于ChatGLM我们没有采用量化策略
 4. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
 5. 我们在 `RTX3090` 上跑通了chatglm-lora微调代码
+6. model_name = chatglm
 
 相应的脚本在 [ft_scripts/fine_chatglm.bash](./ft_scripts//fine_chatglm.bash)
 
@@ -340,9 +352,9 @@ mkdir -p ${output_dir}
 CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
     --do_train --do_eval \
     --model_name_or_path 'path or name to Moss' \
-    --model_file 'moss' \
+    --model_name 'moss' \
     --prompt_template_name 'moss' \
-    --train_path 'data/train.json' \
+    --train_file 'data/train.json' \
     --output_dir=${output_dir}  \
     --per_device_train_batch_size 4 \
     --per_device_eval_batch_size 4 \
@@ -374,6 +386,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 3. 由于 `RTX3090` 显存限制, 我们采用`qlora`技术进行4bits量化, 你也可以在`V100`、`A100`上尝试8bits量化和不量化策略
 4. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
 5. 我们在 `RTX3090` 上跑通了moss-lora微调代码
+6. model_name = moss
 
 相应的脚本在 [ft_scripts/fine_moss.bash](./ft_scripts/fine_moss.bash)
 
@@ -388,7 +401,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     --do_train --do_eval \
     --model_name_or_path 'path or name to Baichuan' \
     --model_name 'baichuan' \
-    --train_path 'data/train.json' \
+    --train_file 'data/train.json' \
     --output_dir=${output_dir}  \
     --per_device_train_batch_size 6 \
     --per_device_eval_batch_size 6 \
@@ -418,6 +431,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 4. 更详细的参数信息请参考 [src/utils/args.py](./src/utils/args.py)
 5. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
 6. 我们在 `RTX3090` 上跑通了baichuan-lora微调代码
+7. model_name = baichuan
 
 相应的脚本在 [ft_scripts/fine_baichuan.bash](./ft_scripts/fine_baichuan.bash)
 
