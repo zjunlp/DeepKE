@@ -6,24 +6,31 @@
 
 - [InstructKGC-CCKS2023 Evaluation of Instruction-based Knowledge Graph Construction](#instructkgc-ccks2023-evaluation-of-instruction-based-knowledge-graph-construction)
   - [1.Task Object](#1task-object)
-  - [2.Data](#2data)
+  - [2. Data](#2-data)
+    - [2.1 Data Preprocessing](#21-data-preprocessing)
+    - [2.2Datasets](#22datasets)
   - [3.Preparation](#3preparation)
-    - [Environment](#environment)
-    - [Download data](#download-data)
-    - [Model](#model)
+    - [3.1Environment](#31environment)
+    - [3.2Download data](#32download-data)
+    - [3.3Model](#33model)
   - [4.LoRA Fine-tuning](#4lora-fine-tuning)
-    - [LoRA Fine-tuning with LLaMA](#lora-fine-tuning-with-llama)
-    - [LoRA Fine-tuning with Alpaca](#lora-fine-tuning-with-alpaca)
-    - [LoRA Fine-tuning with ZhiXi (智析)](#lora-fine-tuning-with-zhixi-智析)
-    - [Lora Fine-tuning with ChatGLM](#lora-fine-tuning-with-chatglm)
-    - [Lora Fine-tuning with Moss](#lora-fine-tuning-with-moss)
-    - [LoRA Fine-tuning with Baichuan](#lora-fine-tuning-with-baichuan)
+    - [4.1 Basic Parameters](#41-basic-parameters)
+    - [4.2LoRA Fine-tuning with LLaMA](#42lora-fine-tuning-with-llama)
+    - [4.3LoRA Fine-tuning with Alpaca](#43lora-fine-tuning-with-alpaca)
+    - [4.4LoRA Fine-tuning with ZhiXi (智析)](#44lora-fine-tuning-with-zhixi-智析)
+    - [4.5LoRA Fine-Tuning Vicuna](#45lora-fine-tuning-vicuna)
+    - [4.6Lora Fine-tuning with ChatGLM](#46lora-fine-tuning-with-chatglm)
+    - [4.7Lora Fine-tuning with Moss](#47lora-fine-tuning-with-moss)
+    - [4.8LoRA Fine-tuning with Baichuan](#48lora-fine-tuning-with-baichuan)
   - [5.P-Tuning Fine-tuning](#5p-tuning-fine-tuning)
-    - [P-Tuning Fine-tuning with ChatGLM](#p-tuning-fine-tuning-with-chatglm)
-    - [Prediction of Lora](#prediction-of-lora)
-    - [Prediction of P-Tuning](#prediction-of-p-tuning)
-  - [6. Model Output Conversion \& F1 Calculation](#6-model-output-conversion--f1-calculation)
-  - [7.Acknowledgment](#7acknowledgment)
+    - [5.1P-Tuning Fine-tuning with ChatGLM](#51p-tuning-fine-tuning-with-chatglm)
+  - [6. Prediction](#6-prediction)
+    - [6.1 LoRA Prediction](#61-lora-prediction)
+      - [6.1.1 Base Model + LoRA](#611-base-model--lora)
+      - [6.1.2 IE-Specific Model](#612-ie-specific-model)
+    - [6.2 P-Tuning Prediction](#62-p-tuning-prediction)
+  - [7. Model Output Conversion \& F1 Calculation](#7-model-output-conversion--f1-calculation)
+  - [8.Acknowledgment](#8acknowledgment)
   - [Citation](#citation)
 
 
@@ -40,45 +47,44 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 ```
 
 
+## 2. Data
 
-## 2.Data
+### 2.1 Data Preprocessing
+Before inputting data into the model, it needs to be formatted to include `instruction` and `input` fields. To assist with this, we offer a script [kg2instruction/convert.py](./kg2instruction/convert.py), which can batch convert data into a format directly usable by the model.
 
-The model's input should include the `instruction` and  the `input`(optionally) field. We have provided a script, [kg2instruction/convert.py](./kg2instruction/convert.py)、[kg2instruction/convert_test.py](./kg2instruction/convert_test.py), which is used to transform the data into a format suitable for direct input into the model.
+> Before using the [kg2instruction/convert.py](./kg2instruction/convert.py) script, please ensure you have referred to the [data](./data) directory. This directory lists in detail the data format requirements for each task.
 
-* Note! Before executing [kg2instruction/convert.py](./kg2instruction/convert.py), please refer to the [data](./data) directory for the expected data format for each task.
 
-```bash
+```bash              
 python kg2instruction/convert.py \
   --src_path data/NER/sample.json \
   --tgt_path data/NER/processed.json \
   --schema_path data/NER/schema.json \
-  --language zh \      # Different templates and conversion scripts are used for different languages
-  --task NER \         # 5 types of tasks: ['RE', 'NER', 'EE', 'EET', 'EEA']
-  --sample -1 \        # If -1, randomly sample one from 20 instruction types and 4 output formats otherwise it is the specified instruction format, -1<=sample<20
-  --neg_ratio 1 \      # Indicates the negative sampling ratio for all samples
-  --neg_schema 1 \     # Indicates the negative sampling ratio from the schema
-  --random_sort        # Whether to randomly sort the schema list in the instructions
-
+  --language zh \      # Specifies the language for the conversion script and template, options are ['zh', 'en']
+  --task NER \         # Specifies the task type: one of ['RE', 'NER', 'EE', 'EET', 'EEA']
+  --sample -1 \        # If -1, randomly samples one of 20 instruction and 4 output formats; if a specific number, uses the corresponding instruction format, range is -1<=sample<20
+  --neg_ratio 1 \      # Sets the negative sampling ratio for all samples
+  --neg_schema 1 \     # Sets the negative sampling ratio from the schema
+  --random_sort        # Determines whether to randomly sort the list of schemas in the instruction
 ```
 
-[kg2instruction/convert_test.py](./kg2instruction/convert_test.py) does not require data to have label (`entity`, `relation`, `event`) fields, only needs to have an `input` field and provide a `schema_path` is suitable for processing test data.
+For test data, you can use the [kg2instruction/convert_test.py](./kg2instruction/convert_test.py) script, which does not require the data to contain label fields (`entity`, `relation`, `event`), just the input field and the corresponding schema_path.
 
 ```bash
 python kg2instruction/convert_test.py \
-    --src_path data/NER/sample.json \
-    --tgt_path data/NER/processed.json \
-    --schema_path data/NER/schema.json \
-    --language zh \      
-    --task NER \          
-    --sample 0 
+  --src_path data/NER/sample.json \
+  --tgt_path data/NER/processed.json \
+  --schema_path data/NER/schema.json \
+  --language zh \
+  --task NER \
+  --sample 0
 ```
 
+* For more detailed information about IE templates, data format conversion, and data extraction, please refer to [kg2instruction/README_CN.md](./kg2instruction/README_CN.md).
+* You can also construct your own data containing `instruction` and `input` fields.
 
 
-* For more detailed information about IE templates, data format conversion, and data extraction, please refer to [kg2instruction/README.md](./kg2instruction/README.md).
-
-* Alternatively, you can independently create data that includes the `instruction` and `input` fields.
-
+### 2.2Datasets
 Here are some readily processed datasets:
 
 | Name                   | Download                                                     | Quantity | Description                                                  |
@@ -89,33 +95,41 @@ Here are some readily processed datasets:
 | train.json, valid.json | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing) | 5,000    | Preliminary training set and test set for the task "Instruction-Driven Adaptive Knowledge Graph Construction" in [CCKS2023 Open Knowledge Graph Challenge](https://tianchi.aliyun.com/competition/entrance/532080/introduction), randomly selected from instruct_train.json |
 
 
-`InstrumentIE-train` contains two files: `InstrumentIE-zh.json` and `InstrumentIE-en.json`, each of which contains the following fields: `'id'` (unique identifier), `'cate'` (text category), `'entity'` and `'relation'` (triples) fields. The extracted instructions and output can be freely constructed through `'entity'` and `'relation'`.
+The `InstructIE-train` dataset contains two core files: `InstructIE-zh.json` and `InstructIE-en.json`. Both files cover a range of fields that provide detailed descriptions of different aspects of the dataset:
 
-`InstrumentIE-valid` and `InstrumentIE-test` are validation sets and test sets, respectively, including bilingual `zh` and `en`.
+- `'id'`: A unique identifier for each data entry, ensuring the independence and traceability of the data items.
+- `'cate'`: The text's subject category, which provides a high-level categorical label for the content (there are 12 categories in total).
+- `'entity'` and `'relation'`: Represent entity and relationship triples, respectively. These fields allow users to freely construct instructions and expected outputs for information extraction.
 
-`train.json`: Same fields as `KnowLM-IE.json`, `'instruction'` and `'output'` have only one format, and extraction instructions and outputs can also be freely constructed through `'relation'`.
+For the validation set `InstructIE-valid` and the test set `InstructIE-test`, they include both Chinese and English versions, ensuring the dataset's applicability in different language settings.
 
-`valid.json`: Same fields as `train.json`, but with more accurate annotations achieved through crowdsour
+- `train.json`: The field definitions in this file are consistent with `InstructIE-train`, but the `'instruction'` and `'output'` fields show one format. Nonetheless, users can still freely construct instructions and outputs for information extraction based on the `'relation'` field.
+- `valid.json`: Its field meanings are consistent with `train.json`, but this dataset has been crowdsource-annotated, providing higher accuracy and reliability.
 
-Here is an explanation of each field:
+The detailed explanations of each field are as follows:
 
-|    Field    |                         Description                          |
-| :---------: | :----------------------------------------------------------: |
-|     id      |                   Unique identifier                   |
-|    cate     |     text topic of input (12 topics in total)                        |
-|    input    | Model input text (need to extract all triples involved within) |
-| instruction |   Instruction for the model to perform the extraction task   |
-|    output   | Expected model output |
-| entity      |            entities(entity, entity_type)                    |
-|   relation  |             Relation triples(head, relation, tail) involved in the input             |
+| Field       | Description                                                      |
+| ----------- | ---------------------------------------------------------------- |
+| id          | The unique identifier for each data point.                       |
+| cate        | The category of the text's subject, with a total of 12 different thematic categories. |
+| input       | The input text for the model, with the goal of extracting all the involved relationship triples. |
+| instruction | Instructions guiding the model to perform information extraction tasks. |
+| output      | The expected output result of the model.                         |
+| entity      | Details describing the entity and its corresponding type (entity, entity_type). |
+| relation    | Describes the relationship triples contained in the text, i.e., the connections between entities (head, relation, tail). |
+
+With the fields mentioned above, users can flexibly design and implement instructions and output formats for different information extraction needs.
 
 
 Here [schema](./kg2instruction/convert/utils.py) provides 12 text topics and common relationship types under the topic.
 
 
+
+
 ## 3.Preparation
 
-### Environment
+
+### 3.1Environment
 Please refer to [DeepKE/example/llm/README.md](../README.md/#requirements) to create a Python virtual environment, and activate the `deepke-llm` environment:
 
 ```bash
@@ -130,7 +144,7 @@ conda activate deepke-llm
 4. peft 0.2.0 -> 0.4.0dev
 
 
-### Download data
+### 3.2Download data
 
 ```bash
 mkdir results
@@ -141,7 +155,7 @@ mkdir data
 Place the data in the directory `./data`
 
 
-### Model 
+### 3.3Model 
 Here are some models:
 * [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf) | [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b) | [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
@@ -156,17 +170,20 @@ Here are some models:
 
 ## 4.LoRA Fine-tuning
 
-Basic Parameters:
-* `--model_name`: The current code supports the following models ["llama", "falcon", "baichuan", "chatglm", "moss", "alpaca", "vicuna", "zhixi"], note the distinction from `model_name_or_path`.
-* `--train_file`, `--valid_file` (optional): Training and validation set file paths (JSON format files), if `valid_file` is not specified, we will default to partitioning a `val_set_size` number of samples from the `train_file` to use as a validation set. You can also use `val_set_size` to adjust the number of samples in the validation set.
-* `--output_dir`: Path for saving Lora weight parameters.
-* `--val_set_size`: Number of samples in the validation set, default is 1000.
-* `--prompt_template_name`: Template name, currently supports three types of templates [alpaca, vicuna, moss], with the default being the alpaca template.
+
+### 4.1 Basic Parameters
+When performing LoRA fine-tuning, you need to configure some basic parameters to specify the model type, dataset path, output settings, etc. Below are the available basic parameters and their descriptions:
+
+* `--model_name`: Specifies the model name you wish to use. The current list of supported models includes: ["llama", "falcon", "baichuan", "chatglm", "moss", "alpaca", "vicuna", "zhixi"]. Note that this parameter should be distinguished from model_name_or_path.
+* `--train_file` and `--valid_file` (optional): Point to the paths of your training and validation set JSON files, respectively. If a valid_file is not provided, the system will by default carve out a number of samples specified by val_set_size from the file indicated by train_file to be used as the validation set. You can also adjust the val_set_size parameter to change the number of samples in the validation set.
+* `--output_dir`: Sets the path for saving the weight parameters after LoRA fine-tuning.
+* `--val_set_size`: Defines the number of samples in the validation set, with a default of 1000.
+* `--prompt_template_name`: Choose the name of the template you want to use. Currently, three types of templates are supported: [alpaca, vicuna, moss], with the alpaca template being the default.
+
+> Important Note: All the following commands should be executed in the InstrctKGC directory. For example, if you want to run a fine-tuning script, you should use the following command: bash scripts/fine_llama.bash. Make sure your current working directory is correct.
 
 
-> Attention!! All the following commands should be executed in the `InstrctKGC` directory!! For example, running a fine-tuning script would be: `bash scripts/fine_llama.bash`.
-
-### LoRA Fine-tuning with LLaMA
+### 4.2LoRA Fine-tuning with LLaMA
 
 You can use the following command to configure your own parameters and fine-tune the Llama model using the LoRA method:
 
@@ -196,27 +213,26 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     --lora_dropout 0.05 \
     --max_memory_MB 24000 \
     --fp16 \
-    --bits 8 \
+    --bits 4 \
     | tee ${output_dir}/train.log \
     2> ${output_dir}/train.err
 ```
 
-1. We use the [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf) model for Llama.
-2. You can provide a validation set using the `--valid_file` option, or you can do nothing (in `finetune.py`, we will split a specified number of samples from `train.json` as the validation set using `val_set_size`). You can also adjust the number of samples in the validation set using `val_set_size`.
-3. We use the default `alpaca` template for the `prompt_template_name`. Please refer to `templates/alpaca.json` for more details.
-4. For more detailed parameter information, please refer to `utils/args.py`.
-5. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
-6. We have successfully run the Llama-LoRA fine-tuning code on an `RTX3090` GPU.
-7. model_name = llama(The same for llama2)
+1. For the Llama model, we use [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf).
+2. A validation set can be specified through the `--valid_file` parameter. If not specified, the finetune.py script will create a validation set by splitting off the number of samples designated by `val_set_size` from the train.json file. Moreover, you can also adjust `val_set_size` to change the volume of samples in the validation set.
+3. For `prompt_template_name`, we use the alpaca template by default. The detailed contents of the template can be found in the [templates/alpaca.json](./templates/alpaca.json) file.
+4. The parameter `max_memory_MB` (default setting is 80000) is used to specify the size of the GPU memory. Please adjust it according to the performance of your GPU.
+5. We have successfully run the finetuning code for the LLAMA model using LoRA technology on an RTX3090 GPU.
+6. `model_name` = llama (llama2 is also llama).
+7. For more information on parameter configuration, please refer to the [src/utils/args.py](./src/utils/args.py) file.
 
-The corresponding script can be found at `ft_scripts/fine_llama.bash`.
-
-
+The specific script for fine-tuning the LLAMA model can be found in [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash).
 
 
-### LoRA Fine-tuning with Alpaca
 
-To fine-tune Alpaca using the LoRA method, you can make the following modifications to the `scripts/fine_llama.bash` script, following the instructions outlined in [LoRA Fine-tuning with LLaMA](./README.md/#lora-fine-tuning-with-llama):
+### 4.3LoRA Fine-tuning with Alpaca
+
+When fine-tuning the Alpaca model, you can follow steps similar to those for [fine-tuning the LLaMA model](./README.md/#42lora-fine-tuning-with-llama). To fine-tune, make the following changes to the [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash) file:
 
 
 ```bash
@@ -225,21 +241,22 @@ output_dir='path to save Alpaca Lora'
 --model_name 'alpaca' \
 ```
 
-1. We use the [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b) model for Alpaca.
-2. We use the default `alpaca` template for the `prompt_template_name`. Please refer to `templates/alpaca.json` for more details.
-3. We have successfully run the Alpaca-LoRA fine-tuning code on an `RTX3090` GPU.
-4. model_name = alpaca
+1. For the Alpaca model, we use [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b).
+2. For `prompt_template_name`, we default to using the alpaca template. The detailed contents of the template can be found in the [templates/alpaca.json](./templates/alpaca.json) file.
+3. We have successfully run the finetuning code for the Alpaca model using LoRA technology on an RTX3090 GPU.
+4. `model_name` = alpaca
+5. For more information on parameter configuration, please refer to the [src/utils/args.py](./src/utils/args.py) file.
 
 
 
 
-### LoRA Fine-tuning with ZhiXi (智析)
-Please refer to [KnowLM2.2Pre-trained Model Weight Acquisition and Restoration](https://github.com/zjunlp/KnowLM#2-2) to obtain the complete ZhiXi model weights.
+### 4.4LoRA Fine-tuning with ZhiXi (智析)
+Before starting to fine-tune the Zhixi model, ensure you follow the guide on [acquiring and restoring KnowLM2.2 pre-trained model weights](https://github.com/zjunlp/KnowLM#2-2) to obtain the complete Zhixi model weights.
 
-Note: Since ZhiXi has already been trained with LoRA on a large-scale information extraction instruction dataset, you can skip this step and proceed directly to Step 3 Prediction. If you wish to refine the model further, additional training remains an option.
+**Important Note**: As the Zhixi model has already been trained on a rich set of information extraction task datasets using LoRA, you might not need to fine-tune it again and can proceed directly to prediction tasks. If you choose to conduct further training, follow the steps below.
 
+The instructions for fine-tuning the Zhixi model are similar to those for [fine-tuning the LLaMA model](./README.md/#42lora-fine-tuning-with-llama), with the following adjustments in [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash):
 
-To fine-tune ZhiXi using the LoRA method, you can make the following modifications to the `scripts/fine_llama.bash` script, following the instructions outlined in [LoRA Fine-tuning with LLaMA](./README.md/#lora-fine-tuning-with-llama):
 
 
 ```bash
@@ -250,15 +267,62 @@ output_dir='path to save Zhixi Lora'
 --model_name 'zhixi' \
 ```
 
-1. Since Zhixi currently only has a 13b model, you will need to decrease the batch size accordingly to accommodate the model's memory requirements.
-2. We will continue to use the default `alpaca` template for the `prompt_template_name`. Please refer to `templates/alpaca.json` for more details.
-3. We have successfully run the ZhiXi-LoRA fine-tuning code on an `RTX3090` GPU.
-4. model_name = zhixi
+1. Since Zhixi currently only has a 13b model, it is recommended to accordingly reduce the batch size.
+2. For `prompt_template_name`, we default to using the alpaca template. The detailed contents of the template can be found in the [templates/alpaca.json](./templates/alpaca.json) file.
+3. We have successfully run the fine-tuning code for the Zhixi model using LoRA technology on an RTX3090 GPU.
+4. `model_name` = zhixi
+5. For more information on parameter configuration, please refer to the [src/utils/args.py](./src/utils/args.py) file.
+
+
+### 4.5LoRA Fine-Tuning Vicuna
+
+You can set your own parameters to fine-tune the Vicuna model using the LoRA method with the following commands:
+
+```bash
+output_dir='path to save Vicuna Lora'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
+    --do_train --do_eval \
+    --model_name_or_path 'path or name to Vicuna' \
+    --model_name 'vicuna' \
+    --prompt_template_name 'vicuna' \
+    --train_file 'data/train.json' \
+    --output_dir=${output_dir}  \
+    --per_device_train_batch_size 16 \
+    --per_device_eval_batch_size 16 \
+    --gradient_accumulation_steps 8 \
+    --preprocessing_num_workers 8 \
+    --num_train_epochs 10 \
+    --learning_rate 1e-4 \
+    --optim "adamw_torch" \
+    --cutoff_len 512 \
+    --val_set_size 1000 \
+    --evaluation_strategy "epoch" \
+    --save_strategy "epoch" \
+    --save_total_limit 10 \
+    --lora_r 8 \
+    --lora_alpha 16 \
+    --lora_dropout 0.05 \
+    --max_memory_MB 24000 \
+    --fp16 \
+    --bits 4 \
+    | tee ${output_dir}/train.log \
+    2> ${output_dir}/train.err
+```
+
+
+1. For the Vicuna model, we use [Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1)
+2. Since the Vicuna-7b-delta-v1.1 uses a different `prompt_template_name` than the `alpaca` template, you need to set `--prompt_template_name 'vicuna'`, see [templates/vicuna.json](./templates//vicuna.json) for details
+3. `max_memory_MB` (default 80000) specifies the memory size of the GPU, you will need to adjust this according to your GPU
+4. We have successfully run the vicuna-lora fine-tuning code on an `RTX3090`
+5. `model_name` = vicuna
+
+The corresponding script can be found at [ft_scripts/fine_vicuna.bash](./ft_scripts//fine_vicuna.bash)
 
 
 
 
-### Lora Fine-tuning with ChatGLM
+### 4.6Lora Fine-tuning with ChatGLM
 
 You can use the following command to configure your own parameters and fine-tune the ChatGLM model using the LoRA method:
 
@@ -296,18 +360,19 @@ CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/fine
 ```
 
 1. We use the [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b) model for ChatGLM.
-2. We use the default `alpaca` template for the `prompt_template_name`. Please refer to `templates/alpaca.json` for more details.
+2. We use the default `alpaca` template for the `prompt_template_name`. Please refer to [templates/alpaca.json](./templates/alpaca.json) for more details.
 3. Due to unsatisfactory performance with 8-bit quantization, we did not apply quantization to the ChatGLM model.
 4. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
 5. We have successfully run the ChatGLM-LoRA fine-tuning code on an `RTX3090` GPU.
 6. model_name = chatglm
+7. For more information on parameter configuration, please refer to the [src/utils/args.py](./src/utils/args.py) file.
 
-The corresponding script can be found at `ft_scripts/fine_chatglm.bash`.
+The corresponding script can be found at [ft_scripts/fine_chatglm.bash](./ft_scripts//fine_chatglm.bash).
 
 
 
 
-### Lora Fine-tuning with Moss
+### 4.7Lora Fine-tuning with Moss
 
 You can use the following command to configure your own parameters and fine-tune the Moss model using the LoRA method:
 
@@ -347,17 +412,18 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 ```
 
 1. We use the [moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft) model for Moss.
-2. The `prompt_template_name` has been modified based on the alpaca template. Please refer to `templates/moss.json` for more details. Therefore, you need to set `--prompt_template_name 'moss'`.
+2. The `prompt_template_name` has been modified based on the alpaca template. Please refer to [templates/moss.json](./templates/moss.json) for more details. Therefore, you need to set `--prompt_template_name 'moss'`.
 3. Due to memory limitations on the `RTX3090`, we use the `qlora` technique for 4-bit quantization. However, you can try 8-bit quantization or non-quantization strategies on `V100` or `A100` GPUs.
 4. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
 5. We have successfully run the Moss-LoRA fine-tuning code on an `RTX3090` GPU.
 6. model_name = moss
+7. For more information on parameter configuration, please refer to the [src/utils/args.py](./src/utils/args.py) file.
 
-The corresponding script can be found at `ft_scripts/fine_moss.bash`.
+The corresponding script can be found at [ft_scripts/fine_moss.bash](./ft_scripts/fine_moss.bash).
 
 
 
-### LoRA Fine-tuning with Baichuan
+### 4.8LoRA Fine-tuning with Baichuan
 
 You can use the following command to configure your own parameters and fine-tune the Llama model using the LoRA method:
 
@@ -394,13 +460,14 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 
 1. We use the [baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base) model for Llama.
 2. There are currently some issues with evaluation, so we use `evaluation_strategy` 'no'.
-3. We use the default `alpaca` template for the `prompt_template_name`. Please refer to `templates/alpaca.json` for more details.
-4. For more detailed parameter information, please refer to `utils/args.py`.
-5. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
-6. We have successfully run the Llama-LoRA fine-tuning code on an `RTX3090` GPU.
-7. model_name = baichuan
+3. We use the default `alpaca` template for the `prompt_template_name`. Please refer to [templates/alpaca.json](./templates/alpaca.json) for more details.
+4. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
+5. We have successfully run the Llama-LoRA fine-tuning code on an `RTX3090` GPU.
+6. model_name = baichuan
+7. For more information on parameter configuration, please refer to the [src/utils/args.py](./src/utils/args.py) file.
 
-The corresponding script can be found at `ft_scripts/fine_baichuan.bash`.
+
+The corresponding script can be found at [ft_scripts/fine_baichuan.bash](./ft_scripts/fine_baichuan.bash).
 
 
 
@@ -408,7 +475,7 @@ The corresponding script can be found at `ft_scripts/fine_baichuan.bash`.
 ## 5.P-Tuning Fine-tuning
 
 
-### P-Tuning Fine-tuning with ChatGLM
+### 5.1P-Tuning Fine-tuning with ChatGLM
 
 You can use the following command to fine-tune the model using the P-Tuning method:
 ```bash
@@ -428,65 +495,63 @@ deepspeed --include localhost:0 src/finetuning_pt.py \
 
 
 
+## 6. Prediction
 
+### 6.1 LoRA Prediction
 
-
-### Prediction of Lora
-Here are some trained versions of LoRA:
+#### 6.1.1 Base Model + LoRA
+The following are some models that have been optimized through LoRA technique training (LoRA weights):
 * [alpaca-7b-lora-ie](https://huggingface.co/zjunlp/alpaca-7b-lora-ie)
 * [llama-7b-lora-ie](https://huggingface.co/zjunlp/llama-7b-lora-ie)
 * [alpaca-13b-lora-ie](https://huggingface.co/zjunlp/alpaca-13b-lora-ie)
-* [zhixi-13B-LoRA](https://huggingface.co/zjunlp/zhixi-13b-lora/tree/main)
+* [zhixi-13b-lora](https://huggingface.co/zjunlp/zhixi-13b-lora/tree/main)
+
+The following table shows the relationship between the base models and their corresponding LoRA weights:
+
+| Base Model                 | LoRA Weights           |
+| -------------------------- | ---------------------- |
+| llama-7b                   | llama-7b-lora-ie       |
+| alpaca-7b                  | alpaca-7b-lora-ie      |
+| zjunlp/knowlm-13b-base-v1.0 | zhixi-13b-lora         |
 
 
-Correspondence between `base_model` and `lora_weights`:
-| base_model   | lora_weights   |
-| ------ | ------ |
-| llama-7b  | llama-7b-lora  |
-| alpaca-7b | alpaca-7b-lora |
-| zhixi-13b | zhixi-13b-lora |
-
-
-
-You can use the following command to set your own parameters and execute it to make predictions using the trained LoRA model on the competition test dataset:
-
-```bash
-CUDA_VISIBLE_DEVICES="0" python src/inference.py \
-    --model_name_or_path 'Path or name to model' \
-    --model_name 'model name' \
-    --lora_weights 'Path to LoRA weights dictory' \
-    --input_file 'data/valid.json' \
-    --output_file 'results/results_valid.json' \
-    --fp16 \
-    --bits 8 
-```
-
-1. Attention!!! `--fp16` or `--bf16`, `--bits`、`--prompt_template_name` and `--model_name` must be set the same as the ones used during the [4.LoRA Fine-tuning](./README.md/#4lora-fine-tuning) process.
-
-
-You can also use trained models (without Lora or with Lora merged into model parameters) to predict outputs on competition test sets:
-
+To use these trained LoRA models for prediction, you can execute the following command:
 
 ```bash
 CUDA_VISIBLE_DEVICES="0" python src/inference.py \
-    --model_name_or_path 'Path or name to model' \
+    --model_name_or_path 'model path or name' \
+    --model_name 'model name' \
+    --lora_weights 'path to LoRA weights' \
+    --input_file 'data/valid.json' \
+    --output_file 'results/results_valid.json' \
+    --fp16 \
+    --bits 4 
+```
+
+
+**Note**: Please ensure that the settings for `--fp16` or `--bf16`, `--bits`, `--prompt_template_name`, `--model_name` are consistent with the settings during [4.LoRA Fine-Tuning](./README_CN.md/#4lora微调).
+
+
+#### 6.1.2 IE-Specific Model
+If you want to use a trained model (without LoRA or with LoRA integrated into the model parameters), you can execute the following command for prediction:
+
+```bash
+CUDA_VISIBLE_DEVICES="0" python src/inference.py \
+    --model_name_or_path 'model path or name' \
     --model_name 'model name' \
     --input_file 'data/valid.json' \
     --output_file 'results/results_valid.json' \
     --fp16 \
-    --bits 8 
+    --bits 4 
 ```
 
-The following models support the aforementioned approach:
-
+The following models are applicable to the above prediction method:
 [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)
 
 
+### 6.2 P-Tuning Prediction
 
-
-### Prediction of P-Tuning
-
-You can use the following command to predict the output on the competition test set using a trained P-Tuning model:
+You can predict the output on the competition test set using a trained P-Tuning model with the following command:
 ```bash
 CUDA_VISIBLE_DEVICES=0 python src/inference_pt.py \
   --test_path data/valid.json \
@@ -499,7 +564,7 @@ CUDA_VISIBLE_DEVICES=0 python src/inference_pt.py \
 
 
 
-## 6. Model Output Conversion & F1 Calculation
+## 7. Model Output Conversion & F1 Calculation
 We provide a script, [evaluate.py](./kg2instruction/evaluate.py), to convert the model's string outputs into lists and calculate the F1 score.
 
 ```bash
@@ -511,7 +576,7 @@ python kg2instruction/evaluate.py \
 ```
 
 
-## 7.Acknowledgment
+## 8.Acknowledgment
 
 Part of the code comes from [Alpaca-LoRA](https://github.com/tloen/alpaca-lora)、[qlora](https://github.com/artidoro/qlora.git) many thanks.
 

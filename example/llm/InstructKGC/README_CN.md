@@ -8,26 +8,32 @@
 - [InstructionKGC-指令驱动的自适应知识图谱构建](#instructionkgc-指令驱动的自适应知识图谱构建)
   - [1.任务目标](#1任务目标)
   - [2.数据](#2数据)
+    - [2.1数据预处理](#21数据预处理)
+    - [2.2现有数据集](#22现有数据集)
   - [3.准备](#3准备)
-    - [环境](#环境)
-    - [下载数据](#下载数据)
-    - [模型](#模型)
+    - [3.1环境](#31环境)
+    - [3.2下载数据](#32下载数据)
+    - [3.3模型](#33模型)
   - [4.LoRA微调](#4lora微调)
-    - [LoRA微调LLaMA](#lora微调llama)
-    - [LoRA微调Alpaca](#lora微调alpaca)
-    - [LoRA微调智析](#lora微调智析)
-    - [LoRA微调Vicuna](#lora微调vicuna)
-    - [LoRA微调ChatGLM](#lora微调chatglm)
-    - [LoRA微调Moss](#lora微调moss)
-    - [LoRA微调Baichuan](#lora微调baichuan)
+    - [4.1基础参数](#41基础参数)
+    - [4.2LoRA微调LLaMA](#42lora微调llama)
+    - [4.3LoRA微调Alpaca](#43lora微调alpaca)
+    - [4.4LoRA微调智析](#44lora微调智析)
+    - [4.5LoRA微调Vicuna](#45lora微调vicuna)
+    - [4.6LoRA微调ChatGLM](#46lora微调chatglm)
+    - [4.7LoRA微调Moss](#47lora微调moss)
+    - [4.8LoRA微调Baichuan](#48lora微调baichuan)
   - [5.P-Tuning微调](#5p-tuning微调)
-    - [P-Tuning微调ChatGLM](#p-tuning微调chatglm)
+    - [5.1P-Tuning微调ChatGLM](#51p-tuning微调chatglm)
   - [6.预测](#6预测)
-      - [LoRA预测](#lora预测)
-    - [P-Tuning预测](#p-tuning预测)
+    - [6.1LoRA预测](#61lora预测)
+      - [6.1.1基础模型+Lora](#611基础模型lora)
+      - [6.1.2IE专用模型](#612ie专用模型)
+    - [6.2P-Tuning预测](#62p-tuning预测)
   - [7.模型输出转换\&计算F1](#7模型输出转换计算f1)
   - [8.Acknowledgment](#8acknowledgment)
   - [Citation](#citation)
+
 
 
 ## 1.任务目标
@@ -43,11 +49,14 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 ```
 
 
+
 ## 2.数据
 
-模型的输入需要包含`instruction`和`input`(可选)字段, 我们在 [kg2instruction/convert.py](./kg2instruction/convert.py) 提供了一个脚本，用于将数据统一转换为可以直接输入模型的格式。
 
-* 请注意！在执行 [kg2instruction/convert.py](./kg2instruction/convert.py) 之前，请参考 [data](./data) 目录, 其中包含了每种任务的预期数据格式。
+### 2.1数据预处理
+在对模型进行数据输入之前，需要将数据格式化以包含`instruction`和`input`字段。为此，我们提供了一个脚本 [kg2instruction/convert.py](./kg2instruction/convert.py)，它可以将数据批量转换成模型可以直接使用的格式。
+
+> 在使用 [kg2instruction/convert.py](./kg2instruction/convert.py) 脚本之前，请确保参考了 [data](./data) 目录。该目录中详细列出了每种任务所需的数据格式要求。
 
 
 ```bash              
@@ -55,15 +64,16 @@ python kg2instruction/convert.py \
   --src_path data/NER/sample.json \
   --tgt_path data/NER/processed.json \
   --schema_path data/NER/schema.json \
-  --language zh \      # 不同语言使用的template及转换脚本不同
-  --task NER \         # ['RE', 'NER', 'EE', 'EET', 'EEA'] 5种任务
-  --sample -1 \        # 若为-1, 则从20种指令和4种输出格式中随机采样其中一种, 否则即为指定的指令格式, -1<=sample<20
-  --neg_ratio 1 \      # 表示所有样本的负采样比例
-  --neg_schema 1 \     # 表示从schema中负采样的比例
+  --language zh \      # 指定转换脚本和模板使用的语言, ['zh', 'en']
+  --task NER \         # 指定任务类型：['RE', 'NER', 'EE', 'EET', 'EEA'] 中的一种
+  --sample -1 \        # 如果为-1，则随机采样20种指令和4种输出格式中的一种；如果为指定数值，则使用对应的指令格式，取值范围为 -1<=sample<20
+  --neg_ratio 1 \      # 设置所有样本的负采样比例
+  --neg_schema 1 \     # 设置从schema中负采样的比例
   --random_sort        # 是否对指令中的schema列表进行随机排序
 ```
 
-[kg2instruction/convert_test.py](./kg2instruction/convert_test.py) 不要求数据具有标签(`entity`、`relation`、`event`)字段, 只需要具有 `input` 字段, 以及提供 `schema_path`, 适合用来处理测试数据。
+
+对于测试数据，可以使用 [kg2instruction/convert_test.py](./kg2instruction/convert_test.py) 脚本，它不要求数据包含标签（`entity`、`relation`、`event`）字段，只需提供input字段和相应的schema_path。
 
 ```bash
 python kg2instruction/convert_test.py \
@@ -77,59 +87,76 @@ python kg2instruction/convert_test.py \
 
 
 * 更详细的关于IE模版、数据格式转换、数据提取请参考[kg2instruction/README_CN.md](./kg2instruction/README_CN.md)
-
 * 您也可以自行构建包含`instruction`和`input`字段的数据
 
+
+
+### 2.2现有数据集
 下面是一些现成的处理后的数据：
 
 | 名称                  | 下载                                                                                                                     | 数量     | 描述                                                                                                                                                       |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| InstructIE-train       | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘,提取码: x4s7](https://pan.baidu.com/s/1xXVrjkinw4cyKKFBR8BwQw?pwd=x4s7)    | 30w+ | InstructIE训练集                                                                                     |
-| InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘,提取码: 71ie](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)    | 2000+ | InstructIE验证集                                                                                     |
-| InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘,提取码: cyr9](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE测试集                                                                                     |
+| InstructIE-train       | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘](https://pan.baidu.com/s/1xXVrjkinw4cyKKFBR8BwQw?pwd=x4s7)    | 30w+ | InstructIE训练集                                                                                     |
+| InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)    | 2000+ | InstructIE验证集                                                                                     |
+| InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE测试集                                                                                     |
 | train.json, valid.json          | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing)                     | 5000   | [CCKS2023 开放环境下的知识图谱构建与补全评测任务一：指令驱动的自适应知识图谱构建](https://tianchi.aliyun.com/competition/entrance/532080/introduction) 中的初赛训练集及测试集 |
 
 
-`InstructIE-train`包含`InstructIE-zh.json`、`InstructIE-en.json`两个文件, 每个文件均包含以下字段：`'id'`(唯一标识符)、`'cate'`(文本主题)、`'entity'`、`'relation'`(三元组)字段，可以通过`'entity'`、`'relation'`自由构建抽取的指令和输出。
-`InstructIE-valid`、`InstructIE-test`分别是验证集和测试集, 包含`zh`和`en`双语。
 
-`train.json`：字段含义同`train.json`，`'instruction'`、`'output'`都只有1种格式，也可以通过`'relation'`自由构建抽取的指令和输出。
-`valid.json`：字段含义同`train.json`，但是经过众包标注，更加准确。
+`InstructIE-train` 数据集包含两个核心文件：`InstructIE-zh.json` 和 `InstructIE-en.json`。这两个文件都涵盖了丰富的字段，用于详细描述数据集的不同方面：
 
+- `'id'`：每条数据的唯一标识符，确保数据项的独立性和可追踪性。
+- `'cate'`：文本主题分类，为文本内容提供了一个高级的分类标签（共有12种主题）。
+- `'entity'`和`'relation'`：分别代表实体和关系三元组，这些字段允许用户自由构建信息抽取的指令和预期输出结果。
 
-以下是各字段的说明：
+对于验证集`InstructIE-valid`和测试集`InstructIE-test`，它们包含中英双语版本，保证了数据集在不同语言环境下的适用性。
 
-|    字段     |                          说明                          |
-| :---------: | :----------------------------------------------------: |
-|     id      |                     唯一标识符                           |
-|    cate     |     文本input对应的主题(共12种)                           |
-|    input    |    模型输入文本（需要抽取其中涉及的所有关系三元组）            |
-| instruction |                 模型进行抽取任务的指令                     |
-| output      |                   模型期望输出                           |
-| entity      |            实体(entity, entity_type)                    |
-| relation    |     input中涉及的关系三元组(head, relation, tail)         |
+- `train.json`：这个文件中的字段定义与`InstructIE-train`一致，但`'instruction'`和`'output'`字段展示了一种格式。尽管如此，用户仍可以依据`'relation'`字段自由构建信息抽取的指令和输出。
+- `valid.json`：其字段意义与`train.json`保持一致，但此数据集经过众包标注处理，提供了更高的准确性和可靠性。
 
+各字段详细说明如下：
+
+|    字段     |                             说明                             |
+| :---------: | :----------------------------------------------------------: |
+|     id      |                       每个数据点的唯一标识符。                       |
+|    cate     |           文本的主题类别，总计12种不同的主题分类。               |
+|    input    | 模型的输入文本，目标是从中抽取涉及的所有关系三元组。                  |
+| instruction |                 指导模型执行信息抽取任务的指示。                    |
+|    output   |                      模型的预期输出结果。                        |
+|   entity    |            描述实体以及其对应类型的详细信息(entity, entity_type)。    |
+|  relation   |   描述文本中包含的关系三元组，即实体间的联系(head, relation, tail)。   |
+
+利用上述字段，用户可以灵活地设计和实施针对不同信息抽取需求的指令和输出格式。
 
 此处 [schema](./kg2instruction/convert/utils.py) 提供了12种文本主题, 以及该主题下常见的关系类型。
 
+
+
+
+
 ## 3.准备
-### 环境
-请参考[DeepKE/example/llm/README_CN.md](../README_CN.md/#环境依赖)创建python虚拟环境, 然后激活该环境 `deepke-llm`:
+
+
+
+### 3.1环境
+在开始之前，请确保根据[DeepKE/example/llm/README_CN.md](../README_CN.md/#环境依赖)中的指导创建了适当的Python虚拟环境。创建并配置好虚拟环境后，请通过以下命令激活名为deepke-llm的环境：
 
 ```bash
 conda activate deepke-llm
 ```
 
-！！！注意，为适配`qlora`技术，我们升高了原deepke-llm中`transformers`、`accelerate`、`bitsandbytes`、`peft`库的版本
+> 为了确保与qlora技术的兼容性，我们对deepke-llm环境中的几个关键库进行了版本更新
 
 1. transformers 0.17.1 -> 4.30.2
 2. accelerate 4.28.1 -> 0.20.3
 3. bitsandbytes 0.37.2 -> 0.39.1
-4. peft 0.2.0 -> 0.4.0dev
+4. peft 0.2.0 -> 0.4.0
+
+请确保您的环境中这些库的版本与上述要求相匹配，以便顺利运行接下来的任务。
 
 
 
-### 下载数据
+### 3.2下载数据
 ```bash
 mkdir results
 mkdir lora
@@ -139,7 +166,7 @@ mkdir data
 数据放在目录 `./data` 中。
 
 
-### 模型
+### 3.3模型
 下面是一些模型
 * [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf) | [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b) | [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
@@ -151,20 +178,25 @@ mkdir data
 * [baichuan-inc/Baichuan-7B](https://huggingface.co/baichuan-inc/Baichuan-7B) | [baichuan-inc/Baichuan-13B-Base](https://huggingface.co/baichuan-inc/Baichuan-13B-Base) | [baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base) | [baichuan-inc/Baichuan2-13B-Base](https://huggingface.co/baichuan-inc/Baichuan2-13B-Base)
 
 
+
 ## 4.LoRA微调
 
-基础参数:
-* `--model_name`: 当前代码支持的模型, 包括以下模型["llama", "falcon", "baichuan", "chatglm", "moss", "alpaca", "vicuna", "zhixi"], 注意与`model_name_or_path`区分。
-* `--train_file`、`--valid_file`(可选): 训练集和验证集文件路径(json格式文件), 如果没有指定valid_file, 我们默认会从* `train_file`中划分`val_set_size`数量的样本做验证集）, 你也可以使用`val_set_size`调整验证集的数量。
-* `--output_dir`: Lora权重参数保存路径。
-* `--val_set_size`: 验证集样本数量, 默认1000。
-* `--prompt_template_name`: 模版名称, 目前支持[alpaca, vicuna, moss]三种模版类型, 默认alpaca模版
+### 4.1基础参数
+进行LoRA微调时，您需要配置一些基础参数来指定模型类型、数据集路径以及输出设置等。以下是可用的基础参数及其说明：
 
-> 注意！！以下所有命令都应在`InstrctKGC`目录下执行！！例如运行微调脚本的命令是：`bash scripts/fine_llama.bash`
+* `--model_name`: 指定您想要使用的模型名称。当前支持的模型列表包括：["llama", "falcon", "baichuan", "chatglm", "moss", "alpaca", "vicuna", "zhixi"]。请注意，此参数应与model_name_or_path保持区分。
+* `--train_file` 和 `--valid_file`（可选）: 分别指向您的训练集和验证集的json格式文件路径。如果未提供 valid_file，系统将默认从 train_file 指定的文件中划分出 val_set_size 指定数量的样本作为验证集。您也可以通过调整 val_set_size 参数来改变验证集的样本数量。
+* `--output_dir``: 设置LoRA微调后的权重参数保存路径。
+* `--val_set_size`: 定义验证集的样本数量，默认为1000。
+* `--prompt_template_name`: 选择使用的模板名称。目前支持三种模板类型：[alpaca, vicuna, moss]，默认使用的是alpaca模板。
 
-### LoRA微调LLaMA
+> 重要提示：以下的所有命令均应在InstrctKGC目录下执行。例如，如果您想运行微调脚本，您应该使用如下命令：bash scripts/fine_llama.bash。请确保您的当前工作目录正确。
 
-你可以通过下面的命令设置自己的参数使用LoRA方法来微调Llama模型:
+
+### 4.2LoRA微调LLaMA
+
+要使用LoRA技术微调LLaMA模型，您可以设置自定义参数并运行以下命令：
+
 ```bash
 output_dir='path to save Llama Lora'
 mkdir -p ${output_dir}
@@ -191,26 +223,27 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     --lora_dropout 0.05 \
     --max_memory_MB 24000 \
     --fp16 \
-    --bits 8 \
+    --bits 4 \
     | tee ${output_dir}/train.log \
     2> ${output_dir}/train.err
 ```
 
 1. Llama模型我们采用[LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
-2. 你可以使用`--valid_file`提供验证集, 或者什么都不做（在`finetune.py`中, 我们会从train.json中划分`val_set_size`数量的样本做验证集）, 你也可以使用`val_set_size`调整验证集的数量。
-3. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates/alpaca.json)
-4. 更详细的参数信息请参考 [src/utils/args.py](./src/utils/args.py)
-5. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
-6. 我们在 `RTX3090` 上跑通了llama-lora微调代码
-7. model_name = llama (llama2也是llama)
+2. 可以通过--valid_file参数指定验证集。如果不指定，finetune.py脚本将会从train.json文件中切分出val_set_size指定数量的样本来创建验证集。此外，您也可以通过调整val_set_size来改变验证集的样本量。
+3. 对于prompt_template_name，我们默认使用alpaca模板。模板的详细内容可以在 [templates/alpaca.json](./templates/alpaca.json) 文件中找到。
+4. 参数max_memory_MB（默认设置为80000）用以指定GPU显存的大小。请根据您的GPU性能来进行相应调整。
+5. 我们已经在RTX3090 GPU上成功运行了LLaMA模型使用LoRA技术的微调代码。
+6. model_name = llama（llama2也是llama）
+7. 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
 
-相应的脚本在 [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash)
+微调LLaMA模型的具体脚本可以在 [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash) 中找到。
 
 
 
-### LoRA微调Alpaca
+### 4.3LoRA微调Alpaca
 
-微调指令大致遵循上面的[LoRA微调LLaMA](./README_CN.md/#lora微调llama)命令, 仅需对`scripts/fine_llama.bash`做出下列修改
+微调Alpaca模型时，您可遵循与[微调LLaMA模型](./README_CN.md/#42lora微调llama)类似的步骤。要进行微调，请对[ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash)文件做出以下修改：
+
 
 ```bash
 output_dir='path to save Alpaca Lora'
@@ -219,19 +252,21 @@ output_dir='path to save Alpaca Lora'
 ```
 
 1. Alpaca模型我们采用[Alpaca-7b](https://huggingface.co/circulus/alpaca-7b)
-2. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates/alpaca.json)
-3. 我们在 `RTX3090` 上跑通了alpaca-lora微调代码
+2. 对于prompt_template_name，我们默认使用alpaca模板。模板的详细内容可以在 [templates/alpaca.json](./templates/alpaca.json) 文件中找到。
+3. 我们已经在RTX3090 GPU上成功运行了Alpaca模型使用LoRA技术的微调代码。
 4. model_name = alpaca
+5. 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
 
 
 
+### 4.4LoRA微调智析
 
-### LoRA微调智析
+在开始微调智析模型之前，请确保遵循[KnowLM2.2预训练模型权重获取与恢复](https://github.com/zjunlp/KnowLM#2-2)的指南获取完整的智析模型权重。
 
-首先！！请参考[KnowLM2.2预训练模型权重获取与恢复](https://github.com/zjunlp/KnowLM#2-2)获得完整的智析模型权重。
-注意: 由于智析已经在大量的信息抽取指令数据集上经过LoRA训练, 因此可以跳过这一步直接执行预测, 你也可以选择进一步训练。
+**重要提示**：由于智析模型已经在丰富的信息抽取任务数据集上进行了LoRA训练，你可能不需要再次微调，可以直接进行预测任务。如果选择进行进一步训练，可以按照以下步骤操作。
 
-微调指令大致遵循上面的[LoRA微调LLaMA](./README_CN.md/#lora微调llama)命令, 仅需对`scripts/fine_llama.bash`做出下列修改
+微调智析模型的指令与[微调LLaMA模型](./README_CN.md/#42lora微调llama)类似，只需在[ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash)中作如下调整：
+
 
 ```bash
 output_dir='path to save Zhixi Lora'
@@ -241,17 +276,18 @@ output_dir='path to save Zhixi Lora'
 --model_name 'zhixi' \
 ```
 
-1. 由于Zhixi目前只有13b的模型, 因此需要相应减小batch size
-2. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates//alpaca.json)
-3. 我们在 `RTX3090` 上跑通了ZhiXi-lora微调代码
+1. 由于Zhixi目前只有13b的模型, 建议相应地减小批处理大小batch size
+2. 对于prompt_template_name，我们默认使用alpaca模板。模板的详细内容可以在 [templates/alpaca.json](./templates/alpaca.json) 文件中找到。
+3. 我们已经在RTX3090 GPU上成功运行了Zhixi模型使用LoRA技术的微调代码。
 4. model_name = zhixi
+5. 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
 
 
 
-
-### LoRA微调Vicuna
+### 4.5LoRA微调Vicuna
 
 你可以通过下面的命令设置自己的参数使用LoRA方法来微调Vicuna模型:
+
 ```bash
 output_dir='path to save Vicuna Lora'
 mkdir -p ${output_dir}
@@ -279,7 +315,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     --lora_dropout 0.05 \
     --max_memory_MB 24000 \
     --fp16 \
-    --bits 8 \
+    --bits 4 \
     | tee ${output_dir}/train.log \
     2> ${output_dir}/train.err
 ```
@@ -289,13 +325,13 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 3. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
 4. 我们在 `RTX3090` 上跑通了vicuna-lora微调代码
 5. model_name = vicuna
+6. 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
 
 相应的脚本在 [ft_scripts/fine_vicuna.bash](./ft_scripts//fine_vicuna.bash)
 
 
 
-
-### LoRA微调ChatGLM
+### 4.6LoRA微调ChatGLM
 
 你可以通过下面的命令设置自己的参数使用LoRA方法来微调ChatGLM模型，注意⚠️目前chatglm更新速度较快，请您确保您的模型与chatglm最新模型保持一致:
 ```bash
@@ -337,15 +373,17 @@ CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/fine
 4. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
 5. 我们在 `RTX3090` 上跑通了chatglm-lora微调代码
 6. model_name = chatglm
+7. 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
 
 相应的脚本在 [ft_scripts/fine_chatglm.bash](./ft_scripts//fine_chatglm.bash)
 
 
 
 
-### LoRA微调Moss
+### 4.7LoRA微调Moss
 
 你可以通过下面的命令设置自己的参数使用LoRA方法来微调Moss模型:
+
 ```bash
 output_dir='path to save Moss Lora'
 mkdir -p ${output_dir}
@@ -387,15 +425,17 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 4. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
 5. 我们在 `RTX3090` 上跑通了moss-lora微调代码
 6. model_name = moss
+7. 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
 
 相应的脚本在 [ft_scripts/fine_moss.bash](./ft_scripts/fine_moss.bash)
 
 
 
 
-### LoRA微调Baichuan
+### 4.8LoRA微调Baichuan
 
 你可以通过下面的命令设置自己的参数使用LoRA方法来微调Baichuan模型:
+
 ```bash
 CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
     --do_train --do_eval \
@@ -428,10 +468,11 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 1. Baichuan模型我们采用[baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base)
 2. 目前在evaluation方面存在一些问题, 因此我们使用`evaluation_strategy` "no"
 3. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates/alpaca.json)
-4. 更详细的参数信息请参考 [src/utils/args.py](./src/utils/args.py)
-5. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
-6. 我们在 `RTX3090` 上跑通了baichuan-lora微调代码
-7. model_name = baichuan
+4. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
+5. 我们在 `RTX3090` 上跑通了baichuan-lora微调代码
+6. model_name = baichuan
+7. 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
+
 
 相应的脚本在 [ft_scripts/fine_baichuan.bash](./ft_scripts/fine_baichuan.bash)
 
@@ -440,7 +481,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 ## 5.P-Tuning微调
 
 
-### P-Tuning微调ChatGLM
+### 5.1P-Tuning微调ChatGLM
 你可以通过下面的命令使用P-Tuning方法来finetune模型:
 ```bash
 deepspeed --include localhost:0 src/finetuning_pt.py \
@@ -463,53 +504,61 @@ deepspeed --include localhost:0 src/finetuning_pt.py \
 ## 6.预测
 
 
-#### LoRA预测
-以下是训练好的一些LoRA版本:
+### 6.1LoRA预测
+
+#### 6.1.1基础模型+Lora
+以下是一些经过LoRA技术训练优化的模型(Lora权重)：
 * [alpaca-7b-lora-ie](https://huggingface.co/zjunlp/alpaca-7b-lora-ie)
 * [llama-7b-lora-ie](https://huggingface.co/zjunlp/llama-7b-lora-ie)
 * [alpaca-13b-lora-ie](https://huggingface.co/zjunlp/alpaca-13b-lora-ie)
-* [zhixi-13B-LoRA](https://huggingface.co/zjunlp/zhixi-13b-lora/tree/main)
+* [zhixi-13b-lora](https://huggingface.co/zjunlp/zhixi-13b-lora/tree/main)
 
-base_model与lora_weights的对应关系:
-| base_model   | lora_weights   |
-| ------ | ------ |
-| llama-7b  | llama-7b-lora  |
-| alpaca-7b | alpaca-7b-lora |
-| zjunlp/knowlm-13b-base-v1.0 | zhixi-13b-lora |
+以下表格显示了基础模型和其对应的LoRA权重之间的关系：
+
+| 基础模型                 | LoRA权重            |
+| ----------------------- | ------------------- |
+| llama-7b                | llama-7b-lora-ie       |
+| alpaca-7b               | alpaca-7b-lora-ie      |
+| zjunlp/knowlm-13b-base-v1.0 | zhixi-13b-lora      |
 
 
-你可以通过下面的命令设置自己的参数执行来使用训练好的LoRA模型在比赛测试集上预测输出:
-
-```bash
-CUDA_VISIBLE_DEVICES="0" python src/inference.py \
-    --model_name_or_path 'Path or name to model' \
-    --model_name 'model name' \
-    --lora_weights 'Path to LoRA weights dictory' \
-    --input_file 'data/valid.json' \
-    --output_file 'results/results_valid.json' \
-    --fp16 \
-    --bits 8 
-```
-
-1.注意！！`--fp16` 或 `--bf16`、`--bits`、`--prompt_template_name`、`--model_name`一定要与[4.LoRA微调](./README_CN.md/#4lora微调)时设置的一样
-
-也可以使用训练好的模型(无Lora或Lora已合并进模型参数中)在比赛测试集上预测输出:
+要使用这些训练好的LoRA模型进行预测，可以执行以下命令：
 
 ```bash
 CUDA_VISIBLE_DEVICES="0" python src/inference.py \
-    --model_name_or_path 'Path or name to model' \
-    --model_name 'model name' \
+    --model_name_or_path '模型路径或名称' \
+    --model_name '模型名称' \
+    --lora_weights 'LoRA权重的路径' \
     --input_file 'data/valid.json' \
     --output_file 'results/results_valid.json' \
     --fp16 \
-    --bits 8 
+    --bits 4 
 ```
-以下模型支持上述方法：
+
+
+**注意**：请确保`--fp16` 或 `--bf16`、`--bits`、`--prompt_template_name`、`--model_name`的设置与[4.LoRA微调](./README_CN.md/#4lora微调)时保持一致。
+
+
+#### 6.1.2IE专用模型
+若要使用已训练的模型（无LoRA或LoRA已集成到模型参数中），可以执行以下命令进行预测：
+
+```bash
+CUDA_VISIBLE_DEVICES="0" python src/inference.py \
+    --model_name_or_path '模型路径或名称' \
+    --model_name '模型名称' \
+    --input_file 'data/valid.json' \
+    --output_file 'results/results_valid.json' \
+    --fp16 \
+    --bits 4 
+```
+
+以下模型适用上述预测方法：
 [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)
 
 
 
-### P-Tuning预测
+
+### 6.2P-Tuning预测
 
 你可以通过下面的命令使用训练好的P-Tuning模型在比赛测试集上预测输出:
 ```bash

@@ -109,9 +109,9 @@ pip install -r requirements.txt
 
 LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了基于[KnowLM](https://github.com/zjunlp/KnowLM)框架的抽取大模型`智析`的支持。其首先（1）使用中英双语语料首先对LLaMA（13B）进行进一步全量预训练，在尽可能保留原来的英文和代码能力的前提下，进一步提高模型对于中文理解能力和知识储备；接着（2）使用指令数据集对第一步的模型微调，来提高语言模型对于人类指令的理解。模型详细信息请参考[KnowLM](https://github.com/zjunlp/KnowLM).
 
-### 案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-llama) | [中文](./InstructKGC/README_CN.md/#lora微调llama)
+### 案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#42lora-fine-tuning-with-llama) | [中文](./InstructKGC/README_CN.md/#42lora微调llama)
 
-### 案例二：使用智析完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-zhixi-智析) | [中文](./InstructKGC/README_CN.md/#lora微调智析)
+### 案例二：使用智析完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#44lora-fine-tuning-with-zhixi-智析) | [中文](./InstructKGC/README_CN.md/#44lora微调智析)
 
 
 
@@ -120,8 +120,8 @@ LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了�
 <a href="" target="_blank"><img src="assets/chatglm_logo.png" alt="ChatGLM" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
-### 案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#lora-fine-tuning-with-chatglm) | [中文](./InstructKGC//README_CN.md/#lora微调chatglm) 
-### 案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#lora-fine-tuning-with-chatglm) | [中文](./InstructKGC/README_CN.md/#p-tuning微调chatglm)
+### 案例一：LoRA微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#46lora-fine-tuning-with-chatglm) | [中文](./InstructKGC//README_CN.md/#46lora微调chatglm) 
+### 案例二：P-Tuning微调ChatGLM完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC/README.md/#51p-tuning-fine-tuning-with-chatglm) | [中文](./InstructKGC/README_CN.md/#51p-tuning微调chatglm)
 
 
 
@@ -130,7 +130,7 @@ LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了�
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/moss_logo.png" alt="ChatGLM" style="width: 25%; min-width: 25px; display: block; margin: auto;"></a>
 
-### 案例一：Lora微调Moss完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#lora-fine-tuning-with-moss) | [中文](./InstructKGC//README_CN.md/#lora微调Moss) 
+### 案例一：Lora微调Moss完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#47lora-fine-tuning-with-moss) | [中文](./InstructKGC//README_CN.md/#47lora微调moss) 
 
 
 
@@ -140,7 +140,7 @@ LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了�
 <a href="" target="_blank"><img src="assets/baichuan_logo.png" alt="Baichuan" style="width: 25%; min-width: 25px; display: block; margin: auto;"></a>
 
 
-### Case 1: Lora微调Baichuan完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#lora-fine-tuning-with-baichuan) | [中文](./InstructKGC//README_CN.md/#lora微调baichuan) 
+### Case 1: Lora微调Baichuan完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#48lora-fine-tuning-with-baichuan) | [中文](./InstructKGC//README_CN.md/#48lora微调baichuan) 
 
 
 
