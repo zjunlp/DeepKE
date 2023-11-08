@@ -116,9 +116,9 @@ LLaMA, a collection of foundation language models ranging from 7B to 65B paramet
 ZhiXi follows a two-step approach: (1) It performs further full pre-training on `LLaMA (13B)` using Chinese/English corpora to enhance the model's Chinese comprehension and knowledge while preserving its English and code capabilities as much as possible. (2) It fine-tunes the model using an instruction dataset to improve the language model's understanding of human instructions. For detailed information about the model, please refer to [KnowLM](https://github.com/zjunlp/KnowLM).
 
 
-### Case 1: LoRA Fine-tuning of LLaMA for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md/#lora-fine-tuning-with-llama) | [Chinese](./InstructKGC/README_CN.md/#lora微调llama)
+### Case 1: LoRA Fine-tuning of LLaMA for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md/#42lora-fine-tuning-with-llama) | [Chinese](./InstructKGC/README_CN.md/#42lora微调llama)
 
-### Case 2: Using ZhiXi for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md/#lora-fine-tuning-with-zhixi-智析) | [Chinese](./InstructKGC/README_CN.md/#lora微调智析)
+### Case 2: Using ZhiXi for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md/#44lora-fine-tuning-with-zhixi-智析) | [Chinese](./InstructKGC/README_CN.md/#44lora微调智析)
 
 
 
@@ -128,8 +128,8 @@ ZhiXi follows a two-step approach: (1) It performs further full pre-training on 
 <a href="" target="_blank"><img src="assets/chatglm_logo.png" alt="ChatGLM" style="width: 20%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
-### Case 1: LoRA Fine-tuning of ChatGLM for CCKS2023 Instruction-based KG Construction [English](./InstructKGC//README.md/#lora-fine-tuning-with-chatglm) | [Chinese](./InstructKGC//README_CN.md/#lora微调chatglm) 
-### Case 2: P-Tuning of ChatGLM for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md/#p-tuning-fine-tuning-with-chatglm) | [Chinese](./InstructKGC/README_CN.md/#p-tuning微调chatglm)
+### Case 1: LoRA Fine-tuning of ChatGLM for CCKS2023 Instruction-based KG Construction [English](./InstructKGC//README.md/#46lora-fine-tuning-with-chatglm) | [Chinese](./InstructKGC//README_CN.md/#46lora微调chatglm) 
+### Case 2: P-Tuning of ChatGLM for CCKS2023 Instruction-based KG Construction [English](./InstructKGC/README.md/#51p-tuning-fine-tuning-with-chatglm) | [Chinese](./InstructKGC/README_CN.md/#51p-tuning微调chatglm)
 
 
 
@@ -139,7 +139,7 @@ ZhiXi follows a two-step approach: (1) It performs further full pre-training on 
 <a href="" target="_blank"><img src="assets/moss_logo.png" alt="ChatGLM" style="width: 25%; min-width: 25px; display: block; margin: auto;"></a>
 
 
-### Case 1: OpenDelta Fine-tuning of Moss for CCKS2023 Instruction-based KG Construction [English](./InstructKGC//README.md/#lora-fine-tuning-with-moss) | [Chinese](./InstructKGC//README_CN.md/#lora微调moss) 
+### Case 1: OpenDelta Fine-tuning of Moss for CCKS2023 Instruction-based KG Construction [English](./InstructKGC//README.md/#47lora-fine-tuning-with-moss) | [Chinese](./InstructKGC//README_CN.md/#47lora微调moss) 
 
 
 
@@ -150,7 +150,7 @@ ZhiXi follows a two-step approach: (1) It performs further full pre-training on 
 <a href="" target="_blank"><img src="assets/baichuan_logo.png" alt="Baichuan" style="width: 25%; min-width: 25px; display: block; margin: auto;"></a>
 
 
-### Case 1: OpenDelta Fine-tuning of Baichuan for CCKS2023 Instruction-based KG Construction [English](./InstructKGC//README.md/#lora-fine-tuning-with-baichuan) | [Chinese](./InstructKGC//README_CN.md/#lora微调baichuan) 
+### Case 1: OpenDelta Fine-tuning of Baichuan for CCKS2023 Instruction-based KG Construction [English](./InstructKGC//README.md/#48lora-fine-tuning-with-baichuan) | [Chinese](./InstructKGC//README_CN.md/#48lora微调baichuan) 
 
 
 
