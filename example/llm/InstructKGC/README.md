@@ -179,6 +179,9 @@ When performing LoRA fine-tuning, you need to configure some basic parameters to
 * `--output_dir`: Sets the path for saving the weight parameters after LoRA fine-tuning.
 * `--val_set_size`: Defines the number of samples in the validation set, with a default of 1000.
 * `--prompt_template_name`: Choose the name of the template you want to use. Currently, three types of templates are supported: [alpaca, vicuna, moss], with the alpaca template being the default.
+* `--max_memory_MB` (default setting is 80000) is used to specify the size of the GPU memory. Please adjust it according to the performance of your GPU.
+* For more information on parameter configuration, please refer to the [src/utils/args.py](./src/utils/args.py) file.
+
 
 > Important Note: All the following commands should be executed in the InstrctKGC directory. For example, if you want to run a fine-tuning script, you should use the following command: bash scripts/fine_llama.bash. Make sure your current working directory is correct.
 
@@ -219,12 +222,10 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 ```
 
 1. For the Llama model, we use [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf).
-2. A validation set can be specified through the `--valid_file` parameter. If not specified, the finetune.py script will create a validation set by splitting off the number of samples designated by `val_set_size` from the train.json file. Moreover, you can also adjust `val_set_size` to change the volume of samples in the validation set.
-3. For `prompt_template_name`, we use the alpaca template by default. The detailed contents of the template can be found in the [templates/alpaca.json](./templates/alpaca.json) file.
-4. The parameter `max_memory_MB` (default setting is 80000) is used to specify the size of the GPU memory. Please adjust it according to the performance of your GPU.
-5. We have successfully run the finetuning code for the LLAMA model using LoRA technology on an RTX3090 GPU.
-6. `model_name` = llama (llama2 is also llama).
-7. For more information on parameter configuration, please refer to the [src/utils/args.py](./src/utils/args.py) file.
+2. For `prompt_template_name`, we use the alpaca template by default. The detailed contents of the template can be found in the [templates/alpaca.json](./templates/alpaca.json) file.
+3. We have successfully run the finetuning code for the LLAMA model using LoRA technology on an RTX3090 GPU.
+4. `model_name` = llama (llama2 is also llama).
+  
 
 The specific script for fine-tuning the LLAMA model can be found in [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash).
 
@@ -245,7 +246,6 @@ output_dir='path to save Alpaca Lora'
 2. For `prompt_template_name`, we default to using the alpaca template. The detailed contents of the template can be found in the [templates/alpaca.json](./templates/alpaca.json) file.
 3. We have successfully run the finetuning code for the Alpaca model using LoRA technology on an RTX3090 GPU.
 4. `model_name` = alpaca
-5. For more information on parameter configuration, please refer to the [src/utils/args.py](./src/utils/args.py) file.
 
 
 
@@ -271,7 +271,6 @@ output_dir='path to save Zhixi Lora'
 2. For `prompt_template_name`, we default to using the alpaca template. The detailed contents of the template can be found in the [templates/alpaca.json](./templates/alpaca.json) file.
 3. We have successfully run the fine-tuning code for the Zhixi model using LoRA technology on an RTX3090 GPU.
 4. `model_name` = zhixi
-5. For more information on parameter configuration, please refer to the [src/utils/args.py](./src/utils/args.py) file.
 
 
 ### 4.5LoRA Fine-Tuning Vicuna
@@ -313,9 +312,8 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 
 1. For the Vicuna model, we use [Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1)
 2. Since the Vicuna-7b-delta-v1.1 uses a different `prompt_template_name` than the `alpaca` template, you need to set `--prompt_template_name 'vicuna'`, see [templates/vicuna.json](./templates//vicuna.json) for details
-3. `max_memory_MB` (default 80000) specifies the memory size of the GPU, you will need to adjust this according to your GPU
-4. We have successfully run the vicuna-lora fine-tuning code on an `RTX3090`
-5. `model_name` = vicuna
+3. We have successfully run the vicuna-lora fine-tuning code on an `RTX3090`
+4. `model_name` = vicuna
 
 The corresponding script can be found at [ft_scripts/fine_vicuna.bash](./ft_scripts//fine_vicuna.bash)
 
@@ -362,10 +360,8 @@ CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/fine
 1. We use the [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b) model for ChatGLM.
 2. We use the default `alpaca` template for the `prompt_template_name`. Please refer to [templates/alpaca.json](./templates/alpaca.json) for more details.
 3. Due to unsatisfactory performance with 8-bit quantization, we did not apply quantization to the ChatGLM model.
-4. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
-5. We have successfully run the ChatGLM-LoRA fine-tuning code on an `RTX3090` GPU.
-6. model_name = chatglm
-7. For more information on parameter configuration, please refer to the [src/utils/args.py](./src/utils/args.py) file.
+4. We have successfully run the ChatGLM-LoRA fine-tuning code on an `RTX3090` GPU.
+5. model_name = chatglm
 
 The corresponding script can be found at [ft_scripts/fine_chatglm.bash](./ft_scripts//fine_chatglm.bash).
 
@@ -414,10 +410,8 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 1. We use the [moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft) model for Moss.
 2. The `prompt_template_name` has been modified based on the alpaca template. Please refer to [templates/moss.json](./templates/moss.json) for more details. Therefore, you need to set `--prompt_template_name 'moss'`.
 3. Due to memory limitations on the `RTX3090`, we use the `qlora` technique for 4-bit quantization. However, you can try 8-bit quantization or non-quantization strategies on `V100` or `A100` GPUs.
-4. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
-5. We have successfully run the Moss-LoRA fine-tuning code on an `RTX3090` GPU.
-6. model_name = moss
-7. For more information on parameter configuration, please refer to the [src/utils/args.py](./src/utils/args.py) file.
+4. We have successfully run the Moss-LoRA fine-tuning code on an `RTX3090` GPU.
+5. model_name = moss
 
 The corresponding script can be found at [ft_scripts/fine_moss.bash](./ft_scripts/fine_moss.bash).
 
@@ -461,10 +455,9 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 1. We use the [baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base) model for Llama.
 2. There are currently some issues with evaluation, so we use `evaluation_strategy` 'no'.
 3. We use the default `alpaca` template for the `prompt_template_name`. Please refer to [templates/alpaca.json](./templates/alpaca.json) for more details.
-4. `max_memory_MB` (default 80000) specifies the GPU memory size. You need to specify it according to your own GPU capacity.
-5. We have successfully run the Llama-LoRA fine-tuning code on an `RTX3090` GPU.
-6. model_name = baichuan
-7. For more information on parameter configuration, please refer to the [src/utils/args.py](./src/utils/args.py) file.
+4. We have successfully run the Llama-LoRA fine-tuning code on an `RTX3090` GPU.
+5. model_name = baichuan
+
 
 
 The corresponding script can be found at [ft_scripts/fine_baichuan.bash](./ft_scripts/fine_baichuan.bash).

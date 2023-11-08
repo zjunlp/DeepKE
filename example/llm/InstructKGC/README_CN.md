@@ -189,6 +189,8 @@ mkdir data
 * `--output_dir``: 设置LoRA微调后的权重参数保存路径。
 * `--val_set_size`: 定义验证集的样本数量，默认为1000。
 * `--prompt_template_name`: 选择使用的模板名称。目前支持三种模板类型：[alpaca, vicuna, moss]，默认使用的是alpaca模板。
+* `--max_memory_MB`（默认设置为80000）用以指定GPU显存的大小。请根据您的GPU性能来进行相应调整。
+* 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
 
 > 重要提示：以下的所有命令均应在InstrctKGC目录下执行。例如，如果您想运行微调脚本，您应该使用如下命令：bash scripts/fine_llama.bash。请确保您的当前工作目录正确。
 
@@ -229,12 +231,9 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 ```
 
 1. Llama模型我们采用[LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
-2. 可以通过--valid_file参数指定验证集。如果不指定，finetune.py脚本将会从train.json文件中切分出val_set_size指定数量的样本来创建验证集。此外，您也可以通过调整val_set_size来改变验证集的样本量。
-3. 对于prompt_template_name，我们默认使用alpaca模板。模板的详细内容可以在 [templates/alpaca.json](./templates/alpaca.json) 文件中找到。
-4. 参数max_memory_MB（默认设置为80000）用以指定GPU显存的大小。请根据您的GPU性能来进行相应调整。
-5. 我们已经在RTX3090 GPU上成功运行了LLaMA模型使用LoRA技术的微调代码。
-6. model_name = llama（llama2也是llama）
-7. 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
+2. 对于prompt_template_name，我们默认使用alpaca模板。模板的详细内容可以在 [templates/alpaca.json](./templates/alpaca.json) 文件中找到。
+3. 我们已经在RTX3090 GPU上成功运行了LLaMA模型使用LoRA技术的微调代码。
+4. model_name = llama（llama2也是llama）
 
 微调LLaMA模型的具体脚本可以在 [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash) 中找到。
 
@@ -255,7 +254,6 @@ output_dir='path to save Alpaca Lora'
 2. 对于prompt_template_name，我们默认使用alpaca模板。模板的详细内容可以在 [templates/alpaca.json](./templates/alpaca.json) 文件中找到。
 3. 我们已经在RTX3090 GPU上成功运行了Alpaca模型使用LoRA技术的微调代码。
 4. model_name = alpaca
-5. 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
 
 
 
@@ -280,7 +278,6 @@ output_dir='path to save Zhixi Lora'
 2. 对于prompt_template_name，我们默认使用alpaca模板。模板的详细内容可以在 [templates/alpaca.json](./templates/alpaca.json) 文件中找到。
 3. 我们已经在RTX3090 GPU上成功运行了Zhixi模型使用LoRA技术的微调代码。
 4. model_name = zhixi
-5. 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
 
 
 
@@ -322,10 +319,8 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 
 1. Vicuna模型我们采用[Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1)
 2. 由于Vicuna-7b-delta-v1.1所使用的prompt_template_name与`alpaca`模版不同, 因此需要设置 `--prompt_template_name 'vicuna'`, 详见 [templates/vicuna.json](./templates//vicuna.json)
-3. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
-4. 我们在 `RTX3090` 上跑通了vicuna-lora微调代码
-5. model_name = vicuna
-6. 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
+3. 我们在 `RTX3090` 上跑通了vicuna-lora微调代码
+4. model_name = vicuna
 
 相应的脚本在 [ft_scripts/fine_vicuna.bash](./ft_scripts//fine_vicuna.bash)
 
@@ -370,10 +365,7 @@ CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/fine
 1. ChatGLM模型我们采用[THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)
 2. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates/alpaca.json)
 3. 由于使用8bits量化后训练得到的模型效果不佳, 因此对于ChatGLM我们没有采用量化策略
-4. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
-5. 我们在 `RTX3090` 上跑通了chatglm-lora微调代码
-6. model_name = chatglm
-7. 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
+4. model_name = chatglm
 
 相应的脚本在 [ft_scripts/fine_chatglm.bash](./ft_scripts//fine_chatglm.bash)
 
@@ -422,10 +414,8 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 1. Moss模型我们采用[moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
 2. prompt_template_name在alpaca模版的基础上做了一些修改, 详见 [templates/moss.json](./templates/moss.json), 因此需要设置 `--prompt_template_name 'moss'`
 3. 由于 `RTX3090` 显存限制, 我们采用`qlora`技术进行4bits量化, 你也可以在`V100`、`A100`上尝试8bits量化和不量化策略
-4. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
-5. 我们在 `RTX3090` 上跑通了moss-lora微调代码
-6. model_name = moss
-7. 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
+4. 我们在 `RTX3090` 上跑通了moss-lora微调代码
+5. model_name = moss
 
 相应的脚本在 [ft_scripts/fine_moss.bash](./ft_scripts/fine_moss.bash)
 
@@ -468,10 +458,8 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 1. Baichuan模型我们采用[baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base)
 2. 目前在evaluation方面存在一些问题, 因此我们使用`evaluation_strategy` "no"
 3. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates/alpaca.json)
-4. `max_memory_MB`(默认80000) 指定显存大小, 你需要根据自己的GPU指定
-5. 我们在 `RTX3090` 上跑通了baichuan-lora微调代码
-6. model_name = baichuan
-7. 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
+4. 我们在 `RTX3090` 上跑通了baichuan-lora微调代码
+5. model_name = baichuan
 
 
 相应的脚本在 [ft_scripts/fine_baichuan.bash](./ft_scripts/fine_baichuan.bash)
