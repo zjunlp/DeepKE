@@ -44,8 +44,9 @@
 - [快速上手](#快速上手)
   - [DeepKE-LLM](#deepke-llm)
   - [DeepKE](#deepke)
+      - [🔧 手动环境部署](#-手动环境部署)
+      - [🐳 基于容器部署](#-基于容器部署)
   - [环境依赖](#环境依赖)
-    - [DeepKE-LLM](#deepke-llm-1)
     - [DeepKE](#deepke-1)
   - [具体功能介绍](#具体功能介绍)
     - [1. 命名实体识别NER](#1-命名实体识别ner)
@@ -64,6 +65,8 @@
 <br>
 
 # 新版特性
+
+* `2023年9月` 为基于指令的知识图谱构建任务(Instruction-based KGC)发布了一个中英双语信息抽取(IE)指令数据集 `InstructIE`, 具体参见[此处](./example/llm/README_CN.md/#数据)。
 
 * `2023年6月` 为[DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm)新增多个大模型(如[ChatGLM](https://github.com/THUDM/ChatGLM-6B)、LLaMA系列、GPT系列、抽取大模型[智析](https://github.com/zjunlp/KnowLM))支持。
 * `2023年4月` 新增实体关系抽取模型[CP-NER(IJCAI'23)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/cross/README_CN.md), [ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP/README_CN.md), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC/README_CN.md), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE/README_CN.md), 支持[事件抽取](https://github.com/zjunlp/DeepKE/blob/main/example/ee/standard/README_CN.md)(中文、英文), 提供对Python库高级版本的支持 (例如Transformers)。
@@ -215,20 +218,6 @@ docker run -it zjunlp/deepke:latest /bin/bash
 <br>
 
 ## 环境依赖
-
-### DeepKE-LLM
-
-> python == 3.9
-
-- torch==1.13.0
-- accelerate==0.17.1
-- transformers==4.28.1
-- bitsandbytes==0.37.2
-- peft==0.2.0
-- gradio
-- datasets
-- sentencepiece
-- fire
 
 
 ### DeepKE

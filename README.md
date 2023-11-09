@@ -45,8 +45,9 @@
 - [Quick Start](#quick-start)
   - [DeepKE-LLM](#deepke-llm)
   - [DeepKE](#deepke)
+      - [🔧Manual Environment Configuration](#manual-environment-configuration)
+      - [🐳Building With Docker Images](#building-with-docker-images)
   - [Requirements](#requirements)
-    - [DeepKE-LLM](#deepke-llm-1)
     - [DeepKE](#deepke-1)
   - [Introduction of Three Functions](#introduction-of-three-functions)
     - [1. Named Entity Recognition](#1-named-entity-recognition)
@@ -65,6 +66,8 @@
 <br>
 
 # What's New
+* `Sep 2023` a bilingual Chinese English Information Extraction (IE) instruction dataset called  `InstructIE` was released for the Instruction based Knowledge Graph Construction Task (Instruction based KGC), as detailed in [here](./example/llm/README.md/#data).
+
 * `June, 2023` We update [DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm) to support **knowledge extraction** with [KnowLM](https://github.com/zjunlp/KnowLM), [ChatGLM](https://github.com/THUDM/ChatGLM-6B), LLaMA-series, GPT-series etc.
 * `Apr, 2023` We have added new models, including [CP-NER(IJCAI'23)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/cross), [ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE), provided [event extraction](https://github.com/zjunlp/DeepKE/tree/main/example/ee/standard) capabilities (Chinese and English), and offered compatibility with higher versions of Python packages (e.g., Transformers).
 
@@ -226,19 +229,6 @@ The remaining steps are the same as **Step 3 and onwards** in **Manual Environme
 
 ## Requirements
 
-### DeepKE-LLM
-
-> python == 3.9
-
-- torch==1.13.0
-- accelerate==0.17.1
-- transformers==4.28.1
-- bitsandbytes==0.37.2
-- peft==0.2.0
-- gradio
-- datasets
-- sentencepiece
-- fire
 
 ### DeepKE
 > python == 3.8
