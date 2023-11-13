@@ -186,6 +186,7 @@ EEA: "请您根据事件类型及触发词{s_schema2}从以下输入中抽取可
 
 ### 2.3数据预处理
 
+**训练数据转换**
 在对模型进行数据输入之前，需要将**数据格式化**以包含`instruction`和`input`字段。为此，我们提供了一个脚本 [kg2instruction/convert.py](./kg2instruction/convert.py)，它可以将数据批量转换成模型可以直接使用的格式。
 
 > 在使用 [kg2instruction/convert.py](./kg2instruction/convert.py) 脚本之前，请确保参考了 [data](./data) 目录。该目录中详细列出了每种任务所需的数据格式要求。
@@ -199,10 +200,12 @@ python kg2instruction/convert.py \
   --language zh \      # 指定转换脚本和模板使用的语言, ['zh', 'en']
   --task NER \         # 指定任务类型：['RE', 'NER', 'EE', 'EET', 'EEA'] 中的一种
   --sample -1 \        # 如果为-1，则随机采样20种指令和4种输出格式中的一种；如果为指定数值，则使用对应的指令格式，取值范围为 -1<=sample<20
-  --neg_ratio 1 \      # 设置所有样本的负采样比例
-  --neg_schema 1 \     # 设置从schema中负采样的比例
+  --neg_ratio 1 \      # 设置所有样本的负采样比例, 1表示所有样本都负采样
+  --neg_schema 1 \     # 设置从schema中负采样的比例, 1表示整个schema都要嵌入到指令中
   --random_sort        # 是否对指令中的schema列表进行随机排序
 ```
+
+**负采样**: 如果数据集 A 包含标签 [a，b，c，d，e，f]，对于给定的样本 s，它可能只包含标签 a 和 b。我们随机地在候选关系列表中添加 s 原本没有的关系，比如 c 和 d，但是在输出中 c 和 d 标签要不输出或输出`NAN`。
 
 `schema_path`用于指定包含三行JSON字符串的schema文件（JSON格式）。每一行都按照**固定的格式**组织了用于命名实体识别（NER）任务的信息。以下以NER任务为例，解释每行的含义：
 
@@ -244,6 +247,7 @@ python kg2instruction/convert.py \
 更详细的schema文件信息可在[data](./data)目录下各个任务目录的`schema.json`文件中查看。
 
 
+**测试数据转换**
 对于**测试数据**，可以使用 [kg2instruction/convert_test.py](./kg2instruction/convert_test.py) 脚本，它不要求数据包含标签（`entity`、`relation`、`event`）字段，**只需**提供`input`字段和相应的`schema_path`。
 
 
@@ -257,7 +261,7 @@ python kg2instruction/convert_test.py \
   --sample 0
 ```
 
-
+**数据转换实例**
 以下是一个实体识别（NER）任务数据转换的示例：
 
 ```

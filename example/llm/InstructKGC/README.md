@@ -191,6 +191,9 @@ With the fields mentioned above, users can flexibly design and implement instruc
 
 
 ### 2.3Data Preprocessing
+
+**Training Data Transformation**
+
 Before inputting data into the model, it needs to be formatted to include `instruction` and `input` fields. To assist with this, we offer a script [kg2instruction/convert.py](./kg2instruction/convert.py), which can batch convert data into a format directly usable by the model.
 
 > Before using the [kg2instruction/convert.py](./kg2instruction/convert.py) script, please ensure you have referred to the [data](./data) directory. This directory lists in detail the data format requirements for each task.
@@ -204,10 +207,12 @@ python kg2instruction/convert.py \
   --language zh \      # Specifies the language for the conversion script and template, options are ['zh', 'en']
   --task NER \         # Specifies the task type: one of ['RE', 'NER', 'EE', 'EET', 'EEA']
   --sample -1 \        # If -1, randomly samples one of 20 instruction and 4 output formats; if a specific number, uses the corresponding instruction format, range is -1<=sample<20
-  --neg_ratio 1 \      # Sets the negative sampling ratio for all samples
-  --neg_schema 1 \     # Sets the negative sampling ratio from the schema
+  --neg_ratio 1 \      # Set the negative sampling ratio for all samples; 1 indicates negative sampling for all samples.
+  --neg_schema 1 \     # Set the negative sampling ratio from the schema; 1 indicates embedding the entire schema into the command.
   --random_sort        # Determines whether to randomly sort the list of schemas in the instruction
 ```
+
+**Negative Sampling**: If dataset A contains labels [a, b, c, d, e, f], for a given sample s, it might only have labels a and b. We randomly add relationships from the candidate relationship list that were originally not present in s, such as c and d, but in the output, labels c and d are either not output or are output as `NAN`.
 
 `schema_path` is used to specify a schema file (in JSON format) containing three lines of JSON strings. Each line is organized in a fixed format and provides information for named entity recognition (NER) tasks. Taking NER tasks as an example, the meaning of each line is explained as follows:
 
@@ -252,6 +257,9 @@ For Event Extraction with Arguments (EEA) tasks:
 
 For more detailed information on the schema file, you can refer to the `schema.json` file in the respective task directories under the [data](./data) directory.
 
+
+**Testing Data Transformation**
+
 For test data, you can use the [kg2instruction/convert_test.py](./kg2instruction/convert_test.py) script, which does not require the data to contain label fields (`entity`, `relation`, `event`), just the input field and the corresponding schema_path.
 
 ```bash
@@ -263,6 +271,9 @@ python kg2instruction/convert_test.py \
   --task NER \
   --sample 0
 ```
+
+
+**Data Transformation Examples**
 
 Here is an example of data conversion for Named Entity Recognition (NER) task:
 
