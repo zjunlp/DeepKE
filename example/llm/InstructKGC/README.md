@@ -7,8 +7,9 @@
 - [InstructKGC-CCKS2023 Evaluation of Instruction-based Knowledge Graph Construction](#instructkgc-ccks2023-evaluation-of-instruction-based-knowledge-graph-construction)
   - [1.Task Object](#1task-object)
   - [2. Data](#2-data)
-    - [2.1 Data Preprocessing](#21-data-preprocessing)
+    - [2.1Information Extraction Template](#21information-extraction-template)
     - [2.2Datasets](#22datasets)
+    - [2.3Data Preprocessing](#23data-preprocessing)
   - [3.Preparation](#3preparation)
     - [3.1Environment](#31environment)
     - [3.2Download data](#32download-data)
@@ -49,7 +50,147 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 ## 2. Data
 
-### 2.1 Data Preprocessing
+
+### 2.1Information Extraction Template
+The template `template` is used to construct the instruction `instruction` for input to the model. It consists of three parts:
+1. Task description
+2. List of candidate labels {s_schema} (optional)
+3. Structural output format {s_format}
+
+
+Template with specified list of candidate labels:
+```json
+    NER: "You are an expert specialized in entity extraction. With the candidate entity types list: {s_schema}, please extract possible entities from the input below, outputting NAN if a certain entity does not exist. Respond in the format {s_format}."
+    RE: "You are an expert in extracting relation triples. With the candidate relation list: {s_schema}, please extract the possible head entities and tail entities from the input below and provide the corresponding relation triples. If a relation does not exist, output NAN. Please answer in the {s_format} format."
+    EE: "You are a specialist in event extraction. Given the candidate event dictionary: {s_schema}, please extract any possible events from the input below. If an event does not exist, output NAN. Please answer in the format of {s_format}."
+    EET: "As an event analysis specialist, you need to review the input and determine possible events based on the event type directory: {s_schema}. All answers should be based on the {s_format} format. If the event type does not match, please mark with NAN."
+    EEA: "You are an expert in event argument extraction. Given the event dictionary: {s_schema1}, and the event type and trigger words: {s_schema2}, please extract possible arguments from the following input. If an event argument does not exist, output NAN. Please respond in the {s_format} format."
+```
+
+
+Template without specifying a list of candidate labels:
+```json
+    NER: "Analyze the text content and extract the clear entities. Present your findings in the {s_format} format, skipping any ambiguous or uncertain parts."
+    RE: "Please extract all the relation triples from the text and present the results in the format of {s_format}. Ignore those entities that do not conform to the standard relation template."
+    EE: "Please analyze the following text, extract all identifiable events, and present them in the specified format {s_format}. If certain information does not constitute an event, simply skip it."
+    EET: "Examine the following text content and extract any events you deem significant. Provide your findings in the {s_format} format."
+    EEA: "Please extract possible arguments based on the event type and trigger word {s_schema2} from the input below. Answer in the format of {s_format}."
+```
+
+<details>
+    <summary><b>Candidate Labels {s_schema}</b></summary>
+
+
+    ```json
+        NER(Ontonotes): ["date", "organization", "person", "geographical social political", "national religious political", "facility", "cardinal", "location", "work of art", ...]
+        RE(NYT): ["ethnicity", "place lived", "geographic distribution", "company industry", "country of administrative divisions", "administrative division of country", ...]
+        EE(ACE2005): {"declare bankruptcy": ["organization"], "transfer ownership": ["artifact", "place", "seller", "buyer", "beneficiary"], "marry": ["person", "place"], ...}
+        EET(GENIA): ["cell type", "cell line", "protein", "RNA", "DNA"]
+        EEA(ACE2005): {"declare bankruptcy": ["organization"], "transfer ownership": ["artifact", "place", "seller", "buyer", "beneficiary"], "marry": ["person", "place"], ...}
+    ```
+</details>
+
+Here [schema](./kg2instruction/convert/utils.py) provides 12 text topics and common relationship types under the topic.
+
+<details>
+    <summary><b>Structural Output Format {s_format}</b></summary>
+
+
+    ```json
+        NER: (Entity,Entity Type)
+        RE: (Subject,Relation,Object)
+        EE: (Event Trigger,Event Type,Argument1#Argument Role1;Argument2#Argument Role2)
+        EET: (Event Trigger,Event Type)
+        EEA: (Event Trigger,Event Type,Argument1#Argument Role1;Argument2#Argument Role2)
+    ```
+
+</details>
+
+
+For a more comprehensive understanding of the templates, please refer to the files [ner_converter.py](./kg2instruction/convert/converter/ner_converter.py)、[re_converter.py](./kg2instruction/convert/converter/re_converter.py)、[ee_converter.py](./kg2instruction/convert/converter/ee_converter.py)、[eet_converter.py](./kg2instruction/convert/converter/eet_converter.py)、[eea_converter.py](./kg2instruction/convert/converter/eea_converter.py) and [configs](./configs).
+
+
+
+
+### 2.2Datasets
+
+| Name                   | Download                                                     | Quantity | Description                                                  |
+| ---------------------- | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ |
+| InstructIE-train          | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [Baidu Netdisk](https://pan.baidu.com/s/1xXVrjkinw4cyKKFBR8BwQw?pwd=x4s7)  | 30w+  | InstructIE train set |
+| InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [Baidu Netdisk](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)     | 2000+ | InstructIE validation set                                                                                     |
+| InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)  <br/> [Baidu Netdisk](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE test set                                                                                    |
+| train.json, valid.json | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing) | 5,000    | Preliminary training set and test set for the task "Instruction-Driven Adaptive Knowledge Graph Construction" in [CCKS2023 Open Knowledge Graph Challenge](https://tianchi.aliyun.com/competition/entrance/532080/introduction), randomly selected from instruct_train.json |
+
+
+The `InstructIE-train` dataset contains two core files: `InstructIE-zh.json` and `InstructIE-en.json`. Both files cover a range of fields that provide detailed descriptions of different aspects of the dataset:
+
+- `'id'`: A unique identifier for each data entry, ensuring the independence and traceability of the data items.
+- `'cate'`: The text's subject category, which provides a high-level categorical label for the content (there are 12 categories in total).
+- `'entity'` and `'relation'`: Represent entity and relationship triples, respectively. These fields allow users to freely construct instructions and expected outputs for information extraction.
+
+For the validation set `InstructIE-valid` and the test set `InstructIE-test`, they include both Chinese and English versions, ensuring the dataset's applicability in different language settings.
+
+- `train.json`: The field definitions in this file are consistent with `InstructIE-train`, but the `'instruction'` and `'output'` fields show one format. Nonetheless, users can still freely construct instructions and outputs for information extraction based on the `'relation'` field.
+- `valid.json`: Its field meanings are consistent with `train.json`, but this dataset has been crowdsource-annotated, providing higher accuracy and reliability.
+
+
+<details>
+  <summary><b>Explanation of each field</b></summary>
+
+
+| Field       | Description                                                      |
+| ----------- | ---------------------------------------------------------------- |
+| id          | The unique identifier for each data point.                       |
+| cate        | The category of the text's subject, with a total of 12 different thematic categories. |
+| input       | The input text for the model, with the goal of extracting all the involved relationship triples. |
+| instruction | Instructions guiding the model to perform information extraction tasks. |
+| output      | The expected output result of the model.                         |
+| entity      | Details describing the entity and its corresponding type (entity, entity_type). |
+| relation    | Describes the relationship triples contained in the text, i.e., the connections between entities (head, relation, tail). |
+
+</details>
+
+With the fields mentioned above, users can flexibly design and implement instructions and output formats for different information extraction needs.
+
+
+<details>
+  <summary><b>Example of data</b></summary>
+
+
+    ```json
+    {
+        "id": "6e4f87f7f92b1b9bd5cb3d2c3f2cbbc364caaed30940a1f8b7b48b04e64ec403", 
+        "cate": "Person", 
+        "input": "Dionisio Pérez Gutiérrez  (born 1872 in Grazalema (Cádiz) - died 23 February 1935 in Madrid) was a Spanish writer, journalist, and gastronome. He has been called \"one of Spain's most authoritative food writers\" and was an early adopter of the term Hispanidad.\nHis pen name, \"Post-Thebussem\", was chosen as a show of support for Mariano Pardo de Figueroa, who went by the handle \"Dr. Thebussem\".", 
+        "entity": [
+            {"entity": "Dionisio Pérez Gutiérrez", "entity_type": "human"}, 
+            {"entity": "Post-Thebussem", "entity_type": "human"}, 
+            {"entity": "Grazalema", "entity_type": "geographic_region"}, 
+            {"entity": "Cádiz", "entity_type": "geographic_region"}, 
+            {"entity": "Madrid", "entity_type": "geographic_region"}, 
+            {"entity": "gastronome", "entity_type": "event"}, 
+            {"entity": "Spain", "entity_type": "geographic_region"}, 
+            {"entity": "Hispanidad", "entity_type": "architectural_structure"}, 
+            {"entity": "Mariano Pardo de Figueroa", "entity_type": "human"}, 
+            {"entity": "23 February 1935", "entity_type": "time"}
+        ], 
+        "relation": [
+            {"head": "Dionisio Pérez Gutiérrez", "relation": "country of citizenship", "tail": "Spain"}, 
+            {"head": "Dionisio Pérez Gutiérrez", "relation": "place of birth", "tail":"Grazalema"}, 
+            {"head": "Dionisio Pérez Gutiérrez", "relation": "place of death", "tail": "Madrid"}, 
+            {"head": "Mariano Pardo de Figueroa", "relation": "country of citizenship", "tail": "Spain"}, 
+            {"head": "Dionisio Pérez Gutiérrez", "relation": "alternative name", "tail": "Post-Thebussem"}, 
+            {"head": "Dionisio Pérez Gutiérrez", "relation": "date of death", "tail": "23 February 1935"}
+        ]
+    }
+    ```
+
+</details>
+
+
+
+
+### 2.3Data Preprocessing
 Before inputting data into the model, it needs to be formatted to include `instruction` and `input` fields. To assist with this, we offer a script [kg2instruction/convert.py](./kg2instruction/convert.py), which can batch convert data into a format directly usable by the model.
 
 > Before using the [kg2instruction/convert.py](./kg2instruction/convert.py) script, please ensure you have referred to the [data](./data) directory. This directory lists in detail the data format requirements for each task.
@@ -80,48 +221,27 @@ python kg2instruction/convert_test.py \
   --sample 0
 ```
 
-* For more detailed information about IE templates, data format conversion, and data extraction, please refer to [kg2instruction/README_CN.md](./kg2instruction/README_CN.md).
-* You can also construct your own data containing `instruction` and `input` fields.
+Here is an example of data conversion for Named Entity Recognition (NER) task:
 
+```json
+Before Transformation:
+{
+    "input": "In contrast, the rain-soaked battle between Qingdao Sea Bulls and Guangzhou Songri Team, although also ended in a 0:0 draw, was uneventful.",
+    "entity": [{"entity": "Guangzhou Songri Team", "entity_type": "Organizational Structure"}, {"entity": "Qingdao Sea Bulls", "entity_type": "Organizational Structure"}]
+}
 
-### 2.2Datasets
-Here are some readily processed datasets:
+After Transformation:
+{
+    "id": "e88d2b42f8ca14af1b77474fcb18671ed3cacc0c75cf91f63375e966574bd187",
+    "instruction": "Please identify and list the entity types mentioned in the given text ['Organizational Structure', 'Person', 'Geographical Location']. If a type doesn't exist, please indicate it as NAN. Provide your answer in the format (entity, entity type).",
+    "input": "In contrast, the rain-soaked battle between Qingdao Sea Bulls and Guangzhou Songri Team, although also ended in a 0:0 draw, was uneventful.",
+    "output": "(Qingdao Sea Bulls,Organizational Structure)\n(Guangzhou Songri Team,Organizational Structure)\nNAN\nNAN"
+}
+```
 
-| Name                   | Download                                                     | Quantity | Description                                                  |
-| ---------------------- | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ |
-| InstructIE-train          | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [Baidu Netdisk](https://pan.baidu.com/s/1xXVrjkinw4cyKKFBR8BwQw?pwd=x4s7)  | 30w+  | InstructIE train set |
-| InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [Baidu Netdisk](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)     | 2000+ | InstructIE validation set                                                                                     |
-| InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)  <br/> [Baidu Netdisk](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE test set                                                                                    |
-| train.json, valid.json | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing) | 5,000    | Preliminary training set and test set for the task "Instruction-Driven Adaptive Knowledge Graph Construction" in [CCKS2023 Open Knowledge Graph Challenge](https://tianchi.aliyun.com/competition/entrance/532080/introduction), randomly selected from instruct_train.json |
+Before conversion, the data format needs to adhere to the structure specified in the `DeepKE/example/llm/InstructKGC/data` directory for each task (such as NER, RE, EE). Taking NER task as an example, the input text should be labeled as the `input` field, and the annotated data should be labeled as the `entity` field, which is a list of dictionaries containing multiple key-value pairs for `entity` and `entity_type`.
 
-
-The `InstructIE-train` dataset contains two core files: `InstructIE-zh.json` and `InstructIE-en.json`. Both files cover a range of fields that provide detailed descriptions of different aspects of the dataset:
-
-- `'id'`: A unique identifier for each data entry, ensuring the independence and traceability of the data items.
-- `'cate'`: The text's subject category, which provides a high-level categorical label for the content (there are 12 categories in total).
-- `'entity'` and `'relation'`: Represent entity and relationship triples, respectively. These fields allow users to freely construct instructions and expected outputs for information extraction.
-
-For the validation set `InstructIE-valid` and the test set `InstructIE-test`, they include both Chinese and English versions, ensuring the dataset's applicability in different language settings.
-
-- `train.json`: The field definitions in this file are consistent with `InstructIE-train`, but the `'instruction'` and `'output'` fields show one format. Nonetheless, users can still freely construct instructions and outputs for information extraction based on the `'relation'` field.
-- `valid.json`: Its field meanings are consistent with `train.json`, but this dataset has been crowdsource-annotated, providing higher accuracy and reliability.
-
-The detailed explanations of each field are as follows:
-
-| Field       | Description                                                      |
-| ----------- | ---------------------------------------------------------------- |
-| id          | The unique identifier for each data point.                       |
-| cate        | The category of the text's subject, with a total of 12 different thematic categories. |
-| input       | The input text for the model, with the goal of extracting all the involved relationship triples. |
-| instruction | Instructions guiding the model to perform information extraction tasks. |
-| output      | The expected output result of the model.                         |
-| entity      | Details describing the entity and its corresponding type (entity, entity_type). |
-| relation    | Describes the relationship triples contained in the text, i.e., the connections between entities (head, relation, tail). |
-
-With the fields mentioned above, users can flexibly design and implement instructions and output formats for different information extraction needs.
-
-
-Here [schema](./kg2instruction/convert/utils.py) provides 12 text topics and common relationship types under the topic.
+After data conversion, you will obtain structured data containing the `input` text, `instruction` (providing detailed instructions about candidate entity types ['Organization', 'Person', 'Location'] and the expected output format), and `output` (listing all entity information recognized in the `input` in the form of (entity, entity type)).
 
 
 
@@ -158,13 +278,21 @@ Place the data in the directory `./data`
 ### 3.3Model 
 Here are some models:
 * [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf) | [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
+* [zjunlp/knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0)(需搭配相应的IE Lora) | [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi)(无需Lora即可直接预测) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)(无需Lora, IE能力更强, 但通用性有所削弱)
+* [baichuan-inc/Baichuan-7B](https://huggingface.co/baichuan-inc/Baichuan-7B) | [baichuan-inc/Baichuan-13B-Base](https://huggingface.co/baichuan-inc/Baichuan-13B-Base) | [baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base) | [baichuan-inc/Baichuan2-13B-Base](https://huggingface.co/baichuan-inc/Baichuan2-13B-Base)
+
+
+<details>
+  <summary><b>more</b></summary>
+
+
 * [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b) | [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
-* [Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1) | [Vicuna-13b-delta-v1.1](https://huggingface.co/lmsys/vicuna-13b-delta-v1.1)
-* [zjunlp/knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0) (requires corresponding IE Lora) | [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi) (can predict directly without Lora) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie) (stronger IE capabilities, but with reduced generalization, no need for Lora)
+* [Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1) | [Vicuna-13b-delta-v1.1](https://huggingface.co/lmsys/vicuna-13b-delta-v1.1) | 
 * [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)
 * [moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
 * [Chinese-LLaMA-7B](https://huggingface.co/Linly-AI/Chinese-LLaMA-7B)
-* [baichuan-inc/Baichuan-7B](https://huggingface.co/baichuan-inc/Baichuan-7B) | [baichuan-inc/Baichuan-13B-Base](https://huggingface.co/baichuan-inc/Baichuan-13B-Base) | [baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base) | [baichuan-inc/Baichuan2-13B-Base](https://huggingface.co/baichuan-inc/Baichuan2-13B-Base)
+</details>
+
 
 
 
@@ -277,6 +405,10 @@ output_dir='path to save Zhixi Lora'
 
 You can set your own parameters to fine-tune the Vicuna model using the LoRA method with the following commands:
 
+<details>
+  <summary><b>details</b></summary>
+
+
 ```bash
 output_dir='path to save Vicuna Lora'
 mkdir -p ${output_dir}
@@ -308,7 +440,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     | tee ${output_dir}/train.log \
     2> ${output_dir}/train.err
 ```
-
+</details>
 
 1. For the Vicuna model, we use [Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1)
 2. Since the Vicuna-7b-delta-v1.1 uses a different `prompt_template_name` than the `alpaca` template, you need to set `--prompt_template_name 'vicuna'`, see [templates/vicuna.json](./templates//vicuna.json) for details
@@ -323,6 +455,10 @@ The corresponding script can be found at [ft_scripts/fine_vicuna.bash](./ft_scri
 ### 4.6Lora Fine-tuning with ChatGLM
 
 You can use the following command to configure your own parameters and fine-tune the ChatGLM model using the LoRA method:
+
+<details>
+  <summary><b>details</b></summary>
+
 
 ```bash
 output_dir='path to save ChatGLM Lora'
@@ -356,6 +492,7 @@ CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/fine
     | tee ${output_dir}/train.log \
     2> ${output_dir}/train.err
 ```
+</details>
 
 1. We use the [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b) model for ChatGLM.
 2. We use the default `alpaca` template for the `prompt_template_name`. Please refer to [templates/alpaca.json](./templates/alpaca.json) for more details.
@@ -371,6 +508,10 @@ The corresponding script can be found at [ft_scripts/fine_chatglm.bash](./ft_scr
 ### 4.7Lora Fine-tuning with Moss
 
 You can use the following command to configure your own parameters and fine-tune the Moss model using the LoRA method:
+
+<details>
+  <summary><b>details</b></summary>
+
 
 ```bash
 output_dir='path to save Moss Lora'
@@ -406,6 +547,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     | tee ${output_dir}/train.log \
     2> ${output_dir}/train.err
 ```
+</details>
 
 1. We use the [moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft) model for Moss.
 2. The `prompt_template_name` has been modified based on the alpaca template. Please refer to [templates/moss.json](./templates/moss.json) for more details. Therefore, you need to set `--prompt_template_name 'moss'`.
@@ -420,6 +562,10 @@ The corresponding script can be found at [ft_scripts/fine_moss.bash](./ft_script
 ### 4.8LoRA Fine-tuning with Baichuan
 
 You can use the following command to configure your own parameters and fine-tune the Llama model using the LoRA method:
+
+<details>
+  <summary><b>details</b></summary>
+
 
 ```bash
 output_dir='path to save Llama Lora'
@@ -451,6 +597,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     | tee ${output_dir}/train.log \
     2> ${output_dir}/train.err
 ```
+</details>
 
 1. We use the [baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base) model for Llama.
 2. There are currently some issues with evaluation, so we use `evaluation_strategy` 'no'.
@@ -497,7 +644,7 @@ The following are some models that have been optimized through LoRA technique tr
 * [alpaca-7b-lora-ie](https://huggingface.co/zjunlp/alpaca-7b-lora-ie)
 * [llama-7b-lora-ie](https://huggingface.co/zjunlp/llama-7b-lora-ie)
 * [alpaca-13b-lora-ie](https://huggingface.co/zjunlp/alpaca-13b-lora-ie)
-* [zhixi-13b-lora](https://huggingface.co/zjunlp/zhixi-13b-lora/tree/main)
+* [knowlm-13b-ie-lora](https://huggingface.co/zjunlp/knowlm-13b-ie-lora)
 
 The following table shows the relationship between the base models and their corresponding LoRA weights:
 
@@ -505,7 +652,7 @@ The following table shows the relationship between the base models and their cor
 | -------------------------- | ---------------------- |
 | llama-7b                   | llama-7b-lora-ie       |
 | alpaca-7b                  | alpaca-7b-lora-ie      |
-| zjunlp/knowlm-13b-base-v1.0 | zhixi-13b-lora         |
+| zjunlp/knowlm-13b-base-v1.0 | knowlm-13b-ie-lora         |
 
 
 To use these trained LoRA models for prediction, you can execute the following command:

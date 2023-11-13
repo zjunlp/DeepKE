@@ -80,10 +80,11 @@ def convert_ie(
         else:
             type_role_dict = get_positive_type_role(record['event'], 'EE')[2]
             type_role_dict = {k: sorted(list(v)) for k, v in sorted(type_role_dict.items())}
-        schema2 = []
+        schema2 = set()
         for event in record['event']:
-            schema2.append({'event_type':event['event_type'], 'event_trigger':event['event_trigger']})
-        sinstruct, output_text = converter.convert(record['event'], rand1, rand2, s_schema1=type_role_dict, s_schema2=schema2)
+            schema2.add((event['event_type'], event['event_trigger']))
+        schema2_dict = [{'event_type': e[0], 'event_trigger': e[1]} for e in schema2]
+        sinstruct, output_text = converter.convert(record['event'], rand1, rand2, s_schema1=type_role_dict, s_schema2=schema2_dict)
     elif task == 'EET':
         if neg:       # all表示指定需要抽取的类型是全部schema, 而非仅出现在标签中的类型
             record['event'] = neg_sampler.negative_sample(record['event'], 'EET')

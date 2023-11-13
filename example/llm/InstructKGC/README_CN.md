@@ -8,8 +8,9 @@
 - [InstructionKGC-指令驱动的自适应知识图谱构建](#instructionkgc-指令驱动的自适应知识图谱构建)
   - [1.任务目标](#1任务目标)
   - [2.数据](#2数据)
-    - [2.1数据预处理](#21数据预处理)
+    - [2.1信息抽取模板](#21信息抽取模板)
     - [2.2现有数据集](#22现有数据集)
+    - [2.3数据预处理](#23数据预处理)
   - [3.准备](#3准备)
     - [3.1环境](#31环境)
     - [3.2下载数据](#32下载数据)
@@ -53,7 +54,138 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 ## 2.数据
 
 
-### 2.1数据预处理
+### 2.1信息抽取模板
+
+模版`template`用于构造输入模型的指令`instruction`, 由:
+1. 任务描述
+2. 候选标签列表{s_schema}(可选)
+3. 结构输出格式{s_format}三部分组成。
+
+
+指定候选标签列表的模版:
+```json
+    NER: "你是专门进行实体抽取的专家。已知候选的实体类型列表：{s_schema}，请你根据实体类型列表，从以下输入中抽取出可能存在的实体，如果不存在某实体就输出NAN。请按照{s_format}的格式回答。"
+    RE: "你在这里扮演关系三元组识别师的角色。我将给你个输入，请根据关系列表：{s_schema}，从输入中抽取出可能包含的关系三元组，，如果不存在某关系就输出NAN，并以{s_format}的形式回答。"
+    EE: "你是专门进行事件提取的专家。已知候选的事件字典：{s_schema}，请你根据事件字典，从以下输入中抽取出可能存在的事件，如果不存在某事件就输出NAN。请按照{s_format}的格式回答。"
+    EET: "作为事件分析专员，你需要查看输入并根据事件类型名录：{s_schema}，来确定可能发生的事件。所有回答都应该基于{s_format}格式。如果事件类型不匹配，请用NAN标记。"
+    EEA: "你是专门进行事件论元提取的专家。已知事件字典：{s_schema1}，事件类型及触发词：{s_schema2}，请你从以下输入中抽取出可能存在的论元，如果不存在某事件论元就输出NAN。请按照{s_format}的格式回答。"
+```
+
+不指定候选标签列表的模版:
+```json
+    NER: "分析文本内容，并提取明显的实体。将您的发现以{s_format}格式提出，跳过任何不明显或不确定的部分。"
+    RE: "请从文本中抽取出所有关系三元组，并根据{s_format}的格式呈现结果。忽略那些不符合标准关系模板的实体。"
+    EE: "请分析下文，从中抽取所有可识别的事件，并按照指定的格式{s_format}呈现。如果某些信息不构成事件，请简单跳过。"
+    EET: "审视下列文本内容，并抽取出任何你认为显著的事件。将你的发现整理成{s_format}格式提供。"
+    EEA: "请您根据事件类型及触发词{s_schema2}从以下输入中抽取可能的论元。请按照{s_format}的格式回答。"
+```
+
+
+<details>
+  <summary><b>候选标签列表{s_schema}</b></summary>
+
+
+  ```json
+    NER(CLUE): ["书名", "地址", "电影", "公司", "姓名", "组织机构", "职位", "游戏", "景点", "政府"] 
+    RE(DuIE): ["创始人", "号", "注册资本", "出版社", "出品公司", "作词", "出生地", "连载网站", "祖籍", "制片人", "出生日期", "主演", "改编自", ...]
+    EE(DuEE-fin): {"质押": ["披露时间", "质押物占总股比", "质押物所属公司", "质押股票/股份数量", "质押物", "质押方", "质押物占持股比", "质权方", "事件时间"], "股份回购": ["回购方", "回购完成时间", "披露时间", "每股交易价格", "交易金额", "回购股份数量", "占公司总股本比例"],  ...} 
+    EET(DuEE): ["交往-感谢", "组织行为-开幕", "竞赛行为-退赛", "组织关系-加盟", "组织关系-辞/离职", "财经/交易-涨价", "人生-产子/女", "灾害/意外-起火", "组织关系-裁员", ...]
+    EEA(DuEE-fin): {"质押": ["披露时间", "质押物占总股比", "质押物所属公司", "质押股票/股份数量", "质押物", "质押方", "质押物占持股比", "质权方", "事件时间"], "股份回购": ["回购方", "回购完成时间", "披露时间", "每股交易价格", "交易金额", "回购股份数量", "占公司总股本比例"], ...} 
+  ```
+
+</details>
+
+此处 [schema](./kg2instruction/convert/utils.py) 提供了12种文本主题, 以及该主题下常见的关系类型。
+
+
+<details>
+  <summary><b>结构输出格式{s_format}</b></summary>
+
+
+  ```json
+    NER: (实体,实体类型) 
+    RE: (头实体,关系,尾实体) 
+    EE: (事件触发词,事件类型,事件论元1#论元角色1;事件论元2#论元角色2) 
+    EET: (事件触发词,事件类型) 
+    EEA: (Event Trigger,Event Type,Argument1#Argument Role1;Argument2#Argument Role2) 
+  ```
+
+</details>
+
+
+这些模板中的schema({s_schema})和结构输出格式({s_format})占位符被嵌入在模板中，用户必须指定。
+有关模板的更全面理解，请参阅配置目录[configs](./configs) 和 文件[ner_converter.py](./kg2instruction/convert/converter/ner_converter.py)、[re_converter.py](./kg2instruction/convert/converter/re_converter.py)、[ee_converter.py](./kg2instruction/convert/converter/ee_converter.py)、[eet_converter.py](./kg2instruction/convert/converter/eet_converter.py)、[eea_converter.py](./kg2instruction/convert/converter/eea_converter.py) .
+
+
+
+### 2.2现有数据集
+
+| 名称                  | 下载                                                                                                                     | 数量     | 描述                                                                                                                                                       |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| InstructIE-train       | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘](https://pan.baidu.com/s/1xXVrjkinw4cyKKFBR8BwQw?pwd=x4s7)    | 30w+ | InstructIE训练集                                                                                     |
+| InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)    | 2000+ | InstructIE验证集                                                                                     |
+| InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE测试集                                                                                     |
+| train.json, valid.json          | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing)                     | 5000   | [CCKS2023 开放环境下的知识图谱构建与补全评测任务一：指令驱动的自适应知识图谱构建](https://tianchi.aliyun.com/competition/entrance/532080/introduction) 中的初赛训练集及测试集 |
+
+
+
+`InstructIE-train` 数据集包含两个核心文件：`InstructIE-zh.json` 和 `InstructIE-en.json`。这两个文件都涵盖了丰富的字段，用于详细描述数据集的不同方面：
+
+- `'id'`：每条数据的唯一标识符，确保数据项的独立性和可追踪性。
+- `'cate'`：文本主题分类，为文本内容提供了一个高级的分类标签（共有12种主题）。
+- `'entity'`和`'relation'`：分别代表实体和关系三元组，这些字段允许用户自由构建信息抽取的指令和预期输出结果。
+
+对于验证集`InstructIE-valid`和测试集`InstructIE-test`，它们包含中英双语版本，保证了数据集在不同语言环境下的适用性。
+
+- `train.json`：这个文件中的字段定义与`InstructIE-train`一致，但`'instruction'`和`'output'`字段展示了一种格式。尽管如此，用户仍可以依据`'relation'`字段自由构建信息抽取的指令和输出。
+- `valid.json`：其字段意义与`train.json`保持一致，但此数据集经过众包标注处理，提供了更高的准确性和可靠性。
+
+<details>
+  <summary><b>各字段的说明</b></summary>
+
+
+|    字段     |                             说明                             |
+| :---------: | :----------------------------------------------------------: |
+|     id      |                       每个数据点的唯一标识符。                       |
+|    cate     |           文本的主题类别，总计12种不同的主题分类。               |
+|    input    | 模型的输入文本，目标是从中抽取涉及的所有关系三元组。                  |
+| instruction |                 指导模型执行信息抽取任务的指示。                    |
+|    output   |                      模型的预期输出结果。                        |
+|   entity    |            描述实体以及其对应类型的详细信息(entity, entity_type)。    |
+|  relation   |   描述文本中包含的关系三元组，即实体间的联系(head, relation, tail)。   |
+
+</details>
+
+利用上述字段，用户可以灵活地设计和实施针对不同信息抽取需求的指令和输出格式。
+
+<details>
+  <summary><b>一条数据的示例</b></summary>
+
+
+```json
+{
+    "id": "四乙基锗_0", 
+    "cate": "自然科学", 
+    "input": "四乙基锗，简称TEG，是一种有机锗化合物，化学式4Ge。四乙基锗是锗的气相沉积法中一种重要的化合物。", 
+    "entity": [
+        {"entity": "四乙基锗", "entity_type": "产品"}, 
+        {"entity": "TEG", "entity_type": "产品"}, 
+        {"entity": "有机锗化合物", "entity_type": "产品"}, 
+        {"entity": "Ge", "entity_type": "产品"}
+    ], 
+    "relation": [
+        {"head": "四乙基锗", "relation": "别名", "tail": "TEG"}
+    ]
+}
+```
+
+</details>
+
+
+
+
+### 2.3数据预处理
+
 在对模型进行数据输入之前，需要将数据格式化以包含`instruction`和`input`字段。为此，我们提供了一个脚本 [kg2instruction/convert.py](./kg2instruction/convert.py)，它可以将数据批量转换成模型可以直接使用的格式。
 
 > 在使用 [kg2instruction/convert.py](./kg2instruction/convert.py) 脚本之前，请确保参考了 [data](./data) 目录。该目录中详细列出了每种任务所需的数据格式要求。
@@ -86,56 +218,86 @@ python kg2instruction/convert_test.py \
 ```
 
 
-* 更详细的关于IE模版、数据格式转换、数据提取请参考[kg2instruction/README_CN.md](./kg2instruction/README_CN.md)
-* 您也可以自行构建包含`instruction`和`input`字段的数据
+以下是一个实体识别（NER）任务数据转换的示例：
+
+```json
+转换前：
+{
+    "input": "相比之下，青岛海牛队和广州松日队的雨中之战虽然也是0∶0，但乏善可陈。", 
+    "entity": [{"entity": "广州松日队", "entity_type": "组织机构"}, {"entity": "青岛海牛队", "entity_type": "组织机构"}]
+}
+
+转换后：
+{
+    "id": "e88d2b42f8ca14af1b77474fcb18671ed3cacc0c75cf91f63375e966574bd187", 
+    "instruction": "请在所给文本中找出并列举['组织机构', '人物', '地理位置']提及的实体类型，不存在的类型请注明为NAN。回答应按(实体,实体类型)\n格式进行。", 
+    "input": "相比之下，青岛海牛队和广州松日队的雨中之战虽然也是0∶0，但乏善可陈。", 
+    "output": "(青岛海牛队,组织机构)\n(广州松日队,组织机构)\nNAN\nNAN"
+}
+```
+
+
+转换前: 数据的格式需要符合 `DeepKE/example/llm/InstructKGC/data` 目录下为各项任务(如NER、RE、EE等)规定的结构。以NER任务为例，输入文本应标记为`input`字段，而标注数据则应标记为`entity`字段，它是一个包含多个`entity`和`entity_type`键值对的字典列表。
+
+转换后: 将得到包含`input`文本、`instruction`指令（详细说明了候选标签列表['组织机构', '人物', '地理位置']和期望的输出格式(实体,实体类型)），以及`output`（以(实体,实体类型)形式列出在`input`中识别到的所有实体信息）的结构化数据。
 
 
 
-### 2.2现有数据集
-下面是一些现成的处理后的数据：
+<details>
+  <summary><b>更多</b></summary>
 
-| 名称                  | 下载                                                                                                                     | 数量     | 描述                                                                                                                                                       |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| InstructIE-train       | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘](https://pan.baidu.com/s/1xXVrjkinw4cyKKFBR8BwQw?pwd=x4s7)    | 30w+ | InstructIE训练集                                                                                     |
-| InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)    | 2000+ | InstructIE验证集                                                                                     |
-| InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE测试集                                                                                     |
-| train.json, valid.json          | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing)                     | 5000   | [CCKS2023 开放环境下的知识图谱构建与补全评测任务一：指令驱动的自适应知识图谱构建](https://tianchi.aliyun.com/competition/entrance/532080/introduction) 中的初赛训练集及测试集 |
+- 转换前
+```json
+RE: {
+    "input": "如何演好自己的角色，请读《演员自我修养》《喜剧之王》周星驰崛起于穷困潦倒之中的独门秘笈", 
+    "relation": [{"head": "喜剧之王", "relation": "主演", "tail": "周星驰"}]
+}
+EE: {
+    "input": "消失的“外企光环”，5月份在华裁员900余人，香饽饽变“臭”了", 
+    "event": [{"event_trigger": "裁员", "event_type": "组织关系-裁员", "arguments": [{"argument": "900余人", "role": "裁员人数"}, {"argument": "5月份", "role": "时间"}]}]
+}
+EET: {
+    "input": "前两天，被称为 “ 仅次于苹果的软件服务商 ” 的 Oracle（ 甲骨文 ）公司突然宣布在中国裁员。。", 
+    "event": [{"event_trigger": "裁员", "event_type": "组织关系-裁员", "arguments": [{"argument": "前两天", "role": "时间"}, {"argument": "被称为 “ 仅次于苹果的软件服务商 ” 的 Oracle（ 甲骨文 ）公司", "role": "裁员方"}]}]
+}
+EEA: {
+    "input": "不仅仅是中国IT企业在裁员，为何500强的甲骨文也发生了全球裁员", 
+    "event": [{"event_trigger": "裁员", "event_type": "组织关系-裁员", "arguments": [{"argument": "中国IT企业", "role": "裁员方"}]}, {"event_trigger": "裁员", "event_type": "组织关系-裁员", "arguments": [{"argument": "500强的甲骨文", "role": "裁员方"}]}]
+}
+```
 
+- 转换后
+```json
+RE: {
+    "id": "5526d8aa9520a0feaa045ae41d347cf7ca48bd84385743ed453ea57dbe743c7c", 
+    "instruction": "你是专门进行关系三元组提取的专家。已知候选的关系列表：['丈夫', '出版社', '导演', '主演', '注册资本', '编剧', '人口数量', '成立日期', '作曲', '嘉宾', '海拔', '作词', '身高', '出品公司', '占地面积', '母亲']，请你根据关系列表，从以下输入中抽取出可能存在的头实体与尾实体，并给出对应的关系三元组，如果不存在某关系就输出NAN。请按照(头实体,关系,尾实体)\n的格式回答。", 
+    "input": "如何演好自己的角色，请读《演员自我修养》《喜剧之王》周星驰崛起于穷困潦倒之中的独门秘笈", 
+    "output": "NAN\nNAN\nNAN\n(喜剧之王,主演,周星驰)\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN"
+}
+EE: {
+    "id": "f4dcda5576849c77df664c9318d136c36a663f11ad8af98e2794b113884fa69c", 
+    "instruction": "你是专门进行事件提取的专家。已知候选的事件字典：{'人生-婚礼': ['时间', '参礼人员', '地点', '结婚双方'], '组织关系-停职': ['所属组织', '停职人员', '时间'], '交往-会见': ['时间', '会见主体', '地点', '会见对象'], '组织关系-解约': ['时间', '被解约方', '解约方'], '组织行为-开幕': ['时间', '地点', '活动名称'], '人生-求婚': ['时间', '求婚对象', '求婚者'], '人生-失联': ['失联者', '时间', '地点'], '产品行为-发布': ['时间', '发布方', '发布产品'], '灾害/意外-洪灾': ['时间', '受伤人数', '地点', '死亡人数'], '产品行为-上映': ['时间', '上映方', '上映影视'], '组织行为-罢工': ['所属组织', '罢工人数', '时间', '罢工人员'], '人生-怀孕': ['时间', '怀孕者'], '灾害/意外-起火': ['时间', '受伤人数', '地点', '死亡人数'], '灾害/意外-车祸': ['时间', '受伤人数', '地点', '死亡人数'], '司法行为-开庭': ['时间', '开庭法院', '开庭案件'], '交往-探班': ['探班主体', '时间', '探班对象'], '竞赛行为-退役': ['时间', '退役者'], '组织关系-裁员': ['时间', '裁员人数'], '财经/交易-出售/收购': ['时间', '收购方', '交易物', '出售价格', '出售方'], '组织关系-退出': ['退出方', '时间', '原所属组织'], '竞赛行为-禁赛': ['时间', '被禁赛人员', '禁赛机构', '禁赛时长']}，请你根据事件字典，从以下输入中抽取出可能存在的事件，如果不存在某事件就输出NAN。请按照(事件触发词,事件类型,事件论元1#论元角色1;事件论元2#论元角色2)\n的格式回答。", 
+    "input": "消失的“外企光环”，5月份在华裁员900余人，香饽饽变“臭”了", 
+    "output": "NAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\n(裁员,组织关系-裁员,时间#5月份;裁员人数#900余人)\nNAN\nNAN\nNAN"
+}
+EET: {
+    "id": "17aae856c45d7c75f1850d358dc81268a2a9604dce3b98865b3896d0f37a49ef", 
+    "instruction": "作为事件分析专员，你需要查看输入并根据事件类型名录：['人生-订婚', '灾害/意外-坍/垮塌', '财经/交易-涨价', '组织行为-游行', '组织关系-辞/离职', '交往-会见', '人生-结婚', '竞赛行为-禁赛', '组织关系-裁员', '灾害/意外-袭击', '司法行为-约谈', '人生-婚礼', '竞赛行为-退役', '人生-离婚', '灾害/意外-地震', '财经/交易-跌停', '产品行为-发布', '人生-求婚', '人生-怀孕', '组织关系-解约', '财经/交易-降价']，来确定可能发生的事件。所有回答都应该基于(事件触发词,事件类型)\n格式。如果事件类型不匹配，请用NAN标记。", 
+    "input": "前两天，被称为 “ 仅次于苹果的软件服务商 ” 的 Oracle（ 甲骨文 ）公司突然宣布在中国裁员。。", 
+    "output": "NAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\n(裁员,组织关系-裁员)\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN"
+}
+EEA: {
+    "id": "5079d3cb44e94ca9b0749e687b1b19edc94b60fc2c1eb97b2154bbeb93ad3955", "instruction": "你是专门进行事件论元提取的专家。已知事件字典：{'组织关系-裁员': ['裁员方']}，事件类型及触发词：[{'event_type': '组织关系-裁员', 'event_trigger': '裁员'}]，请你从以下输入中抽取出可能存在的论元，如果不存在某事件论元就输出NAN。请按照(事件触发词,事件类型,事件论元1#论元角色1;事件论元2#论元角色2)\n的格式回答。", 
+    "input": "不仅仅是中国IT企业在裁员，为何500强的甲骨文也发生了全球裁员", 
+    "output": "(裁员,组织关系-裁员,裁员方#中国IT企业)\n(裁员,组织关系-裁员,裁员方#500强的甲骨文)"
+}
+```
 
-
-`InstructIE-train` 数据集包含两个核心文件：`InstructIE-zh.json` 和 `InstructIE-en.json`。这两个文件都涵盖了丰富的字段，用于详细描述数据集的不同方面：
-
-- `'id'`：每条数据的唯一标识符，确保数据项的独立性和可追踪性。
-- `'cate'`：文本主题分类，为文本内容提供了一个高级的分类标签（共有12种主题）。
-- `'entity'`和`'relation'`：分别代表实体和关系三元组，这些字段允许用户自由构建信息抽取的指令和预期输出结果。
-
-对于验证集`InstructIE-valid`和测试集`InstructIE-test`，它们包含中英双语版本，保证了数据集在不同语言环境下的适用性。
-
-- `train.json`：这个文件中的字段定义与`InstructIE-train`一致，但`'instruction'`和`'output'`字段展示了一种格式。尽管如此，用户仍可以依据`'relation'`字段自由构建信息抽取的指令和输出。
-- `valid.json`：其字段意义与`train.json`保持一致，但此数据集经过众包标注处理，提供了更高的准确性和可靠性。
-
-各字段详细说明如下：
-
-|    字段     |                             说明                             |
-| :---------: | :----------------------------------------------------------: |
-|     id      |                       每个数据点的唯一标识符。                       |
-|    cate     |           文本的主题类别，总计12种不同的主题分类。               |
-|    input    | 模型的输入文本，目标是从中抽取涉及的所有关系三元组。                  |
-| instruction |                 指导模型执行信息抽取任务的指示。                    |
-|    output   |                      模型的预期输出结果。                        |
-|   entity    |            描述实体以及其对应类型的详细信息(entity, entity_type)。    |
-|  relation   |   描述文本中包含的关系三元组，即实体间的联系(head, relation, tail)。   |
-
-利用上述字段，用户可以灵活地设计和实施针对不同信息抽取需求的指令和输出格式。
-
-此处 [schema](./kg2instruction/convert/utils.py) 提供了12种文本主题, 以及该主题下常见的关系类型。
-
-
+</details>
 
 
 
 ## 3.准备
-
 
 
 ### 3.1环境
@@ -169,13 +331,20 @@ mkdir data
 ### 3.3模型
 下面是一些模型
 * [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf) | [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
+* [zjunlp/knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0)(需搭配相应的IE Lora) | [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi)(无需Lora即可直接预测) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)(无需Lora, IE能力更强, 但通用性有所削弱)
+* [baichuan-inc/Baichuan-7B](https://huggingface.co/baichuan-inc/Baichuan-7B) | [baichuan-inc/Baichuan-13B-Base](https://huggingface.co/baichuan-inc/Baichuan-13B-Base) | [baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base) | [baichuan-inc/Baichuan2-13B-Base](https://huggingface.co/baichuan-inc/Baichuan2-13B-Base)
+
+<details>
+  <summary><b>更多</b></summary>
+
+
 * [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b) | [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
 * [Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1) | [Vicuna-13b-delta-v1.1](https://huggingface.co/lmsys/vicuna-13b-delta-v1.1) | 
-* [zjunlp/knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0)(需搭配相应的IE Lora) | [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi)(无需Lora即可直接预测) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)(无需Lora, IE能力更强, 但通用性有所削弱)
 * [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)
 * [moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
 * [Chinese-LLaMA-7B](https://huggingface.co/Linly-AI/Chinese-LLaMA-7B)
-* [baichuan-inc/Baichuan-7B](https://huggingface.co/baichuan-inc/Baichuan-7B) | [baichuan-inc/Baichuan-13B-Base](https://huggingface.co/baichuan-inc/Baichuan-13B-Base) | [baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base) | [baichuan-inc/Baichuan2-13B-Base](https://huggingface.co/baichuan-inc/Baichuan2-13B-Base)
+</details>
+
 
 
 
@@ -285,6 +454,11 @@ output_dir='path to save Zhixi Lora'
 
 你可以通过下面的命令设置自己的参数使用LoRA方法来微调Vicuna模型:
 
+
+<details>
+  <summary><b>详细</b></summary>
+
+
 ```bash
 output_dir='path to save Vicuna Lora'
 mkdir -p ${output_dir}
@@ -317,6 +491,8 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     2> ${output_dir}/train.err
 ```
 
+</details>
+
 1. Vicuna模型我们采用[Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1)
 2. 由于Vicuna-7b-delta-v1.1所使用的prompt_template_name与`alpaca`模版不同, 因此需要设置 `--prompt_template_name 'vicuna'`, 详见 [templates/vicuna.json](./templates//vicuna.json)
 3. 我们在 `RTX3090` 上跑通了vicuna-lora微调代码
@@ -329,6 +505,11 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 ### 4.6LoRA微调ChatGLM
 
 你可以通过下面的命令设置自己的参数使用LoRA方法来微调ChatGLM模型，注意⚠️目前chatglm更新速度较快，请您确保您的模型与chatglm最新模型保持一致:
+
+<details>
+  <summary><b>详细</b></summary>
+
+
 ```bash
 output_dir='path to save ChatGLM Lora'
 mkdir -p ${output_dir}
@@ -362,6 +543,8 @@ CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/fine
     2> ${output_dir}/train.err
 ```
 
+</details>
+
 1. ChatGLM模型我们采用[THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)
 2. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates/alpaca.json)
 3. 由于使用8bits量化后训练得到的模型效果不佳, 因此对于ChatGLM我们没有采用量化策略
@@ -375,6 +558,10 @@ CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/fine
 ### 4.7LoRA微调Moss
 
 你可以通过下面的命令设置自己的参数使用LoRA方法来微调Moss模型:
+
+<details>
+  <summary><b>详细</b></summary>
+
 
 ```bash
 output_dir='path to save Moss Lora'
@@ -411,6 +598,8 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     2> ${output_dir}/train.err
 ```
 
+</details>
+
 1. Moss模型我们采用[moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
 2. prompt_template_name在alpaca模版的基础上做了一些修改, 详见 [templates/moss.json](./templates/moss.json), 因此需要设置 `--prompt_template_name 'moss'`
 3. 由于 `RTX3090` 显存限制, 我们采用`qlora`技术进行4bits量化, 你也可以在`V100`、`A100`上尝试8bits量化和不量化策略
@@ -425,6 +614,10 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 ### 4.8LoRA微调Baichuan
 
 你可以通过下面的命令设置自己的参数使用LoRA方法来微调Baichuan模型:
+
+<details>
+  <summary><b>详细</b></summary>
+
 
 ```bash
 CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
@@ -455,6 +648,8 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     2> ${output_dir}/train.err
 ```
 
+</details>
+
 1. Baichuan模型我们采用[baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base)
 2. 目前在evaluation方面存在一些问题, 因此我们使用`evaluation_strategy` "no"
 3. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates/alpaca.json)
@@ -470,7 +665,9 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 
 
 ### 5.1P-Tuning微调ChatGLM
+
 你可以通过下面的命令使用P-Tuning方法来finetune模型:
+
 ```bash
 deepspeed --include localhost:0 src/finetuning_pt.py \
   --train_path data/train.json \
@@ -499,7 +696,7 @@ deepspeed --include localhost:0 src/finetuning_pt.py \
 * [alpaca-7b-lora-ie](https://huggingface.co/zjunlp/alpaca-7b-lora-ie)
 * [llama-7b-lora-ie](https://huggingface.co/zjunlp/llama-7b-lora-ie)
 * [alpaca-13b-lora-ie](https://huggingface.co/zjunlp/alpaca-13b-lora-ie)
-* [zhixi-13b-lora](https://huggingface.co/zjunlp/zhixi-13b-lora/tree/main)
+* [knowlm-13b-ie-lora](https://huggingface.co/zjunlp/knowlm-13b-ie-lora)
 
 以下表格显示了基础模型和其对应的LoRA权重之间的关系：
 
@@ -507,7 +704,7 @@ deepspeed --include localhost:0 src/finetuning_pt.py \
 | ----------------------- | ------------------- |
 | llama-7b                | llama-7b-lora-ie       |
 | alpaca-7b               | alpaca-7b-lora-ie      |
-| zjunlp/knowlm-13b-base-v1.0 | zhixi-13b-lora      |
+| zjunlp/knowlm-13b-base-v1.0 | knowlm-13b-ie-lora      |
 
 
 要使用这些训练好的LoRA模型进行预测，可以执行以下命令：
