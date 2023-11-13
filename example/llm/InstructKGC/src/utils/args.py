@@ -35,10 +35,13 @@ class TrainingArguments(Seq2SeqTrainingArguments):
 @dataclass
 class ModelArguments:
     model_name_or_path: str = field(default=None, metadata={"help": "Path to pretrained model or model identifier from huggingface.co/models."})
-    model_name: str = field(default="llama", choices=["llama", "falcon", "baichuan", "chatglm", "moss", "alpaca", "vicuna", "zhixi"], metadata={"help": "Model name."})
+    model_name: str = field(default="llama", metadata={"help": "Model name."})    # choices=["llama", "falcon", "baichuan", "chatglm", "moss", "alpaca", "vicuna", "zhixi"]
     trust_remote_code: Optional[bool] = field(default=True, metadata={"help": "Enable unpickling of arbitrary code in AutoModelForCausalLM#from_pretrained."})
     use_auth_token: Optional[bool] = field(default=False, metadata={"help": "Enables using Huggingface auth token from Git Credentials."})
-
+    def __post_init__(self):
+        assert self.model_name in ["llama", "falcon", "baichuan", "chatglm", "moss", "alpaca", "vicuna", "zhixi"],\
+            f"""`{self.model_name}` is invalid. We only support model in ["llama", "falcon", "baichuan", "chatglm", "moss", "alpaca", "vicuna", "zhixi"]"""
+      
 
 
 @dataclass
