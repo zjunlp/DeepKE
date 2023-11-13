@@ -6,16 +6,16 @@
 
 
 - [InstructionKGC-指令驱动的自适应知识图谱构建](#instructionkgc-指令驱动的自适应知识图谱构建)
-  - [1.任务目标](#1任务目标)
-  - [2.数据](#2数据)
+  - [🎯 1.任务目标](#-1任务目标)
+  - [📊 2.数据](#-2数据)
     - [2.1信息抽取模板](#21信息抽取模板)
     - [2.2现有数据集](#22现有数据集)
     - [2.3数据预处理](#23数据预处理)
-  - [3.准备](#3准备)
-    - [3.1环境](#31环境)
-    - [3.2下载数据](#32下载数据)
-    - [3.3模型](#33模型)
-  - [4.LoRA微调](#4lora微调)
+  - [🚴 3.准备](#-3准备)
+    - [🛠️ 3.1环境](#️-31环境)
+    - [⏬ 3.2下载数据](#-32下载数据)
+    - [🐐 3.3模型](#-33模型)
+  - [🌰 4.LoRA微调](#-4lora微调)
     - [4.1基础参数](#41基础参数)
     - [4.2LoRA微调LLaMA](#42lora微调llama)
     - [4.3LoRA微调Alpaca](#43lora微调alpaca)
@@ -24,20 +24,20 @@
     - [4.6LoRA微调ChatGLM](#46lora微调chatglm)
     - [4.7LoRA微调Moss](#47lora微调moss)
     - [4.8LoRA微调Baichuan](#48lora微调baichuan)
-  - [5.P-Tuning微调](#5p-tuning微调)
+  - [🥊 5.P-Tuning微调](#-5p-tuning微调)
     - [5.1P-Tuning微调ChatGLM](#51p-tuning微调chatglm)
-  - [6.预测](#6预测)
+  - [🔴 6.预测](#-6预测)
     - [6.1LoRA预测](#61lora预测)
       - [6.1.1基础模型+Lora](#611基础模型lora)
       - [6.1.2IE专用模型](#612ie专用模型)
     - [6.2P-Tuning预测](#62p-tuning预测)
-  - [7.模型输出转换\&计算F1](#7模型输出转换计算f1)
-  - [8.Acknowledgment](#8acknowledgment)
+  - [🧾 7.模型输出转换\&计算F1](#-7模型输出转换计算f1)
+  - [👋 8.Acknowledgment](#-8acknowledgment)
   - [Citation](#citation)
 
 
 
-## 1.任务目标
+## 🎯 1.任务目标
 
 根据用户输入的指令抽取相应类型的实体和关系，构建知识图谱。其中可能包含知识图谱补全任务，即任务需要模型在抽取实体关系三元组的同时对缺失三元组进行补全。
 
@@ -51,33 +51,33 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 
 
-## 2.数据
+## 📊 2.数据
 
 
 ### 2.1信息抽取模板
 
-模版`template`用于构造输入模型的指令`instruction`, 由:
+模版`template`用于构造输入模型的**指令**`instruction`, 由三部分组成:
 1. 任务描述
 2. 候选标签列表{s_schema}(可选)
-3. 结构输出格式{s_format}三部分组成。
+3. 结构输出格式{s_format}
 
 
-指定候选标签列表的模版:
-```json
-    NER: "你是专门进行实体抽取的专家。已知候选的实体类型列表：{s_schema}，请你根据实体类型列表，从以下输入中抽取出可能存在的实体，如果不存在某实体就输出NAN。请按照{s_format}的格式回答。"
-    RE: "你在这里扮演关系三元组识别师的角色。我将给你个输入，请根据关系列表：{s_schema}，从输入中抽取出可能包含的关系三元组，，如果不存在某关系就输出NAN，并以{s_format}的形式回答。"
-    EE: "你是专门进行事件提取的专家。已知候选的事件字典：{s_schema}，请你根据事件字典，从以下输入中抽取出可能存在的事件，如果不存在某事件就输出NAN。请按照{s_format}的格式回答。"
-    EET: "作为事件分析专员，你需要查看输入并根据事件类型名录：{s_schema}，来确定可能发生的事件。所有回答都应该基于{s_format}格式。如果事件类型不匹配，请用NAN标记。"
-    EEA: "你是专门进行事件论元提取的专家。已知事件字典：{s_schema1}，事件类型及触发词：{s_schema2}，请你从以下输入中抽取出可能存在的论元，如果不存在某事件论元就输出NAN。请按照{s_format}的格式回答。"
+**指定候选标签列表**的模版:
+```
+NER: "你是专门进行实体抽取的专家。已知候选的实体类型列表：{s_schema}，请你根据实体类型列表，从以下输入中抽取出可能存在的实体，如果不存在某实体就输出NAN。请按照{s_format}的格式回答。"
+RE: "你在这里扮演关系三元组识别师的角色。我将给你个输入，请根据关系列表：{s_schema}，从输入中抽取出可能包含的关系三元组，，如果不存在某关系就输出NAN，并以{s_format}的形式回答。"
+EE: "你是专门进行事件提取的专家。已知候选的事件字典：{s_schema}，请你根据事件字典，从以下输入中抽取出可能存在的事件，如果不存在某事件就输出NAN。请按照{s_format}的格式回答。"
+EET: "作为事件分析专员，你需要查看输入并根据事件类型名录：{s_schema}，来确定可能发生的事件。所有回答都应该基于{s_format}格式。如果事件类型不匹配，请用NAN标记。"
+EEA: "你是专门进行事件论元提取的专家。已知事件字典：{s_schema1}，事件类型及触发词：{s_schema2}，请你从以下输入中抽取出可能存在的论元，如果不存在某事件论元就输出NAN。请按照{s_format}的格式回答。"
 ```
 
-不指定候选标签列表的模版:
-```json
-    NER: "分析文本内容，并提取明显的实体。将您的发现以{s_format}格式提出，跳过任何不明显或不确定的部分。"
-    RE: "请从文本中抽取出所有关系三元组，并根据{s_format}的格式呈现结果。忽略那些不符合标准关系模板的实体。"
-    EE: "请分析下文，从中抽取所有可识别的事件，并按照指定的格式{s_format}呈现。如果某些信息不构成事件，请简单跳过。"
-    EET: "审视下列文本内容，并抽取出任何你认为显著的事件。将你的发现整理成{s_format}格式提供。"
-    EEA: "请您根据事件类型及触发词{s_schema2}从以下输入中抽取可能的论元。请按照{s_format}的格式回答。"
+**不指定候选标签列表**的模版:
+```
+NER: "分析文本内容，并提取明显的实体。将您的发现以{s_format}格式提出，跳过任何不明显或不确定的部分。"
+RE: "请从文本中抽取出所有关系三元组，并根据{s_format}的格式呈现结果。忽略那些不符合标准关系模板的实体。"
+EE: "请分析下文，从中抽取所有可识别的事件，并按照指定的格式{s_format}呈现。如果某些信息不构成事件，请简单跳过。"
+EET: "审视下列文本内容，并抽取出任何你认为显著的事件。将你的发现整理成{s_format}格式提供。"
+EEA: "请您根据事件类型及触发词{s_schema2}从以下输入中抽取可能的论元。请按照{s_format}的格式回答。"
 ```
 
 
@@ -85,29 +85,29 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
   <summary><b>候选标签列表{s_schema}</b></summary>
 
 
-  ```json
-    NER(CLUE): ["书名", "地址", "电影", "公司", "姓名", "组织机构", "职位", "游戏", "景点", "政府"] 
-    RE(DuIE): ["创始人", "号", "注册资本", "出版社", "出品公司", "作词", "出生地", "连载网站", "祖籍", "制片人", "出生日期", "主演", "改编自", ...]
-    EE(DuEE-fin): {"质押": ["披露时间", "质押物占总股比", "质押物所属公司", "质押股票/股份数量", "质押物", "质押方", "质押物占持股比", "质权方", "事件时间"], "股份回购": ["回购方", "回购完成时间", "披露时间", "每股交易价格", "交易金额", "回购股份数量", "占公司总股本比例"],  ...} 
-    EET(DuEE): ["交往-感谢", "组织行为-开幕", "竞赛行为-退赛", "组织关系-加盟", "组织关系-辞/离职", "财经/交易-涨价", "人生-产子/女", "灾害/意外-起火", "组织关系-裁员", ...]
-    EEA(DuEE-fin): {"质押": ["披露时间", "质押物占总股比", "质押物所属公司", "质押股票/股份数量", "质押物", "质押方", "质押物占持股比", "质权方", "事件时间"], "股份回购": ["回购方", "回购完成时间", "披露时间", "每股交易价格", "交易金额", "回购股份数量", "占公司总股本比例"], ...} 
+  ```
+  NER(CLUE): ["书名", "地址", "电影", "公司", "姓名", "组织机构", "职位", "游戏", "景点", "政府"] 
+  RE(DuIE): ["创始人", "号", "注册资本", "出版社", "出品公司", "作词", "出生地", "连载网站", "祖籍", "制片人", "出生日期", "主演", "改编自", ...]
+  EE(DuEE-fin): {"质押": ["披露时间", "质押物占总股比", "质押物所属公司", "质押股票/股份数量", "质押物", "质押方", "质押物占持股比", "质权方", "事件时间"], "股份回购": ["回购方", "回购完成时间", "披露时间", "每股交易价格", "交易金额", "回购股份数量", "占公司总股本比例"],  ...} 
+  EET(DuEE): ["交往-感谢", "组织行为-开幕", "竞赛行为-退赛", "组织关系-加盟", "组织关系-辞/离职", "财经/交易-涨价", "人生-产子/女", "灾害/意外-起火", "组织关系-裁员", ...]
+  EEA(DuEE-fin): {"质押": ["披露时间", "质押物占总股比", "质押物所属公司", "质押股票/股份数量", "质押物", "质押方", "质押物占持股比", "质权方", "事件时间"], "股份回购": ["回购方", "回购完成时间", "披露时间", "每股交易价格", "交易金额", "回购股份数量", "占公司总股本比例"], ...} 
   ```
 
 </details>
 
-此处 [schema](./kg2instruction/convert/utils.py) 提供了12种文本主题, 以及该主题下常见的关系类型。
+此处 [schema](./kg2instruction/convert/utils.py) 提供了12种**文本主题**, 以及该主题下常见的关系类型。
 
 
 <details>
   <summary><b>结构输出格式{s_format}</b></summary>
 
 
-  ```json
-    NER: (实体,实体类型) 
-    RE: (头实体,关系,尾实体) 
-    EE: (事件触发词,事件类型,事件论元1#论元角色1;事件论元2#论元角色2) 
-    EET: (事件触发词,事件类型) 
-    EEA: (Event Trigger,Event Type,Argument1#Argument Role1;Argument2#Argument Role2) 
+  ```
+  NER: (实体,实体类型) 
+  RE: (头实体,关系,尾实体) 
+  EE: (事件触发词,事件类型,事件论元1#论元角色1;事件论元2#论元角色2) 
+  EET: (事件触发词,事件类型) 
+  EEA: (Event Trigger,Event Type,Argument1#Argument Role1;Argument2#Argument Role2) 
   ```
 
 </details>
@@ -132,13 +132,13 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 `InstructIE-train` 数据集包含两个核心文件：`InstructIE-zh.json` 和 `InstructIE-en.json`。这两个文件都涵盖了丰富的字段，用于详细描述数据集的不同方面：
 
 - `'id'`：每条数据的唯一标识符，确保数据项的独立性和可追踪性。
-- `'cate'`：文本主题分类，为文本内容提供了一个高级的分类标签（共有12种主题）。
-- `'entity'`和`'relation'`：分别代表实体和关系三元组，这些字段允许用户自由构建信息抽取的指令和预期输出结果。
+- `'cate'`：**文本主题**分类，为文本内容提供了一个高级的分类标签（共有12种主题）。
+- `'entity'`和`'relation'`：分别代表**实体**和**关系**三元组，这些字段允许用户自由构建信息抽取的指令和预期输出结果。
 
-对于验证集`InstructIE-valid`和测试集`InstructIE-test`，它们包含中英双语版本，保证了数据集在不同语言环境下的适用性。
+对于验证集`InstructIE-valid`和测试集`InstructIE-test`，它们包含**中英双语**版本，保证了数据集在不同语言环境下的适用性。
 
 - `train.json`：这个文件中的字段定义与`InstructIE-train`一致，但`'instruction'`和`'output'`字段展示了一种格式。尽管如此，用户仍可以依据`'relation'`字段自由构建信息抽取的指令和输出。
-- `valid.json`：其字段意义与`train.json`保持一致，但此数据集经过众包标注处理，提供了更高的准确性和可靠性。
+- `valid.json`：其字段意义与`train.json`保持一致，但此数据集经过**众包标注**处理，提供了更高的准确性和可靠性。
 
 <details>
   <summary><b>各字段的说明</b></summary>
@@ -156,7 +156,7 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 </details>
 
-利用上述字段，用户可以灵活地设计和实施针对不同信息抽取需求的指令和输出格式。
+利用上述字段，用户可以灵活地设计和实施针对不同信息**抽取需求**的指令和**输出格式**。
 
 <details>
   <summary><b>一条数据的示例</b></summary>
@@ -186,7 +186,7 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 ### 2.3数据预处理
 
-在对模型进行数据输入之前，需要将数据格式化以包含`instruction`和`input`字段。为此，我们提供了一个脚本 [kg2instruction/convert.py](./kg2instruction/convert.py)，它可以将数据批量转换成模型可以直接使用的格式。
+在对模型进行数据输入之前，需要将**数据格式化**以包含`instruction`和`input`字段。为此，我们提供了一个脚本 [kg2instruction/convert.py](./kg2instruction/convert.py)，它可以将数据批量转换成模型可以直接使用的格式。
 
 > 在使用 [kg2instruction/convert.py](./kg2instruction/convert.py) 脚本之前，请确保参考了 [data](./data) 目录。该目录中详细列出了每种任务所需的数据格式要求。
 
@@ -204,8 +204,48 @@ python kg2instruction/convert.py \
   --random_sort        # 是否对指令中的schema列表进行随机排序
 ```
 
+`schema_path`用于指定包含三行JSON字符串的schema文件（JSON格式）。每一行都按照**固定的格式**组织了用于命名实体识别（NER）任务的信息。以下以NER任务为例，解释每行的含义：
 
-对于测试数据，可以使用 [kg2instruction/convert_test.py](./kg2instruction/convert_test.py) 脚本，它不要求数据包含标签（`entity`、`relation`、`event`）字段，只需提供input字段和相应的schema_path。
+
+```
+["书名", "地址", "电影", ...]    # 实体类型列表
+[]    # 空列表
+{}    # 空字典
+```
+
+<details>
+  <summary><b>更多</b></summary>
+
+
+```
+对于RE任务
+[]                                 # 空列表
+["创始人", "号", "注册资本",...]      # 关系类型列表
+{}                                 # 空字典
+
+对于EE任务
+["交往-感谢", "组织行为-开幕", "竞赛行为-退赛", ...]    # 事件类型列表
+["解雇方", "解约方", "举报发起方", "被拘捕者"]          # 论元角色列表
+{"组织关系-裁员": ["裁员方", "裁员人数", "时间"], "司法行为-起诉": ["原告", "被告", "时间"], ...}    # 事件类型字典
+
+对于EET任务
+["交往-感谢", "组织行为-开幕", "竞赛行为-退赛", ...]    # 事件类型列表
+[]    # 空列表
+{}    # 空字典
+
+对于EEA任务
+["交往-感谢", "组织行为-开幕", "竞赛行为-退赛", ...]    # 事件类型列表
+["解雇方", "解约方", "举报发起方", "被拘捕者"]          # 论元角色列表
+{"组织关系-裁员": ["裁员方", "裁员人数", "时间"], "司法行为-起诉": ["原告", "被告", "时间"], ...}    # 事件类型字典
+```
+
+</details>
+
+更详细的schema文件信息可在[data](./data)目录下各个任务目录的`schema.json`文件中查看。
+
+
+对于**测试数据**，可以使用 [kg2instruction/convert_test.py](./kg2instruction/convert_test.py) 脚本，它不要求数据包含标签（`entity`、`relation`、`event`）字段，**只需**提供`input`字段和相应的`schema_path`。
+
 
 ```bash
 python kg2instruction/convert_test.py \
@@ -220,7 +260,7 @@ python kg2instruction/convert_test.py \
 
 以下是一个实体识别（NER）任务数据转换的示例：
 
-```json
+```
 转换前：
 {
     "input": "相比之下，青岛海牛队和广州松日队的雨中之战虽然也是0∶0，但乏善可陈。", 
@@ -237,9 +277,9 @@ python kg2instruction/convert_test.py \
 ```
 
 
-转换前: 数据的格式需要符合 `DeepKE/example/llm/InstructKGC/data` 目录下为各项任务(如NER、RE、EE等)规定的结构。以NER任务为例，输入文本应标记为`input`字段，而标注数据则应标记为`entity`字段，它是一个包含多个`entity`和`entity_type`键值对的字典列表。
+**转换前**: 数据的格式需要符合 `DeepKE/example/llm/InstructKGC/data` 目录下为各项任务(如NER、RE、EE等)规定的结构。以NER任务为例，输入文本应标记为`input`字段，而标注数据则应标记为`entity`字段，它是一个包含多个`entity`和`entity_type`键值对的字典列表。
 
-转换后: 将得到包含`input`文本、`instruction`指令（详细说明了候选标签列表['组织机构', '人物', '地理位置']和期望的输出格式(实体,实体类型)），以及`output`（以(实体,实体类型)形式列出在`input`中识别到的所有实体信息）的结构化数据。
+**转换后**: 将得到包含`input`文本、`instruction`指令（详细说明了候选标签列表['组织机构', '人物', '地理位置']和期望的输出格式(实体,实体类型)），以及`output`（以(实体,实体类型)形式列出在`input`中识别到的所有实体信息）的结构化数据。
 
 
 
@@ -297,11 +337,11 @@ EEA: {
 
 
 
-## 3.准备
+## 🚴 3.准备
 
 
-### 3.1环境
-在开始之前，请确保根据[DeepKE/example/llm/README_CN.md](../README_CN.md/#环境依赖)中的指导创建了适当的Python虚拟环境。创建并配置好虚拟环境后，请通过以下命令激活名为deepke-llm的环境：
+### 🛠️ 3.1环境
+在开始之前，请确保根据[DeepKE/example/llm/README_CN.md](../README_CN.md/#环境依赖)中的指导创建了适当的Python虚拟环境。创建并配置好**虚拟环境**后，请通过以下命令激活名为 `deepke-llm` 的环境：
 
 ```bash
 conda activate deepke-llm
@@ -314,11 +354,11 @@ conda activate deepke-llm
 3. bitsandbytes 0.37.2 -> 0.39.1
 4. peft 0.2.0 -> 0.4.0
 
-请确保您的环境中这些库的版本与上述要求相匹配，以便顺利运行接下来的任务。
+请确保您的环境中这些库的版本与上述要求相**匹配**，以便顺利运行接下来的任务。
 
 
 
-### 3.2下载数据
+### ⏬ 3.2下载数据
 ```bash
 mkdir results
 mkdir lora
@@ -328,7 +368,7 @@ mkdir data
 数据放在目录 `./data` 中。
 
 
-### 3.3模型
+### 🐐 3.3模型
 下面是一些模型
 * [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf) | [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [zjunlp/knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0)(需搭配相应的IE Lora) | [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi)(无需Lora即可直接预测) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)(无需Lora, IE能力更强, 但通用性有所削弱)
@@ -348,18 +388,18 @@ mkdir data
 
 
 
-## 4.LoRA微调
+## 🌰 4.LoRA微调
 
 ### 4.1基础参数
-进行LoRA微调时，您需要配置一些基础参数来指定模型类型、数据集路径以及输出设置等。以下是可用的基础参数及其说明：
+进行LoRA微调时，您需要配置一些基础参数来指定模型类型、数据集路径以及输出设置等。以下是可用的**基础参数及其说明**：
 
-* `--model_name`: 指定您想要使用的模型名称。当前支持的模型列表包括：["llama", "falcon", "baichuan", "chatglm", "moss", "alpaca", "vicuna", "zhixi"]。请注意，此参数应与model_name_or_path保持区分。
-* `--train_file` 和 `--valid_file`（可选）: 分别指向您的训练集和验证集的json格式文件路径。如果未提供 valid_file，系统将默认从 train_file 指定的文件中划分出 val_set_size 指定数量的样本作为验证集。您也可以通过调整 val_set_size 参数来改变验证集的样本数量。
-* `--output_dir``: 设置LoRA微调后的权重参数保存路径。
-* `--val_set_size`: 定义验证集的样本数量，默认为1000。
-* `--prompt_template_name`: 选择使用的模板名称。目前支持三种模板类型：[alpaca, vicuna, moss]，默认使用的是alpaca模板。
-* `--max_memory_MB`（默认设置为80000）用以指定GPU显存的大小。请根据您的GPU性能来进行相应调整。
-* 要了解更多关于参数配置的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
+* `--model_name`: 指定您想要使用的**模型名称**。当前支持的模型列表包括：["llama", "falcon", "baichuan", "chatglm", "moss", "alpaca", "vicuna", "zhixi"]。**请注意**，此参数应与model_name_or_path保持区分。
+* `--train_file` 和 `--valid_file`（可选）: 分别指向您的训练集和验证集的json格式**文件路径**。如果未提供 valid_file，系统将默认从 train_file 指定的文件中划分出 val_set_size 指定数量的样本作为验证集。您也可以通过调整 val_set_size 参数来改变**验证集的样本数量**。
+* `--output_dir``: 设置LoRA微调后的**权重参数保存路径**。
+* `--val_set_size`: 定义**验证集的样本数量**，默认为1000。
+* `--prompt_template_name`: 选择使用的**模板名称**。目前支持三种模板类型：[alpaca, vicuna, moss]，默认使用的是`alpaca`模板。
+* `--max_memory_MB`（默认设置为80000）用以指定**GPU显存的大小**。请根据您的GPU性能来进行相应调整。
+* 要了解更多关于**参数配置**的信息，请参考 [src/utils/args.py](./src/utils/args.py) 文件。
 
 > 重要提示：以下的所有命令均应在InstrctKGC目录下执行。例如，如果您想运行微调脚本，您应该使用如下命令：bash scripts/fine_llama.bash。请确保您的当前工作目录正确。
 
@@ -400,9 +440,9 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 ```
 
 1. Llama模型我们采用[LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf)
-2. 对于prompt_template_name，我们默认使用alpaca模板。模板的详细内容可以在 [templates/alpaca.json](./templates/alpaca.json) 文件中找到。
-3. 我们已经在RTX3090 GPU上成功运行了LLaMA模型使用LoRA技术的微调代码。
-4. model_name = llama（llama2也是llama）
+2. 对于prompt_template_name，我们**默认使用alpaca模板**。模板的详细内容可以在 [templates/alpaca.json](./templates/alpaca.json) 文件中找到。
+3. 我们已经在`RTX3090 GPU`上成功运行了LLaMA模型使用LoRA技术的微调代码。
+4. `model_name = llama`（llama2也是llama）
 
 微调LLaMA模型的具体脚本可以在 [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash) 中找到。
 
@@ -410,7 +450,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 
 ### 4.3LoRA微调Alpaca
 
-微调Alpaca模型时，您可遵循与[微调LLaMA模型](./README_CN.md/#42lora微调llama)类似的步骤。要进行微调，请对[ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash)文件做出以下修改：
+微调Alpaca模型时，您可遵循与[微调LLaMA模型](./README_CN.md/#42lora微调llama)类似的步骤。要进行微调，请对[ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash)文件做出以下**修改**：
 
 
 ```bash
@@ -420,19 +460,19 @@ output_dir='path to save Alpaca Lora'
 ```
 
 1. Alpaca模型我们采用[Alpaca-7b](https://huggingface.co/circulus/alpaca-7b)
-2. 对于prompt_template_name，我们默认使用alpaca模板。模板的详细内容可以在 [templates/alpaca.json](./templates/alpaca.json) 文件中找到。
-3. 我们已经在RTX3090 GPU上成功运行了Alpaca模型使用LoRA技术的微调代码。
-4. model_name = alpaca
+2. 对于prompt_template_name，我们**默认使用alpaca模板**。模板的详细内容可以在 [templates/alpaca.json](./templates/alpaca.json) 文件中找到。
+3. 我们已经在`RTX3090 GPU`上成功运行了Alpaca模型使用LoRA技术的微调代码。
+4. `model_name = alpaca`
 
 
 
 ### 4.4LoRA微调智析
 
-在开始微调智析模型之前，请确保遵循[KnowLM2.2预训练模型权重获取与恢复](https://github.com/zjunlp/KnowLM#2-2)的指南获取完整的智析模型权重。
+在开始微调智析模型之前，请确保遵循[KnowLM2.2预训练模型权重获取与恢复](https://github.com/zjunlp/KnowLM#2-2)的指南获取**完整的智析模型权重**。
 
-**重要提示**：由于智析模型已经在丰富的信息抽取任务数据集上进行了LoRA训练，你可能不需要再次微调，可以直接进行预测任务。如果选择进行进一步训练，可以按照以下步骤操作。
+**重要提示**：由于智析模型已经在丰富的信息抽取任务数据集上进行了LoRA训练，你可能**不需要再次微调**，可以直接进行预测任务。如果选择进行进一步训练，可以按照以下步骤操作。
 
-微调智析模型的指令与[微调LLaMA模型](./README_CN.md/#42lora微调llama)类似，只需在[ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash)中作如下调整：
+微调智析模型的指令与[微调LLaMA模型](./README_CN.md/#42lora微调llama)类似，只需在[ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash)中作如下**调整**：
 
 
 ```bash
@@ -444,9 +484,9 @@ output_dir='path to save Zhixi Lora'
 ```
 
 1. 由于Zhixi目前只有13b的模型, 建议相应地减小批处理大小batch size
-2. 对于prompt_template_name，我们默认使用alpaca模板。模板的详细内容可以在 [templates/alpaca.json](./templates/alpaca.json) 文件中找到。
-3. 我们已经在RTX3090 GPU上成功运行了Zhixi模型使用LoRA技术的微调代码。
-4. model_name = zhixi
+2. 对于prompt_template_name，我们**默认使用alpaca模板**。模板的详细内容可以在 [templates/alpaca.json](./templates/alpaca.json) 文件中找到。
+3. 我们已经在`RTX3090 GPU`上成功运行了Zhixi模型使用LoRA技术的微调代码。
+4. `model_name = zhixi`
 
 
 
@@ -494,9 +534,9 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 </details>
 
 1. Vicuna模型我们采用[Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1)
-2. 由于Vicuna-7b-delta-v1.1所使用的prompt_template_name与`alpaca`模版不同, 因此需要设置 `--prompt_template_name 'vicuna'`, 详见 [templates/vicuna.json](./templates//vicuna.json)
+2. 由于Vicuna-7b-delta-v1.1所使用的prompt_template_name与`alpaca`**模版不同**, 因此需要设置 `--prompt_template_name 'vicuna'`, 详见 [templates/vicuna.json](./templates//vicuna.json)
 3. 我们在 `RTX3090` 上跑通了vicuna-lora微调代码
-4. model_name = vicuna
+4. `model_name = vicuna`
 
 相应的脚本在 [ft_scripts/fine_vicuna.bash](./ft_scripts//fine_vicuna.bash)
 
@@ -546,8 +586,8 @@ CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/fine
 </details>
 
 1. ChatGLM模型我们采用[THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)
-2. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates/alpaca.json)
-3. 由于使用8bits量化后训练得到的模型效果不佳, 因此对于ChatGLM我们没有采用量化策略
+2. `prompt_template_name`我们采用**默认的`alpaca`模版**, 详见 [templates/alpaca.json](./templates/alpaca.json)
+3. 由于使用8bits量化后训练得到的模型效果不佳, 因此对于ChatGLM我们**没有采用量化策略**
 4. model_name = chatglm
 
 相应的脚本在 [ft_scripts/fine_chatglm.bash](./ft_scripts//fine_chatglm.bash)
@@ -601,10 +641,10 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 </details>
 
 1. Moss模型我们采用[moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
-2. prompt_template_name在alpaca模版的基础上做了一些修改, 详见 [templates/moss.json](./templates/moss.json), 因此需要设置 `--prompt_template_name 'moss'`
-3. 由于 `RTX3090` 显存限制, 我们采用`qlora`技术进行4bits量化, 你也可以在`V100`、`A100`上尝试8bits量化和不量化策略
+2. prompt_template_name在alpaca模版的基础上做了**一些修改**, 详见 [templates/moss.json](./templates/moss.json), 因此需要设置 `--prompt_template_name 'moss'`
+3. 由于 `RTX3090` 显存限制, 我们采用`qlora`技术**进行4bits量化**, 你也可以在`V100`、`A100`上尝试8bits量化和不量化策略
 4. 我们在 `RTX3090` 上跑通了moss-lora微调代码
-5. model_name = moss
+5. `model_name = moss`
 
 相应的脚本在 [ft_scripts/fine_moss.bash](./ft_scripts/fine_moss.bash)
 
@@ -651,17 +691,17 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 </details>
 
 1. Baichuan模型我们采用[baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base)
-2. 目前在evaluation方面存在一些问题, 因此我们使用`evaluation_strategy` "no"
-3. `prompt_template_name`我们采用默认的`alpaca`模版, 详见 [templates/alpaca.json](./templates/alpaca.json)
+2. **目前在evaluation方面存在一些问题**, 因此我们使用`evaluation_strategy` "no"
+3. `prompt_template_name`我们**采用默认的`alpaca`模版**, 详见 [templates/alpaca.json](./templates/alpaca.json)
 4. 我们在 `RTX3090` 上跑通了baichuan-lora微调代码
-5. model_name = baichuan
+5. `model_name = baichuan`
 
 
 相应的脚本在 [ft_scripts/fine_baichuan.bash](./ft_scripts/fine_baichuan.bash)
 
 
 
-## 5.P-Tuning微调
+## 🥊 5.P-Tuning微调
 
 
 ### 5.1P-Tuning微调ChatGLM
@@ -686,19 +726,21 @@ deepspeed --include localhost:0 src/finetuning_pt.py \
 
 
 
-## 6.预测
+## 🔴 6.预测
 
 
 ### 6.1LoRA预测
 
 #### 6.1.1基础模型+Lora
-以下是一些经过LoRA技术训练优化的模型(Lora权重)：
+
+以下是一些经过LoRA技术训练优化的模型(**Lora权重**)：
+
 * [alpaca-7b-lora-ie](https://huggingface.co/zjunlp/alpaca-7b-lora-ie)
 * [llama-7b-lora-ie](https://huggingface.co/zjunlp/llama-7b-lora-ie)
 * [alpaca-13b-lora-ie](https://huggingface.co/zjunlp/alpaca-13b-lora-ie)
 * [knowlm-13b-ie-lora](https://huggingface.co/zjunlp/knowlm-13b-ie-lora)
 
-以下表格显示了基础模型和其对应的LoRA权重之间的关系：
+以下表格显示了**基础模型**和其对应的**LoRA权重**之间的关系：
 
 | 基础模型                 | LoRA权重            |
 | ----------------------- | ------------------- |
@@ -707,7 +749,7 @@ deepspeed --include localhost:0 src/finetuning_pt.py \
 | zjunlp/knowlm-13b-base-v1.0 | knowlm-13b-ie-lora      |
 
 
-要使用这些训练好的LoRA模型进行预测，可以执行以下命令：
+要使用这些**训练好的**LoRA模型进行预测，可以执行以下命令：
 
 ```bash
 CUDA_VISIBLE_DEVICES="0" python src/inference.py \
@@ -725,7 +767,7 @@ CUDA_VISIBLE_DEVICES="0" python src/inference.py \
 
 
 #### 6.1.2IE专用模型
-若要使用已训练的模型（无LoRA或LoRA已集成到模型参数中），可以执行以下命令进行预测：
+若要使用**已训练的模型**（无LoRA或LoRA已集成到模型参数中），可以执行以下命令进行预测：
 
 ```bash
 CUDA_VISIBLE_DEVICES="0" python src/inference.py \
@@ -760,8 +802,8 @@ CUDA_VISIBLE_DEVICES=0 python src/inference_pt.py \
 
 
 
-## 7.模型输出转换&计算F1
-我们提供 [evaluate.py](./kg2instruction/evaluate.py) 的脚本，用于将模型的字符串输出转换为列表并计算 F1 分数。
+## 🧾 7.模型输出转换&计算F1
+我们提供 [evaluate.py](./kg2instruction/evaluate.py) 的脚本，用于将模型的字符串输出转换为列表并计算 **F1 分数**。
 
 ```bash
 python kg2instruction/evaluate.py \
@@ -772,7 +814,7 @@ python kg2instruction/evaluate.py \
 ```
 
 
-## 8.Acknowledgment
+## 👋 8.Acknowledgment
 
 部分代码来自于 [Alpaca-LoRA](https://github.com/tloen/alpaca-lora)、[qlora](https://github.com/artidoro/qlora.git), 感谢！
 

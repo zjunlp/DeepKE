@@ -5,16 +5,16 @@
 </p>
 
 - [InstructKGC-CCKS2023 Evaluation of Instruction-based Knowledge Graph Construction](#instructkgc-ccks2023-evaluation-of-instruction-based-knowledge-graph-construction)
-  - [1.Task Object](#1task-object)
-  - [2. Data](#2-data)
+  - [🎯 1.Task Object](#-1task-object)
+  - [📊 2.Data](#-2data)
     - [2.1Information Extraction Template](#21information-extraction-template)
     - [2.2Datasets](#22datasets)
     - [2.3Data Preprocessing](#23data-preprocessing)
-  - [3.Preparation](#3preparation)
-    - [3.1Environment](#31environment)
-    - [3.2Download data](#32download-data)
-    - [3.3Model](#33model)
-  - [4.LoRA Fine-tuning](#4lora-fine-tuning)
+  - [🚴 3.Preparation](#-3preparation)
+    - [🛠️ 3.1Environment](#️-31environment)
+    - [⏬ 3.2Download data](#-32download-data)
+    - [🐐 3.3Model](#-33model)
+  - [🌰 4.LoRA Fine-tuning](#-4lora-fine-tuning)
     - [4.1 Basic Parameters](#41-basic-parameters)
     - [4.2LoRA Fine-tuning with LLaMA](#42lora-fine-tuning-with-llama)
     - [4.3LoRA Fine-tuning with Alpaca](#43lora-fine-tuning-with-alpaca)
@@ -23,19 +23,19 @@
     - [4.6Lora Fine-tuning with ChatGLM](#46lora-fine-tuning-with-chatglm)
     - [4.7Lora Fine-tuning with Moss](#47lora-fine-tuning-with-moss)
     - [4.8LoRA Fine-tuning with Baichuan](#48lora-fine-tuning-with-baichuan)
-  - [5.P-Tuning Fine-tuning](#5p-tuning-fine-tuning)
+  - [🥊 5.P-Tuning Fine-tuning](#-5p-tuning-fine-tuning)
     - [5.1P-Tuning Fine-tuning with ChatGLM](#51p-tuning-fine-tuning-with-chatglm)
-  - [6. Prediction](#6-prediction)
+  - [🔴 6. Prediction](#-6-prediction)
     - [6.1 LoRA Prediction](#61-lora-prediction)
       - [6.1.1 Base Model + LoRA](#611-base-model--lora)
       - [6.1.2 IE-Specific Model](#612-ie-specific-model)
     - [6.2 P-Tuning Prediction](#62-p-tuning-prediction)
-  - [7. Model Output Conversion \& F1 Calculation](#7-model-output-conversion--f1-calculation)
-  - [8.Acknowledgment](#8acknowledgment)
+  - [🧾 7. Model Output Conversion \& F1 Calculation](#-7-model-output-conversion--f1-calculation)
+  - [👋 8.Acknowledgment](#-8acknowledgment)
   - [Citation](#citation)
 
 
-## 1.Task Object
+## 🎯 1.Task Object
 
 Extract relevant entities and relations according to user input instructions to construct a knowledge graph. This task may include knowledge graph completion, where the model is required to complete missing triples while extracting entity-relation triples.
 
@@ -48,7 +48,7 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 ```
 
 
-## 2. Data
+## 📊 2.Data
 
 
 ### 2.1Information Extraction Template
@@ -58,50 +58,50 @@ The template `template` is used to construct the instruction `instruction` for i
 3. Structural output format {s_format}
 
 
-Template with specified list of candidate labels:
-```json
-    NER: "You are an expert specialized in entity extraction. With the candidate entity types list: {s_schema}, please extract possible entities from the input below, outputting NAN if a certain entity does not exist. Respond in the format {s_format}."
-    RE: "You are an expert in extracting relation triples. With the candidate relation list: {s_schema}, please extract the possible head entities and tail entities from the input below and provide the corresponding relation triples. If a relation does not exist, output NAN. Please answer in the {s_format} format."
-    EE: "You are a specialist in event extraction. Given the candidate event dictionary: {s_schema}, please extract any possible events from the input below. If an event does not exist, output NAN. Please answer in the format of {s_format}."
-    EET: "As an event analysis specialist, you need to review the input and determine possible events based on the event type directory: {s_schema}. All answers should be based on the {s_format} format. If the event type does not match, please mark with NAN."
-    EEA: "You are an expert in event argument extraction. Given the event dictionary: {s_schema1}, and the event type and trigger words: {s_schema2}, please extract possible arguments from the following input. If an event argument does not exist, output NAN. Please respond in the {s_format} format."
+Template **with specified list of candidate labels**:
+```
+NER: "You are an expert specialized in entity extraction. With the candidate entity types list: {s_schema}, please extract possible entities from the input below, outputting NAN if a certain entity does not exist. Respond in the format {s_format}."
+RE: "You are an expert in extracting relation triples. With the candidate relation list: {s_schema}, please extract the possible head entities and tail entities from the input below and provide the corresponding relation triples. If a relation does not exist, output NAN. Please answer in the {s_format} format."
+EE: "You are a specialist in event extraction. Given the candidate event dictionary: {s_schema}, please extract any possible events from the input below. If an event does not exist, output NAN. Please answer in the format of {s_format}."
+EET: "As an event analysis specialist, you need to review the input and determine possible events based on the event type directory: {s_schema}. All answers should be based on the {s_format} format. If the event type does not match, please mark with NAN."
+EEA: "You are an expert in event argument extraction. Given the event dictionary: {s_schema1}, and the event type and trigger words: {s_schema2}, please extract possible arguments from the following input. If an event argument does not exist, output NAN. Please respond in the {s_format} format."
 ```
 
 
-Template without specifying a list of candidate labels:
-```json
-    NER: "Analyze the text content and extract the clear entities. Present your findings in the {s_format} format, skipping any ambiguous or uncertain parts."
-    RE: "Please extract all the relation triples from the text and present the results in the format of {s_format}. Ignore those entities that do not conform to the standard relation template."
-    EE: "Please analyze the following text, extract all identifiable events, and present them in the specified format {s_format}. If certain information does not constitute an event, simply skip it."
-    EET: "Examine the following text content and extract any events you deem significant. Provide your findings in the {s_format} format."
-    EEA: "Please extract possible arguments based on the event type and trigger word {s_schema2} from the input below. Answer in the format of {s_format}."
+Template **without specifying a list of candidate labels**:
+```
+NER: "Analyze the text content and extract the clear entities. Present your findings in the {s_format} format, skipping any ambiguous or uncertain parts."
+RE: "Please extract all the relation triples from the text and present the results in the format of {s_format}. Ignore those entities that do not conform to the standard relation template."
+EE: "Please analyze the following text, extract all identifiable events, and present them in the specified format {s_format}. If certain information does not constitute an event, simply skip it."
+EET: "Examine the following text content and extract any events you deem significant. Provide your findings in the {s_format} format."
+EEA: "Please extract possible arguments based on the event type and trigger word {s_schema2} from the input below. Answer in the format of {s_format}."
 ```
 
 <details>
     <summary><b>Candidate Labels {s_schema}</b></summary>
 
 
-    ```json
-        NER(Ontonotes): ["date", "organization", "person", "geographical social political", "national religious political", "facility", "cardinal", "location", "work of art", ...]
-        RE(NYT): ["ethnicity", "place lived", "geographic distribution", "company industry", "country of administrative divisions", "administrative division of country", ...]
-        EE(ACE2005): {"declare bankruptcy": ["organization"], "transfer ownership": ["artifact", "place", "seller", "buyer", "beneficiary"], "marry": ["person", "place"], ...}
-        EET(GENIA): ["cell type", "cell line", "protein", "RNA", "DNA"]
-        EEA(ACE2005): {"declare bankruptcy": ["organization"], "transfer ownership": ["artifact", "place", "seller", "buyer", "beneficiary"], "marry": ["person", "place"], ...}
+    ```
+    NER(Ontonotes): ["date", "organization", "person", "geographical social political", "national religious political", "facility", "cardinal", "location", "work of art", ...]
+    RE(NYT): ["ethnicity", "place lived", "geographic distribution", "company industry", "country of administrative divisions", "administrative division of country", ...]
+    EE(ACE2005): {"declare bankruptcy": ["organization"], "transfer ownership": ["artifact", "place", "seller", "buyer", "beneficiary"], "marry": ["person", "place"], ...}
+    EET(GENIA): ["cell type", "cell line", "protein", "RNA", "DNA"]
+    EEA(ACE2005): {"declare bankruptcy": ["organization"], "transfer ownership": ["artifact", "place", "seller", "buyer", "beneficiary"], "marry": ["person", "place"], ...}
     ```
 </details>
 
-Here [schema](./kg2instruction/convert/utils.py) provides 12 text topics and common relationship types under the topic.
+Here [schema](./kg2instruction/convert/utils.py) provides 12 **text topics** and common relationship types under the topic.
 
 <details>
     <summary><b>Structural Output Format {s_format}</b></summary>
 
 
-    ```json
-        NER: (Entity,Entity Type)
-        RE: (Subject,Relation,Object)
-        EE: (Event Trigger,Event Type,Argument1#Argument Role1;Argument2#Argument Role2)
-        EET: (Event Trigger,Event Type)
-        EEA: (Event Trigger,Event Type,Argument1#Argument Role1;Argument2#Argument Role2)
+    ```
+    NER: (Entity,Entity Type)
+    RE: (Subject,Relation,Object)
+    EE: (Event Trigger,Event Type,Argument1#Argument Role1;Argument2#Argument Role2)
+    EET: (Event Trigger,Event Type)
+    EEA: (Event Trigger,Event Type,Argument1#Argument Role1;Argument2#Argument Role2)
     ```
 
 </details>
@@ -126,12 +126,12 @@ The `InstructIE-train` dataset contains two core files: `InstructIE-zh.json` and
 
 - `'id'`: A unique identifier for each data entry, ensuring the independence and traceability of the data items.
 - `'cate'`: The text's subject category, which provides a high-level categorical label for the content (there are 12 categories in total).
-- `'entity'` and `'relation'`: Represent entity and relationship triples, respectively. These fields allow users to freely construct instructions and expected outputs for information extraction.
+- `'entity'` and `'relation'`: Represent **entity and relationship triples**, respectively. These fields allow users to freely construct instructions and expected outputs for information extraction.
 
-For the validation set `InstructIE-valid` and the test set `InstructIE-test`, they include both Chinese and English versions, ensuring the dataset's applicability in different language settings.
+For the validation set `InstructIE-valid` and the test set `InstructIE-test`, they include **both Chinese and English versions**, ensuring the dataset's applicability in different language settings.
 
 - `train.json`: The field definitions in this file are consistent with `InstructIE-train`, but the `'instruction'` and `'output'` fields show one format. Nonetheless, users can still freely construct instructions and outputs for information extraction based on the `'relation'` field.
-- `valid.json`: Its field meanings are consistent with `train.json`, but this dataset has been crowdsource-annotated, providing higher accuracy and reliability.
+- `valid.json`: Its field meanings are consistent with `train.json`, but this dataset has been **crowdsource-annotated**, providing higher accuracy and reliability.
 
 
 <details>
@@ -209,6 +209,49 @@ python kg2instruction/convert.py \
   --random_sort        # Determines whether to randomly sort the list of schemas in the instruction
 ```
 
+`schema_path` is used to specify a schema file (in JSON format) containing three lines of JSON strings. Each line is organized in a fixed format and provides information for named entity recognition (NER) tasks. Taking NER tasks as an example, the meaning of each line is explained as follows:
+
+```
+["BookTitle", "Address", "Movie", ...]  # List of entity types
+[]  # Empty list
+{}  # Empty dictionary
+```
+
+
+<details>
+  <summary><b>More</b></summary>
+
+
+
+```
+For Relation Extraction (RE) tasks:
+[]                                                 # Empty list
+["Founder", "Number", "RegisteredCapital", ...]    # List of relation types
+{}                                                 # Empty dictionary
+
+
+For Event Extraction (EE) tasks:
+["Social Interaction-Thanks", "Organizational Action-OpeningCeremony", "Competition Action-Withdrawal", ...]        # List of event types
+["DismissingParty", "TerminatingParty", "Reporter", "ArrestedPerson"]       # List of argument roles
+{"OrganizationalRelation-Layoff": ["LayoffParty", "NumberLaidOff", "Time"], "LegalAction-Sue": ["Plaintiff", "Defendant", "Time"], ...}         # Dictionary of event types
+
+
+For EET tasks:
+["Social Interaction-Thanks", "Organizational Action-OpeningCeremony", "Competition Action-Withdrawal", ...]         # List of event types
+[]                               # Empty list
+{}                               # Empty dictionary
+
+
+For Event Extraction with Arguments (EEA) tasks:
+["Social Interaction-Thanks", "Organizational Action-OpeningCeremony", "Competition Action-Withdrawal", ...]                  # List of event types
+["DismissingParty", "TerminatingParty", "Reporter", "ArrestedPerson"]           # List of argument roles
+{"OrganizationalRelation-Layoff": ["LayoffParty", "NumberLaidOff", "Time"], "LegalAction-Sue": ["Plaintiff", "Defendant", "Time"], ...}             # Dictionary of event types
+```
+
+</details>
+
+For more detailed information on the schema file, you can refer to the `schema.json` file in the respective task directories under the [data](./data) directory.
+
 For test data, you can use the [kg2instruction/convert_test.py](./kg2instruction/convert_test.py) script, which does not require the data to contain label fields (`entity`, `relation`, `event`), just the input field and the corresponding schema_path.
 
 ```bash
@@ -223,7 +266,7 @@ python kg2instruction/convert_test.py \
 
 Here is an example of data conversion for Named Entity Recognition (NER) task:
 
-```json
+```
 Before Transformation:
 {
     "input": "In contrast, the rain-soaked battle between Qingdao Sea Bulls and Guangzhou Songri Team, although also ended in a 0:0 draw, was uneventful.",
@@ -246,10 +289,10 @@ After data conversion, you will obtain structured data containing the `input` te
 
 
 
-## 3.Preparation
+## 🚴 3.Preparation
 
 
-### 3.1Environment
+### 🛠️ 3.1Environment
 Please refer to [DeepKE/example/llm/README.md](../README.md/#requirements) to create a Python virtual environment, and activate the `deepke-llm` environment:
 
 ```bash
@@ -264,7 +307,7 @@ conda activate deepke-llm
 4. peft 0.2.0 -> 0.4.0dev
 
 
-### 3.2Download data
+### ⏬ 3.2Download data
 
 ```bash
 mkdir results
@@ -275,7 +318,7 @@ mkdir data
 Place the data in the directory `./data`
 
 
-### 3.3Model 
+### 🐐 3.3Model 
 Here are some models:
 * [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf) | [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
 * [zjunlp/knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0)(需搭配相应的IE Lora) | [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi)(无需Lora即可直接预测) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)(无需Lora, IE能力更强, 但通用性有所削弱)
@@ -296,7 +339,7 @@ Here are some models:
 
 
 
-## 4.LoRA Fine-tuning
+## 🌰 4.LoRA Fine-tuning
 
 
 ### 4.1 Basic Parameters
@@ -612,7 +655,7 @@ The corresponding script can be found at [ft_scripts/fine_baichuan.bash](./ft_sc
 
 
 
-## 5.P-Tuning Fine-tuning
+## 🥊 5.P-Tuning Fine-tuning
 
 
 ### 5.1P-Tuning Fine-tuning with ChatGLM
@@ -635,7 +678,7 @@ deepspeed --include localhost:0 src/finetuning_pt.py \
 
 
 
-## 6. Prediction
+## 🔴 6. Prediction
 
 ### 6.1 LoRA Prediction
 
@@ -704,7 +747,7 @@ CUDA_VISIBLE_DEVICES=0 python src/inference_pt.py \
 
 
 
-## 7. Model Output Conversion & F1 Calculation
+## 🧾 7. Model Output Conversion & F1 Calculation
 We provide a script, [evaluate.py](./kg2instruction/evaluate.py), to convert the model's string outputs into lists and calculate the F1 score.
 
 ```bash
@@ -716,7 +759,7 @@ python kg2instruction/evaluate.py \
 ```
 
 
-## 8.Acknowledgment
+## 👋 8.Acknowledgment
 
 Part of the code comes from [Alpaca-LoRA](https://github.com/tloen/alpaca-lora)、[qlora](https://github.com/artidoro/qlora.git) many thanks.
 
