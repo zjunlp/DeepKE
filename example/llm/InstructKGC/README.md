@@ -41,7 +41,7 @@ The goal of the task is to extract specified types of entities and relationships
 
 Here is an example of a **knowledge graph construction task**. The user supplies a text input and an instruction, specifying the desired types of entities or relationships. The system's objective is to output all relationship triplets contained in the input, in the form of (head entity, relationship, tail entity).
 
-```json
+```
 instruction="You are an expert specifically trained in extracting relation triples. Given the candidate relation list: ['achievement', 'alternative name', 'area', 'creation time', 'creator', 'event', 'height', 'length', 'located in', 'named after', 'width'], please extract the possible head and tail entities from the input below based on the relation list, and provide the corresponding relation triple. If a certain relation does not exist, output NAN. Please answer in the format of (Subject,Relation,Object)\n."
 input="Wewak Airport, also known as Boram Airport, is an airport located in Wewak, Papua New Guinea. IATA code: WWK; ICAO code: AYWK."
 output="(Wewak Airport,located in,Wewak)\n(Wewak,located in,Papua New Guinea)\n(Wewak Airport,alternative name,Boram Airport)\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN", "cate": "Building"
