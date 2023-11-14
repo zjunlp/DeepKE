@@ -37,14 +37,14 @@
 
 ## 🎯 1.Task Object
 
-Extract relevant entities and relations according to user input instructions to construct a knowledge graph. This task may include knowledge graph completion, where the model is required to complete missing triples while extracting entity-relation triples.
+The goal of the task is to extract specified types of entities and relationships from a given text based on user-provided instructions, ultimately constructing a knowledge graph.
 
-Below is an example of a **Knowledge Graph Construction Task**. Given an input text `input` and an `instruction` (including the desired entity types and relationship types), output all relationship triples `output` in the form of `(ent1, rel, ent2)` found within the `input`:
+Here is an example of a **knowledge graph construction task**. The user supplies a text input and an instruction, specifying the desired types of entities or relationships. The system's objective is to output all relationship triplets contained in the input, in the form of (head entity, relationship, tail entity).
 
-```python
-instruction="使用自然语言抽取三元组,已知下列句子,请从句子中抽取出可能的实体、关系,抽取实体类型为{'专业','时间','人类','组织','地理地区','事件'},关系类型为{'体育运动','包含行政领土','参加','国家','邦交国','夺得','举办地点','属于','获奖'},你可以先识别出实体再判断实体之间的关系,以(头实体,关系,尾实体)的形式回答"
-input="2006年，弗雷泽出战中国天津举行的女子水球世界杯，协助国家队夺得冠军。2008年，弗雷泽代表澳大利亚参加北京奥运会女子水球比赛，赢得铜牌。"
-output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗雷泽,属于,国家队)(弗雷泽,国家,澳大利亚)(弗雷泽,参加,北京奥运会女子水球比赛)(中国,包含行政领土,天津)(中国,邦交国,澳大利亚)(北京奥运会女子水球比赛,举办地点,北京)(女子水球世界杯,体育运动,水球)(国家队,夺得,冠军)"
+```json
+instruction="You are an expert specifically trained in extracting relation triples. Given the candidate relation list: ['achievement', 'alternative name', 'area', 'creation time', 'creator', 'event', 'height', 'length', 'located in', 'named after', 'width'], please extract the possible head and tail entities from the input below based on the relation list, and provide the corresponding relation triple. If a certain relation does not exist, output NAN. Please answer in the format of (Subject,Relation,Object)\n."
+input="Wewak Airport, also known as Boram Airport, is an airport located in Wewak, Papua New Guinea. IATA code: WWK; ICAO code: AYWK."
+output="(Wewak Airport,located in,Wewak)\n(Wewak,located in,Papua New Guinea)\n(Wewak Airport,alternative name,Boram Airport)\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN", "cate": "Building"
 ```
 
 
@@ -212,7 +212,7 @@ python kg2instruction/convert.py \
   --random_sort        # Determines whether to randomly sort the list of schemas in the instruction
 ```
 
-**Negative Sampling**: If dataset A contains labels [a, b, c, d, e, f], for a given sample s, it might only have labels a and b. We randomly add relationships from the candidate relationship list that were originally not present in s, such as c and d, but in the output, labels c and d are either not output or are output as `NAN`.
+**Negative Sampling**: Assuming dataset A contains labels [a, b, c, d, e, f], for a given sample s, it might involve only labels a and b. Our objective is to randomly introduce some relationships from the candidate relationship list that were originally unrelated to s, such as c and d. However, it's worth noting that in the output, the labels for c and d either won't be included, or they will be output as `NAN`.
 
 `schema_path` is used to specify a schema file (in JSON format) containing three lines of JSON strings. Each line is organized in a fixed format and provides information for named entity recognition (NER) tasks. Taking NER tasks as an example, the meaning of each line is explained as follows:
 
