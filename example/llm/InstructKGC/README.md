@@ -38,9 +38,9 @@
 
 ## 🎯 1.Task Object
 
-The goal of the task is to extract specified types of entities and relationships from a given text based on user-provided instructions, ultimately constructing a knowledge graph.
+The task objective is to extract specified types of entities and relationships from a given text based on user-provided instructions, for the purpose of constructing a knowledge graph.
 
-Here is an example of a **knowledge graph construction task**. The user supplies a text input and an instruction, specifying the desired types of entities or relationships. The system's objective is to output all relationship triplets contained in the input, in the form of (head entity, relationship, tail entity).
+Here is an example of a **Knowledge Graph Construction Task**. The user provides a piece of text, referred to as the input, and an instruction that includes the desired types of entities or relationships to be extracted. The system's task is to output all the relationship triples contained in the input and return them in the format specified in the instruction (in this case, in the format of (head entity, relation, tail entity)).
 
 ```
 instruction="You are an expert specifically trained in extracting relation triples. Given the candidate relation list: ['achievement', 'alternative name', 'area', 'creation time', 'creator', 'event', 'height', 'length', 'located in', 'named after', 'width'], please extract the possible head and tail entities from the input below based on the relation list, and provide the corresponding relation triple. If a certain relation does not exist, output NAN. Please answer in the format of (Subject,Relation,Object)\n."
@@ -53,30 +53,43 @@ output="(Wewak Airport,located in,Wewak)\n(Wewak,located in,Papua New Guinea)\n(
 
 
 ### 2.1Information Extraction Template
-The template `template` is used to construct the instruction `instruction` for input to the model. It consists of three parts:
-1. Task description
-2. List of candidate labels {s_schema} (optional)
-3. Structural output format {s_format}
+The `template` is used to construct an `instruction` for the input of model, consisting of three parts:
+1. **Task Description**: Clearly define the model's function and the task it needs to complete, such as entity recognition, relation extraction, event extraction, etc.
+2. **Candidate Label List {s_schema} (optional)**: Define the categories of labels that the model needs to extract, such as entity types, relation types, event types, etc.
+3. **Structured Output Format {s_format}**: Specify how the model should present the structured information it extracts.
 
 
 Template **with specified list of candidate labels**:
 ```
-NER: "You are an expert specialized in entity extraction. With the candidate entity types list: {s_schema}, please extract possible entities from the input below, outputting NAN if a certain entity does not exist. Respond in the format {s_format}."
-RE: "You are an expert in extracting relation triples. With the candidate relation list: {s_schema}, please extract the possible head entities and tail entities from the input below and provide the corresponding relation triples. If a relation does not exist, output NAN. Please answer in the {s_format} format."
-EE: "You are a specialist in event extraction. Given the candidate event dictionary: {s_schema}, please extract any possible events from the input below. If an event does not exist, output NAN. Please answer in the format of {s_format}."
-EET: "As an event analysis specialist, you need to review the input and determine possible events based on the event type directory: {s_schema}. All answers should be based on the {s_format} format. If the event type does not match, please mark with NAN."
-EEA: "You are an expert in event argument extraction. Given the event dictionary: {s_schema1}, and the event type and trigger words: {s_schema2}, please extract possible arguments from the following input. If an event argument does not exist, output NAN. Please respond in the {s_format} format."
+Named Entity Recognition(NER): You are an expert specialized in entity extraction. With the candidate entity types list: {s_schema}, please extract possible entities from the input below, outputting NAN if a certain entity does not exist. Respond in the format {s_format}.
+
+Relation Extraction(RE): You are an expert in extracting relation triples. With the candidate relation list: {s_schema}, please extract the possible head entities and tail entities from the input below and provide the corresponding relation triples. If a relation does not exist, output NAN. Please answer in the {s_format} format.
+
+Event Extraction(EE): You are a specialist in event extraction. Given the candidate event dictionary: {s_schema}, please extract any possible events from the input below. If an event does not exist, output NAN. Please answer in the format of {s_format}.
+
+Event Type Extraction(EET): As an event analysis specialist, you need to review the input and determine possible events based on the event type directory: {s_schema}. All answers should be based on the {s_format} format. If the event type does not match, please mark with NAN.
+
+Event Argument Extraction(EEA): You are an expert in event argument extraction. Given the event dictionary: {s_schema1}, and the event type and trigger words: {s_schema2}, please extract possible arguments from the following input. If an event argument does not exist, output NAN. Please respond in the {s_format} format.
 ```
 
 
-Template **without specifying a list of candidate labels**:
-```
-NER: "Analyze the text content and extract the clear entities. Present your findings in the {s_format} format, skipping any ambiguous or uncertain parts."
-RE: "Please extract all the relation triples from the text and present the results in the format of {s_format}. Ignore those entities that do not conform to the standard relation template."
-EE: "Please analyze the following text, extract all identifiable events, and present them in the specified format {s_format}. If certain information does not constitute an event, simply skip it."
-EET: "Examine the following text content and extract any events you deem significant. Provide your findings in the {s_format} format."
-EEA: "Please extract possible arguments based on the event type and trigger word {s_schema2} from the input below. Answer in the format of {s_format}."
-```
+<details>
+    <summary><b>Template without specifying a list of candidate labels</b></summary>
+
+
+  ```
+  Named Entity Recognition(NER): Analyze the text content and extract the clear entities. Present your findings in the {s_format} format, skipping any ambiguous or uncertain parts.
+
+  Relation Extraction(RE): Please extract all the relation triples from the text and present the results in the format of {s_format}. Ignore those entities that do not conform to the standard relation template.
+
+  Event Extraction(EE): Please analyze the following text, extract all identifiable events, and present them in the specified format {s_format}. If certain information does not constitute an event, simply skip it.
+
+  Event Type Extraction(EET): Examine the following text content and extract any events you deem significant. Provide your findings in the {s_format} format.
+
+  Event Argument Extraction(EEA): Please extract possible arguments based on the event type and trigger word {s_schema2} from the input below. Answer in the format of {s_format}.
+  ```
+</details>
+
 
 <details>
     <summary><b>Candidate Labels {s_schema}</b></summary>
@@ -98,11 +111,15 @@ Here [schema](./kg2instruction/convert/utils.py) provides 12 **text topics** and
 
 
     ```
-    NER: (Entity,Entity Type)
-    RE: (Subject,Relation,Object)
-    EE: (Event Trigger,Event Type,Argument1#Argument Role1;Argument2#Argument Role2)
-    EET: (Event Trigger,Event Type)
-    EEA: (Event Trigger,Event Type,Argument1#Argument Role1;Argument2#Argument Role2)
+    Named Entity Recognition(NER): (Entity,Entity Type)
+
+    Relation Extraction(RE): (Subject,Relation,Object)
+
+    Event Extraction(EE): (Event Trigger,Event Type,Argument1#Argument Role1;Argument2#Argument Role2)
+
+    Event Type Extraction(EET): (Event Trigger,Event Type)
+
+    Event Argument Extraction(EEA): (Event Trigger,Event Type,Argument1#Argument Role1;Argument2#Argument Role2)
     ```
 
 </details>
@@ -158,7 +175,7 @@ With the fields mentioned above, users can flexibly design and implement instruc
   <summary><b>Example of data</b></summary>
 
 
-    ```json
+    ```
     {
         "id": "6e4f87f7f92b1b9bd5cb3d2c3f2cbbc364caaed30940a1f8b7b48b04e64ec403", 
         "cate": "Person", 
@@ -242,13 +259,13 @@ For Event Extraction (EE) tasks:
 {"OrganizationalRelation-Layoff": ["LayoffParty", "NumberLaidOff", "Time"], "LegalAction-Sue": ["Plaintiff", "Defendant", "Time"], ...}         # Dictionary of event types
 
 
-For EET tasks:
+For Event Type Extraction(EET) tasks:
 ["Social Interaction-Thanks", "Organizational Action-OpeningCeremony", "Competition Action-Withdrawal", ...]         # List of event types
 []                               # Empty list
 {}                               # Empty dictionary
 
 
-For Event Extraction with Arguments (EEA) tasks:
+For Event Argument Extraction(EEA) tasks:
 ["Social Interaction-Thanks", "Organizational Action-OpeningCeremony", "Competition Action-Withdrawal", ...]                  # List of event types
 ["DismissingParty", "TerminatingParty", "Reporter", "ArrestedPerson"]           # List of argument roles
 {"OrganizationalRelation-Layoff": ["LayoffParty", "NumberLaidOff", "Time"], "LegalAction-Sue": ["Plaintiff", "Defendant", "Time"], ...}             # Dictionary of event types
