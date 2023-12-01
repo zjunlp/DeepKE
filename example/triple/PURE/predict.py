@@ -7,8 +7,8 @@ import torch
 import logging
 import tqdm
 import wandb
-from deepke.triple_extraction.PURE import *
-from deepke.triple_extraction.PURE.module.data_structures import Dataset, evaluate_predictions
+from models import *
+from models.data_structures import Dataset, evaluate_predictions
 from run_entity import *
 from run_relation import *
 
