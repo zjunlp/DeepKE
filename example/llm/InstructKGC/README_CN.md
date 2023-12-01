@@ -280,7 +280,8 @@ python kg2instruction/convert_test.py \
   --schema_path data/NER/schema.json \
   --language zh \
   --task NER \
-  --sample 0
+  --sample 0 \
+  --schema_num 4     # 对于单条数据是否对schema进行切分, 若有16个schema label, 则切分后每条数据对应4条测试数据, 以`split`字段区分
 ```
 
 **数据转换实例**

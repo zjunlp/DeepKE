@@ -287,7 +287,8 @@ python kg2instruction/convert_test.py \
   --schema_path data/NER/schema.json \
   --language zh \
   --task NER \
-  --sample 0
+  --sample 0 \
+  --schema_num 4     # For whether to segment a single data into a schema, if there are 16 schema labels, each data after segmentation corresponds to 4 test data, distinguished by a 'split' field
 ```
 
 

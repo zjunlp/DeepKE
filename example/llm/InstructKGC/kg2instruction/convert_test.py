@@ -29,21 +29,20 @@ def split_by_num(schema_num, task, converter, rand1, rand2, schema1, schema2="")
         sinstruct = [sinstruct, ]
     else:
         sinstruct = []
-        for i in range(0, len(schema1), schema_num):
-            tmp_schema = schema1[i:i+schema_num]
-            if task == 'EE':
+        if task == 'EE' or task == 'EEA':
+            schema_key = list(schema1.keys())
+            for i in range(0, len(schema1), schema_num):
+                tmp_schema = {}
+                tmp_key = schema_key[i:i+schema_num]
+                for key in tmp_key:
+                    tmp_schema[key] = schema1[key]
                 sin, _ = converter.convert([], rand1, rand2, s_schema1=tmp_schema)
-            elif task == 'EEA':
+                sinstruct.append(sin)
+        else:
+            for i in range(0, len(schema1), schema_num):
+                tmp_schema = schema1[i:i+schema_num]
                 sin, _ = converter.convert([], rand1, rand2, s_schema1=tmp_schema)
-            elif task == 'EET':
-                sin, _ = converter.convert([], rand1, rand2, s_schema1=tmp_schema)
-            elif task == 'RE':
-                sin, _ = converter.convert([], rand1, rand2, s_schema1=tmp_schema)
-            elif task == 'NER':
-                sin, _ = converter.convert([], rand1, rand2, s_schema1=tmp_schema)
-            else:
-                raise KeyError
-            sinstruct.append(sin)
+                sinstruct.append(sin)
     return sinstruct
 
         
@@ -62,9 +61,9 @@ def convert_ie(
         rand1 = sample
         rand2 = sample
     if task == 'EE':
-        sinstruct = split_by_num(schema_num, task, converter, rand1, rand2, list(neg_sampler.type_role_dict))
+        sinstruct = split_by_num(schema_num, task, converter, rand1, rand2, neg_sampler.type_role_dict)
     elif task == 'EEA':
-        sinstruct = split_by_num(schema_num, task, converter, rand1, rand2, list(neg_sampler.type_role_dict), "")
+        sinstruct = split_by_num(schema_num, task, converter, rand1, rand2, neg_sampler.type_role_dict, "")
     elif task == 'EET':
         sinstruct = split_by_num(schema_num, task, converter, rand1, rand2, list(neg_sampler.type_list))
     elif task == 'RE':
