@@ -12,9 +12,46 @@ from convert.converter import NERConverter, REConverter, EEAConverter, EETConver
 from utils import stable_hash
 
 
+def split_by_num(schema_num, task, converter, rand1, rand2, schema1, schema2=""):
+    if schema_num <= 0:
+        if task == 'EE':
+            sinstruct, _ = converter.convert([], rand1, rand2, s_schema1=schema1)
+        elif task == 'EEA':
+            sinstruct, _ = converter.convert([], rand1, rand2, s_schema1=schema1, s_schema2=schema2)
+        elif task == 'EET':
+            sinstruct, _ = converter.convert([], rand1, rand2, s_schema1=schema1)
+        elif task == 'RE':
+            sinstruct, _ = converter.convert([], rand1, rand2, s_schema1=schema1)
+        elif task == 'NER':
+            sinstruct, _ = converter.convert([], rand1, rand2, s_schema1=schema1)
+        else:
+            raise KeyError
+        sinstruct = [sinstruct, ]
+    else:
+        sinstruct = []
+        for i in range(0, len(schema1), schema_num):
+            tmp_schema = schema1[i:i+schema_num]
+            if task == 'EE':
+                sin, _ = converter.convert([], rand1, rand2, s_schema1=tmp_schema)
+            elif task == 'EEA':
+                sin, _ = converter.convert([], rand1, rand2, s_schema1=tmp_schema)
+            elif task == 'EET':
+                sin, _ = converter.convert([], rand1, rand2, s_schema1=tmp_schema)
+            elif task == 'RE':
+                sin, _ = converter.convert([], rand1, rand2, s_schema1=tmp_schema)
+            elif task == 'NER':
+                sin, _ = converter.convert([], rand1, rand2, s_schema1=tmp_schema)
+            else:
+                raise KeyError
+            sinstruct.append(sin)
+    return sinstruct
+
+        
+
 def convert_ie( 
-        sample:int, 
-        task:str, 
+        sample: int, 
+        task: str, 
+        schema_num: int,
         neg_sampler,
         converter,
     ):
@@ -24,20 +61,19 @@ def convert_ie(
     else:                      # 使用sample指定的指令和数据格式
         rand1 = sample
         rand2 = sample
-
     if task == 'EE':
-        sinstruct, output_text = converter.convert([], rand1, rand2, s_schema1=neg_sampler.type_role_dict)
+        sinstruct = split_by_num(schema_num, task, converter, rand1, rand2, list(neg_sampler.type_role_dict))
     elif task == 'EEA':
-        sinstruct, output_text = converter.convert([], rand1, rand2, s_schema1=neg_sampler.type_role_dict, s_schema2="")
+        sinstruct = split_by_num(schema_num, task, converter, rand1, rand2, list(neg_sampler.type_role_dict), "")
     elif task == 'EET':
-        sinstruct, output_text = converter.convert([], rand1, rand2, s_schema1=list(neg_sampler.type_list))
+        sinstruct = split_by_num(schema_num, task, converter, rand1, rand2, list(neg_sampler.type_list))
     elif task == 'RE':
-        sinstruct, output_text = converter.convert([], rand1, rand2, s_schema1=list(neg_sampler.role_list))
+        sinstruct = split_by_num(schema_num, task, converter, rand1, rand2, list(neg_sampler.role_list))
     elif task == 'NER':
-        sinstruct, output_text = converter.convert([], rand1, rand2, s_schema1=list(neg_sampler.type_list))
+        sinstruct = split_by_num(schema_num, task, converter, rand1, rand2, list(neg_sampler.type_list))
     else:
-        raise KeyError
-    return sinstruct, output_text
+        raise KeyError  
+    return sinstruct
 
 
 
@@ -48,7 +84,7 @@ def process(
         language='zh', 
         task='RE', 
         sample=-1,
-        random_sort=True,
+        schema_num=-1,
     ):
     if os.path.exists(schema_path):         # 加载该数据集的schema, schema_path文件内容参见utils.py FullSampler.read_from_file
         neg_sampler = Sampler.read_from_file(schema_path, negative=-1)
@@ -72,24 +108,28 @@ def process(
     with open(src_path, "r", encoding="utf-8") as reader:
         for line in reader:
             record = json.loads(line)
-            sinstruct, _ = convert_ie(
+            sinstruct = convert_ie(
                 sample, 
                 task, 
+                schema_num,
                 neg_sampler,
                 converter,
             )
-            new_record = {'id': stable_hash(record['input']),'instruction': sinstruct, 'input': record['input']}
-            writer.write(json.dumps(new_record, ensure_ascii=False)+"\n")
+            iid = stable_hash(record['input'])
+            for i in range(0, len(sinstruct)):
+                new_record = {'id': iid, 'split':i, 'instruction': sinstruct[i], 'input': record['input']}
+                writer.write(json.dumps(new_record, ensure_ascii=False)+"\n")
 
 
 '''
 python kg2instruction/convert_test.py \
-  --src_path data/NER/sample.json \
-  --tgt_path data/NER/processed.json \
-  --schema_path data/NER/schema.json \
+  --src_path data/EE/sample.json \
+  --tgt_path data/test/processed.json \
+  --schema_path data/EE/schema.json \
   --language zh \
-  --task NER \
-  --sample 0
+  --task EE \
+  --sample 0 \
+  --schema_num 2
 '''
 
 if __name__ == "__main__":
@@ -100,7 +140,9 @@ if __name__ == "__main__":
     parse.add_argument("--language", type=str, default='zh', choices=['zh', 'en'], help="不同语言使用的template及转换脚本不同")
     parse.add_argument("--task", type=str, default="NER", choices=['RE', 'NER', 'EE', 'EET', 'EEA'])
     parse.add_argument("--sample", type=int, default=0, help="若为-1, 则从4种指令和4种输出格式中随机采样其中一种, 否则即为指定的指令格式, -1<=sample<=3")
-    
+    parse.add_argument("--schema_num", type=int, default=-1, help="若为-1, 则选取所有schema, 否则即为指定的schema数量, 并切分成多份")
+
+
     options = parse.parse_args()
     options = vars(options)
     process(**options)

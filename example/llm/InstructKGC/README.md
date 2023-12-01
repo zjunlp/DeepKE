@@ -29,6 +29,7 @@
     - [6.1 LoRA Prediction](#61-lora-prediction)
       - [6.1.1 Base Model + LoRA](#611-base-model--lora)
       - [6.1.2 IE-Specific Model](#612-ie-specific-model)
+      - [6.1.3 VLLM prediction acceleration](#613-vllm-prediction-acceleration)
     - [6.2 P-Tuning Prediction](#62-p-tuning-prediction)
   - [🧾 7. Model Output Conversion \& F1 Calculation](#-7-model-output-conversion--f1-calculation)
   - [👋 8.Acknowledgment](#-8acknowledgment)
@@ -196,7 +197,7 @@ With the fields mentioned above, users can flexibly design and implement instruc
 
 Before inputting data into the model, it needs to be formatted to include `instruction` and `input` fields. To assist with this, we offer a script [kg2instruction/convert.py](./kg2instruction/convert.py), which can batch convert data into a format directly usable by the model.
 
-> Before using the [kg2instruction/convert.py](./kg2instruction/convert.py) script, please ensure you have referred to the [data](./data) directory. This directory lists in detail the data format requirements for each task.
+> Before using the [kg2instruction/convert.py](./kg2instruction/convert.py) script, please ensure you have referred to the [data](./data) directory. Please consult `sample.json` to understand the format of the data before conversion, `schema.json` illustrates the organization of the schema, and `processed.json` describes the format of the data after conversion.
 
 
 ```bash              
@@ -741,6 +742,59 @@ CUDA_VISIBLE_DEVICES="0" python src/inference.py \
 
 The following models are applicable to the above prediction method:
 [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)
+
+
+
+#### 6.1.3 VLLM prediction acceleration
+
+
+To use VLLM prediction acceleration, it is necessary to update and ensure the following environmental dependencies
+
+
+CUDA==11.7
+
+```bash
+torch==2.0.1
+accelerate==0.24.1
+transformers==4.33.0
+bitsandbytes==0.39.0
+peft==0.4.0
+datasets==2.12.0
+sentencepiece==0.1.98
+scipy==1.10.1
+protobuf==3.20.1
+pydantic==1.10.7
+xformers==0.0.22
+tiktoken==0.5.1
+triton==2.0.0
+vllm==0.2.1
+```
+
+
+```bash
+CUDA_VISIBLE_DEVICES="0" python src/inference_vllm.py \
+    --model_name_or_path 'model path or name' \
+    --model_name 'model name' \
+    --lora_weights 'path to LoRA weights' \
+    --input_file 'data/valid.json' \
+    --output_file 'results/results_valid.json' \
+    --fp16 \
+    --bits 4 
+```
+
+
+```bash
+CUDA_VISIBLE_DEVICES="0" python src/inference_vllm.py \
+    --model_name_or_path 'model path or name' \
+    --model_name 'model name' \
+    --input_file 'data/valid.json' \
+    --output_file 'results/results_valid.json' \
+    --fp16 \
+    --bits 4 
+```
+
+
+**Note**: Quantization is not currently supported in vllm acceleration mode. We have only run the above code settings on A100 and have not tried other machines yet.
 
 
 ### 6.2 P-Tuning Prediction

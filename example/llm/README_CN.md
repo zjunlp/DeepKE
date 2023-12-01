@@ -30,6 +30,7 @@
 
 
 - [环境依赖](#环境依赖)
+- [新闻](#新闻)
 - [数据](#数据)
 - [模型](#模型)
   - [LLaMA系列](#llama系列)
@@ -68,6 +69,15 @@ cd example/llm
 pip install -r requirements.txt
 ```
 注意！！是example/llm文件夹下的 `requirements.txt`
+
+
+# 新闻
+* [2023/11] [knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main)权重进行了更新，这次更新主要是调整了NAN输出，缩短了推理长度，并支持了不指定schema的指令。同时，还支持了vllm快速推理[6.1.3vllm预测加速](./InstructKGC/README_CN.md/#613vllm预测加速)。
+* [2023/10] 发布了一个新的中英双语基于文本主题的信息抽取(IE)指令数据集，名为[InstructIE](./README_CN.md/#数据)。
+* [2023/08] 推出了专门用于信息抽取(IE)的KnowLM版本，命名为[knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main)。
+* [2023/07] 发布了训练所使用的部分指令数据集，包括[knowlm-ke](https://huggingface.co/datasets/zjunlp/knowlm-ke)和[KnowLM-IE](https://huggingface.co/datasets/zjunlp/KnowLM-IE)。
+* [2023/06] 发布了第一版的预训练权重[knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0)和第一版的[zhixi-13b-lora](https://huggingface.co/zjunlp/zhixi-13b-lora)。
+
 
 
 # 数据
