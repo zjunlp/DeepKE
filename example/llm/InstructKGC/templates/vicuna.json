@@ -1,6 +1,6 @@
 {
     "description": "Template used by Vicuna.",
-    "prompt_input": "Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.\n\n</s> Instruction:\n{instruction}\n\n</s> Input:\n{input}\n\n</s> Response:\n",
-    "prompt_no_input": "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n</s> Instruction:\n{instruction}\n\n</s> Response:\n",
-    "response_split": " Response:"
+    "prompt_no_input": "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions.\n\nUSER: {instruction} ASSISTANT: ",
+    "prompt_input": "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions.\n\nUSER: {instruction}{input} ASSISTANT: ",
+    "response_split": "ASSISTANT:"
 }

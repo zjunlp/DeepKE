@@ -53,6 +53,12 @@ class InferArguments:
     bf16: bool = field(default=False, metadata={ "help": "Whether to use bf16 (mixed) precision instead of 32-bit. Requires Ampere or higher NVIDIA architecture or using CPU (no_cuda). This is an experimental API and it may change."})
     fp16: bool = field(default=False, metadata={"help": "Whether to use fp16 (mixed) precision instead of 32-bit"})
 
+    max_new_tokens: int = field(default=256)
+    temperature: float = field(default=0.2)
+    top_k: int = field(default=40)
+    top_p: float = field(default=0.75)
+    repetition_penalty: float = field(default=1.3)
+    num_beams: int = field(default=4)
 
 
 
@@ -117,11 +123,7 @@ def inference(options):
     def evaluate(
         instruction,
         input=None,
-        temperature=1.0,
-        top_p=1.0,
-        top_k=50,
-        num_beams=1,
-        max_new_tokens=256,
+        options=None,
         **kwargs,
     ):
         prompt = prompter.generate_prompt(instruction, input)
@@ -129,11 +131,11 @@ def inference(options):
         input_ids = inputs["input_ids"].to(device)
 
         generation_config = GenerationConfig(
-            temperature=temperature,
-            top_p=top_p,
-            top_k=top_k,
-            num_beams=num_beams,
-            max_new_tokens=max_new_tokens,
+            temperature=options.temperature,
+            top_p=options.top_p,
+            top_k=options.top_k,
+            num_beams=options.num_beams,
+            max_new_tokens=options.max_new_tokens,
             pad_token_id=tokenizer.pad_token_id,
             return_dict_in_generate=True,
             output_scores=True,
@@ -159,7 +161,7 @@ def inference(options):
 
     with open(options.output_file, "w") as writer:
         for i, record in enumerate(records):
-            result = evaluate(instruction=record['instruction'], input=record['input'])
+            result = evaluate(instruction=record['instruction'], input=record.get('input', None), options=options)
             print(i, result)
             record['output'] = result
             writer.write(json.dumps(record, ensure_ascii=False)+'\n') 

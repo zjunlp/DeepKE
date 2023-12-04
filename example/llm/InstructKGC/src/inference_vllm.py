@@ -28,25 +28,24 @@ os.environ["WANDB_DISABLED"] = "true"
 
 @dataclass
 class InferArguments:
-    mode: str = field(default='w')
     model_name_or_path: str = field(default=None, metadata={"help": "Model name or path."})
     model_name: str = field(default='llama', metadata={"help": "all supported models can be found in ./src/utils/general_utils.py:MODEL_DICT."})
     lora_weights: str = field(default=None, metadata={"help": "Path to the lora weights directory."})
     input_file: str = field(default=None, metadata={"help": "Path to the input file."})
     output_file: str = field(default=None, metadata={"help": "Path to the output file."})
     prompt_template_name: str = field(default='alpaca', metadata={"help": "Prompt template name. All prompt template can be found in ./templates"})
-    id_text: str = field(default='input')
 
     gen_mode: str = field(default='greedy', metadata={"help": "gen_mode."})
     max_source_length: int = field(default=512, metadata={"help": "The maximum total input sequence length after tokenization. Sequences longer than this will be truncated, sequences shorter will be padded."})
     max_target_length: int = field(default=256, metadata={"help": "The maximum total sequence length for target text after tokenization. Sequences longer than this will be truncated, sequences shorter will be padded."})
+    batch_size: int = field(default=16)
+
+    max_new_tokens: int = field(default=256)
     temperature: float = field(default=0.2)
     top_k: int = field(default=40)
     top_p: float = field(default=0.75)
     repetition_penalty: float = field(default=1.3)
     num_beams: int = field(default=4)
-    max_new_tokens: int = field(default=256)
-    batch_size: int = field(default=16)
     
     trust_remote_code: bool = field(default=True, metadata={"help": "Enable unpickling of arbitrary code in AutoModelForCausalLM#from_pretrained."})
     train_on_inputs: bool = field(default=False, metadata={"help": "If False, masks out inputs in loss."})
@@ -142,22 +141,11 @@ def inference(options):
     llm, sampling_params = load_llm(options, state_dict)
 
 
-    already = set()
-    if options.mode == "a":
-        with open(options.output_file, "r") as reader:
-            for line in reader:
-                data = json.loads(line)
-                already.add(data[options.id_text])
-
-
     records = []
     prompt_token_ids = []
     with open(options.input_file, "r") as reader:
         for line in reader:
             record = json.loads(line)
-            if record[options.id_text] in already:
-                print(f'{record[options.id_text]} has already exists!')
-                continue
             records.append(record)
             prompt_ = prompter.generate_prompt(instruction=record['instruction'], input=record.get('input', None))
             inputs = tokenizer(prompt_)
@@ -171,8 +159,7 @@ def inference(options):
         use_tqdm=True,
     )
     
-    
-    with open(options.output_file, options.mode) as writer:
+    with open(options.output_file, 'w') as writer:
         for record, output in zip(records, outputs):
             record['output'] = output.outputs[0].text
             writer.write(json.dumps(record, ensure_ascii=False)+'\n') 
