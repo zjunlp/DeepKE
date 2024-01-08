@@ -703,14 +703,14 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     --optim "adamw_torch" \
     --cutoff_len 512 \
     --val_set_size 1000 \
-    --evaluation_strategy "no" \
+    --evaluation_strategy "epoch" \
     --save_strategy "epoch" \
     --save_total_limit 10 \
     --lora_r 8 \
     --lora_alpha 16 \
     --lora_dropout 0.05 \
     --max_memory_MB 24000 \
-    --fp16 \
+    --bf16 \
     --bits 4 \
     | tee ${output_dir}/train.log \
     2> ${output_dir}/train.err
@@ -719,11 +719,11 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 </details>
 
 1. Baichuan模型我们采用[baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base)
-2. **目前在evaluation方面存在一些问题**, 因此我们使用`evaluation_strategy` "no"
+2. **请确保torch版本保持在2.0.0, 否则可能出现问题**
 3. `prompt_template_name`我们**采用默认的`alpaca`模版**, 详见 [templates/alpaca.json](./templates/alpaca.json)
 4. 我们在 `RTX3090` 上跑通了baichuan-lora微调代码
 5. `model_name = baichuan`
-
+6. 我们建议使用 `--bf16`
 
 相应的脚本在 [ft_scripts/fine_baichuan.bash](./ft_scripts/fine_baichuan.bash)
 

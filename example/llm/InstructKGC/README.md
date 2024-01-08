@@ -665,7 +665,7 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
     --lora_alpha 16 \
     --lora_dropout 0.05 \
     --max_memory_MB 24000 \
-    --fp16 \
+    --bf16 \
     --bits 8 \
     | tee ${output_dir}/train.log \
     2> ${output_dir}/train.err
@@ -673,10 +673,11 @@ CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/fi
 </details>
 
 1. We use the [baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base) model for Llama.
-2. There are currently some issues with evaluation, so we use `evaluation_strategy` 'no'.
+2. **Please ensure that the torch version remains at 2.0.0, otherwise there may be issues**.
 3. We use the default `alpaca` template for the `prompt_template_name`. Please refer to [templates/alpaca.json](./templates/alpaca.json) for more details.
 4. We have successfully run the Llama-LoRA fine-tuning code on an `RTX3090` GPU.
 5. model_name = baichuan
+6. We suggest using `--bf16`
 
 
 
