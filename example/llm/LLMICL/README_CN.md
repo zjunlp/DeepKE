@@ -3,7 +3,7 @@
 - 环境配置
 
   ```shell
-  >> pip install easyinstruct
+  >> pip install git+https://github.com/zjunlp/EasyInstruct
   >> pip install hydra-core
   ```
 
