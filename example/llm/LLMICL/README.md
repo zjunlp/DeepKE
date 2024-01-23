@@ -5,7 +5,7 @@
   The LLM module of Deepke calls the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tookit(An Easy-to-use Framework to Instruct Large Language Models).
 
   ```
-  >> pip install easyinstruct
+  >> pip install git+https://github.com/zjunlp/EasyInstruct
   >> pip install hydra-core
   ```
 
