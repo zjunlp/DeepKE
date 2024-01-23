@@ -84,30 +84,31 @@ pip install -r requirements.txt
 
 | 名称                  | 下载                                                                                                                     | 数量     | 描述                                                                                                                                                       |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| InstructIE-train       | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘](https://pan.baidu.com/s/1xXVrjkinw4cyKKFBR8BwQw?pwd=x4s7)    | 30w+ | InstructIE训练集，基于弱监督构建得到，包含一定程度的噪音数据                                                                                    |
-| InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)    | 2000+ | InstructIE验证集                                                                                     |
-| InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE测试集                                                                                     |
-| train.json, valid.json          | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing)                     | 5000   | [CCKS2023 开放环境下的知识图谱构建与补全评测任务一：指令驱动的自适应知识图谱构建](https://tianchi.aliyun.com/competition/entrance/532080/introduction) 中的初赛训练集及测试集 |
+| InstructIE       | [Google drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [百度云盘](https://pan.baidu.com/s/1-u8bD85H1Otbzk-gjLxaFw?pwd=c1i6)    | 20w+ | InstructIE数据集(中英双语)                                                                                     |
 
 
-`InstructIE-train` 包含`InstructIE-zh.json`、`InstructIE-en.json`两个文件, 每个文件均包含以下字段：`'id'`(唯一标识符)、`'cate'`(文本主题)、`'entity'`、`'relation'`(三元组)字段，可以通过`'entity'`、`'relation'`自由构建抽取的指令和输出。
-`InstructIE-valid`、`InstructIE-test`分别是验证集和测试集, 包含`zh`和`en`双语。
 
-`train.json`：字段含义同`train.json`，`'instruction'`、`'output'`都只有1种格式，也可以通过`'relation'`自由构建抽取的指令和输出。
-`valid.json`：字段含义同`train.json`，但是经过众包标注，更加准确。
+`InstructIE` 数据集包含两个核心文件夹：`InstructIE-zh` 和 `InstructIE-en`。这两个文件夹都涵盖了中英双语的基于主题的IE指令数据。
+
+- `'id'`：每条数据的唯一标识符，确保数据项的独立性和可追踪性。
+- `'cate'`：**文本主题**分类，为文本内容提供了一个高级的分类标签（共有12种主题）。
+- `'text'`：待抽取的文本。
+- `'relation'`：代表**关系**三元组，这些字段允许用户自由构建信息抽取的指令和预期输出结果。
 
 
-以下是各字段的说明：
 
-|    字段      |                          说明                          |
-| :---------: | :----------------------------------------------------: |
-|     id      |                     唯一标识符                           |
-|    cate     |     文本input对应的主题(共12种)                           |
-|    input    |    模型输入文本（需要抽取其中涉及的所有关系三元组）            |
-| instruction |                 模型进行抽取任务的指令                     |
-|   output    |                   模型期望输出                           |
-|   entity    |            实体(entity, entity_type)                    |
-|  relation   |     input中涉及的关系三元组(head, relation, tail)         |
+<details>
+  <summary><b>各字段的说明</b></summary>
+
+
+|    字段     |                             说明                             |
+| :---------: | :----------------------------------------------------------: |
+|     id      |                       每个数据点的唯一标识符。                       |
+|    cate     |           文本的主题类别，总计12种不同的主题分类。               |
+|    input    | 模型的输入文本，目标是从中抽取涉及的所有关系三元组。                  |
+| instruction |                 指导模型执行信息抽取任务的指示。                    |
+|    output   |                      模型的预期输出结果。                        |
+|  relation   |   描述文本中包含的关系三元组，即实体间的联系(head, relation, tail)。   |
 
 
 

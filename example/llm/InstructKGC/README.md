@@ -134,22 +134,17 @@ For a more comprehensive understanding of the templates, please refer to the fil
 
 | Name                   | Download                                                     | Quantity | Description                                                  |
 | ---------------------- | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ |
-| InstructIE-train          | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [Baidu Netdisk](https://pan.baidu.com/s/1xXVrjkinw4cyKKFBR8BwQw?pwd=x4s7)  | 30w+  | InstructIE train set |
-| InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [Baidu Netdisk](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)     | 2000+ | InstructIE validation set                                                                                     |
-| InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)  <br/> [Baidu Netdisk](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE test set                                                                                    |
-| train.json, valid.json | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing) | 5,000    | Preliminary training set and test set for the task "Instruction-Driven Adaptive Knowledge Graph Construction" in [CCKS2023 Open Knowledge Graph Challenge](https://tianchi.aliyun.com/competition/entrance/532080/introduction), randomly selected from instruct_train.json |
+| InstructIE          | [Google drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [Baidu Netdisk](https://pan.baidu.com/s/1-u8bD85H1Otbzk-gjLxaFw?pwd=c1i6)  | 20w+  | InstrumentIE dataset (bilingual in Chinese and English) |
 
 
-The `InstructIE-train` dataset contains two core files: `InstructIE-zh.json` and `InstructIE-en.json`. Both files cover a range of fields that provide detailed descriptions of different aspects of the dataset:
+
+The `InstructIE` dataset contains two core files: `InstructIE-zh.json` and `InstructIE-en.json`. Both files cover a range of fields that provide detailed descriptions of different aspects of the dataset:
 
 - `'id'`: A unique identifier for each data entry, ensuring the independence and traceability of the data items.
 - `'cate'`: The text's subject category, which provides a high-level categorical label for the content (there are 12 categories in total).
-- `'entity'` and `'relation'`: Represent **entity and relationship triples**, respectively. These fields allow users to freely construct instructions and expected outputs for information extraction.
+-'text ': The text to be extracted.
+- `'relation'`: Represent **relationship triples**, respectively. These fields allow users to freely construct instructions and expected outputs for information extraction.
 
-For the validation set `InstructIE-valid` and the test set `InstructIE-test`, they include **both Chinese and English versions**, ensuring the dataset's applicability in different language settings.
-
-- `train.json`: The field definitions in this file are consistent with `InstructIE-train`, but the `'instruction'` and `'output'` fields show one format. Nonetheless, users can still freely construct instructions and outputs for information extraction based on the `'relation'` field.
-- `valid.json`: Its field meanings are consistent with `train.json`, but this dataset has been **crowdsource-annotated**, providing higher accuracy and reliability.
 
 
 <details>
@@ -163,7 +158,6 @@ For the validation set `InstructIE-valid` and the test set `InstructIE-test`, th
 | input       | The input text for the model, with the goal of extracting all the involved relationship triples. |
 | instruction | Instructions guiding the model to perform information extraction tasks. |
 | output      | The expected output result of the model.                         |
-| entity      | Details describing the entity and its corresponding type (entity, entity_type). |
 | relation    | Describes the relationship triples contained in the text, i.e., the connections between entities (head, relation, tail). |
 
 </details>

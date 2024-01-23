@@ -31,7 +31,6 @@
 
 - [Requirements](#requirements)
 - [News](#news)
-- [Data](#data)
 - [Models](#models)
   - [LLaMA-series](#llama-series)
     - [Case 1: LoRA Fine-tuning of LLaMA for CCKS2023 Instruction-based KG Construction English | Chinese](#case-1-lora-fine-tuning-of-llama-for-ccks2023-instruction-based-kg-construction-english--chinese)
@@ -81,34 +80,37 @@ Please note that the `requirements.txt` file is located in the `example/llm` fol
 * [June 2023] The first version of pre-trained weights, [knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0), and the first version of [zhixi-13b-lora](https://huggingface.co/zjunlp/zhixi-13b-lora) were released.
 
 
-# Data
 | Name                   | Download                                                     | Quantity | Description                                                  |
 | ---------------------- | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ |
-| InstructIE-train          | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [Baidu Netdisk](https://pan.baidu.com/s/1xXVrjkinw4cyKKFBR8BwQw?pwd=x4s7)  | 30w+  | InstructIE train set, which is constructed by weak supervision and may contain some noisy data |
-| InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [Baidu Netdisk](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)     | 2000+ | InstructIE validation set                                                                                     |
-| InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)  <br/> [Baidu Netdisk](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE test set                                                                                    |
-| train.json, valid.json | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing) | 5,000    | Preliminary training set and test set for the task "Instruction-Driven Adaptive Knowledge Graph Construction" in [CCKS2023 Open Knowledge Graph Challenge](https://tianchi.aliyun.com/competition/entrance/532080/introduction), randomly selected from instruct_train.json |
+| InstructIE          | [Google drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [Baidu Netdisk](https://pan.baidu.com/s/1-u8bD85H1Otbzk-gjLxaFw?pwd=c1i6)  | 20w+  | InstrumentIE dataset (bilingual in Chinese and English) |
 
 
-`InstrumentIE-train` contains two files: `InstrumentIE-zh.json` and `InstrumentIE-en.json`, each of which contains the following fields: `'id'` (unique identifier), `'cate'` (text category), `'entity'` and `'relation'` (triples) fields. The extracted instructions and output can be freely constructed through `'entity'` and `'relation'`.
 
-`InstrumentIE-valid` and `InstrumentIE-test` are validation sets and test sets, respectively, including bilingual `zh` and `en`.
+The `InstructIE` dataset contains two core files: `InstructIE-zh.json` and `InstructIE-en.json`. Both files cover a range of fields that provide detailed descriptions of different aspects of the dataset:
 
-`train.json`: Same fields as `KnowLM-IE.json`, `'instruction'` and `'output'` have only one format, and extraction instructions and outputs can also be freely constructed through `'relation'`.
+- `'id'`: A unique identifier for each data entry, ensuring the independence and traceability of the data items.
+- `'cate'`: The text's subject category, which provides a high-level categorical label for the content (there are 12 categories in total).
+-'text ': The text to be extracted.
+- `'relation'`: Represent **relationship triples**, respectively. These fields allow users to freely construct instructions and expected outputs for information extraction.
 
-`valid.json`: Same fields as `train.json`, but with more accurate annotations achieved through crowdsour
 
-Here is an explanation of each field:
 
-|    Field    |                         Description                             |
-| :---------: |   :----------------------------------------------------------:  |
-|     id      |                   Unique identifier                             |
-|    cate     |     text topic of input (12 topics in total)                    |
-|    input    | Model input text (need to extract all triples involved within)  |
-| instruction |   Instruction for the model to perform the extraction task      |
-|    output   |                  Expected model output                          |
-|    entity   |            entities(entity, entity_type)                        |
-|   relation  |   Relation triples(head, relation, tail) involved in the input  |
+<details>
+  <summary><b>Explanation of each field</b></summary>
+
+
+| Field       | Description                                                      |
+| ----------- | ---------------------------------------------------------------- |
+| id          | The unique identifier for each data point.                       |
+| cate        | The category of the text's subject, with a total of 12 different thematic categories. |
+| input       | The input text for the model, with the goal of extracting all the involved relationship triples. |
+| instruction | Instructions guiding the model to perform information extraction tasks. |
+| output      | The expected output result of the model.                         |
+| relation    | Describes the relationship triples contained in the text, i.e., the connections between entities (head, relation, tail). |
+
+</details>
+
+With the fields mentioned above, users can flexibly design and implement instructions and output formats for different information extraction needs.
 
 
 

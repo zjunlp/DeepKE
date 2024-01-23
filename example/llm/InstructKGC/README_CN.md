@@ -142,23 +142,18 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 | 名称                  | 下载                                                                                                                     | 数量     | 描述                                                                                                                                                       |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| InstructIE-train       | [Google drive](https://drive.google.com/file/d/1VX5buWC9qVeVuudh_mhc_nC7IPPpGchQ/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘](https://pan.baidu.com/s/1xXVrjkinw4cyKKFBR8BwQw?pwd=x4s7)    | 30w+ | InstructIE训练集                                                                                     |
-| InstructIE-valid       | [Google drive](https://drive.google.com/file/d/1EMvqYnnniKCGEYMLoENE1VD6DrcQ1Hhj/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘](https://pan.baidu.com/s/11u_f_JT30W6B5xmUPC3enw?pwd=71ie)    | 2000+ | InstructIE验证集                                                                                     |
-| InstructIE-test       | [Google drive](https://drive.google.com/file/d/1WdG6_ouS-dBjWUXLuROx03hP-1_QY5n4/view?usp=drive_link) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE) <br/> [百度云盘](https://pan.baidu.com/s/1JiRiOoyBVOold58zY482TA?pwd=cyr9)     | 2000+ | InstructIE测试集                                                                                     |
-| train.json, valid.json          | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing)                     | 5000   | [CCKS2023 开放环境下的知识图谱构建与补全评测任务一：指令驱动的自适应知识图谱构建](https://tianchi.aliyun.com/competition/entrance/532080/introduction) 中的初赛训练集及测试集 |
+| InstructIE       | [Google drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [百度云盘](https://pan.baidu.com/s/1-u8bD85H1Otbzk-gjLxaFw?pwd=c1i6)    | 20w+ | InstructIE数据集(中英双语)                                                                                     |
 
 
 
-`InstructIE-train` 数据集包含两个核心文件：`InstructIE-zh.json` 和 `InstructIE-en.json`。这两个文件都涵盖了丰富的字段，用于详细描述数据集的不同方面：
+`InstructIE` 数据集包含两个核心文件夹：`InstructIE-zh` 和 `InstructIE-en`。这两个文件夹都涵盖了中英双语的基于主题的IE指令数据。
 
 - `'id'`：每条数据的唯一标识符，确保数据项的独立性和可追踪性。
 - `'cate'`：**文本主题**分类，为文本内容提供了一个高级的分类标签（共有12种主题）。
-- `'entity'`和`'relation'`：分别代表**实体**和**关系**三元组，这些字段允许用户自由构建信息抽取的指令和预期输出结果。
+- `'text'`：待抽取的文本。
+- `'relation'`：代表**关系**三元组，这些字段允许用户自由构建信息抽取的指令和预期输出结果。
 
-对于验证集`InstructIE-valid`和测试集`InstructIE-test`，它们包含**中英双语**版本，保证了数据集在不同语言环境下的适用性。
 
-- `train.json`：这个文件中的字段定义与`InstructIE-train`一致，但`'instruction'`和`'output'`字段展示了一种格式。尽管如此，用户仍可以依据`'relation'`字段自由构建信息抽取的指令和输出。
-- `valid.json`：其字段意义与`train.json`保持一致，但此数据集经过**众包标注**处理，提供了更高的准确性和可靠性。
 
 <details>
   <summary><b>各字段的说明</b></summary>
@@ -171,7 +166,6 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 |    input    | 模型的输入文本，目标是从中抽取涉及的所有关系三元组。                  |
 | instruction |                 指导模型执行信息抽取任务的指示。                    |
 |    output   |                      模型的预期输出结果。                        |
-|   entity    |            描述实体以及其对应类型的详细信息(entity, entity_type)。    |
 |  relation   |   描述文本中包含的关系三元组，即实体间的联系(head, relation, tail)。   |
 
 </details>
