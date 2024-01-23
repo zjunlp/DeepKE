@@ -110,6 +110,7 @@ pip install -r requirements.txt
 |    output   |                      模型的预期输出结果。                        |
 |  relation   |   描述文本中包含的关系三元组，即实体间的联系(head, relation, tail)。   |
 
+</details>
 
 
 # 模型
