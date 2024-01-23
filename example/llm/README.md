@@ -73,7 +73,7 @@ Please note that the `requirements.txt` file is located in the `example/llm` fol
 
 
 # News
-* [November 2023] The weights of [knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main) have been updated. This update mainly adjusted the NAN outputs, shortened the inference length, and added support for instructions without a specified schema. Additionally, it now supports VLLM quick inference as detailed in [6.1.3 VLLM prediction acceleration](./InstructKGC/README.md/#613-vllm-prediction-acceleration).
+* [November 2023] The weights of [knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main) have been updated. This update mainly adjusted the NAN outputs, shortened the inference length, and added support for instructions without a specified schema.
 * [October 2023] A new bilingual (Chinese-English) text-based topic information extraction (IE) instruction dataset named InstructIE was released. More information can be found at [InstructIE](./README.md/#data).
 * [August 2023] A specialized version of KnowLM for information extraction (IE), named [knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main), was launched.
 * [July 2023] Some of the instruction datasets used for training were released, including [knowlm-ke](https://huggingface.co/datasets/zjunlp/knowlm-ke) and [KnowLM-IE](https://huggingface.co/datasets/zjunlp/KnowLM-IE).

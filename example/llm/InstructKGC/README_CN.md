@@ -30,7 +30,6 @@
     - [6.1LoRA预测](#61lora预测)
       - [6.1.1基础模型+Lora](#611基础模型lora)
       - [6.1.2IE专用模型](#612ie专用模型)
-      - [6.1.3vllm预测加速](#613vllm预测加速)
     - [6.2P-Tuning预测](#62p-tuning预测)
   - [🧾 7.模型输出转换\&计算F1](#-7模型输出转换计算f1)
   - [👋 8.Acknowledgment](#-8acknowledgment)
@@ -804,51 +803,6 @@ CUDA_VISIBLE_DEVICES="0" python src/inference.py \
 以下模型适用上述预测方法：
 [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)
 
-
-
-#### 6.1.3vllm预测加速
-
-使用vllm 预测加速, 需要更新并保证下面的环境依赖
-
-CUDA==11.7
-
-```bash
-torch==2.0.1
-accelerate==0.24.1
-transformers==4.33.0
-bitsandbytes==0.39.0
-peft==0.4.0
-datasets==2.12.0
-sentencepiece==0.1.98
-scipy==1.10.1
-protobuf==3.20.1
-pydantic==1.10.7
-xformers==0.0.22
-tiktoken==0.5.1
-triton==2.0.0
-vllm==0.2.1
-```
-
-```bash
-CUDA_VISIBLE_DEVICES="0" python src/inference_vllm.py \
-    --model_name_or_path '模型路径或名称' \
-    --model_name '模型名称' \
-    --lora_weights 'LoRA权重的路径' \
-    --input_file 'data/valid.json' \
-    --output_file 'results/results_valid.json' \
-    --fp16 
-```
-
-```bash
-CUDA_VISIBLE_DEVICES="0" python src/inference_vllm.py \
-    --model_name_or_path '模型路径或名称' \
-    --model_name '模型名称' \
-    --input_file 'data/valid.json' \
-    --output_file 'results/results_valid.json' \
-    --fp16
-```
-
-**注意**：vllm加速模式下暂不支持量化, 我们只在A100在跑了上面的代码设定, 其他机器还未试过。
 
 
 
