@@ -131,73 +131,52 @@ For a more comprehensive understanding of the templates, please refer to the fil
 
 ### 2.2Datasets
 
-| Name                   | Download                                                     | Quantity | Description                                                  |
-| ---------------------- | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ |
-| InstructIE          | [Google drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [Baidu Netdisk](https://pan.baidu.com/s/1-u8bD85H1Otbzk-gjLxaFw?pwd=c1i6)  | 20w+  | InstrumentIE dataset (bilingual in Chinese and English) |
+| Name | Download | Quantity | Description |
+| --- | --- | --- | ---- |
+| InstructIE | [Google drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [Hugging Face](https://huggingface.co/datasets/zjunlp/InstructIE) <br/> [ModelScope](https://modelscope.cn/datasets/ZJUNLP/InstructIE)<br/> [WiseModel](https://wisemodel.cn/datasets/zjunlp/InstructIE) | 30w+ | InstrumentIE dataset (bilingual in Chinese and English) |
 
 
-
-The `InstructIE` dataset contains two core files: `InstructIE-zh.json` and `InstructIE-en.json`. Both files cover a range of fields that provide detailed descriptions of different aspects of the dataset:
-
-- `'id'`: A unique identifier for each data entry, ensuring the independence and traceability of the data items.
-- `'cate'`: The text's subject category, which provides a high-level categorical label for the content (there are 12 categories in total).
--'text ': The text to be extracted.
-- `'relation'`: Represent **relationship triples**, respectively. These fields allow users to freely construct instructions and expected outputs for information extraction.
+The InstructIE dataset includes the following files:
+- train_zh.json: Chinese training set.
+- train_en.json: English training set.
+- dev_zh.json: Chinese development set.
+- dev_en.json: English development set.
+- test_zh.json: Chinese test set.
+- test_en.json: English test set.
+- schema_zh.json: Schema information for 12 topics in Chinese.
+- schema_en.json: Schema information for 12 topics in English. 
 
 
 
 <details>
-  <summary><b>Explanation of each field</b></summary>
+  <summary><b>Example of data</b></summary>
+
+    ```
+    {
+      "id": "841ef2af4cfe766dd9295fb7daf321c299df0fd0cef14820dfcb421161eed4a1", 
+      "text": "NGC1313 is a galaxy in the constellation of Reticulum. It was discovered by the Australian astronomer James Dunlop on September 27, 1826. It has a prominent uneven shape, and its axis does not completely revolve around its center. Near NGC1313, there is another galaxy, NGC1309.", 
+      "relation": [
+        {"head": "NGC1313", "head_type": "astronomical object type", "relation": "time of discovery", "tail": "September 27, 1826", "tail_type": "time"}, 
+        {"head": "NGC1313", "head_type": "astronomical object type", "relation": "discoverer or inventor", "tail": "James Dunlop", "tail_type": "organization/human"}, 
+        {"head": "NGC1313", "head_type": "astronomical object type", "relation": "of", "tail": "Reticulum", "tail_type": "astronomical object type"}
+      ]
+    }
+    ```
+
+</details>
+
 
 
 | Field       | Description                                                      |
 | ----------- | ---------------------------------------------------------------- |
 | id          | The unique identifier for each data point.                       |
 | cate        | The category of the text's subject, with a total of 12 different thematic categories. |
-| input       | The input text for the model, with the goal of extracting all the involved relationship triples. |
-| instruction | Instructions guiding the model to perform information extraction tasks. |
-| output      | The expected output result of the model.                         |
-| relation    | Describes the relationship triples contained in the text, i.e., the connections between entities (head, relation, tail). |
+| text       | The input text for the model, with the goal of extracting all the involved relationship triples. |
+| relation    | Describes the relationship triples contained in the text, i.e., (head, head_type, relation, tail, tail_type). |
 
-</details>
+
 
 With the fields mentioned above, users can flexibly design and implement instructions and output formats for different information extraction needs.
-
-
-<details>
-  <summary><b>Example of data</b></summary>
-
-
-    ```
-    {
-        "id": "6e4f87f7f92b1b9bd5cb3d2c3f2cbbc364caaed30940a1f8b7b48b04e64ec403", 
-        "cate": "Person", 
-        "input": "Dionisio Pérez Gutiérrez  (born 1872 in Grazalema (Cádiz) - died 23 February 1935 in Madrid) was a Spanish writer, journalist, and gastronome. He has been called \"one of Spain's most authoritative food writers\" and was an early adopter of the term Hispanidad.\nHis pen name, \"Post-Thebussem\", was chosen as a show of support for Mariano Pardo de Figueroa, who went by the handle \"Dr. Thebussem\".", 
-        "entity": [
-            {"entity": "Dionisio Pérez Gutiérrez", "entity_type": "human"}, 
-            {"entity": "Post-Thebussem", "entity_type": "human"}, 
-            {"entity": "Grazalema", "entity_type": "geographic_region"}, 
-            {"entity": "Cádiz", "entity_type": "geographic_region"}, 
-            {"entity": "Madrid", "entity_type": "geographic_region"}, 
-            {"entity": "gastronome", "entity_type": "event"}, 
-            {"entity": "Spain", "entity_type": "geographic_region"}, 
-            {"entity": "Hispanidad", "entity_type": "architectural_structure"}, 
-            {"entity": "Mariano Pardo de Figueroa", "entity_type": "human"}, 
-            {"entity": "23 February 1935", "entity_type": "time"}
-        ], 
-        "relation": [
-            {"head": "Dionisio Pérez Gutiérrez", "relation": "country of citizenship", "tail": "Spain"}, 
-            {"head": "Dionisio Pérez Gutiérrez", "relation": "place of birth", "tail":"Grazalema"}, 
-            {"head": "Dionisio Pérez Gutiérrez", "relation": "place of death", "tail": "Madrid"}, 
-            {"head": "Mariano Pardo de Figueroa", "relation": "country of citizenship", "tail": "Spain"}, 
-            {"head": "Dionisio Pérez Gutiérrez", "relation": "alternative name", "tail": "Post-Thebussem"}, 
-            {"head": "Dionisio Pérez Gutiérrez", "relation": "date of death", "tail": "23 February 1935"}
-        ]
-    }
-    ```
-
-</details>
-
 
 
 

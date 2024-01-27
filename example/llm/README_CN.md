@@ -82,35 +82,59 @@ pip install -r requirements.txt
 
 # 数据
 
-| 名称                  | 下载                                                                                                                     | 数量     | 描述                                                                                                                                                       |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| InstructIE       | [Google drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [百度云盘](https://pan.baidu.com/s/1-u8bD85H1Otbzk-gjLxaFw?pwd=c1i6)    | 20w+ | InstructIE数据集(中英双语)                                                                                     |
+
+| 名称 | 下载 | 数量 | 描述 |
+| --- | --- | --- | --- |
+| InstructIE | [Google drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [Hugging Face](https://huggingface.co/datasets/zjunlp/InstructIE) <br/> [ModelScope](https://modelscope.cn/datasets/ZJUNLP/InstructIE)<br/> [WiseModel](https://wisemodel.cn/datasets/zjunlp/InstructIE) | 30w+ | InstructIE数据集(中英双语) |
 
 
 
-`InstructIE` 数据集包含两个核心文件夹：`InstructIE-zh` 和 `InstructIE-en`。这两个文件夹都涵盖了中英双语的基于主题的IE指令数据。
-
-- `'id'`：每条数据的唯一标识符，确保数据项的独立性和可追踪性。
-- `'cate'`：**文本主题**分类，为文本内容提供了一个高级的分类标签（共有12种主题）。
-- `'text'`：待抽取的文本。
-- `'relation'`：代表**关系**三元组，这些字段允许用户自由构建信息抽取的指令和预期输出结果。
-
+`InstructIE` 数据集包含以下文件：
+- `train_zh.json`: 中文训练集。
+- `train_en.json`: 英文训练集。
+- `dev_zh.json`: 中文验证集。
+- `dev_en.json`: 英文验证集。
+- `test_zh.json`: 中文测试集。
+- `test_en.json`: 英文测试集。
+- `schema_zh.json`: 中文12个主题下的schema信息。
+- `schema_en.json`: 英文12个主题下的schema信息。
 
 
 <details>
-  <summary><b>各字段的说明</b></summary>
+  <summary><b>一条数据的示例</b></summary>
 
+
+```json
+{
+  "id": "bac7c32c47fddd20966e4ece5111690c9ce3f4f798c7c9dfff7721f67d0c54a5", 
+  "cate": "地理地区", 
+  "text": "阿尔夫达尔（挪威语：Alvdal）是挪威的一个市镇，位于内陆郡，行政中心为阿尔夫达尔村。市镇面积为943平方公里，人口数量为2,424人（2018年），人口密度为每平方公里2.6人。", 
+  "relation": [
+    {"head": "阿尔夫达尔", "head_type": "地理地区", "relation": "面积", "tail": "943平方公里", "tail_type": "度量"}, 
+    {"head": "阿尔夫达尔", "head_type": "地理地区", "relation": "别名", "tail": "Alvdal", "tail_type": "地理地区"}, 
+    {"head": "内陆郡", "head_type": "地理地区", "relation": "位于", "tail": "挪威", "tail_type": "地理地区"}, 
+    {"head": "阿尔夫达尔", "head_type": "地理地区", "relation": "位于", "tail": "内陆郡", "tail_type": "地理地区"}, 
+    {"head": "阿尔夫达尔", "head_type": "地理地区", "relation": "人口", "tail": "2,424人", "tail_type": "度量"}
+  ]
+}
+```
+
+</details>
+
+
+各字段的说明:
 
 |    字段     |                             说明                             |
 | :---------: | :----------------------------------------------------------: |
 |     id      |                       每个数据点的唯一标识符。                       |
 |    cate     |           文本的主题类别，总计12种不同的主题分类。               |
-|    input    | 模型的输入文本，目标是从中抽取涉及的所有关系三元组。                  |
-| instruction |                 指导模型执行信息抽取任务的指示。                    |
-|    output   |                      模型的预期输出结果。                        |
-|  relation   |   描述文本中包含的关系三元组，即实体间的联系(head, relation, tail)。   |
+|    text    | 模型的输入文本，目标是从中抽取涉及的所有关系三元组。                  |
+|  relation   |   描述文本中包含的关系三元组，即(head, head_type, relation, tail, tail_type)。   |
 
-</details>
+
+利用上述字段，用户可以灵活地设计和实施针对不同信息**抽取需求**的指令和**输出格式**。
+
+
 
 
 # 模型
