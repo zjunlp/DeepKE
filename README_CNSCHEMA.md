@@ -227,7 +227,8 @@ Users can directly download the [model](https://drive.google.com/drive/folders/1
 ### [Relation Extraction(RE)](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard)
 Users can directly download the [model](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv) for usage. The details are as follows：
 
-1. Modify the parameter `fp`in `predict.yaml`to the path of downloaded file, `num_relations`in `embedding.yaml`to 51(relation nums) and `model` in `config.yaml`to lm
+1. Modify the parameter `fp`in `example/re/standard/conf/config.yaml`to the path of downloaded file, `num_relations`in `example/re/standard/conf/embedding.yaml`to 51(relation nums) and `model` in `example/re/standard/conf/config.yaml`to lm.
+	> Note: There is no need to modify the contents of `example/re/standard/conf/model/lm.yaml` unless there are specific requirements.
 2. Predict. The text and entity pairs to be predicted are fed to the program through the terminal.
 
 	```bash
@@ -280,6 +281,7 @@ Users can directly download the [model](https://drive.google.com/drive/folders/1
 	```bash
 	“男人的爱”和“人生长路”在句中关系为“所属专辑”，置信度为0.99
 	```
+ 	> Note: The model specified in `example/re/standard/conf/model/lm.yaml` will be automatically downloaded from the huggingface website during runtime. If the download fails, please use the huggingface mirror site or download it manually.
 
 ### [Joint Entity and Relation Extraction](https://github.com/zjunlp/DeepKE/tree/main/example/triple)
 After aforementioned trained models are downloaded, entites and their relations in a text can be extracted together. If there are more than two entities in one sentence, some predicted entity pairs may be incorrect because these entity pairs are not in training sets and need to be exracted further. The detailed steps are as follows:<br>
@@ -330,7 +332,7 @@ If you need to use other models for training, follow the steps bellow:
 
 1、Download the customized [dataset](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv) and rename it to `data`.
 
-2、Modify the parameter `model_name`in `train.yaml`of the `conf`folder to `lm`, `num_relations`in `embedding_yaml`to the number of relations(eg: 51). Users can choose different models to train by modifying the `yaml`file.
+2、Modify the parameter `model_name`in `train.yaml`of the `conf`folder to `lm`, `num_relations`in `embedding_yaml`to the number of relations(eg: 51). Users can choose different models to train by modifying the `yaml`file. 
 
 3、Train.
 
