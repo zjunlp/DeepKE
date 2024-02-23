@@ -79,16 +79,27 @@ Obtain augmented data:
 ## Citation
 
 ```BibTeX
-@article{UnleashLLMRE,
-  author       = {Xin Xu and
-                  Yuqi Zhu and
-                  Xiaohan Wang and
-                  Ningyu Zhang},
-  title        = {How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?},
-  journal      = {The 4th Workshop on Simple and Efficient Natural Language Processing (SustaiNLP 2023)},
-  year         = {2023},
-  url          = {https://arxiv.org/pdf/2305.01555.pdf},
-  publisher    = "Association for Computational Linguistics"
+@inproceedings{xu-etal-2023-unleash,
+    title = "How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?",
+    author = "Xu, Xin  and
+      Zhu, Yuqi  and
+      Wang, Xiaohan  and
+      Zhang, Ningyu",
+    editor = "Sadat Moosavi, Nafise  and
+      Gurevych, Iryna  and
+      Hou, Yufang  and
+      Kim, Gyuwan  and
+      Kim, Young Jin  and
+      Schuster, Tal  and
+      Agrawal, Ameeta",
+    booktitle = "Proceedings of The Fourth Workshop on Simple and Efficient Natural Language Processing (SustaiNLP)",
+    month = jul,
+    year = "2023",
+    address = "Toronto, Canada (Hybrid)",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.sustainlp-1.13",
+    doi = "10.18653/v1/2023.sustainlp-1.13",
+    pages = "190--200",
 }
 ```
 
