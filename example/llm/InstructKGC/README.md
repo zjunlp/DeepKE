@@ -254,12 +254,8 @@ Place the data in the directory `./data`
 Here are some of the models supported by the code in this repository:
 [[llama](https://huggingface.co/meta-llama), [alpaca](https://github.com/tloen/alpaca-lora), [vicuna](https://huggingface.co/lmsys), [zhixi](https://github.com/zjunlp/KnowLM), [falcon](https://huggingface.co/tiiuae), [baichuan](https://huggingface.co/baichuan-inc), [chatglm](https://huggingface.co/THUDM), [qwen](https://huggingface.co/Qwen), [moss](https://huggingface.co/fnlp), [openba](https://huggingface.co/OpenBA)]
 
-<details>
-  <summary><b>more</b></summary>
 
 
-
-* 
 
 ## 🌰 4.LoRA Fine-tuning
 
@@ -490,7 +486,7 @@ Below are some models optimized through training with LoRA technology (**LoRA we
 | --- | --- | --- | --- | --- |
 | llama-7b-lora-ie | llama-7b | llama | fp16 | alpaca |
 | alpaca-7b-lora-ie | alpaca-7b | alpaca | fp16 | alpaca |
-| knowlm-13b-ie-lora | zhixi | fp16 | alpaca |
+| knowlm-13b-ie-lora | zjunlp/knowlm-13b-base-v1.0 | zhixi | fp16 | alpaca |
 
 </details>
 
