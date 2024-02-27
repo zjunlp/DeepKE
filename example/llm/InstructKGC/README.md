@@ -5,24 +5,25 @@
 </p>
 
 - [InstructKGC-CCKS2023 Evaluation of Instruction-based Knowledge Graph Construction](#instructkgc-ccks2023-evaluation-of-instruction-based-knowledge-graph-construction)
+  - [News](#news)
   - [🎯 1.Task Object](#-1task-object)
   - [📊 2.Data](#-2data)
-    - [2.1Information Extraction Template](#21information-extraction-template)
-    - [2.2Datasets](#22datasets)
-    - [2.3Data Preprocessing](#23data-preprocessing)
+    - [2.1 Existing Datasets](#21-existing-datasets)
+    - [2.2Training Data Conversion](#22training-data-conversion)
+    - [2.3Test Data Conversion](#23test-data-conversion)
   - [🚴 3.Preparation](#-3preparation)
     - [🛠️ 3.1Environment](#️-31environment)
-    - [⏬ 3.2Download data](#-32download-data)
-    - [🐐 3.3Model](#-33model)
+    - [🐐 3.2Model](#-32model)
   - [🌰 4.LoRA Fine-tuning](#-4lora-fine-tuning)
     - [4.1 Basic Parameters](#41-basic-parameters)
-    - [4.2LoRA Fine-tuning with LLaMA](#42lora-fine-tuning-with-llama)
-    - [4.3LoRA Fine-tuning with Alpaca](#43lora-fine-tuning-with-alpaca)
-    - [4.4LoRA Fine-tuning with ZhiXi (智析)](#44lora-fine-tuning-with-zhixi-智析)
-    - [4.5LoRA Fine-Tuning Vicuna](#45lora-fine-tuning-vicuna)
-    - [4.6Lora Fine-tuning with ChatGLM](#46lora-fine-tuning-with-chatglm)
-    - [4.7Lora Fine-tuning with Moss](#47lora-fine-tuning-with-moss)
-    - [4.8LoRA Fine-tuning with Baichuan](#48lora-fine-tuning-with-baichuan)
+    - [4.2 LoRA Fine-tuning LLaMA](#42-lora-fine-tuning-llama)
+    - [4.3 LoRA Fine-tuning Alpaca](#43-lora-fine-tuning-alpaca)
+    - [4.4 LoRA Fine-tuning Zhixi](#44-lora-fine-tuning-zhixi)
+    - [4.5 LoRA Fine-tuning Vicuna](#45-lora-fine-tuning-vicuna)
+    - [4.6 LoRA Fine-tuning ChatGLM](#46-lora-fine-tuning-chatglm)
+    - [4.7 LoRA Fine-tuning Moss](#47-lora-fine-tuning-moss)
+    - [4.8 LoRA Fine-tuning Baichuan](#48-lora-fine-tuning-baichuan)
+    - [4.9 Continue Training with Domain-specific Data](#49-continue-training-with-domain-specific-data)
   - [🥊 5.P-Tuning Fine-tuning](#-5p-tuning-fine-tuning)
     - [5.1P-Tuning Fine-tuning with ChatGLM](#51p-tuning-fine-tuning-with-chatglm)
   - [🔴 6. Prediction](#-6-prediction)
@@ -35,137 +36,93 @@
   - [Citation](#citation)
 
 
+## News
+* [2024/02] We released a large-scale (0.32B tokens) high-quality bilingual (Chinese and English) Information Extraction (IE) instruction dataset named [IEPile](https://huggingface.co/datasets/zjunlp/iepie), along with two models trained on `IEPile`, [baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) and [llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora).
+* [2023/10] We released a new bilingual (Chinese and English) theme-based Information Extraction (IE) instruction dataset named [InstructIE](https://huggingface.co/datasets/zjunlp/InstructIE) with [paper](https://arxiv.org/abs/2305.11527).
+* [2023/08] We introduced a dedicated 13B model for Information Extraction (IE), named [knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main).
+* [2023/05] We initiated an instruction-based Information Extraction project.
+
+
+
+
 ## 🎯 1.Task Object
 
-The task objective is to extract specified types of entities and relationships from a given text based on user-provided instructions, for the purpose of constructing a knowledge graph.
+We define `Instruction-based KGC` as an autoregressive generation task that follows instructions. The model first needs to understand the instructions and recognize their intent. Then, based on the content of the instructions, the model extracts the corresponding triples from the input text and outputs them in the specified format. The **`instruction`** format in this paper adopts a structure similar to a JSON string, which is essentially a dictionary-type string. It consists of the following three fields:
 
-Here is an example of a **Knowledge Graph Construction Task**. The user provides a piece of text, referred to as the input, and an instruction that includes the desired types of entities or relationships to be extracted. The system's task is to output all the relationship triples contained in the input and return them in the format specified in the instruction (in this case, in the format of (head entity, relation, tail entity)).
 
+(1) **`'instruction'`**: Task description, which outlines the task to be performed by the instruction (one of `NER`, `RE`, `EE`, `EET`, `EEA`).
+(2) **`'schema'`**: A list of schemas to be extracted (`entity types`, `relation types`, `event types`).
+(3) **`'input'`**: The text from which information is to be extracted.
+
+The file [instruction.py](./ie2instruction/convert/utils/instruction.py) provides instructions for various tasks.
+
+Below is a **data example**:
+
+```json
+{
+    "task": "NER", 
+    "source": "CoNLL2003", 
+    "instruction": "{\"instruction\": \"You are an expert in named entity recognition. Please extract entities that match the schema definition from the input. Return an empty list if the entity type does not exist. Please respond in the format of a JSON string.\", \"schema\": [\"person\", \"organization\", \"else\", \"location\"], \"input\": \"284 Robert Allenby ( Australia ) 69 71 71 73 , Miguel Angel Martin ( Spain ) 75 70 71 68 ( Allenby won at first play-off hole )\"}", 
+    "output": "{\"person\": [\"Robert Allenby\", \"Allenby\", \"Miguel Angel Martin\"], \"organization\": [], \"else\": [], \"location\": [\"Australia\", \"Spain\"]}"
+}
 ```
-instruction="You are an expert specifically trained in extracting relation triples. Given the candidate relation list: ['achievement', 'alternative name', 'area', 'creation time', 'creator', 'event', 'height', 'length', 'located in', 'named after', 'width'], please extract the possible head and tail entities from the input below based on the relation list, and provide the corresponding relation triple. If a certain relation does not exist, output NAN. Please answer in the format of (Subject,Relation,Object)\n."
-input="Wewak Airport, also known as Boram Airport, is an airport located in Wewak, Papua New Guinea. IATA code: WWK; ICAO code: AYWK."
-output="(Wewak Airport,located in,Wewak)\n(Wewak,located in,Papua New Guinea)\n(Wewak Airport,alternative name,Boram Airport)\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN\nNAN", "cate": "Building"
+
+The data instance belongs to the `NER` task, is part of the `CoNLL2003` dataset, the schema list to be extracted includes ["`person`", "`organization`", "`else`", "`location`"], and the text to be extracted from is "*284 Robert Allenby ( Australia ) 69 71 71 73 , Miguel Angel Martin ( Spain ) 75 70 71 68 ( Allenby won at first play-off hole )*". The output is `{"person": ["Robert Allenby", "Allenby", "Miguel Angel Martin"], "organization": [], "else": [], "location": ["Australia", "Spain"]}`.
+
+> Note that the order of schemas in the output is consistent with the order in the instruction.
+
+
+<details>
+  <summary><b>More Tasks Instance</b></summary>
+
+```json
+{
+  "task": "EE", 
+  "source": "PHEE", 
+  "instruction": "{\"instruction\": \"You are an expert in event extraction. Please extract events from the input that conform to the schema definition. Return an empty list for events that do not exist, and return NAN for arguments that do not exist. If an argument has multiple values, please return a list. Respond in the format of a JSON string.\", \"schema\": [{\"event_type\": \"potential therapeutic event\", \"trigger\": true, \"arguments\": [\"Treatment.Time_elapsed\", \"Treatment.Route\", \"Treatment.Freq\", \"Treatment\", \"Subject.Race\", \"Treatment.Disorder\", \"Effect\", \"Subject.Age\", \"Combination.Drug\", \"Treatment.Duration\", \"Subject.Population\", \"Subject.Disorder\", \"Treatment.Dosage\", \"Treatment.Drug\"]}, {\"event_type\": \"adverse event\", \"trigger\": true, \"arguments\": [\"Subject.Population\", \"Subject.Age\", \"Effect\", \"Treatment.Drug\", \"Treatment.Dosage\", \"Treatment.Freq\", \"Subject.Gender\", \"Treatment.Disorder\", \"Subject\", \"Treatment\", \"Treatment.Time_elapsed\", \"Treatment.Duration\", \"Subject.Disorder\", \"Subject.Race\", \"Combination.Drug\"]}], \"input\": \"Our findings reveal that even in patients without a history of seizures, pregabalin can cause a cortical negative myoclonus.\"}", 
+  "output": "{\"potential therapeutic event\": [], \"adverse event\": [{\"trigger\": \"cause \", \"arguments\": {\"Subject.Population\": \"NAN\", \"Subject.Age\": \"NAN\", \"Effect\": \"cortical negative myoclonus\", \"Treatment.Drug\": \"pregabalin\", \"Treatment.Dosage\": \"NAN\", \"Treatment.Freq\": \"NAN\", \"Subject.Gender\": \"NAN\", \"Treatment.Disorder\": \"NAN\", \"Subject\": \"patients without a history of seizures\", \"Treatment\": \"pregabalin\", \"Treatment.Time_elapsed\": \"NAN\", \"Treatment.Duration\": \"NAN\", \"Subject.Disorder\": \"NAN\", \"Subject.Race\": \"NAN\", \"Combination.Drug\": \"NAN\"}}]}"
+}
+
+{
+  "task": "RE", 
+  "source": "NYT11", 
+  "instruction": "{\"instruction\": \"You are an expert in relationship extraction. Please extract relationship triples that match the schema definition from the input. Return an empty list for relationships that do not exist. Please respond in the format of a JSON string.\", \"schema\": [\"neighborhood of\", \"nationality\", \"children\", \"place of death\"], \"input\": \" In the way New Jersey students know that Thomas Edison 's laboratory is in West Orange , the people of Colma know that Wyatt Earp 's ashes are buried at Hills of Eternity , a Jewish cemetery he was n't ; his wife was , and that Joe DiMaggio is at Holy Cross Cemetery , where visitors often lean bats against his gravestone . \"}", 
+  "output": "{\"neighborhood of\": [], \"nationality\": [], \"children\": [], \"place of death\": [{\"subject\": \"Thomas Edison\", \"object\": \"West Orange\"}]}"
+}
 ```
+
+</details>
+
+> **Note**⚠️: For the old version of the data style, please refer to [kg2instruction/README.md](./kg2instruction/README.md)
 
 
 ## 📊 2.Data
 
 
-### 2.1Information Extraction Template
-The `template` is used to construct an `instruction` for the input of model, consisting of three parts:
-1. **Task Description**: Clearly define the model's function and the task it needs to complete, such as entity recognition, relation extraction, event extraction, etc.
-2. **Candidate Label List {s_schema} (optional)**: Define the categories of labels that the model needs to extract, such as entity types, relation types, event types, etc.
-3. **Structured Output Format {s_format}**: Specify how the model should present the structured information it extracts.
-
-
-Template **with specified list of candidate labels**:
-```
-Named Entity Recognition(NER): You are an expert specialized in entity extraction. With the candidate entity types list: {s_schema}, please extract possible entities from the input below, outputting NAN if a certain entity does not exist. Respond in the format {s_format}.
-
-Relation Extraction(RE): You are an expert in extracting relation triples. With the candidate relation list: {s_schema}, please extract the possible head entities and tail entities from the input below and provide the corresponding relation triples. If a relation does not exist, output NAN. Please answer in the {s_format} format.
-
-Event Extraction(EE): You are a specialist in event extraction. Given the candidate event dictionary: {s_schema}, please extract any possible events from the input below. If an event does not exist, output NAN. Please answer in the format of {s_format}.
-
-Event Type Extraction(EET): As an event analysis specialist, you need to review the input and determine possible events based on the event type directory: {s_schema}. All answers should be based on the {s_format} format. If the event type does not match, please mark with NAN.
-
-Event Argument Extraction(EEA): You are an expert in event argument extraction. Given the event dictionary: {s_schema1}, and the event type and trigger words: {s_schema2}, please extract possible arguments from the following input. If an event argument does not exist, output NAN. Please respond in the {s_format} format.
-```
-
-
-<details>
-    <summary><b>Template without specifying a list of candidate labels</b></summary>
-
-
-  ```
-  Named Entity Recognition(NER): Analyze the text content and extract the clear entities. Present your findings in the {s_format} format, skipping any ambiguous or uncertain parts.
-
-  Relation Extraction(RE): Please extract all the relation triples from the text and present the results in the format of {s_format}. Ignore those entities that do not conform to the standard relation template.
-
-  Event Extraction(EE): Please analyze the following text, extract all identifiable events, and present them in the specified format {s_format}. If certain information does not constitute an event, simply skip it.
-
-  Event Type Extraction(EET): Examine the following text content and extract any events you deem significant. Provide your findings in the {s_format} format.
-
-  Event Argument Extraction(EEA): Please extract possible arguments based on the event type and trigger word {s_schema2} from the input below. Answer in the format of {s_format}.
-  ```
-</details>
-
-
-<details>
-    <summary><b>Candidate Labels {s_schema}</b></summary>
-
-
-    ```
-    NER(Ontonotes): ["date", "organization", "person", "geographical social political", "national religious political", "facility", "cardinal", "location", "work of art", ...]
-    RE(NYT): ["ethnicity", "place lived", "geographic distribution", "company industry", "country of administrative divisions", "administrative division of country", ...]
-    EE(ACE2005): {"declare bankruptcy": ["organization"], "transfer ownership": ["artifact", "place", "seller", "buyer", "beneficiary"], "marry": ["person", "place"], ...}
-    EET(GENIA): ["cell type", "cell line", "protein", "RNA", "DNA"]
-    EEA(ACE2005): {"declare bankruptcy": ["organization"], "transfer ownership": ["artifact", "place", "seller", "buyer", "beneficiary"], "marry": ["person", "place"], ...}
-    ```
-</details>
-
-Here [schema](./kg2instruction/convert/utils.py) provides 12 **text topics** and common relationship types under the topic.
-
-<details>
-    <summary><b>Structural Output Format {s_format}</b></summary>
-
-
-    ```
-    Named Entity Recognition(NER): (Entity,Entity Type)
-
-    Relation Extraction(RE): (Subject,Relation,Object)
-
-    Event Extraction(EE): (Event Trigger,Event Type,Argument1#Argument Role1;Argument2#Argument Role2)
-
-    Event Type Extraction(EET): (Event Trigger,Event Type)
-
-    Event Argument Extraction(EEA): (Event Trigger,Event Type,Argument1#Argument Role1;Argument2#Argument Role2)
-    ```
-
-</details>
-
-
-For a more comprehensive understanding of the templates, please refer to the files [ner_converter.py](./kg2instruction/convert/converter/ner_converter.py)、[re_converter.py](./kg2instruction/convert/converter/re_converter.py)、[ee_converter.py](./kg2instruction/convert/converter/ee_converter.py)、[eet_converter.py](./kg2instruction/convert/converter/eet_converter.py)、[eea_converter.py](./kg2instruction/convert/converter/eea_converter.py) and [configs](./configs).
-
-
-
-
-### 2.2Datasets
+### 2.1 Existing Datasets
 
 | Name | Download | Quantity | Description |
-| --- | --- | --- | ---- |
-| InstructIE | [Google drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [Hugging Face](https://huggingface.co/datasets/zjunlp/InstructIE) <br/> [ModelScope](https://modelscope.cn/datasets/ZJUNLP/InstructIE)<br/> [WiseModel](https://wisemodel.cn/datasets/zjunlp/InstructIE) | 30w+ | InstrumentIE dataset (bilingual in Chinese and English) |
-
-
-The InstructIE dataset includes the following files:
-- train_zh.json: Chinese training set.
-- train_en.json: English training set.
-- dev_zh.json: Chinese development set.
-- dev_en.json: English development set.
-- test_zh.json: Chinese test set.
-- test_en.json: English test set.
-- schema_zh.json: Schema information for 12 topics in Chinese.
-- schema_en.json: Schema information for 12 topics in English. 
-
+| --- | --- | --- | --- |
+| InstructIE | [Google Drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [Hugging Face](https://huggingface.co/datasets/zjunlp/InstructIE) <br/> [ModelScope](https://modelscope.cn/datasets/ZJUNLP/InstructIE)<br/> [WiseModel](https://wisemodel.cn/datasets/zjunlp/InstructIE) | 300k+ | **Bilingual** (Chinese and English) topic-based Information Extraction (IE) instruction dataset |
+| IEPile | [Google Drive](https://drive.google.com/file/d/1jPdvXOTTxlAmHkn5XkeaaCFXQkYJk5Ng/view?usp=sharing) <br/> [Hugging Face](https://huggingface.co/datasets/zjunlp/iepile) <br/> [WiseModel](https://wisemodel.cn/datasets/zjunlp/IEPile) <br/> [ModelScope](https://modelscope.cn/datasets/ZJUNLP/IEPile) | 2 million+ | Large-scale (`0.32B` tokens) high-quality **bilingual** (Chinese and English) Information Extraction (IE) instruction fine-tuning dataset |
 
 
 <details>
-  <summary><b>Example of data</b></summary>
+  <summary><b>Details of InstructIE</b></summary>
 
-    ```
-    {
-      "id": "841ef2af4cfe766dd9295fb7daf321c299df0fd0cef14820dfcb421161eed4a1", 
-      "text": "NGC1313 is a galaxy in the constellation of Reticulum. It was discovered by the Australian astronomer James Dunlop on September 27, 1826. It has a prominent uneven shape, and its axis does not completely revolve around its center. Near NGC1313, there is another galaxy, NGC1309.", 
-      "relation": [
-        {"head": "NGC1313", "head_type": "astronomical object type", "relation": "time of discovery", "tail": "September 27, 1826", "tail_type": "time"}, 
-        {"head": "NGC1313", "head_type": "astronomical object type", "relation": "discoverer or inventor", "tail": "James Dunlop", "tail_type": "organization/human"}, 
-        {"head": "NGC1313", "head_type": "astronomical object type", "relation": "of", "tail": "Reticulum", "tail_type": "astronomical object type"}
-      ]
-    }
-    ```
+**An example of a single data entry**
 
-</details>
-
-
+```json
+{
+  "id": "841ef2af4cfe766dd9295fb7daf321c299df0fd0cef14820dfcb421161eed4a1", 
+  "text": "NGC1313 is a galaxy in the constellation of Reticulum. It was discovered by the Australian astronomer James Dunlop on September 27, 1826. It has a prominent uneven shape, and its axis does not completely revolve around its center. Near NGC1313, there is another galaxy, NGC1309.", 
+  "relation": [
+    {"head": "NGC1313", "head_type": "astronomical object type", "relation": "time of discovery", "tail": "September 27, 1826", "tail_type": "time"}, 
+    {"head": "NGC1313", "head_type": "astronomical object type", "relation": "discoverer or inventor", "tail": "James Dunlop", "tail_type": "organization/human"}, 
+    {"head": "NGC1313", "head_type": "astronomical object type", "relation": "of", "tail": "Reticulum", "tail_type": "astronomical object type"}
+  ]
+}
+```
 
 | Field       | Description                                                      |
 | ----------- | ---------------------------------------------------------------- |
@@ -175,118 +132,99 @@ The InstructIE dataset includes the following files:
 | relation    | Describes the relationship triples contained in the text, i.e., (head, head_type, relation, tail, tail_type). |
 
 
-
-With the fields mentioned above, users can flexibly design and implement instructions and output formats for different information extraction needs.
-
-
-
-### 2.3Data Preprocessing
-
-**Training Data Transformation**
-
-Before inputting data into the model, it needs to be formatted to include `instruction` and `input` fields. To assist with this, we offer a script [kg2instruction/convert.py](./kg2instruction/convert.py), which can batch convert data into a format directly usable by the model.
-
-> Before using the [kg2instruction/convert.py](./kg2instruction/convert.py) script, please ensure you have referred to the [data](./data) directory. Please consult `sample.json` to understand the format of the data before conversion, `schema.json` illustrates the organization of the schema, and `processed.json` describes the format of the data after conversion.
-
-
-```bash              
-python kg2instruction/convert.py \
-  --src_path data/NER/sample.json \
-  --tgt_path data/NER/processed.json \
-  --schema_path data/NER/schema.json \
-  --language zh \      # Specifies the language for the conversion script and template, options are ['zh', 'en']
-  --task NER \         # Specifies the task type: one of ['RE', 'NER', 'EE', 'EET', 'EEA']
-  --sample -1 \        # If -1, randomly samples one of 20 instruction and 4 output formats; if a specific number, uses the corresponding instruction format, range is -1<=sample<20
-  --neg_ratio 1 \      # Set the negative sampling ratio for all samples; 1 indicates negative sampling for all samples.
-  --neg_schema 1 \     # Set the negative sampling ratio from the schema; 1 indicates embedding the entire schema into the command.
-  --random_sort        # Determines whether to randomly sort the list of schemas in the instruction
-```
-
-**Negative Sampling**: Assuming dataset A contains labels [a, b, c, d, e, f], for a given sample s, it might involve only labels a and b. Our objective is to randomly introduce some relationships from the candidate relationship list that were originally unrelated to s, such as c and d. However, it's worth noting that in the output, the labels for c and d either won't be included, or they will be output as `NAN`.
-
-`schema_path` is used to specify a schema file (in JSON format) containing three lines of JSON strings. Each line is organized in a fixed format and provides information for named entity recognition (NER) tasks. Taking NER tasks as an example, the meaning of each line is explained as follows:
-
-```
-["BookTitle", "Address", "Movie", ...]  # List of entity types
-[]  # Empty list
-{}  # Empty dictionary
-```
+</details>
 
 
 <details>
-  <summary><b>More</b></summary>
+  <summary><b>Details of IEPile</b></summary>
+
+Each instance in `IEPile` contains four fields: `task`, `source`, `instruction`, and `output`. Below are the explanations for each field:
 
 
+| Field | Description |
+| :---: | :---: |
+| task | The task to which the instance belongs, one of the five types (`NER`, `RE`, `EE`, `EET`, `EEA`). |
+| source | The dataset to which the instance belongs. |
+| instruction | The instruction for inputting into the model, processed into a JSON string via json.dumps, including three fields: `"instruction"`, `"schema"`, and `"input"`. |
+| output | The output in the format of a dictionary's JSON string, where the key is the schema, and the value is the extracted content. |
 
+
+In `IEPile`, the **instruction** format of `IEPile` adopts a JSON-like string structure, which is essentially a dictionary-type string composed of the following three main components:
+(1) **`'instruction'`**: Task description, which outlines the task to be performed by the instruction (one of `NER`, `RE`, `EE`, `EET`, `EEA`).
+(2) **`'schema'`**: A list of schemas to be extracted (`entity types`, `relation types`, `event types`).
+(3) **`'input'`**: The text from which information is to be extracted.
+
+The file [instruction.py](./ie2instruction/convert/utils/instruction.py) provides instructions for various tasks.
+
+Below is a **data example**:
+
+```json
+{
+    "task": "NER", 
+    "source": "CoNLL2003", 
+    "instruction": "{\"instruction\": \"You are an expert in named entity recognition. Please extract entities that match the schema definition from the input. Return an empty list if the entity type does not exist. Please respond in the format of a JSON string.\", \"schema\": [\"person\", \"organization\", \"else\", \"location\"], \"input\": \"284 Robert Allenby ( Australia ) 69 71 71 73 , Miguel Angel Martin ( Spain ) 75 70 71 68 ( Allenby won at first play-off hole )\"}", 
+    "output": "{\"person\": [\"Robert Allenby\", \"Allenby\", \"Miguel Angel Martin\"], \"organization\": [], \"else\": [], \"location\": [\"Australia\", \"Spain\"]}"
+}
 ```
-For Relation Extraction (RE) tasks:
-[]                                                 # Empty list
-["Founder", "Number", "RegisteredCapital", ...]    # List of relation types
-{}                                                 # Empty dictionary
 
+The data instance belongs to the `NER` task, is part of the `CoNLL2003` dataset, the schema list to be extracted includes ["`person`", "`organization`", "`else`", "`location`"], and the text to be extracted from is "*284 Robert Allenby ( Australia ) 69 71 71 73 , Miguel Angel Martin ( Spain ) 75 70 71 68 ( Allenby won at first play-off hole )*". The output is `{"person": ["Robert Allenby", "Allenby", "Miguel Angel Martin"], "organization": [], "else": [], "location": ["Australia", "Spain"]}`.
 
-For Event Extraction (EE) tasks:
-["Social Interaction-Thanks", "Organizational Action-OpeningCeremony", "Competition Action-Withdrawal", ...]        # List of event types
-["DismissingParty", "TerminatingParty", "Reporter", "ArrestedPerson"]       # List of argument roles
-{"OrganizationalRelation-Layoff": ["LayoffParty", "NumberLaidOff", "Time"], "LegalAction-Sue": ["Plaintiff", "Defendant", "Time"], ...}         # Dictionary of event types
-
-
-For Event Type Extraction(EET) tasks:
-["Social Interaction-Thanks", "Organizational Action-OpeningCeremony", "Competition Action-Withdrawal", ...]         # List of event types
-[]                               # Empty list
-{}                               # Empty dictionary
-
-
-For Event Argument Extraction(EEA) tasks:
-["Social Interaction-Thanks", "Organizational Action-OpeningCeremony", "Competition Action-Withdrawal", ...]                  # List of event types
-["DismissingParty", "TerminatingParty", "Reporter", "ArrestedPerson"]           # List of argument roles
-{"OrganizationalRelation-Layoff": ["LayoffParty", "NumberLaidOff", "Time"], "LegalAction-Sue": ["Plaintiff", "Defendant", "Time"], ...}             # Dictionary of event types
-```
 
 </details>
 
-For more detailed information on the schema file, you can refer to the `schema.json` file in the respective task directories under the [data](./data) directory.
 
 
-**Testing Data Transformation**
+### 2.2Training Data Conversion
 
-For test data, you can use the [kg2instruction/convert_test.py](./kg2instruction/convert_test.py) script, which does not require the data to contain label fields (`entity`, `relation`, `event`), just the input field and the corresponding schema_path.
+Firstly, it's necessary to **format the data** to include `instruction` and `output` fields. For this purpose, we provide a script [convert_func.py](./ie2instruction/convert_func.py), which can batch convert data into a format that can be directly used by the model.
+
+
+> Before using the [convert_func.py](./ie2instruction/convert_func.py) script, please make sure to refer to the [data](./data) directory. This directory provides detailed instructions on the data format required for each task. Refer to `sample.json` to understand the format of the data before conversion, `schema.json` to see the organization of the schema, and `train.json` to describe the data format after conversion.
+
+> Additionally, you can directly use the bilingual (Chinese and English) information extraction dataset [zjunlp/InstructIE](https://huggingface.co/datasets/zjunlp/InstructIE), which includes 12 themes such as characters, vehicles, works of art, natural science, man-made objects, astronomical objects, etc.
+
 
 ```bash
-python kg2instruction/convert_test.py \
-  --src_path data/NER/sample.json \
-  --tgt_path data/NER/processed.json \
-  --schema_path data/NER/schema.json \
-  --language zh \
-  --task NER \
-  --sample 0 \
-  --schema_num 4     # For whether to segment a single data into a schema, if there are 16 schema labels, each data after segmentation corresponds to 4 test data, distinguished by a 'split' field
+python ie2instruction/convert_func.py \
+    --src_path data/NER/sample.json \
+    --tgt_path data/NER/train.json \
+    --schema_path data/NER/schema.json \
+    --language zh \
+    --task NER \
+    --split_num 6 \       
+    --random_sort \
+    --split train
 ```
 
 
-**Data Transformation Examples**
+* `language`: Supports two languages, `zh` (Chinese) and `en` (English), with different instruction templates used for each language.
+* `task`: Currently supports five types of tasks: ['`RE`', '`NER`', '`EE`', '`EET`', '`EEA`'].
+* `split_num`: Defines the maximum number of schemas that can be included in a single instruction. The default value is 4, and setting it to -1 means no splitting is done. The recommended number of task splits varies by task: **6 for NER, and 4 for RE, EE, EET, EEA**.
+* `random_sort`: Whether to randomize the order of schemas in the instructions. The default is False, which means schemas are sorted alphabetically.
+* `split`: Specifies the type of dataset, with options `train` or `test`.
 
-Here is an example of data conversion for Named Entity Recognition (NER) task:
+The converted training data will contain four fields: `task`, `source`, `instruction`, `output`.
 
+
+### 2.3Test Data Conversion
+
+Before preparing the test data conversion, please visit the [data](./data) directory to understand the data structure required for each task: 1) For the input data format, see `sample.json`. 2) For the schema format, please refer to `schema.json`. 3) For the format of the transformed data, refer to `train.json`. **Unlike training data, test data input does not need to include annotation fields (`entity`, `relation`, `event`)**.
+
+
+```bash
+python ie2instruction/convert_func.py \
+    --src_path data/NER/sample.json \
+    --tgt_path data/NER/test.json \
+    --schema_path data/NER/schema.json \
+    --language zh \
+    --task NER \
+    --split_num 6 \
+    --split test
 ```
-Before Transformation:
-{
-    "input": "In contrast, the rain-soaked battle between Qingdao Sea Bulls and Guangzhou Songri Team, although also ended in a 0:0 draw, was uneventful.",
-    "entity": [{"entity": "Guangzhou Songri Team", "entity_type": "Organizational Structure"}, {"entity": "Qingdao Sea Bulls", "entity_type": "Organizational Structure"}]
-}
 
-After Transformation:
-{
-    "id": "e88d2b42f8ca14af1b77474fcb18671ed3cacc0c75cf91f63375e966574bd187",
-    "instruction": "Please identify and list the entity types mentioned in the given text ['Organizational Structure', 'Person', 'Geographical Location']. If a type doesn't exist, please indicate it as NAN. Provide your answer in the format (entity, entity type).",
-    "input": "In contrast, the rain-soaked battle between Qingdao Sea Bulls and Guangzhou Songri Team, although also ended in a 0:0 draw, was uneventful.",
-    "output": "(Qingdao Sea Bulls,Organizational Structure)\n(Guangzhou Songri Team,Organizational Structure)\nNAN\nNAN"
-}
-```
+When setting `split` to **test**, select the appropriate number of schemas according to the task type: **6 is recommended for NER, while 4 is recommended for RE, EE, EET, EEA**. The transformed test data will contain five fields: `id`, `task`, `source`, `instruction`, `label`.
 
-Before conversion, the data format needs to adhere to the structure specified in the `DeepKE/example/llm/InstructKGC/data` directory for each task (such as NER, RE, EE). Taking NER task as an example, the input text should be labeled as the `input` field, and the annotated data should be labeled as the `entity` field, which is a list of dictionaries containing multiple key-value pairs for `entity` and `entity_type`.
-
-After data conversion, you will obtain structured data containing the `input` text, `instruction` (providing detailed instructions about candidate entity types ['Organization', 'Person', 'Location'] and the expected output format), and `output` (listing all entity information recognized in the `input` in the form of (entity, entity type)).
+The `label` field will be used for subsequent evaluation. If the input data lacks the annotation fields (`entity`, `relation`, `event`), the transformed test data will not contain the `label` field, which is suitable for scenarios where no original annotated data is available.
 
 
 
@@ -301,15 +239,6 @@ Please refer to [DeepKE/example/llm/README.md](../README.md/#requirements) to cr
 conda activate deepke-llm
 ```
 
-!!! Attention: To accommodate the `qlora` technique, we have upgraded the versions of the `transformers`, `accelerate`, `bitsandbytes`, and `peft` libraries in the original deepke-llm codebase.
-
-1. transformers 0.17.1 -> 4.30.2
-2. accelerate 4.28.1 -> 0.20.3
-3. bitsandbytes 0.37.2 -> 0.39.1
-4. peft 0.2.0 -> 0.4.0dev
-
-
-### ⏬ 3.2Download data
 
 ```bash
 mkdir results
@@ -320,341 +249,199 @@ mkdir data
 Place the data in the directory `./data`
 
 
-### 🐐 3.3Model 
-Here are some models:
-* [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf) | [LLaMA-13b](https://huggingface.co/decapoda-research/llama-13b-hf)
-* [zjunlp/knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0)(需搭配相应的IE Lora) | [zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi)(无需Lora即可直接预测) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)(无需Lora, IE能力更强, 但通用性有所削弱)
-* [baichuan-inc/Baichuan-7B](https://huggingface.co/baichuan-inc/Baichuan-7B) | [baichuan-inc/Baichuan-13B-Base](https://huggingface.co/baichuan-inc/Baichuan-13B-Base) | [baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base) | [baichuan-inc/Baichuan2-13B-Base](https://huggingface.co/baichuan-inc/Baichuan2-13B-Base)
+### 🐐 3.2Model 
 
+Here are some of the models supported by the code in this repository:
+[[llama](https://huggingface.co/meta-llama), [alpaca](https://github.com/tloen/alpaca-lora), [vicuna](https://huggingface.co/lmsys), [zhixi](https://github.com/zjunlp/KnowLM), [falcon](https://huggingface.co/tiiuae), [baichuan](https://huggingface.co/baichuan-inc), [chatglm](https://huggingface.co/THUDM), [qwen](https://huggingface.co/Qwen), [moss](https://huggingface.co/fnlp), [openba](https://huggingface.co/OpenBA)]
 
 <details>
   <summary><b>more</b></summary>
 
 
-* [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b) | [Alpaca-13b](https://huggingface.co/chavinlo/alpaca-13b)
-* [Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1) | [Vicuna-13b-delta-v1.1](https://huggingface.co/lmsys/vicuna-13b-delta-v1.1) | 
-* [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b)
-* [moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft)
-* [Chinese-LLaMA-7B](https://huggingface.co/Linly-AI/Chinese-LLaMA-7B)
-</details>
 
-
-
+* 
 
 ## 🌰 4.LoRA Fine-tuning
 
+Below are some models that have been trained with ample information extraction instruction data:
+* [zjunlp/llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora/tree/main) (The base model is LLaMA2-13B-Chat)
+* [zjunlp/baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) (The base model is BaiChuan2-13B-Chat)
+* [zjunlp/knowlm-ie-v2](https://huggingface.co/zjunlp/knowlm-ie-v2)
+
 
 ### 4.1 Basic Parameters
-When performing LoRA fine-tuning, you need to configure some basic parameters to specify the model type, dataset path, output settings, etc. Below are the available basic parameters and their descriptions:
 
-* `--model_name`: Specifies the model name you wish to use. The current list of supported models includes: ["llama", "falcon", "baichuan", "chatglm", "moss", "alpaca", "vicuna", "zhixi"]. Note that this parameter should be distinguished from model_name_or_path.
-* `--train_file` and `--valid_file` (optional): Point to the paths of your training and validation set JSON files, respectively. If a valid_file is not provided, the system will by default carve out a number of samples specified by val_set_size from the file indicated by train_file to be used as the validation set. You can also adjust the val_set_size parameter to change the number of samples in the validation set.
-* `--output_dir`: Sets the path for saving the weight parameters after LoRA fine-tuning.
-* `--val_set_size`: Defines the number of samples in the validation set, with a default of 1000.
-* `--prompt_template_name`: Choose the name of the template you want to use. Currently, three types of templates are supported: [alpaca, vicuna, moss], with the alpaca template being the default.
-* `--max_memory_MB` (default setting is 80000) is used to specify the size of the GPU memory. Please adjust it according to the performance of your GPU.
-* For more information on parameter configuration, please refer to the [src/utils/args.py](./src/utils/args.py) file.
+> Important Note: All the commands below should be executed within the `IEPile` directory. For example, if you want to run the fine-tuning script, you should use the following command: `bash ft_scripts/fine_llama.bash`. Please ensure your current working directory is correct.
 
-
-> Important Note: All the following commands should be executed in the InstrctKGC directory. For example, if you want to run a fine-tuning script, you should use the following command: bash scripts/fine_llama.bash. Make sure your current working directory is correct.
-
-
-### 4.2LoRA Fine-tuning with LLaMA
-
-You can use the following command to configure your own parameters and fine-tune the Llama model using the LoRA method:
 
 ```bash
-output_dir='path to save Llama Lora'
+output_dir='lora/llama2-13b-chat-v1'
 mkdir -p ${output_dir}
-CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
+CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 src/test_finetune.py \
     --do_train --do_eval \
-    --model_name_or_path 'path or name to Llama' \
+    --overwrite_output_dir \
+    --model_name_or_path 'models/llama2-13b-chat' \
+    --stage 'sft' \
     --model_name 'llama' \
+    --template 'llama2' \
     --train_file 'data/train.json' \
-    --output_dir=${output_dir}  \
-    --per_device_train_batch_size 16 \
-    --per_device_eval_batch_size 16 \
-    --gradient_accumulation_steps 8 \
-    --preprocessing_num_workers 8 \
+    --valid_file 'data/dev.json' \
+    --output_dir=${output_dir} \
+    --per_device_train_batch_size 2 \
+    --per_device_eval_batch_size 2 \
+    --gradient_accumulation_steps 4 \
+    --preprocessing_num_workers 16 \
     --num_train_epochs 10 \
-    --learning_rate 1e-4 \
+    --learning_rate 5e-5 \
+    --max_grad_norm 0.5 \
     --optim "adamw_torch" \
-    --cutoff_len 512 \
-    --val_set_size 1000 \
-    --evaluation_strategy "epoch" \
-    --save_strategy "epoch" \
-    --save_total_limit 10 \
-    --lora_r 8 \
-    --lora_alpha 16 \
-    --lora_dropout 0.05 \
-    --max_memory_MB 24000 \
-    --fp16 \
-    --bits 4 \
-    | tee ${output_dir}/train.log \
-    2> ${output_dir}/train.err
-```
-
-1. For the Llama model, we use [LLaMA-7b](https://huggingface.co/decapoda-research/llama-7b-hf).
-2. For `prompt_template_name`, we use the alpaca template by default. The detailed contents of the template can be found in the [templates/alpaca.json](./templates/alpaca.json) file.
-3. We have successfully run the finetuning code for the LLAMA model using LoRA technology on an RTX3090 GPU.
-4. `model_name` = llama (llama2 is also llama).
-  
-
-The specific script for fine-tuning the LLAMA model can be found in [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash).
-
-
-
-### 4.3LoRA Fine-tuning with Alpaca
-
-When fine-tuning the Alpaca model, you can follow steps similar to those for [fine-tuning the LLaMA model](./README.md/#42lora-fine-tuning-with-llama). To fine-tune, make the following changes to the [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash) file:
-
-
-```bash
-output_dir='path to save Alpaca Lora'
---model_name_or_path 'path or name to Alpaca' \
---model_name 'alpaca' \
-```
-
-1. For the Alpaca model, we use [Alpaca-7b](https://huggingface.co/circulus/alpaca-7b).
-2. For `prompt_template_name`, we default to using the alpaca template. The detailed contents of the template can be found in the [templates/alpaca.json](./templates/alpaca.json) file.
-3. We have successfully run the finetuning code for the Alpaca model using LoRA technology on an RTX3090 GPU.
-4. `model_name` = alpaca
-
-
-
-
-### 4.4LoRA Fine-tuning with ZhiXi (智析)
-Before starting to fine-tune the Zhixi model, ensure you follow the guide on [acquiring and restoring KnowLM2.2 pre-trained model weights](https://github.com/zjunlp/KnowLM#2-2) to obtain the complete Zhixi model weights.
-
-**Important Note**: As the Zhixi model has already been trained on a rich set of information extraction task datasets using LoRA, you might not need to fine-tune it again and can proceed directly to prediction tasks. If you choose to conduct further training, follow the steps below.
-
-The instructions for fine-tuning the Zhixi model are similar to those for [fine-tuning the LLaMA model](./README.md/#42lora-fine-tuning-with-llama), with the following adjustments in [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash):
-
-
-
-```bash
-output_dir='path to save Zhixi Lora'
---per_device_train_batch_size 4 \
---per_device_eval_batch_size 4 \
---model_name_or_path 'path or name to Zhixi' \
---model_name 'zhixi' \
-```
-
-1. Since Zhixi currently only has a 13b model, it is recommended to accordingly reduce the batch size.
-2. For `prompt_template_name`, we default to using the alpaca template. The detailed contents of the template can be found in the [templates/alpaca.json](./templates/alpaca.json) file.
-3. We have successfully run the fine-tuning code for the Zhixi model using LoRA technology on an RTX3090 GPU.
-4. `model_name` = zhixi
-
-
-### 4.5LoRA Fine-Tuning Vicuna
-
-You can set your own parameters to fine-tune the Vicuna model using the LoRA method with the following commands:
-
-<details>
-  <summary><b>details</b></summary>
-
-
-```bash
-output_dir='path to save Vicuna Lora'
-mkdir -p ${output_dir}
-CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
-    --do_train --do_eval \
-    --model_name_or_path 'path or name to Vicuna' \
-    --model_name 'vicuna' \
-    --prompt_template_name 'vicuna' \
-    --train_file 'data/train.json' \
-    --output_dir=${output_dir}  \
-    --per_device_train_batch_size 16 \
-    --per_device_eval_batch_size 16 \
-    --gradient_accumulation_steps 8 \
-    --preprocessing_num_workers 8 \
-    --num_train_epochs 10 \
-    --learning_rate 1e-4 \
-    --optim "adamw_torch" \
-    --cutoff_len 512 \
-    --val_set_size 1000 \
-    --evaluation_strategy "epoch" \
-    --save_strategy "epoch" \
-    --save_total_limit 10 \
-    --lora_r 8 \
-    --lora_alpha 16 \
-    --lora_dropout 0.05 \
-    --max_memory_MB 24000 \
-    --fp16 \
-    --bits 4 \
-    | tee ${output_dir}/train.log \
-    2> ${output_dir}/train.err
-```
-</details>
-
-1. For the Vicuna model, we use [Vicuna-7b-delta-v1.1](https://huggingface.co/lmsys/vicuna-7b-delta-v1.1)
-2. Since the Vicuna-7b-delta-v1.1 uses a different `prompt_template_name` than the `alpaca` template, you need to set `--prompt_template_name 'vicuna'`, see [templates/vicuna.json](./templates//vicuna.json) for details
-3. We have successfully run the vicuna-lora fine-tuning code on an `RTX3090`
-4. `model_name` = vicuna
-
-The corresponding script can be found at [ft_scripts/fine_vicuna.bash](./ft_scripts//fine_vicuna.bash)
-
-
-
-
-### 4.6Lora Fine-tuning with ChatGLM
-
-You can use the following command to configure your own parameters and fine-tune the ChatGLM model using the LoRA method:
-
-<details>
-  <summary><b>details</b></summary>
-
-
-```bash
-output_dir='path to save ChatGLM Lora'
-mkdir -p ${output_dir}
-CUDA_VISIBLE_DEVICES="0,1" python --nproc_per_node=2 --master_port=1331 src/finetune.py \
-    --do_train --do_eval \
-    --model_name_or_path 'path or name to ChatGLM' \
-    --model_name 'chatglm' \
-    --train_file 'data/train.json' \
-    --output_dir=${output_dir}  \
-    --per_device_train_batch_size 4 \
-    --per_device_eval_batch_size 4 \
-    --gradient_accumulation_steps 8 \
-    --preprocessing_num_workers 8 \
-    --num_train_epochs 10 \
-    --learning_rate 1e-5 \
-    --weight_decay 5e-4 \
-    --adam_beta2 0.95 \
-    --optim "adamw_torch" \
-    --max_source_length 512 \
-    --max_target_length 256 \
-    --val_set_size 1000 \
-    --evaluation_strategy "epoch" \
-    --save_strategy "epoch" \
-    --save_total_limit 10 \
-    --lora_r 8 \
-    --lora_alpha 16 \
-    --lora_dropout 0.1 \
-    --max_memory_MB 24000 \
-    --fp16 \
-    | tee ${output_dir}/train.log \
-    2> ${output_dir}/train.err
-```
-</details>
-
-1. We use the [THUDM/chatglm-6b](https://huggingface.co/THUDM/chatglm-6b) model for ChatGLM.
-2. We use the default `alpaca` template for the `prompt_template_name`. Please refer to [templates/alpaca.json](./templates/alpaca.json) for more details.
-3. Due to unsatisfactory performance with 8-bit quantization, we did not apply quantization to the ChatGLM model.
-4. We have successfully run the ChatGLM-LoRA fine-tuning code on an `RTX3090` GPU.
-5. model_name = chatglm
-
-The corresponding script can be found at [ft_scripts/fine_chatglm.bash](./ft_scripts//fine_chatglm.bash).
-
-
-
-
-### 4.7Lora Fine-tuning with Moss
-
-You can use the following command to configure your own parameters and fine-tune the Moss model using the LoRA method:
-
-<details>
-  <summary><b>details</b></summary>
-
-
-```bash
-output_dir='path to save Moss Lora'
-mkdir -p ${output_dir}
-CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
-    --do_train --do_eval \
-    --model_name_or_path 'path or name to Moss' \
-    --model_name 'moss' \
-    --prompt_template_name 'moss' \
-    --train_file 'data/train.json' \
-    --output_dir=${output_dir}  \
-    --per_device_train_batch_size 4 \
-    --per_device_eval_batch_size 4 \
-    --gradient_accumulation_steps 8 \
-    --preprocessing_num_workers 8 \
-    --num_train_epochs 10 \
-    --learning_rate 2e-4 \
-    --optim "paged_adamw_32bit" \
-    --max_grad_norm 0.3 \
-    --lr_scheduler_type 'constant' \
-    --max_source_length 512 \
-    --max_target_length 256 \
-    --val_set_size 1000 \
+    --max_source_length 400 \
+    --cutoff_len 700 \
+    --max_target_length 300 \
     --evaluation_strategy "epoch" \
     --save_strategy "epoch" \
     --save_total_limit 10 \
     --lora_r 16 \
-    --lora_alpha 64 \
+    --lora_alpha 32 \
     --lora_dropout 0.05 \
-    --max_memory_MB 24000 \
-    --fp16 \
-    --bits 4 \
-    | tee ${output_dir}/train.log \
-    2> ${output_dir}/train.err
+    --bf16 
 ```
-</details>
 
-1. We use the [moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft) model for Moss.
-2. The `prompt_template_name` has been modified based on the alpaca template. Please refer to [templates/moss.json](./templates/moss.json) for more details. Therefore, you need to set `--prompt_template_name 'moss'`.
-3. Due to memory limitations on the `RTX3090`, we use the `qlora` technique for 4-bit quantization. However, you can try 8-bit quantization or non-quantization strategies on `V100` or `A100` GPUs.
-4. We have successfully run the Moss-LoRA fine-tuning code on an `RTX3090` GPU.
-5. model_name = moss
+* `model_name`: Specifies the **name of the model architecture** you want to use (7B, 13B, Base, Chat belong to the same model architecture). Currently supported models include: ["`llama`", "`alpaca`", "`vicuna`", "`zhixi`", "`falcon`", "`baichuan`", "`chatglm`", "`qwen`", "`moss`", "`openba`"]. **Please note**, this parameter should be distinguished from `--model_name_or_path`.
+* `model_name_or_path`: Model path, please download the corresponding model from [HuggingFace](https://huggingface.co/models).
+* `template`: The **name of the template** used, including: `alpaca`, `baichuan`, `baichuan2`, `chatglm3`, etc. Refer to [src/datamodule/template.py](./src/datamodule/template.py) to see all supported template names. The default is the `alpaca` template. **For `Chat` versions of models, it is recommended to use the matching template, while `Base` version models can default to using `alpaca`**.
+* `train_file`, `valid_file (optional)`: The **file paths** for the training set and validation set. Note: Currently, the format for files only supports **JSON format**.
+* `output_dir`: The **path to save the weight parameters** after LoRA fine-tuning.
+* `val_set_size`: The number of samples in the **validation set**, default is 1000.
+* `per_device_train_batch_size`, `per_device_eval_batch_size`: The `batch_size` on each GPU device, adjust according to the size of the memory. For RTX3090, it is recommended to set between 2 and 4.
+* `max_source_length`, `max_target_length`, `cutoff_len`: The maximum input and output lengths, and the cutoff length, which can simply be considered as the maximum input length + maximum output length. Set appropriate values according to specific needs and memory size.
+* `deepspeed`: Remove if there is not enough device resources.
 
-The corresponding script can be found at [ft_scripts/fine_moss.bash](./ft_scripts/fine_moss.bash).
+> Quantization can be performed by setting bits to 4; it is recommended for the RTX3090.
+
+To learn more about parameter configuration, please refer to the [src/utils/args](./src/args). 
+
+The specific script for fine-tuning the `LLaMA2-13B-Chat` model can be found in [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash).
 
 
+### 4.2 LoRA Fine-tuning LLaMA
+The specific script for fine-tuning the LLaMA model can be found in [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash).
 
-### 4.8LoRA Fine-tuning with Baichuan
 
-You can use the following command to configure your own parameters and fine-tune the Llama model using the LoRA method:
+### 4.3 LoRA Fine-tuning Alpaca
+When fine-tuning the Alpaca model, you can follow the steps similar to [fine-tuning the LLaMA model](./README_CN.md/#42lora微调llama). To fine-tune, make the following **changes** to the [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash) file:
 
-<details>
-  <summary><b>details</b></summary>
+```bash
+  output_dir='path to save Alpaca Lora'
+  --model_name_or_path 'path or name to Alpaca' \
+  --template 'alpaca' \
+  --model_name 'alpaca' \
+```
+
+1. For the template, we **default to using the alpaca template**.
+2. `model_name = alpaca`
+
+
+### 4.4 LoRA Fine-tuning Zhixi
+
+```bash
+  output_dir='path to save Zhixi Lora'
+  --model_name_or_path 'path or name to Zhixi' \
+  --model_name 'zhixi' \
+  --template 'alpaca' \
+```
+
+1. Since Zhixi currently only has a 13b model, it is recommended to accordingly reduce the batch size.
+2. For the template, we **default to using the alpaca template**.
+3. `model_name = zhixi`
+
+
+### 4.5 LoRA Fine-tuning Vicuna
+
+The corresponding script can be found in [ft_scripts/fine_vicuna.bash](./ft_scripts/fine_vicuna.bash).
+
+1. Since the template used by Vicuna-7b-delta-v1.1 is different from the `alpaca` **template**, it is necessary to set `template vicuna`.
+2. `model_name = vicuna`
+
+
+### 4.6 LoRA Fine-tuning ChatGLM
+The corresponding script can be found in [ft_scripts/fine_chatglm.bash](./ft_scripts/fine_chatglm.bash).
+
+1. For the ChatGLM model, we use [THUDM/chatglm3-6b](https://huggingface.co/THUDM/chatglm3-6b).
+2. `model_name = chatglm`
+3. `template chatglm3`
+
+
+### 4.7 LoRA Fine-tuning Moss
+
+The corresponding script can be found in [ft_scripts/fine_moss.bash](./ft_scripts/fine_moss.bash).
+
+1. For the Moss model, we use [fnlp/moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft).
+2. `model_name = moss`
+
+
+### 4.8 LoRA Fine-tuning Baichuan
+The corresponding script can be found in [ft_scripts/fine_baichuan.bash](./ft_scripts/fine_baichuan.bash).
+
+1. For the Baichuan model, we use [baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base).
+2. **Please ensure that the torch version remains at 2.0.0, otherwise issues may arise.**
+3. `model_name = baichuan`
+4. `template baichuan2`
+5. We recommend using `--bf16`.
+6. If memory overflow occurs when saving after evaluation, set `evaluation_strategy no`.
+
+
+### 4.9 Continue Training with Domain-specific Data
+
+Although the `llama2-13b-iepile-lora` and `baichuan2-13b-iepile-lora` models have undergone extensive instruction fine-tuning on multiple general datasets and thus possess a degree of **general information extraction capability**, they may still exhibit certain limitations when processing data in **specific domains** (such as `law`, `education`, `science`, `telecommunications`). To address this challenge, it is recommended to conduct **secondary training** of these models on datasets specific to these domains. This will help the models better adapt to the semantic and structural characteristics of the specific domains, enhancing their **information extraction capability within those domains**.
 
 
 ```bash
-output_dir='path to save Llama Lora'
+output_dir='lora/llama2-13b-chat-v1-continue'
 mkdir -p ${output_dir}
-CUDA_VISIBLE_DEVICES="0,1" torchrun --nproc_per_node=2 --master_port=1331 src/finetune.py \
+CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 src/test_finetune.py \
     --do_train --do_eval \
-    --model_name_or_path 'path or name to Llama' \
+    --overwrite_output_dir \
+    --model_name_or_path 'models/llama2-13B-Chat' \
+    --checkpoint_dir 'zjunlp/llama2-13b-iepile-lora' \
+    --stage 'sft' \
     --model_name 'llama' \
+    --template 'llama2' \
     --train_file 'data/train.json' \
-    --output_dir=${output_dir}  \
-    --per_device_train_batch_size 16 \
-    --per_device_eval_batch_size 16 \
-    --gradient_accumulation_steps 8 \
-    --preprocessing_num_workers 8 \
+    --valid_file 'data/dev.json' \
+    --output_dir=${output_dir} \
+    --per_device_train_batch_size 2 \
+    --per_device_eval_batch_size 2 \
+    --gradient_accumulation_steps 4 \
+    --preprocessing_num_workers 16 \
     --num_train_epochs 10 \
-    --learning_rate 1e-4 \
+    --learning_rate 5e-5 \
+    --max_grad_norm 0.5 \
     --optim "adamw_torch" \
-    --cutoff_len 512 \
-    --val_set_size 1000 \
+    --max_source_length 400 \
+    --cutoff_len 700 \
+    --max_target_length 300 \
     --evaluation_strategy "epoch" \
     --save_strategy "epoch" \
     --save_total_limit 10 \
-    --lora_r 8 \
-    --lora_alpha 16 \
+    --lora_r 64 \
+    --lora_alpha 64 \
     --lora_dropout 0.05 \
-    --max_memory_MB 24000 \
-    --bf16 \
-    --bits 8 \
-    | tee ${output_dir}/train.log \
-    2> ${output_dir}/train.err
+    --bf16 
 ```
-</details>
 
-1. We use the [baichuan-inc/Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base) model for Llama.
-2. **Please ensure that the torch version remains at 2.0.0, otherwise there may be issues**.
-3. We use the default `alpaca` template for the `prompt_template_name`. Please refer to [templates/alpaca.json](./templates/alpaca.json) for more details.
-4. We have successfully run the Llama-LoRA fine-tuning code on an `RTX3090` GPU.
-5. model_name = baichuan
-6. We suggest using `--bf16`
+* To continue training based on the fine-tuned LoRA weights, simply point the `--checkpoint_dir` parameter to the path of the LoRA weights, for example by setting it to `'zjunlp/llama2-13b-iepile-lora'`.
+
+> Quantization can be performed by setting bits to 4; it is recommended for the RTX3090.
 
 
+> Please note that when using **`LLaMA2-IEPile`** or **`Baichuan2-IEPile`**, keep both lora_r and lora_alpha at 64. We do not provide recommended settings for these parameters.
 
-The corresponding script can be found at [ft_scripts/fine_baichuan.bash](./ft_scripts/fine_baichuan.bash).
 
+* To continue training based on the fine-tuned model weights, just set the `--model_name_or_path` parameter to the path of the weights, such as `'zjunlp/KnowLM-IE-v2'`, without setting `--checkpoint_dir`.
+
+
+The script can be found at [ft_scripts/fine_continue.bash](./ft_scripts/fine_continue.bash).
 
 
 
@@ -686,53 +473,95 @@ deepspeed --include localhost:0 src/finetuning_pt.py \
 ### 6.1 LoRA Prediction
 
 #### 6.1.1 Base Model + LoRA
-The following are some models that have been optimized through LoRA technique training (LoRA weights):
+
+
+Below are some models optimized through training with LoRA technology (**LoRA weights**):
+<details>
+  <summary><b>Version V1</b></summary>
+
+
 * [alpaca-7b-lora-ie](https://huggingface.co/zjunlp/alpaca-7b-lora-ie)
 * [llama-7b-lora-ie](https://huggingface.co/zjunlp/llama-7b-lora-ie)
 * [alpaca-13b-lora-ie](https://huggingface.co/zjunlp/alpaca-13b-lora-ie)
 * [knowlm-13b-ie-lora](https://huggingface.co/zjunlp/knowlm-13b-ie-lora)
 
-The following table shows the relationship between the base models and their corresponding LoRA weights:
 
-| Base Model                 | LoRA Weights           |
-| -------------------------- | ---------------------- |
-| llama-7b                   | llama-7b-lora-ie       |
-| alpaca-7b                  | alpaca-7b-lora-ie      |
-| zjunlp/knowlm-13b-base-v1.0 | knowlm-13b-ie-lora         |
+| checkpoint_dir | model_name_or_path | moadel_name | fp16/bf16 | template | 
+| --- | --- | --- | --- | --- |
+| llama-7b-lora-ie | llama-7b | llama | fp16 | alpaca |
+| alpaca-7b-lora-ie | alpaca-7b | alpaca | fp16 | alpaca |
+| knowlm-13b-ie-lora | zhixi | fp16 | alpaca |
+
+</details>
+
+<details>
+  <summary><b>Version V1(Recommended)</b></summary>
+
+* [zjunlp/llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora/tree/main) 
+* [zjunlp/baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) 
+* [zjunlp/knowlm-ie-v2](https://huggingface.co/zjunlp/knowlm-ie-v2)
+
+
+| checkpoint_dir | model_name_or_path | moadel_name | fp16/bf16 | template | 
+| --- | --- | --- | --- | --- |
+| llama2-13b-iepile-lora | LLaMA2-13B-Chat | llama | bf16 | llama2 |
+| baichuan2-13b-iepile-lora | BaiChuan2-13B-Chat | baichuan | bf16 | baichuan2 |
+
+</details>
+
 
 
 To use these trained LoRA models for prediction, you can execute the following command:
 
 ```bash
-CUDA_VISIBLE_DEVICES="0" python src/inference.py \
-    --model_name_or_path 'model path or name' \
-    --model_name 'model name' \
-    --lora_weights 'path to LoRA weights' \
-    --input_file 'data/valid.json' \
-    --output_file 'results/results_valid.json' \
-    --fp16 \
-    --bits 4 
+CUDA_VISIBLE_DEVICES=0 python src/inference.py \
+    --stage sft \
+    --model_name_or_path 'models/llama2-13B-Chat' \
+    --checkpoint_dir 'lora/llama2-13b-IEPile-lora' \
+    --model_name 'llama' \
+    --template 'llama2' \
+    --do_predict \
+    --input_file 'data/input.json' \
+    --output_file 'results/llama2-13b-IEPile-lora_output.json' \
+    --finetuning_type lora \
+    --output_dir 'lora/test' \
+    --predict_with_generate \
+    --cutoff_len 512 \
+    --bf16 \
+    --max_new_tokens 300
 ```
 
+* During inference, `model_name`, `template`, and `bf16` must be the same as the settings used during training.
+* `model_name_or_path`: Specify the path to the base model being used, which must match the corresponding LoRA model.
+* `checkpoint_dir`: The path to the LoRA weight files.
+* `output_dir`: This parameter does not take effect during inference and any path can be specified.
+* `input_file`, `output_file`: Specify the input path for the test file and the output path for the prediction results, respectively.
+* `cutoff_len`, `max_new_tokens`: Set the maximum input length and the number of new tokens to be generated, adjusting according to device performance.
 
-**Note**: Please ensure that the settings for `--fp16` or `--bf16`, `--bits`, `--prompt_template_name`, `--model_name` are consistent with the settings during [4.LoRA Fine-Tuning](./README_CN.md/#4lora微调).
+> Quantization can be performed by setting bits to 4; it is recommended for the RTX3090.
+
 
 
 #### 6.1.2 IE-Specific Model
 If you want to use a trained model (without LoRA or with LoRA integrated into the model parameters), you can execute the following command for prediction:
 
 ```bash
-CUDA_VISIBLE_DEVICES="0" python src/inference.py \
-    --model_name_or_path 'model path or name' \
-    --model_name 'model name' \
-    --input_file 'data/valid.json' \
-    --output_file 'results/results_valid.json' \
-    --fp16 \
-    --bits 4 
+CUDA_VISIBLE_DEVICES=0 python src/inference.py \
+    --stage sft \
+    --model_name_or_path 'models/KnowLM-IE-v2' \
+    --model_name 'baichuan' \
+    --template 'baichuan2' \
+    --do_predict \
+    --input_file 'data/input.json' \
+    --output_file 'results/KnowLM-IE-v2_output.json' \
+    --output_dir 'lora/test' \
+    --predict_with_generate \
+    --cutoff_len 512 \
+    --bf16 \
+    --max_new_tokens 300
 ```
 
-The following models are applicable to the above prediction method:
-[zjunlp/knowlm-13b-zhixi](https://huggingface.co/zjunlp/knowlm-13b-zhixi) | [zjunlp/knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie)
+`model_name_or_path`: The path to the weights of the model specialized for Information Extraction (IE).
 
 
 
@@ -752,15 +581,19 @@ CUDA_VISIBLE_DEVICES=0 python src/inference_pt.py \
 
 
 ## 🧾 7. Model Output Conversion & F1 Calculation
-We provide a script, [evaluate.py](./kg2instruction/evaluate.py), to convert the model's string outputs into lists and calculate the F1 score.
+
+We provide scripts for evaluating the F1 scores for various tasks.
 
 ```bash
-python kg2instruction/evaluate.py \
-  --standard_path data/NER/processed.json \
-  --submit_path data/NER/processed.json \
-  --task NER \
-  --language zh
+python ie2instruction/eval_func.py \
+  --path1 data/NER/processed.json \
+  --task NER 
 ```
+
+* `task`: Currently supports five types of tasks: ['`RE`', '`NER`', '`EE`', '`EET`', '`EEA`'].
+* You can set `sort_by` to `source` to calculate the F1 scores on each dataset separately.
+
+
 
 
 ## 👋 8.Acknowledgment
@@ -774,11 +607,8 @@ Part of the code comes from [Alpaca-LoRA](https://github.com/tloen/alpaca-lora)�
 If you have used the code or data of this project, please refer to the following papers:
 ```bibtex
 @article{DBLP:journals/corr/abs-2305-11527,
-  author       = {Honghao Gui and
-                  Jintian Zhang and
-                  Hongbin Ye and
-                  Ningyu Zhang},
-  title        = {InstructIE: {A} Chinese Instruction-based Information Extraction Dataset},
+  author       = {Honghao Gui and Shuofei Qiao and Jintian Zhang and Hongbin Ye and Mengshu Sun and Lei Liang and Huajun Chen and Ningyu Zhang},
+  title        = {InstructIE: A Bilingual Instruction-based Information Extraction Dataset},
   journal      = {CoRR},
   volume       = {abs/2305.11527},
   year         = {2023},
@@ -788,6 +618,26 @@ If you have used the code or data of this project, please refer to the following
   eprint       = {2305.11527},
   timestamp    = {Thu, 25 May 2023 15:41:47 +0200},
   biburl       = {https://dblp.org/rec/journals/corr/abs-2305-11527.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{DBLP:journals/corr/abs-2402-14710,
+  author       = {Honghao Gui and
+                  Hongbin Ye and
+                  Lin Yuan and
+                  Ningyu Zhang and
+                  Mengshu Sun and
+                  Lei Liang and
+                  Huajun Chen},
+  title        = {IEPile: Unearthing Large-Scale Schema-Based Information Extraction Corpus},
+  journal      = {CoRR},
+  volume       = {abs/2402.14710},
+  year         = {2024},
+  url          = {https://doi.org/10.48550/arXiv.2402.14710},
+  doi          = {10.48550/ARXIV.2402.14710},
+  eprinttype   = {arXiv},
+  eprint       = {2402.14710},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2402-14710.bib},
   bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
 ```

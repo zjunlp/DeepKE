@@ -74,51 +74,44 @@ Please note that the `requirements.txt` file is located in the `example/llm` fol
 
 
 # News
-* [November 2023] The weights of [knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main) have been updated. This update mainly adjusted the NAN outputs, shortened the inference length, and added support for instructions without a specified schema.
-* [October 2023] A new bilingual (Chinese-English) text-based topic information extraction (IE) instruction dataset named InstructIE was released. More information can be found at [InstructIE](./README.md/#data).
-* [August 2023] A specialized version of KnowLM for information extraction (IE), named [knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main), was launched.
-* [July 2023] Some of the instruction datasets used for training were released, including [knowlm-ke](https://huggingface.co/datasets/zjunlp/knowlm-ke) and [KnowLM-IE](https://huggingface.co/datasets/zjunlp/KnowLM-IE).
-* [June 2023] The first version of pre-trained weights, [knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0), and the first version of [zhixi-13b-lora](https://huggingface.co/zjunlp/zhixi-13b-lora) were released.
+
+* [2024/02] We released a large-scale (0.32B tokens) high-quality bilingual (Chinese and English) Information Extraction (IE) instruction tuning dataset named [IEPile](https://huggingface.co/datasets/zjunlp/iepie), along with two models trained on `IEPile`, [baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) and [llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora).
+* [2023/11] The weights of [knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main) have been updated. This update mainly adjusted the NAN outputs, shortened the inference length, and added support for instructions without a specified schema.
+* [2023/10] We released a new bilingual (Chinese and English) theme-based Information Extraction (IE) instruction dataset named [InstructIE](https://huggingface.co/datasets/zjunlp/InstructIE).
+* [2023/08] A specialized version of KnowLM for information extraction (IE), named [knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main), was launched.
+* [2023/07] Some of the instruction datasets used for training were released, including [knowlm-ke](https://huggingface.co/datasets/zjunlp/knowlm-ke) and [KnowLM-IE](https://huggingface.co/datasets/zjunlp/KnowLM-IE).
+* [2023/06] The first version of pre-trained weights, [knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0), and the first version of [zhixi-13b-lora](https://huggingface.co/zjunlp/zhixi-13b-lora) were released.
+* [2023/05] We initiated an instruction-based Information Extraction project.
 
 
 
 
 # Dataset
+
+**Existing Datasets**
+
 | Name | Download | Quantity | Description |
-| --- | --- | --- | ---- |
-| InstructIE | [Google drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [Hugging Face](https://huggingface.co/datasets/zjunlp/InstructIE) <br/> [ModelScope](https://modelscope.cn/datasets/ZJUNLP/InstructIE)<br/> [WiseModel](https://wisemodel.cn/datasets/zjunlp/InstructIE) | 30w+ | InstrumentIE dataset (bilingual in Chinese and English) |
-
-
-The InstructIE dataset includes the following files:
-- train_zh.json: Chinese training set.
-- train_en.json: English training set.
-- dev_zh.json: Chinese development set.
-- dev_en.json: English development set.
-- test_zh.json: Chinese test set.
-- test_en.json: English test set.
-- schema_zh.json: Schema information for 12 topics in Chinese.
-- schema_en.json: Schema information for 12 topics in English. 
-
+| --- | --- | --- | --- |
+| InstructIE | [Google Drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [Hugging Face](https://huggingface.co/datasets/zjunlp/InstructIE) <br/> [ModelScope](https://modelscope.cn/datasets/ZJUNLP/InstructIE)<br/> [WiseModel](https://wisemodel.cn/datasets/zjunlp/InstructIE) | 300k+ | **Bilingual** (Chinese and English) topic-based Information Extraction (IE) instruction dataset |
+| IEPile | [Google Drive](https://drive.google.com/file/d/1jPdvXOTTxlAmHkn5XkeaaCFXQkYJk5Ng/view?usp=sharing) <br/> [Hugging Face](https://huggingface.co/datasets/zjunlp/iepile) <br/> [WiseModel](https://wisemodel.cn/datasets/zjunlp/IEPile) <br/> [ModelScope](https://modelscope.cn/datasets/ZJUNLP/IEPile) | 2 million+ | Large-scale (`0.32B` tokens) high-quality **bilingual** (Chinese and English) Information Extraction (IE) instruction fine-tuning dataset |
 
 
 <details>
-  <summary><b>Example of data</b></summary>
+  <summary><b>Details of InstructIE</b></summary>
 
-    ```
-    {
-      "id": "841ef2af4cfe766dd9295fb7daf321c299df0fd0cef14820dfcb421161eed4a1", 
-      "text": "NGC1313 is a galaxy in the constellation of Reticulum. It was discovered by the Australian astronomer James Dunlop on September 27, 1826. It has a prominent uneven shape, and its axis does not completely revolve around its center. Near NGC1313, there is another galaxy, NGC1309.", 
-      "relation": [
-        {"head": "NGC1313", "head_type": "astronomical object type", "relation": "time of discovery", "tail": "September 27, 1826", "tail_type": "time"}, 
-        {"head": "NGC1313", "head_type": "astronomical object type", "relation": "discoverer or inventor", "tail": "James Dunlop", "tail_type": "organization/human"}, 
-        {"head": "NGC1313", "head_type": "astronomical object type", "relation": "of", "tail": "Reticulum", "tail_type": "astronomical object type"}
-      ]
-    }
-    ```
+**An example of a single data entry**
 
-</details>
-
-
+```json
+{
+  "id": "841ef2af4cfe766dd9295fb7daf321c299df0fd0cef14820dfcb421161eed4a1", 
+  "text": "NGC1313 is a galaxy in the constellation of Reticulum. It was discovered by the Australian astronomer James Dunlop on September 27, 1826. It has a prominent uneven shape, and its axis does not completely revolve around its center. Near NGC1313, there is another galaxy, NGC1309.", 
+  "relation": [
+    {"head": "NGC1313", "head_type": "astronomical object type", "relation": "time of discovery", "tail": "September 27, 1826", "tail_type": "time"}, 
+    {"head": "NGC1313", "head_type": "astronomical object type", "relation": "discoverer or inventor", "tail": "James Dunlop", "tail_type": "organization/human"}, 
+    {"head": "NGC1313", "head_type": "astronomical object type", "relation": "of", "tail": "Reticulum", "tail_type": "astronomical object type"}
+  ]
+}
+```
 
 | Field       | Description                                                      |
 | ----------- | ---------------------------------------------------------------- |
@@ -128,8 +121,46 @@ The InstructIE dataset includes the following files:
 | relation    | Describes the relationship triples contained in the text, i.e., (head, head_type, relation, tail, tail_type). |
 
 
+</details>
 
-With the fields mentioned above, users can flexibly design and implement instructions and output formats for different information extraction needs.
+
+<details>
+  <summary><b>Details of IEPile</b></summary>
+
+Each instance in `IEPile` contains four fields: `task`, `source`, `instruction`, and `output`. Below are the explanations for each field:
+
+
+| Field | Description |
+| :---: | :---: |
+| task | The task to which the instance belongs, one of the five types (`NER`, `RE`, `EE`, `EET`, `EEA`). |
+| source | The dataset to which the instance belongs. |
+| instruction | The instruction for inputting into the model, processed into a JSON string via json.dumps, including three fields: `"instruction"`, `"schema"`, and `"input"`. |
+| output | The output in the format of a dictionary's JSON string, where the key is the schema, and the value is the extracted content. |
+
+
+In `IEPile`, the **instruction** format of `IEPile` adopts a JSON-like string structure, which is essentially a dictionary-type string composed of the following three main components:
+(1) **`'instruction'`**: Task description, which outlines the task to be performed by the instruction (one of `NER`, `RE`, `EE`, `EET`, `EEA`).
+(2) **`'schema'`**: A list of schemas to be extracted (`entity types`, `relation types`, `event types`).
+(3) **`'input'`**: The text from which information is to be extracted.
+
+The file [instruction.py](./ie2instruction/convert/utils/instruction.py) provides instructions for various tasks.
+
+Below is a **data example**:
+
+```json
+{
+    "task": "NER", 
+    "source": "CoNLL2003", 
+    "instruction": "{\"instruction\": \"You are an expert in named entity recognition. Please extract entities that match the schema definition from the input. Return an empty list if the entity type does not exist. Please respond in the format of a JSON string.\", \"schema\": [\"person\", \"organization\", \"else\", \"location\"], \"input\": \"284 Robert Allenby ( Australia ) 69 71 71 73 , Miguel Angel Martin ( Spain ) 75 70 71 68 ( Allenby won at first play-off hole )\"}", 
+    "output": "{\"person\": [\"Robert Allenby\", \"Allenby\", \"Miguel Angel Martin\"], \"organization\": [], \"else\": [], \"location\": [\"Australia\", \"Spain\"]}"
+}
+```
+
+The data instance belongs to the `NER` task, is part of the `CoNLL2003` dataset, the schema list to be extracted includes ["`person`", "`organization`", "`else`", "`location`"], and the text to be extracted from is "*284 Robert Allenby ( Australia ) 69 71 71 73 , Miguel Angel Martin ( Spain ) 75 70 71 68 ( Allenby won at first play-off hole )*". The output is `{"person": ["Robert Allenby", "Allenby", "Miguel Angel Martin"], "organization": [], "else": [], "location": ["Australia", "Spain"]}`.
+
+
+</details>
+
 
 
 # Models

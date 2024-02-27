@@ -72,37 +72,30 @@ pip install -r requirements.txt
 
 
 # 新闻
+
+* [2024/02] 我们发布了一个大规模(`0.32B` tokens)高质量**双语**(中文和英文)信息抽取(IE)指令微调数据集，名为 [IEPile](https://huggingface.co/datasets/zjunlp/iepie), 以及基于 `IEPile` 训练的两个模型[baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora)、[llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora)。
 * [2023/11] [knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main)权重进行了更新，这次更新主要是调整了NAN输出，缩短了推理长度，并支持了不指定schema的指令。
-* [2023/10] 发布了一个新的中英双语基于文本主题的信息抽取(IE)指令数据集，名为[InstructIE](./README_CN.md/#数据)。
+* [2023/10] 我们发布了一个新的**双语**(中文和英文)基于主题的信息抽取(IE)指令数据集，名为[InstructIE](https://huggingface.co/datasets/zjunlp/InstructIE)和[论文](https://arxiv.org/abs/2305.11527)。
 * [2023/08] 推出了专门用于信息抽取(IE)的KnowLM版本，命名为[knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main)。
 * [2023/07] 发布了训练所使用的部分指令数据集，包括[knowlm-ke](https://huggingface.co/datasets/zjunlp/knowlm-ke)和[KnowLM-IE](https://huggingface.co/datasets/zjunlp/KnowLM-IE)。
 * [2023/06] 发布了第一版的预训练权重[knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0)和第一版的[zhixi-13b-lora](https://huggingface.co/zjunlp/zhixi-13b-lora)。
-
+* [2023/05] 我们启动了基于指令的信息抽取项目。
 
 
 # 数据
 
+**现有数据集**
 
 | 名称 | 下载 | 数量 | 描述 |
 | --- | --- | --- | --- |
-| InstructIE | [Google drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [Hugging Face](https://huggingface.co/datasets/zjunlp/InstructIE) <br/> [ModelScope](https://modelscope.cn/datasets/ZJUNLP/InstructIE)<br/> [WiseModel](https://wisemodel.cn/datasets/zjunlp/InstructIE) | 30w+ | InstructIE数据集(中英双语) |
-
-
-
-`InstructIE` 数据集包含以下文件：
-- `train_zh.json`: 中文训练集。
-- `train_en.json`: 英文训练集。
-- `dev_zh.json`: 中文验证集。
-- `dev_en.json`: 英文验证集。
-- `test_zh.json`: 中文测试集。
-- `test_en.json`: 英文测试集。
-- `schema_zh.json`: 中文12个主题下的schema信息。
-- `schema_en.json`: 英文12个主题下的schema信息。
+| InstructIE | [Google drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [Hugging Face](https://huggingface.co/datasets/zjunlp/InstructIE) <br/> [ModelScope](https://modelscope.cn/datasets/ZJUNLP/InstructIE)<br/> [WiseModel](https://wisemodel.cn/datasets/zjunlp/InstructIE) | 30w+ | **双语**(中文和英文)基于主题的信息抽取(IE)指令数据集 |
+| IEPile | [Google Drive](https://drive.google.com/file/d/1jPdvXOTTxlAmHkn5XkeaaCFXQkYJk5Ng/view?usp=sharing) <br/> [Hugging Face](https://huggingface.co/datasets/zjunlp/iepile) <br/> [WiseModel](https://wisemodel.cn/datasets/zjunlp/IEPile) <br/> [ModelScpoe](https://modelscope.cn/datasets/ZJUNLP/IEPile) | 200w+ | 大规模(`0.32B` tokens)高质量**双语**(中文和英文)信息抽取(IE)指令微调数据集 |
 
 
 <details>
-  <summary><b>一条数据的示例</b></summary>
+  <summary><b>InstructIE详细信息</b></summary>
 
+**一条数据的示例**
 
 ```json
 {
@@ -119,21 +112,54 @@ pip install -r requirements.txt
 }
 ```
 
-</details>
-
-
 各字段的说明:
 
-|    字段     |                             说明                             |
+|    字段      |                             说明                             |
 | :---------: | :----------------------------------------------------------: |
 |     id      |                       每个数据点的唯一标识符。                       |
 |    cate     |           文本的主题类别，总计12种不同的主题分类。               |
-|    text    | 模型的输入文本，目标是从中抽取涉及的所有关系三元组。                  |
+|    text     | 模型的输入文本，目标是从中抽取涉及的所有关系三元组。                  |
 |  relation   |   描述文本中包含的关系三元组，即(head, head_type, relation, tail, tail_type)。   |
 
+需要参考数据转换
 
-利用上述字段，用户可以灵活地设计和实施针对不同信息**抽取需求**的指令和**输出格式**。
+</details>
 
+
+<details>
+  <summary><b>IEPile详细信息</b></summary>
+
+
+`IEPile` 中的每条数据均包含 `task`, `source`, `instruction`, `output` 4个字段, 以下是各字段的说明
+
+| 字段 | 说明 |
+| :---: | :---: |
+| task | 该实例所属的任务, (`NER`、`RE`、`EE`、`EET`、`EEA`) 5种任务之一。 |
+| source | 该实例所属的数据集 |
+| instruction | 输入模型的指令, 经过json.dumps处理成JSON字符串, 包括`"instruction"`, `"schema"`, `"input"`三个字段 |
+| output | 输出, 采用字典的json字符串的格式, key是schema, value是抽取出的内容 |
+
+
+在`IEPile`中, **`instruction`** 的格式采纳了类JSON字符串的结构，实质上是一种字典型字符串，它由以下三个主要部分构成：
+(1) **`'instruction'`**: 任务描述, 它概述了指令的执行任务(`NER`、`RE`、`EE`、`EET`、`EEA`之一)。
+(2) **`'schema'`**: 待抽取的schema(`实体类型`, `关系类型`, `事件类型`)列表。
+(3) **`'input'`**: 待抽取的文本。
+
+
+以下是一条**数据实例**：
+
+```json
+{
+  "task": "NER", 
+  "source": "MSRA", 
+  "instruction": "{\"instruction\": \"你是专门进行实体抽取的专家。请从input中抽取出符合schema定义的实体，不存在的实体类型返回空列表。请按照JSON字符串的格式回答。\", \"schema\": [\"组织机构\", \"地理位置\", \"人物\"], \"input\": \"对于康有为、梁启超、谭嗣同、严复这些从旧文化营垒中走来的年轻“布衣”，他们背负着沉重的历史包袱，能够挣脱旧传统的束缚，为拯救民族的危亡而献身，实在是中华民族的脊梁。\"}", 
+  "output": "{\"组织机构\": [], \"地理位置\": [\"中华\"], \"人物\": [\"康有为\", \"梁启超\", \"谭嗣同\", \"严复\"]}"
+}
+```
+
+该数据实例所属任务是 `NER`, 所属数据集是 `MSRA`, 待抽取的schema列表是 ["组织机构", "地理位置", "人物"], 待抽取的文本是"*对于康有为、梁启超、谭嗣同、严复这些从旧文化营垒中走来的年轻“布衣”，他们背负着沉重的历史包袱，能够挣脱旧传统的束缚，为拯救民族的危亡而献身，实在是中华民族的脊梁。*", 输出是 `{"组织机构": [], "地理位置": ["中华"], "人物": ["康有为", "梁启超", "谭嗣同", "严复"]}`
+
+</details>
 
 
 

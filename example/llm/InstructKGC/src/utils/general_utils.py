@@ -7,10 +7,11 @@ from transformers import (
     AutoTokenizer, 
     AutoModel,
     AutoModelForCausalLM, 
+    AutoModelForSeq2SeqLM,
     LlamaForCausalLM,
     LlamaTokenizer,
+    Seq2SeqTrainer,
     Trainer,
-    Seq2SeqTrainer, 
 )
 
 MODEL_DICT = {
@@ -18,22 +19,29 @@ MODEL_DICT = {
     "falcon":["falcon"],
     "baichuan":["baichuan"],
     "chatglm":["chatglm"],
+    "qwen":["qwen"],
     "moss": ["moss"],
+    "openba":["openba"],
 }
 
 LORA_TARGET_MODULES_DICT = {
-    "llama":['q_proj','v_proj'],
-    "falcon":["query_key_value"],
+    "llama":['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_proj', 'down_proj'],
+    "falcon":['query_key_value', 'dense', 'dense_h_to_4h', 'dense_4h_to_h'],
     "baichuan":['W_pack','o_proj','gate_proj','down_proj','up_proj'],
-    "chatglm":["query_key_value"],
-    "moss": ['q_proj', 'v_proj'],
+    "chatglm":['query_key_value', 'dense', 'dense_h_to_4h', 'dense_4h_to_h'],
+    "qwen":['c_attn', 'attn.c_proj', 'w1', 'w2', 'mlp.c_proj'],
+    "moss": ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_proj', 'down_proj'],
+    "openba":["q", "kv", 'qkv', 'o', 'fc_in', 'fc_out'],
 }
 
-def get_model_tokenizer(model_name):
+
+def get_model_tokenizer_trainer(model_name):
     if model_name == 'llama':
         return LlamaForCausalLM, LlamaTokenizer, Trainer
     elif model_name == 'chatglm':
         return AutoModel, AutoTokenizer, Seq2SeqTrainer
+    elif model_name == "openba":
+        return AutoModelForSeq2SeqLM, AutoTokenizer, Seq2SeqTrainer
     else:
         return AutoModelForCausalLM, AutoTokenizer, Trainer
     
