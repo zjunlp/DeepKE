@@ -487,7 +487,7 @@ deepspeed --include localhost:0 src/finetuning_pt.py \
 | --- | --- | --- | --- | --- |
 | llama-7b-lora-ie | llama-7b | llama | fp16 | alpaca |
 | alpaca-7b-lora-ie | alpaca-7b | alpaca | fp16 | alpaca |
-| knowlm-13b-ie-lora | zhixi | fp16 | alpaca |
+| knowlm-13b-ie-lora | zjunlp/knowlm-13b-base-v1.0 | zhixi | fp16 | alpaca |
 
 </details>
 
