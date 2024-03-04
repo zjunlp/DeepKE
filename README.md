@@ -143,6 +143,7 @@ Please note that the `requirements.txt` file is located in the `example/llm` fol
 ## DeepKE
 - *DeepKE* supports `pip install deepke`. <br>Take the fully supervised relation extraction for example.
 - *DeepKE* supports both **manual** and **docker image** environment configuration, you can choose the appropriate way to build.
+- Highly recommended to install deepke in a Linux environment.
 #### 🔧Manual Environment Configuration
 
 **Step1** Download the basic code
@@ -169,7 +170,7 @@ conda activate deepke
    python setup.py develop
    ```
 
-2. Install *DeepKE* with `pip`
+2. Install *DeepKE* with `pip` (**NOT recommended!**)
 
    ```bash
    pip install deepke

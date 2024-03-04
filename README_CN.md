@@ -131,7 +131,7 @@ Deepke的架构图如下所示
 # 快速上手
 
 ## DeepKE-LLM
-大模型时代, DeepKE-LLM采用全新的环境依赖
+大模型时代, DeepKE-LLM采用全新的环境依赖，强烈建议使用linux环境安装
 ```
 conda create -n deepke-llm python=3.9
 conda activate deepke-llm
@@ -144,6 +144,7 @@ pip install -r requirements.txt
 ## DeepKE
 - DeepKE支持pip安装使用，下以常规关系抽取场景为例
 - DeepKE支持手动环境部署与容器部署，您可任选一种方法进行安装
+- 强烈建议使用linux环境安装！
 #### 🔧 手动环境部署
 **Step 1**：下载代码 ```git clone --depth 1 https://github.com/zjunlp/DeepKE.git```（别忘记star和fork哈！！！）
 
@@ -154,7 +155,7 @@ conda create -n deepke python=3.8
 
 conda activate deepke
 ```
-1） 基于pip安装，直接使用
+1） 基于pip安装，直接使用 （**不建议使用此方法，存在python包兼容冲突风险**）
 
 ```bash
 pip install deepke
