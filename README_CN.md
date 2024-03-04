@@ -65,7 +65,6 @@
 <br>
 
 # 新版特性
-
 * `2024年2月` 我们发布了一个大规模(`0.32B` tokens)高质量**双语**(中文和英文)信息抽取(IE)指令微调数据集，名为 [IEPile](https://huggingface.co/datasets/zjunlp/iepie), 以及基于 `IEPile` 训练的两个模型[baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora)、[llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora)。
 * `2023年9月` 为基于指令的知识图谱构建任务(Instruction-based KGC)发布了一个中英双语信息抽取(IE)指令数据集 `InstructIE`, 具体参见[此处](./example/llm/README_CN.md/#数据)。
 * `2023年6月` 为[DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm)新增多个大模型(如[ChatGLM](https://github.com/THUDM/ChatGLM-6B)、LLaMA系列、GPT系列、抽取大模型[智析](https://github.com/zjunlp/KnowLM))支持。
