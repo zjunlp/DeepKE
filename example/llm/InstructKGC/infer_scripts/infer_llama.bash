@@ -1,8 +1,16 @@
-CUDA_VISIBLE_DEVICES="0" python src/inference.py \
-    --model_name_or_path 'models/llama-7b' \
+CUDA_VISIBLE_DEVICES=0 python src/inference.py \
+    --stage sft \
+    --model_name_or_path 'models/llama2-7b-chat' \
+    --checkpoint_dir 'lora/llama2-7b-chat-lora' \
     --model_name 'llama' \
-    --lora_weights 'lora/llama-7b-8bit' \
-    --input_file 'data/valid.json' \
-    --output_file 'results/llama-valid.json' \
+    --template 'llama2' \
+    --do_predict \
+    --input_file 'data/NER/test.json' \
+    --output_file 'results/llama2-7b-chat-lora.json' \
+    --finetuning_type lora \
+    --output_dir 'lora/test' \
+    --predict_with_generate \
+    --cutoff_len 512 \
     --fp16 \
-    --bits 8 
+    --max_new_tokens 300 \
+    --bits 4

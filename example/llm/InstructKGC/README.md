@@ -300,7 +300,8 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
     --lora_r 16 \
     --lora_alpha 32 \
     --lora_dropout 0.05 \
-    --bf16 
+    --bf16 \
+    --bits 4
 ```
 
 * `model_name`: Specifies the **name of the model architecture** you want to use (7B, 13B, Base, Chat belong to the same model architecture). Currently supported models include: ["`llama`", "`alpaca`", "`vicuna`", "`zhixi`", "`falcon`", "`baichuan`", "`chatglm`", "`qwen`", "`moss`", "`openba`"]. **Please note**, this parameter should be distinguished from `--model_name_or_path`.
@@ -311,7 +312,6 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
 * `val_set_size`: The number of samples in the **validation set**, default is 1000.
 * `per_device_train_batch_size`, `per_device_eval_batch_size`: The `batch_size` on each GPU device, adjust according to the size of the memory. For RTX3090, it is recommended to set between 2 and 4.
 * `max_source_length`, `max_target_length`, `cutoff_len`: The maximum input and output lengths, and the cutoff length, which can simply be considered as the maximum input length + maximum output length. Set appropriate values according to specific needs and memory size.
-* `deepspeed`: Remove if there is not enough device resources.
 
 > Quantization can be performed by setting bits to 4; it is recommended for the RTX3090.
 
@@ -423,7 +423,8 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
     --lora_r 64 \
     --lora_alpha 64 \
     --lora_dropout 0.05 \
-    --bf16 
+    --bf16 \
+    --bits 4
 ```
 
 * To continue training based on the fine-tuned LoRA weights, simply point the `--checkpoint_dir` parameter to the path of the LoRA weights, for example by setting it to `'zjunlp/llama2-13b-iepile-lora'`.

@@ -299,7 +299,7 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
     --lora_alpha 32 \
     --lora_dropout 0.05 \
     --bf16 \
-    --deepspeed configs/ds_config_bf16.json
+    --bits 4
 ```
 
 * `model_name`: 指定所需的**模型架构名称**(7B、13B、Base、Chat属于同一模型架构)。当前支持的模型包括：["`llama`", "`alpaca`", "`vicuna`", "`zhixi`", "`falcon`", "`baichuan`", "`chatglm`", "`qwen`", "`moss`", "`openba`"]。**请注意**，此参数应与 `--model_name_or_path` 区分。
@@ -310,7 +310,6 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
 * `val_set_size`: **验证集的样本数量**, 默认为1000。
 * `per_device_train_batch_size`, `per_device_eval_batch_size`: 每台GPU设备上的`batch_size`, 根据显存大小调整, RTX3090建议设置2~4。
 * `max_source_length`, `max_target_length`, `cutoff_len`: 最大输入、输出长度、截断长度, 截断长度可以简单地视作最大输入长度 + 最大输出长度, 需根据具体需求和显存大小设置合适值。
-* `deepspeed`: 设备资源不够可去掉。
 
 > 可通过设置 `bits` = 4 进行量化, RTX3090建议量化。
 
@@ -428,7 +427,8 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
     --lora_r 64 \
     --lora_alpha 64 \
     --lora_dropout 0.05 \
-    --bf16 
+    --bf16 \
+    --bits 4
 ```
 
 * 若要基于微调后的LoRA权重继续训练，仅需将 `checkpoint_dir` 参数指向LoRA权重路径，例如设置为`'zjunlp/llama2-13b-iepile-lora'`。
