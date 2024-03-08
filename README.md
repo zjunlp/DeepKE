@@ -682,7 +682,7 @@ Please cite our paper if you use DeepKE in your work
 
 # Contributors
 
-[Ningyu Zhang](https://person.zju.edu.cn/en/ningyu), [Haofen Wang](https://tjdi.tongji.edu.cn/TeacherDetail.do?id=4991&lang=_en), Liankuan Tao, Xin Xu, Honghao Gui,  Zhenru Zhang, Chuanqi Tan, Fei Huang, Feiyu Xiong, Qiang Chen, Xiaohan Wang, Zekun Xi, Xinrong Li, Haiyang Yu, Hongbin Ye, Shuofei Qiao, Peng Wang, Yuqi Zhu, Xin Xie, Xiang Chen, Zhoubo Li, Lei Li, Xiaozhuan Liang, Yunzhi Yao, Jing Chen, Yuqi Zhu, Shumin Deng, Wen Zhang, Guozhou Zheng, Huajun Chen
+[Ningyu Zhang](https://person.zju.edu.cn/en/ningyu), [Haofen Wang](https://tjdi.tongji.edu.cn/TeacherDetail.do?id=4991&lang=_en), Fei Huang, Feiyu Xiong, Liankuan Tao, Xin Xu, Honghao Gui,  Zhenru Zhang, Chuanqi Tan, Qiang Chen, Xiaohan Wang, Zekun Xi, Xinrong Li, Haiyang Yu, Hongbin Ye, Shuofei Qiao, Peng Wang, Yuqi Zhu, Xin Xie, Xiang Chen, Zhoubo Li, Lei Li, Xiaozhuan Liang, Yunzhi Yao, Jing Chen, Yuqi Zhu, Shumin Deng, Wen Zhang, Guozhou Zheng, Huajun Chen
 
 Community Contributors: [thredreams](https://github.com/thredreams), [eltociear](https://github.com/eltociear), Ziwen Xu, Rui Huang, Xiaolong Weng
 
