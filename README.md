@@ -684,6 +684,8 @@ Please cite our paper if you use DeepKE in your work
 
 Zhejiang University: [Ningyu Zhang](https://person.zju.edu.cn/en/ningyu), Liankuan Tao, Xin Xu, Honghao Gui, Xiaohan Wang, Zekun Xi, Xinrong Li, Haiyang Yu, Hongbin Ye, Shuofei Qiao, Peng Wang, Yuqi Zhu, Xin Xie, Xiang Chen, Zhoubo Li, Lei Li, Xiaozhuan Liang, Yunzhi Yao, Jing Chen, Yuqi Zhu, Shumin Deng, Wen Zhang, Guozhou Zheng, Huajun Chen
 
+Tongji University: [Haofen Wang](https://tjdi.tongji.edu.cn/TeacherDetail.do?id=4991&lang=_en)
+
 Community Contributors: [thredreams](https://github.com/thredreams), [eltociear](https://github.com/eltociear)
 
 Alibaba Group: Feiyu Xiong, Qiang Chen
