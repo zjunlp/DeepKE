@@ -1,9 +1,9 @@
 torch==2.0.0
 accelerate==0.21.0
 transformers==4.31.0
-bitsandbytes==0.39.2
+bitsandbytes==0.39.0
 peft==0.4.0
-datasets==1.9.0
+datasets==2.16.1
 sentencepiece==0.1.98
 scipy==1.9.1
 protobuf==3.20.1

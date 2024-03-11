@@ -27,6 +27,6 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
     --lora_r 8 \
     --lora_alpha 16 \
     --lora_dropout 0.05 \
-    --fp16 \
+    --bf16 \
     --bits 4 
 

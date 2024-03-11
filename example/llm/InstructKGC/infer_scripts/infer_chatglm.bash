@@ -11,5 +11,5 @@ CUDA_VISIBLE_DEVICES=0 python src/inference.py \
     --output_dir 'lora/test' \
     --predict_with_generate \
     --cutoff_len 512 \
-    --fp16 \
+    --bf16 \
     --max_new_tokens 300 
