@@ -205,11 +205,13 @@ Users can directly download the [model](https://drive.google.com/drive/folders/1
 1. Enter the directory `DeepKE/example/ner/standard`
 2. Create the downloaded folder as `checkpoints` and store it in the directory `DeepKE/example/ner/standard`
 3. Set the parameter `text` in `conf/predict.yaml` as the sentence to be predicted, and modify `hydra/model` in `conf/config.yaml` to `bert` or `lstmcrf` according to the category of the downloaded model (the model downloaded from the above link is the `bert` model)
-	To use the trained model, just set the input sentence "《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽". After running `python oredict.py`, results can be obtained which show that the entity type "星空黑夜传奇" is "网络小说", "起点中文网" is "网站" and "啤酒的罪孽" is "人物".
+	
+ 	> To use the trained model, just set the input sentence "《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽". After running `python oredict.py`, results can be obtained which show that the entity type "星空黑夜传奇" is "网络小说", "起点中文网" is "网站" and "啤酒的罪孽" is "人物".
+  	> ```
+	>	text="《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽"
+	>	```	
 
-	```bash
-	text="《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽"
-	```
+		
 4. Predict
 	```bash
 	python predict.py
