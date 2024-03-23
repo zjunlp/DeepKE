@@ -1,3 +1,5 @@
+cwd: ???
+
 defaults:
-  - override hydra/output: custom
+  - hydra/output: custom
   - train
