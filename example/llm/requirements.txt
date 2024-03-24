@@ -1,7 +1,7 @@
 torch==2.0.0
 accelerate==0.21.0
-transformers==4.31.0
-bitsandbytes==0.39.0
+transformers==4.33.0
+bitsandbytes==0.39.2
 peft==0.4.0
 datasets==2.16.1
 sentencepiece==0.1.98
@@ -11,3 +11,4 @@ pydantic==1.10.7
 tiktoken==0.6.0
 jieba
 rouge_chinese
+huggingface-hub==0.20.3
