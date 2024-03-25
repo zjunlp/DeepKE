@@ -33,6 +33,7 @@
 - [新闻](#新闻)
 - [数据](#数据)
 - [模型](#模型)
+  - [OneKE](#oneke)
   - [LLaMA系列](#llama系列)
     - [案例一：LoRA微调LLaMA完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例一lora微调llama完成ccks2023指令驱动的知识图谱构建-英文--中文)
     - [案例二：使用智析完成CCKS2023指令驱动的知识图谱构建 英文 | 中文](#案例二使用智析完成ccks2023指令驱动的知识图谱构建-英文--中文)
@@ -164,6 +165,11 @@ pip install -r requirements.txt
 
 
 # 模型
+
+## OneKE
+
+[使用指南](./OneKE.md)
+
 
 ## LLaMA系列
 <p align="center" width="100%">

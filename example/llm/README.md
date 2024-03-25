@@ -33,6 +33,7 @@
 - [News](#news)
 - [Dataset](#dataset)
 - [Models](#models)
+  - [OneKE](#oneke)
   - [LLaMA-series](#llama-series)
     - [Case 1: LoRA Fine-tuning of LLaMA for CCKS2023 Instruction-based KG Construction English | Chinese](#case-1-lora-fine-tuning-of-llama-for-ccks2023-instruction-based-kg-construction-english--chinese)
     - [Case 2: Using ZhiXi for CCKS2023 Instruction-based KG Construction English | Chinese](#case-2-using-zhixi-for-ccks2023-instruction-based-kg-construction-english--chinese)
@@ -164,6 +165,12 @@ The data instance belongs to the `NER` task, is part of the `CoNLL2003` dataset,
 
 
 # Models
+
+
+## OneKE
+
+[Tutorial](./OneKE.md)
+
 
 ## LLaMA-series
 
