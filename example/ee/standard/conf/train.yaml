@@ -1,5 +1,5 @@
 data_name: DuEE # [ACE, DuEE]
-model_name_or_path:  /newdisk1/msy/models/bert-base-chinese # [bert-base-uncased, bert-base-chinese] english for ace, chinese for duee
+model_name_or_path: bert-base-chinese  # [bert-base-uncased, bert-base-chinese] english for ace, chinese for duee
 task_name: trigger # [trigger, role]
 model_type: bertcrf
 do_train: True

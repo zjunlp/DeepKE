@@ -659,17 +659,12 @@ Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey
 
 <br>
 
-# 项目贡献人员 （排名不分先后）
+# 项目贡献人员
 
-浙江大学：[张宁豫](https://person.zju.edu.cn/ningyu)、陶联宽、徐欣、桂鸿浩、王潇寒、习泽坤、李欣荣、余海阳、叶宏彬、乔硕斐、王鹏、朱雨琦、谢辛、陈想、黎洲波、李磊、梁孝转、姚云志、陈静、朱雨琦、邓淑敏、张文、郑国轴、陈华钧
+[张宁豫](https://person.zju.edu.cn/ningyu)、[王昊奋](https://tjdi.tongji.edu.cn/TeacherDetail.do?id=4991&lang=_cn)、黄非、熊飞宇、陶联宽、徐欣、桂鸿浩、张珍茹、谭传奇、陈强、王潇寒、习泽坤、李欣荣、余海阳、叶宏彬、乔硕斐、王鹏、朱雨琦、谢辛、陈想、黎洲波、李磊、梁孝转、姚云志、陈静、朱雨琦、邓淑敏、张文、郑国轴、陈华钧
 
-开源社区贡献者: [thredreams](https://github.com/thredreams), [eltociear](https://github.com/eltociear)
+开源社区贡献者: [thredreams](https://github.com/thredreams)、[eltociear](https://github.com/eltociear)、徐子文、黄睿、翁晓龙
 
-阿里巴巴：熊飞宇、陈强
-
-阿里巴巴达摩院：张珍茹、谭传奇、黄非
-
-实习生：徐子文、黄睿、翁晓龙
 
 # 其它知识抽取开源工具
 
