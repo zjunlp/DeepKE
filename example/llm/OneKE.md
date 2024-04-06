@@ -1,13 +1,85 @@
+<p align="center">
+    <a href="https://github.com/zjunlp/deepke"> <img src="assets/LLM_logo.png" width="400"/></a>
+<p>
+<p align="center">  
+    <a href="https://oneke.openkg.cn/">
+        <img alt="Documentation" src="https://img.shields.io/badge/demo-website-blue">
+    </a>
+    <a href="https://pypi.org/project/deepke/#files">
+        <img alt="PyPI" src="https://img.shields.io/pypi/v/deepke">
+    </a>
+    <a href="https://github.com/zjunlp/DeepKE/blob/master/LICENSE">
+        <img alt="GitHub" src="https://img.shields.io/github/license/zjunlp/deepke">
+    </a>
+    <a href="http://zjunlp.github.io/DeepKE">
+        <img alt="Documentation" src="https://img.shields.io/badge/doc-website-red">
+    </a>
+</p>
+
+
+
+<h1 align="center">
+    <p>OneKE: A Bilingual Large Language Model for <br>Knowledge Extraction</p>
+</h1>
 
 - [OneKE指令格式](#oneke指令格式)
 - [OneKE指令格式转换](#oneke指令格式转换)
 - [OneKE模型使用](#oneke模型使用)
   - [量化OneKE](#量化oneke)
 
+## 什么是OneKE?
+
+蚂蚁集团与浙江大学依托多年积累的知识图谱与自然语言处理技术，与2024年联合升级并发布新版中英双语知识抽取大模型OneKE。该模型基于难负采样和Schema轮训式指令构造技术，专门针对提升大模型在结构化信息抽取的泛化能力进行了优化。
+
+## OneKE是怎么训的?
+
+OneKE主要聚焦基于Schema可泛化的信息抽取。由于现有的抽取指令数据存在格式不统一、数据噪音、多样性弱等问题，如下图所示OneKE采取了抽取指令的归一化与清洗、难负样本采样、基于Schema的轮询指令构造等技术，相关内容可查阅论文“**[IEPile: Unearthing Large-Scale Schema-Based Information Extraction Corpus](https://arxiv.org/abs/2402.14710)**”。
+
+## 快速上手OneKE
+
+```python
+import torch
+from transformers import (
+    AutoConfig,
+    AutoTokenizer,
+    AutoModelForCausalLM,
+    GenerationConfig
+)
+
+model_path = ''
+config = AutoConfig.from_pretrained(model_path, trust_remote_code=True)
+tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+
+model = AutoModelForCausalLM.from_pretrained(
+    model_path,
+    config=config,
+    device_map="auto",  
+    torch_dtype=torch.bfloat16,
+    trust_remote_code=True,
+)
+model.eval()
+
+
+system_prompt = '<<SYS>>\nYou are a helpful assistant. 你是一个乐于助人的助手。\n<</SYS>>\n\n'
+sintruct = "{\"instruction\": \"You are an expert in named entity recognition. Please extract entities that match the schema definition from the input. Return an empty list if the entity type does not exist. Please respond in the format of a JSON string.\", \"schema\": [\"person\", \"organization\", \"else\", \"location\"], \"input\": \"284 Robert Allenby ( Australia ) 69 71 71 73 , Miguel Angel Martin ( Spain ) 75 70 71 68 ( Allenby won at first play-off hole )\"}"
+sintruct = '[INST] ' + system_prompt + sintruct + '[/INST]'
+
+input_ids = tokenizer.encode(sintruct, return_tensors="pt")
+input_length = input_ids.size(1)
+generation_output = model.generate(input_ids=input_ids, generation_config=GenerationConfig(max_length=1024, max_new_tokens=512, return_dict_in_generate=True))
+generation_output = generation_output.sequences[0]
+generation_output = generation_output[input_length:]
+output = tokenizer.decode(generation_output, skip_special_tokens=True)
+
+print(output)
+```
+
+
+## 专业使用OneKE
 
 
 
-## OneKE指令格式
+### OneKE指令格式
 
 在OneKE中 **`instruction`** 的格式采用了类JSON字符串的结构，实质上是一种字典类型的字符串。它由以下三个字段构成：
 (1) **`'instruction'`**，即任务描述，以自然语言指定模型扮演的角色以及需要完成的任务；
@@ -120,7 +192,7 @@
 
 
 
-## OneKE指令格式转换
+### OneKE指令格式转换
 
 **指令列表**: 
 ```python
@@ -199,44 +271,6 @@ for split_schema in split_schemas:
 > '{"instruction": "You are an expert in named entity recognition. Please extract entities that match the schema definition from the input. Return an empty list if the entity type does not exist. Please respond in the format of a JSON string.", "schema": ["person", "organization", "else", "location"], "input": "284 Robert Allenby ( Australia ) 69 71 71 73 , Miguel Angel Martin ( Spain ) 75 70 71 68 ( Allenby won at first play-off hole )"}'
 
 
-## OneKE模型使用
-
-```python
-import torch
-from transformers import (
-    AutoConfig,
-    AutoTokenizer,
-    AutoModelForCausalLM,
-    GenerationConfig
-)
-
-model_path = ''
-config = AutoConfig.from_pretrained(model_path, trust_remote_code=True)
-tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
-
-model = AutoModelForCausalLM.from_pretrained(
-    model_path,
-    config=config,
-    device_map="auto",  
-    torch_dtype=torch.bfloat16,
-    trust_remote_code=True,
-)
-model.eval()
-
-
-system_prompt = '<<SYS>>\nYou are a helpful assistant. 你是一个乐于助人的助手。\n<</SYS>>\n\n'
-sintruct = "{\"instruction\": \"You are an expert in named entity recognition. Please extract entities that match the schema definition from the input. Return an empty list if the entity type does not exist. Please respond in the format of a JSON string.\", \"schema\": [\"person\", \"organization\", \"else\", \"location\"], \"input\": \"284 Robert Allenby ( Australia ) 69 71 71 73 , Miguel Angel Martin ( Spain ) 75 70 71 68 ( Allenby won at first play-off hole )\"}"
-sintruct = '[INST] ' + system_prompt + sintruct + '[/INST]'
-
-input_ids = tokenizer.encode(sintruct, return_tensors="pt")
-input_length = input_ids.size(1)
-generation_output = model.generate(input_ids=input_ids, generation_config=GenerationConfig(max_length=1024, max_new_tokens=512, return_dict_in_generate=True))
-generation_output = generation_output.sequences[0]
-generation_output = generation_output[input_length:]
-output = tokenizer.decode(generation_output, skip_special_tokens=True)
-
-print(output)
-```
 
 
 ### 量化OneKE
@@ -265,4 +299,8 @@ model = AutoModelForCausalLM.from_pretrained(
 ```
 
 从输出文本中提取结构并评估可参考[InstructKGC/README_CN.md/7.评估](./InstructKGC/README_CN.md/#🧾-7评估)
+
+## 项目贡献人员
+
+张宁豫、桂鸿浩、袁琳、孙梦姝、王昊奋、梁磊、陈华钧
 
