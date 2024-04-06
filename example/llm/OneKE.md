@@ -33,7 +33,7 @@
 
 ## OneKE是怎么训的?
 
-OneKE主要聚焦基于Schema可泛化的信息抽取。由于现有的抽取指令数据存在格式不统一、数据噪音、多样性弱等问题，如下图所示OneKE采取了抽取指令的归一化与清洗、难负样本采样、基于Schema的轮询指令构造等技术，相关内容可查阅论文“**[IEPile: Unearthing Large-Scale Schema-Based Information Extraction Corpus](https://arxiv.org/abs/2402.14710)**”。
+OneKE主要聚焦基于Schema可泛化的信息抽取。由于现有的抽取指令数据存在格式不统一、数据噪音、多样性弱等问题，如下图所示OneKE采取了抽取指令的归一化与清洗、难负样本采样、基于Schema的轮询指令构造等技术，相关内容可查阅论文“**[IEPile: Unearthing Large-Scale Schema-Based Information Extraction Corpus](https://arxiv.org/abs/2402.14710) [[Github](https://github.com/zjunlp/IEPile)]**”。
 
 ## 快速上手OneKE
 
