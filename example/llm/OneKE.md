@@ -22,20 +22,66 @@
     <p>OneKE: A Bilingual Large Language Model for <br>Knowledge Extraction</p>
 </h1>
 
-- [OneKE指令格式](#oneke指令格式)
-- [OneKE指令格式转换](#oneke指令格式转换)
-- [OneKE模型使用](#oneke模型使用)
-  - [量化OneKE](#量化oneke)
+- [什么是OneKE?](#什么是oneke)
+- [OneKE是怎么训的?](#oneke是怎么训的)
+- [快速上手OneKE](#快速上手oneke)
+  - [环境安装](#环境安装)
+  - [模型下载](#模型下载)
+  - [快速运行](#快速运行)
+- [专业使用OneKE](#专业使用oneke)
+  - [OneKE指令格式](#oneke指令格式)
+  - [OneKE指令格式转换](#oneke指令格式转换)
+  - [4bit量化OneKE](#4bit量化oneke)
+- [继续训练](#继续训练)
+- [项目贡献人员](#项目贡献人员)
+
 
 ## 什么是OneKE?
 
 蚂蚁集团与浙江大学依托多年积累的知识图谱与自然语言处理技术，与2024年联合升级并发布新版中英双语知识抽取大模型OneKE。该模型基于难负采样和Schema轮训式指令构造技术，专门针对提升大模型在结构化信息抽取的泛化能力进行了优化。
 
+
+
 ## OneKE是怎么训的?
 
 OneKE主要聚焦基于Schema可泛化的信息抽取。由于现有的抽取指令数据存在格式不统一、数据噪音、多样性弱等问题，如下图所示OneKE采取了抽取指令的归一化与清洗、难负样本采样、基于Schema的轮询指令构造等技术，相关内容可查阅论文“**[IEPile: Unearthing Large-Scale Schema-Based Information Extraction Corpus](https://arxiv.org/abs/2402.14710) [[Github](https://github.com/zjunlp/IEPile)]**”。
 
+
+OneKE在零样本泛化性上与其他大模型的对比结果
+* `NER-en`: CrossNER_AI、CrossNER_literature、CrossNER_music、CrossNER_politics、CrossNER_science
+* `NER-zh`: WEIBONER、boson
+* `RE-zh`: COAE2016、IPRE、SKE2020
+* `RE-en`: FewRel、Wiki-ZSL
+* `EE-en`: CrudeOilNews
+* `EE-zh`: FewFC、CCF Law
+
+
+<p align="center" width="100%">
+<a href="" target="_blank"><img src="assets/oneke.png" alt="ChatGLM" style="width: 100%; min-width: 20px; display: block; margin: auto;"></a>
+</p>
+
+
 ## 快速上手OneKE
+
+
+### 环境安装
+
+```bash
+conda create -n deepke-llm python=3.9
+conda activate deepke-llm
+pip install -r requirements.txt
+```
+
+注意！！是example/llm文件夹下的 `requirements.txt`
+
+
+### 模型下载
+
+[OneKE](https://huggingface.co/zjunlp/OneKE)
+
+
+
+### 快速运行
 
 ```python
 import torch
@@ -46,7 +92,7 @@ from transformers import (
     GenerationConfig
 )
 
-model_path = ''
+model_path = 'zjunlp/OneKE'
 config = AutoConfig.from_pretrained(model_path, trust_remote_code=True)
 tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
 
@@ -77,6 +123,7 @@ print(output)
 
 ## 专业使用OneKE
 
+训练和推理建议至少具备**20GB的显存**
 
 
 ### OneKE指令格式
@@ -273,7 +320,7 @@ for split_schema in split_schemas:
 
 
 
-### 量化OneKE
+### 4bit量化OneKE
 
 ```python
 import torch
@@ -290,7 +337,6 @@ quantization_config=BitsAndBytesConfig(
 model = AutoModelForCausalLM.from_pretrained(
     model_path,
     config=config,
-    load_in_4bit=True,
     device_map="auto", 
     quantization_config=quantization_config,
     torch_dtype=torch.bfloat16,
@@ -299,6 +345,14 @@ model = AutoModelForCausalLM.from_pretrained(
 ```
 
 从输出文本中提取结构并评估可参考[InstructKGC/README_CN.md/7.评估](./InstructKGC/README_CN.md/#🧾-7评估)
+
+
+
+## 继续训练
+
+继续训练OneKE可参考[InstructKGC/4.9领域内数据继续训练](./InstructKGC/README_CN.md/#49领域内数据继续训练)
+
+
 
 ## 项目贡献人员
 
