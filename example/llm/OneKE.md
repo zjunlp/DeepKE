@@ -40,7 +40,9 @@
 
 蚂蚁集团与浙江大学依托多年积累的知识图谱与自然语言处理技术，与2024年联合升级并发布新版中英双语知识抽取大模型OneKE。该模型基于难负采样和Schema轮训式指令构造技术，专门针对提升大模型在结构化信息抽取的泛化能力进行了优化。
 
-
+<p align="center" width="100%">
+<a href="" target="_blank"><img src="assets/oneke.png" alt="ChatGLM" style="width: 80%; min-width: 20px; display: block; margin: auto;"></a>
+</p>
 
 ## OneKE是怎么训的?
 
@@ -57,7 +59,7 @@ OneKE在零样本泛化性上与其他大模型的对比结果
 
 
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/oneke.png" alt="ChatGLM" style="width: 100%; min-width: 20px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/oneke_result.png" alt="ChatGLM" style="width: 100%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
 
