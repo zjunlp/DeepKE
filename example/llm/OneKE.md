@@ -358,5 +358,5 @@ model = AutoModelForCausalLM.from_pretrained(
 
 ## 项目贡献人员
 
-张宁豫、桂鸿浩、袁琳、孙梦姝、王昊奋、梁磊、陈华钧
+张宁豫、桂鸿浩、袁琳、孙梦姝、徐军、王昊奋、梁磊、陈华钧
 
