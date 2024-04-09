@@ -59,7 +59,7 @@ OneKE在零样本泛化性上与其他大模型的对比结果
 
 
 <p align="center" width="50%">
-<a href="" target="_blank"><img src="assets/oneke_result.png" alt="ChatGLM" style="width: 50%; min-width: 20px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/oneke_results.png" alt="OneKE" style="width: 50%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
 
