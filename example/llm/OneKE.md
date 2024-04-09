@@ -54,7 +54,7 @@ OneKE在零样本泛化性上与其他大模型的对比结果
 * `NER-zh`: WEIBONER、boson
 * `RE-zh`: COAE2016、IPRE、SKE2020
 * `RE-en`: FewRel、Wiki-ZSL
-* `EE-en`: CrudeOilNews
+* `EE-en`: CrudeOilNews、WikiEvents、RAMS
 * `EE-zh`: FewFC、CCF Law
 
 
