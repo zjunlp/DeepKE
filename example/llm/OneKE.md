@@ -38,7 +38,7 @@
 
 ## 什么是OneKE?
 
-蚂蚁集团与浙江大学依托多年积累的知识图谱与自然语言处理技术，与2024年联合升级并发布新版中英双语知识抽取大模型OneKE。该模型基于难负采样和Schema轮训式指令构造技术，专门针对提升大模型在结构化信息抽取的泛化能力进行了优化。
+浙江大学与蚂蚁集团依托多年积累的知识图谱与自然语言处理技术，与2024年联合升级并发布新版中英双语知识抽取大模型OneKE。该模型采用基于Schema的轮询指令构造技术，专门针对提升大模型在结构化信息抽取的泛化能力进行了优化。
 
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/oneke.gif" alt="ChatGLM" style="width: 100%; min-width: 20px; display: block; margin: auto;"></a>
@@ -79,9 +79,7 @@ pip install -r requirements.txt
 
 ### 模型下载
 
-[OneKE](https://huggingface.co/zjunlp/OneKE)
-
-
+[Huggingface](https://huggingface.co/zjunlp/OneKE), [ModelScope](https://modelscope.cn/models/ZJUNLP/OneKE), [WiseModel](https://wisemodel.cn/models/zjunlp/OneKE)  
 
 ### 快速运行
 
