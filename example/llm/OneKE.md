@@ -358,3 +358,17 @@ model = AutoModelForCausalLM.from_pretrained(
 
 张宁豫、桂鸿浩、袁琳、孙梦姝、徐军、王昊奋、梁磊、陈华钧
 
+
+## 引用
+
+如果您使用了OneKE， 烦请引用下列论文: 
+
+```bibtex
+@article{gui2024iepile,
+  title={IEPile: Unearthing Large-Scale Schema-Based Information Extraction Corpus},
+  author={Gui, Honghao and Ye, Hongbin and Yuan, Lin and Zhang, Ningyu and Sun, Mengshu and Liang, Lei and Chen, Huajun},
+  journal={arXiv preprint arXiv:2402.14710},
+  year={2024}
+}
+```
+
