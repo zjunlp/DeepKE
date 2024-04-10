@@ -169,7 +169,8 @@ pip install -r requirements.txt
 
 ## OneKE
 
-[使用指南](./OneKE.md)
+
+浙江大学中英双语抽取大模型: [使用指南](./OneKE.md)
 
 
 ## LLaMA系列

@@ -170,7 +170,8 @@ The data instance belongs to the `NER` task, is part of the `CoNLL2003` dataset,
 
 ## OneKE
 
-[Tutorial](./OneKE.md)
+A Bilingual Large Language Model for Knowledge Extraction:  [Chinese Tutorial](./OneKE.md).
+
 
 
 ## LLaMA-series
