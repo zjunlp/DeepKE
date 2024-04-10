@@ -60,12 +60,14 @@
 - [Reading Materials](#reading-materials)
 - [Related Toolkit](#related-toolkit)
 - [Citation](#citation)
-- [Contributors (Determined by the roll of the dice)](#contributors-determined-by-the-roll-of-the-dice)
+- [Contributors](#contributors)
 - [Other Knowledge Extraction Open-Source Projects](#other-knowledge-extraction-open-source-projects)
 
 <br>
 
 # What's New
+
+* `April 2024` Zhejiang University and Ant Group, leveraging years of accumulated expertise in knowledge graphs and natural language processing, jointly upgraded and released a new bilingual (Chinese and English) knowledge extraction model called [OneKE](https://huggingface.co/zjunlp/OneKE) in April 2024. The model employs schema-based polling instruction construction technology specifically optimized to enhance the large model's generalization capabilities in structured information extraction.
 * `Feb, 2024` We released a large-scale (0.32B tokens) high-quality bilingual (Chinese and English) Information Extraction (IE) instruction tuning dataset named [IEPile](https://huggingface.co/datasets/zjunlp/iepie), along with two models trained on `IEPile`, [baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) and [llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora).
 * `Sep 2023` a bilingual Chinese English Information Extraction (IE) instruction dataset called  `InstructIE` was released for the Instruction based Knowledge Graph Construction Task (Instruction based KGC), as detailed in [here](./example/llm/README.md/#data).
 * `June, 2023` We update [DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm) to support **knowledge extraction** with [KnowLM](https://github.com/zjunlp/KnowLM), [ChatGLM](https://github.com/THUDM/ChatGLM-6B), LLaMA-series, GPT-series etc.
