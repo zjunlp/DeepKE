@@ -32,6 +32,7 @@
   - [OneKE指令格式](#oneke指令格式)
   - [OneKE指令格式转换](#oneke指令格式转换)
   - [定制化schema解释指令](#定制化schema解释指令)
+- [评估](#评估)
 - [继续训练](#继续训练)
 - [项目贡献人员](#项目贡献人员)
 - [引用](#引用)
@@ -42,7 +43,7 @@
 浙江大学与蚂蚁集团依托多年积累的知识图谱与自然语言处理技术，与2024年联合升级并发布新版中英双语知识抽取大模型OneKE。该模型采用基于Schema的轮询指令构造技术，专门针对提升大模型在结构化信息抽取的泛化能力进行了优化。
 
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="assets/oneke.gif" alt="ChatGLM" style="width: 100%; min-width: 20px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="assets/oneke.gif" alt="OneKE" style="width: 100%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
 ## OneKE是怎么训的?
@@ -84,6 +85,8 @@ pip install -r requirements.txt
 
 
 ### 快速运行
+
+训练和推理建议至少具备**20GB的显存**
 
 ```python
 import torch
@@ -137,10 +140,7 @@ print(output)
 
 
 
-
 ## 专业使用OneKE
-
-训练和推理建议至少具备**20GB的显存**
 
 
 ### OneKE指令格式
@@ -357,6 +357,9 @@ for split_schema in split_schemas:
 > '{"instruction": "You are an expert in named entity recognition. Please extract entities that match the schema definition from the input. Return an empty list if the entity type does not exist. Please respond in the format of a JSON string.", "schema": ["person", "organization", "else", "location"], "input": "284 Robert Allenby ( Australia ) 69 71 71 73 , Miguel Angel Martin ( Spain ) 75 70 71 68 ( Allenby won at first play-off hole )"}'
 
 
+更多详细的推理脚本可查看[InstructKGC/6.1.2IE专用模型](./InstructKGC/README_CN.md/#612ie专用模型)
+
+
 ### 定制化schema解释指令
 
 ```json
@@ -471,7 +474,7 @@ for split_schema in split_schemas:
 
 </details>
 
-
+## 评估
 
 从输出文本中提取结构并评估可参考[InstructKGC/README_CN.md/7.评估](./InstructKGC/README_CN.md/#🧾-7评估)
 
@@ -485,7 +488,7 @@ for split_schema in split_schemas:
 
 ## 项目贡献人员
 
-张宁豫、桂鸿浩、袁琳、孙梦姝、徐军、王昊奋、罗玉洁、梁磊、张志强、周俊、陈华钧
+张宁豫、桂鸿浩、袁琳、孙梦姝、徐军、渠源、王昊奋、罗玉洁、梁磊、张志强、周俊、陈华钧
 
 
 ## 引用
