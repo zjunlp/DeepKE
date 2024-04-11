@@ -1,6 +1,4 @@
 import os
-os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]='0'
 import logging
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
@@ -12,7 +10,7 @@ from deepke.name_entity_re.few_shot.models.model import PromptBartModel, PromptG
 from deepke.name_entity_re.few_shot.module.datasets import ConllNERProcessor, ConllNERDataset
 from deepke.name_entity_re.few_shot.module.train import Trainer
 from deepke.name_entity_re.few_shot.utils.util import set_seed
-from deepke.name_entity_re.few_shot.module.mapping_type import mit_movie_mapping, mit_restaurant_mapping, atis_mapping
+from deepke.name_entity_re.few_shot.module.mapping_type import mit_movie_mapping, mit_restaurant_mapping, cluener2020_mapping, atis_mapping
 
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -29,6 +27,7 @@ DATASET_CLASS = {
     'conll2003': ConllNERDataset,
     'mit-movie': ConllNERDataset,
     'mit-restaurant': ConllNERDataset,
+    'cluener2020': ConllNERDataset,
     'atis': ConllNERDataset
 }
 
@@ -36,6 +35,7 @@ DATA_PROCESS = {
     'conll2003': ConllNERProcessor,
     'mit-movie': ConllNERProcessor,
     'mit-restaurant': ConllNERProcessor,
+    'cluener2020': ConllNERProcessor,
     'atis': ConllNERProcessor
 }
 
@@ -49,6 +49,8 @@ DATA_PATH = {
     'mit-restaurant': {'train': 'data/mit-restaurant/10-shot-train.txt',
                   'dev': 'data/mit-restaurant/test.txt',
                   'test': 'data/mit-restaurant/test.txt'},
+    'cluener2020': {'train': 'data/cluener2020/20-shot-train.txt',
+                       'dev': 'data/cluener2020/test.txt'},
     'atis': {'train': 'data/atis/20-shot-train.txt',
              'dev': 'data/atis/test.txt',
              'test': 'data/atis/test.txt'}
@@ -61,11 +63,12 @@ MAPPING = {
                 'misc': '<<others>>'},
     'mit-movie': mit_movie_mapping,
     'mit-restaurant': mit_restaurant_mapping,
+    'cluener2020': cluener2020_mapping,
     'atis': atis_mapping
 }
 
 
-@hydra.main(config_path="conf/config.yaml")
+@hydra.main(config_path="conf/predict.yaml")
 def main(cfg):
     cwd = utils.get_original_cwd()
     cfg.cwd = cwd

@@ -50,7 +50,7 @@
 我们将`Instruction-based KGC`制定为一种遵循指令的自回归生成任务。模型首先需要理解指令识别其意图，然后根据指令内容，模型会基于输入的文本抽取相应的三元组并以指定的格式输出。本文的 **`instruction`** 格式采纳了类JSON字符串的结构，实质上是一种字典型字符串。它由以下三个字段构成：
 (1) **`'instruction'`**，即任务描述，以自然语言指定模型扮演的角色以及需要完成的任务；
 (2) **`'schema'`**，这是一份需提取的标签列表，明确指出了待抽取信息的关键字段，反应用户的需求，是动态可变的；
-(3) **`'input'`**，指的是用于信息抽取的源文本。各类任务对应的指令样例。
+(3) **`'input'`**，指的是用于信息抽取的源文本。
 
 
 以下是一条**数据实例**：
@@ -299,7 +299,7 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
     --lora_alpha 32 \
     --lora_dropout 0.05 \
     --bf16 \
-    --deepspeed configs/ds_config_bf16.json
+    --bits 4
 ```
 
 * `model_name`: 指定所需的**模型架构名称**(7B、13B、Base、Chat属于同一模型架构)。当前支持的模型包括：["`llama`", "`alpaca`", "`vicuna`", "`zhixi`", "`falcon`", "`baichuan`", "`chatglm`", "`qwen`", "`moss`", "`openba`"]。**请注意**，此参数应与 `--model_name_or_path` 区分。
@@ -310,7 +310,6 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
 * `val_set_size`: **验证集的样本数量**, 默认为1000。
 * `per_device_train_batch_size`, `per_device_eval_batch_size`: 每台GPU设备上的`batch_size`, 根据显存大小调整, RTX3090建议设置2~4。
 * `max_source_length`, `max_target_length`, `cutoff_len`: 最大输入、输出长度、截断长度, 截断长度可以简单地视作最大输入长度 + 最大输出长度, 需根据具体需求和显存大小设置合适值。
-* `deepspeed`: 设备资源不够可去掉。
 
 > 可通过设置 `bits` = 4 进行量化, RTX3090建议量化。
 
@@ -428,7 +427,8 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
     --lora_r 64 \
     --lora_alpha 64 \
     --lora_dropout 0.05 \
-    --bf16 
+    --bf16 \
+    --bits 4
 ```
 
 * 若要基于微调后的LoRA权重继续训练，仅需将 `checkpoint_dir` 参数指向LoRA权重路径，例如设置为`'zjunlp/llama2-13b-iepile-lora'`。
@@ -616,20 +616,22 @@ Part of the code is derived from [Alpaca-LoRA](https://github.com/tloen/alpaca-l
 
 @article{DBLP:journals/corr/abs-2402-14710,
   author       = {Honghao Gui and
-                  Hongbin Ye and
                   Lin Yuan and
+                  Hongbin Ye and
                   Ningyu Zhang and
                   Mengshu Sun and
                   Lei Liang and
                   Huajun Chen},
-  title        = {IEPile: Unearthing Large-Scale Schema-Based Information Extraction Corpus},
+  title        = {IEPile: Unearthing Large-Scale Schema-Based Information Extraction
+                  Corpus},
   journal      = {CoRR},
   volume       = {abs/2402.14710},
   year         = {2024},
   url          = {https://doi.org/10.48550/arXiv.2402.14710},
   doi          = {10.48550/ARXIV.2402.14710},
-  eprinttype   = {arXiv},
+  eprinttype    = {arXiv},
   eprint       = {2402.14710},
+  timestamp    = {Tue, 09 Apr 2024 07:32:43 +0200},
   biburl       = {https://dblp.org/rec/journals/corr/abs-2402-14710.bib},
   bibsource    = {dblp computer science bibliography, https://dblp.org}
 }

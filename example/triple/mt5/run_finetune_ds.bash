@@ -1,8 +1,9 @@
-model_name="/nature/ghh/hf_models/mt5-base"
-output_dir="output/ccks_mt5-base_f1_1e-4-zh"
-data_dir="/nature/ghh/alpaca-lora/data/MT5-zh/MT5-zh-all"
-batch_size=16
-deepspeed  --include localhost:0,1,2,3 run_finetune.py \
+model_name="/newdisk3/data/guihh/hf_models/mt5-base"
+output_dir="output/ccks_mt5-base_zh"
+data_dir="/newdisk3/data/guihh/alpaca-lora/data/MT5-zh/MT5-zh-all"
+batch_size=4
+
+deepspeed  --include localhost:2,3 run_finetune.py \
     --do_train --do_eval --do_predict \
     --predict_with_generate \
     --model_name_or_path=${model_name}   \
@@ -26,6 +27,5 @@ deepspeed  --include localhost:0,1,2,3 run_finetune.py \
     --generation_max_length 256 \
     --generation_num_beams 1 \
     --gradient_checkpointing=True \
-    --bf16=True \
     --deepspeed "configs/ds_mt5_z3_config_bf16.json" \
     --seed 42 

@@ -33,6 +33,7 @@
 - [News](#news)
 - [Dataset](#dataset)
 - [Models](#models)
+  - [OneKE](#oneke)
   - [LLaMA-series](#llama-series)
     - [Case 1: LoRA Fine-tuning of LLaMA for CCKS2023 Instruction-based KG Construction English | Chinese](#case-1-lora-fine-tuning-of-llama-for-ccks2023-instruction-based-kg-construction-english--chinese)
     - [Case 2: Using ZhiXi for CCKS2023 Instruction-based KG Construction English | Chinese](#case-2-using-zhixi-for-ccks2023-instruction-based-kg-construction-english--chinese)
@@ -75,6 +76,7 @@ Please note that the `requirements.txt` file is located in the `example/llm` fol
 
 # News
 
+* [2024/04] Zhejiang University and Ant Group, leveraging years of accumulated expertise in knowledge graphs and natural language processing, jointly upgraded and released a new bilingual (Chinese and English) knowledge extraction model called [OneKE](https://huggingface.co/zjunlp/OneKE) in April 2024. The model employs schema-based polling instruction construction technology specifically optimized to enhance the large model's generalization capabilities in structured information extraction.
 * [2024/02] We released a large-scale (0.32B tokens) high-quality bilingual (Chinese and English) Information Extraction (IE) instruction tuning dataset named [IEPile](https://huggingface.co/datasets/zjunlp/iepie), along with two models trained on `IEPile`, [baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) and [llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora).
 * [2023/11] The weights of [knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main) have been updated. This update mainly adjusted the NAN outputs, shortened the inference length, and added support for instructions without a specified schema.
 * [2023/10] We released a new bilingual (Chinese and English) theme-based Information Extraction (IE) instruction dataset named [InstructIE](https://huggingface.co/datasets/zjunlp/InstructIE).
@@ -164,6 +166,13 @@ The data instance belongs to the `NER` task, is part of the `CoNLL2003` dataset,
 
 
 # Models
+
+
+## OneKE
+
+A Bilingual Large Language Model for Knowledge Extraction:  [Chinese Tutorial](./OneKE.md).
+
+
 
 ## LLaMA-series
 

@@ -203,15 +203,15 @@ DeepKE-cnSchema特别版为支持中文领域知识图谱构建推出的开箱�
 
 用户可以直接下载[模型](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg)进行使用，具体流程如下：
 
-1. 将下载的模型文件夹命名为`checkpoints`
-2. 修改 `predict.yaml`中的参数`text`为需要预测的文本
+1. 进入目录`DeepKE/example/ner/standard`
+2. 将下载的模型文件夹命名为`checkpoints`，存放于目录`DeepKE/example/ner/standard`下
+3. 修改 `conf/predict.yaml`中的参数`text`为需要预测的文本，并按照下载模型的类别修改`conf/config.yaml`中的模型名称`hydra/model`为`bert`或者`lstmcrf`（上述链接下载的模型为bert模型）
 
-    使用训练好的模型，只需输入句子“《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽”，运行```python predict.py```后可得到结果，结果显示“星空黑夜传奇”实体类型为经过cnschema对齐后的“网络小说”，“起点中文网”为“网站”，“啤酒的罪孽”为“人物。
-
-    ```bash
-    text=“《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽”
-    ```
-3. 预测
+    > 使用训练好的模型，只需输入句子“《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽”，运行```python predict.py```后可得到结果，结果显示“星空黑夜传奇”实体类型为经过cnschema对齐后的“网络小说”，“起点中文网”为“网站”，“啤酒的罪孽”为“人物。
+    > ```bash
+    > text=“《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽”
+    > ```
+4. 预测
     ```shell
     python predict.py
     ```
@@ -229,9 +229,9 @@ DeepKE-cnSchema特别版为支持中文领域知识图谱构建推出的开箱�
 
 使用者可以直接下载[模型](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv)使用,步骤如下：
 
-1. 修改 `example/re/standard/conf/predict.yaml`中的参数`fp`为下载文件的路径，`example/re/standard/conf/embedding.yaml`中`num_relations`为51（关系个数）,`example/re/standard/conf/config.yaml`中的参数model为`lm`。
-    > 注：如无特殊需求，无需修改`example/re/standard/conf/model/lm.yaml`文件
-2. 进行预测。需要预测的文本及实体对通过终端输入给程序。
+1. 进入目录`example/re/standard`
+2. 修改 `conf/predict.yaml`中的参数`fp`为下载文件的路径，`conf/embedding.yaml`中`num_relations`为51（关系个数）,`conf/config.yaml`中的参数model为`lm`
+3. 进行预测，需要预测的文本及实体对通过终端输入给程序
 
     ```bash
     python predict.py

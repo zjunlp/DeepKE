@@ -1,9 +1,16 @@
-CUDA_VISIBLE_DEVICES="0" python src/inference.py \
-    --model_name_or_path 'models/moss-moon-003-sft' \
+CUDA_VISIBLE_DEVICES=0 python src/inference.py \
+    --stage sft \
+    --model_name_or_path 'models/moss-moon-003-sftb' \
+    --checkpoint_dir 'lora/moss-v1' \
     --model_name 'moss' \
-    --prompt_template_name 'moss' \
-    --lora_weights 'lora/moss-4bit' \
-    --input_file 'data/valid.json' \
-    --output_file 'results/moss-valid.json' \
-    --fp16 \
-    --bits 4 
+    --template 'alpaca' \
+    --do_predict \
+    --input_file 'data/NER/test.json' \
+    --output_file 'results/moss-v1-lora.json' \
+    --finetuning_type lora \
+    --output_dir 'lora/test' \
+    --predict_with_generate \
+    --cutoff_len 512 \
+    --bf16 \
+    --max_new_tokens 300 \
+    --bits 4

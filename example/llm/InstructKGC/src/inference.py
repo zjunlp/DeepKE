@@ -52,7 +52,8 @@ def inference(model_args, data_args, training_args, finetuning_args, generating_
         training_args.do_train,
         stage="sft",
     )
-    model.to(device)
+    if model_args.bits >= 8:
+        model.to(device)
     print(f"BOS:{tokenizer.bos_token_id},{tokenizer.bos_token}\tEOS:{tokenizer.eos_token_id},{tokenizer.eos_token}\tPAD:{tokenizer.pad_token_id},{tokenizer.pad_token}")
     
 

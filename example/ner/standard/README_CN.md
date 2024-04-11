@@ -77,6 +77,7 @@ cd DeepKE/example/ner/standard
   3. ```cd w2ner ---> python run.py``` (w2nerF超参设置在`model.yaml`中，训练所用到参数都在conf文件夹中，修改即可。其中`device`为指定GPU的编号，若只有单卡GPU，设置为0)
 
 - 每次训练的日志保存在 `logs` 文件夹内，模型结果保存在 `checkpoints` 文件夹内。
+- 如果训练BERT，建议训练batch size不小于64
 
 - 模型加载和保存位置以及配置可以在conf的 `*.yaml`文件中修改
 

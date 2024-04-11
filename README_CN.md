@@ -59,12 +59,13 @@
 - [阅读资料](#阅读资料)
 - [相关工具](#相关工具)
 - [引用](#引用)
-- [项目贡献人员 （排名不分先后）](#项目贡献人员-排名不分先后)
+- [项目贡献人员](#项目贡献人员)
 - [其它知识抽取开源工具](#其它知识抽取开源工具)
 
 <br>
 
 # 新版特性
+* `2024年4月` 浙江大学与蚂蚁集团依托多年积累的知识图谱与自然语言处理技术，与2024年4月联合升级并发布新版中英双语知识抽取大模型 [OneKE](https://huggingface.co/zjunlp/OneKE)。该模型采用基于Schema的轮询指令构造技术，专门针对提升大模型在结构化信息抽取的泛化能力进行了优化。
 * `2024年2月` 我们发布了一个大规模(`0.32B` tokens)高质量**双语**(中文和英文)信息抽取(IE)指令微调数据集，名为 [IEPile](https://huggingface.co/datasets/zjunlp/iepie), 以及基于 `IEPile` 训练的两个模型[baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora)、[llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora)。
 * `2023年9月` 为基于指令的知识图谱构建任务(Instruction-based KGC)发布了一个中英双语信息抽取(IE)指令数据集 `InstructIE`, 具体参见[此处](./example/llm/README_CN.md/#数据)。
 * `2023年6月` 为[DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm)新增多个大模型(如[ChatGLM](https://github.com/THUDM/ChatGLM-6B)、LLaMA系列、GPT系列、抽取大模型[智析](https://github.com/zjunlp/KnowLM))支持。
@@ -659,17 +660,12 @@ Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey
 
 <br>
 
-# 项目贡献人员 （排名不分先后）
+# 项目贡献人员
 
-浙江大学：[张宁豫](https://person.zju.edu.cn/ningyu)、陶联宽、徐欣、桂鸿浩、王潇寒、习泽坤、李欣荣、余海阳、叶宏彬、乔硕斐、王鹏、朱雨琦、谢辛、陈想、黎洲波、李磊、梁孝转、姚云志、陈静、朱雨琦、邓淑敏、张文、郑国轴、陈华钧
+[张宁豫](https://person.zju.edu.cn/ningyu)、[王昊奋](https://tjdi.tongji.edu.cn/TeacherDetail.do?id=4991&lang=_cn)、黄非、熊飞宇、陶联宽、徐欣、桂鸿浩、张珍茹、谭传奇、陈强、王潇寒、习泽坤、李欣荣、余海阳、叶宏彬、乔硕斐、王鹏、朱雨琦、谢辛、陈想、黎洲波、李磊、梁孝转、姚云志、陈静、朱雨琦、邓淑敏、张文、郑国轴、陈华钧
 
-开源社区贡献者: [thredreams](https://github.com/thredreams), [eltociear](https://github.com/eltociear)
+开源社区贡献者: [thredreams](https://github.com/thredreams)、[eltociear](https://github.com/eltociear)、徐子文、黄睿、翁晓龙
 
-阿里巴巴：熊飞宇、陈强
-
-阿里巴巴达摩院：张珍茹、谭传奇、黄非
-
-实习生：徐子文、黄睿、翁晓龙
 
 # 其它知识抽取开源工具
 

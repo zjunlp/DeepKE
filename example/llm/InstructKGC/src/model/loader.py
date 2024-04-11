@@ -144,7 +144,7 @@ def load_model_and_tokenizer(
     # Prepare model for inference
     if not is_trainable:
         model.requires_grad_(False) # fix all model params
-        model = model.to(model_args.compute_dtype) if model_args.bits <= 8 else model
+        model = model.to(model_args.compute_dtype) if model_args.bits >= 8 else model
 
     trainable_params, all_param = count_parameters(model)
     logger.info("trainable params: {:d} || all params: {:d} || trainable%: {:.4f}".format(

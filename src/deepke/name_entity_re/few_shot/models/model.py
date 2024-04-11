@@ -212,7 +212,7 @@ class PromptBartModel(nn.Module):
         self.prompt_len = args.prompt_len
         self.prompt_dim = args.prompt_dim
         self.learn_weights = args.learn_weights
-        self.device = 'cuda' if torch.cuda.is_available else 'cpu'
+        self.device = args.device
         bart_name = args.bart_name
 
         self.bart_config = BartConfig.from_pretrained(bart_name)

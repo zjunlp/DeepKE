@@ -202,14 +202,17 @@ DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge 
 
 Users can directly download the [model](https://drive.google.com/drive/folders/1zA8Ichx9nzU3GD92ptdyR_nmARB_7ovg) for usage. The details are as follows：
 
-1. Create the downloaded folder as `checkpoints`
-2. Set the parameter `text` in `predict.yaml` as the sentence to be predicted
-	To use the trained model, just set the input sentence "《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽". After running `python oredict.py`, results can be obtained which show that the entity type "星空黑夜传奇" is "网络小说", "起点中文网" is "网站" and "啤酒的罪孽" is "人物".
+1. Enter the directory `DeepKE/example/ner/standard`
+2. Create the downloaded folder as `checkpoints` and store it in the directory `DeepKE/example/ner/standard`
+3. Set the parameter `text` in `conf/predict.yaml` as the sentence to be predicted, and modify `hydra/model` in `conf/config.yaml` to `bert` or `lstmcrf` according to the category of the downloaded model (the model downloaded from the above link is the `bert` model)
+	
+ 	> To use the trained model, just set the input sentence "《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽". After running `python oredict.py`, results can be obtained which show that the entity type "星空黑夜传奇" is "网络小说", "起点中文网" is "网站" and "啤酒的罪孽" is "人物".
+  	> ```
+	>	text="《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽"
+	>	```	
 
-	```bash
-	text="《星空黑夜传奇》是连载于起点中文网的网络小说，作者是啤酒的罪孽"
-	```
-3. Predict
+		
+4. Predict
 	```bash
 	python predict.py
 	```
@@ -227,9 +230,9 @@ Users can directly download the [model](https://drive.google.com/drive/folders/1
 ### [Relation Extraction(RE)](https://github.com/zjunlp/DeepKE/tree/main/example/re/standard)
 Users can directly download the [model](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv) for usage. The details are as follows：
 
-1. Modify the parameter `fp`in `example/re/standard/conf/config.yaml`to the path of downloaded file, `num_relations`in `example/re/standard/conf/embedding.yaml`to 51(relation nums) and `model` in `example/re/standard/conf/config.yaml`to lm.
-	> Note: There is no need to modify the contents of `example/re/standard/conf/model/lm.yaml` unless there are specific requirements.
-2. Predict. The text and entity pairs to be predicted are fed to the program through the terminal.
+1. Enter the directory `DeepKE/example/re/standard`
+3. Modify the parameter `fp`in `conf/config.yaml`to the path of downloaded file, `num_relations`in `conf/embedding.yaml`to 51(relation nums) and `model` in `conf/config.yaml`to `lm`.
+4. Predict. The text and entity pairs to be predicted are fed to the program through the terminal.
 
 	```bash
 	python predict.py
