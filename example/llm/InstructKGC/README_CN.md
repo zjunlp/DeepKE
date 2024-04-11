@@ -391,22 +391,29 @@ output_dir='path to save Zhixi Lora'
 6. 如果出现在eval后保存时爆显存请设置 `evaluation_strategy no`
 
 
+
 ### 4.9领域内数据继续训练
 
-尽管 `llama2-13b-iepile-lora`、`baichuan2-13b-iepile-lora` 等模型已在多个通用数据集上接受了广泛的指令微调，并因此获得了一定的**通用信息抽取能力**，但它们在**特定领域**（如`法律`、`教育`、`科学`、`电信`）的数据处理上可能仍显示出一定的局限性。针对这一挑战，建议对这些模型在特定领域的数据集上进行**二次训练**。这将有助于模型更好地适应特定领域的语义和结构特征，从而增强其在**该领域内的信息抽取能力**。
+尽管 `llama2-13b-iepile-lora`、`baichuan2-13b-iepile-lora`、`OneKE` 等模型已在多个通用数据集上接受了广泛的指令微调，并因此获得了一定的**通用信息抽取能力**，但它们在**特定领域**（如`法律`、`教育`、`科学`、`电信`）的数据处理上可能仍显示出一定的局限性。针对这一挑战，建议对这些模型在特定领域的数据集上进行**二次训练**。这将有助于模型更好地适应特定领域的语义和结构特征，从而增强其在**该领域内的信息抽取能力**。
+
+
+| checkpoint_dir | model_name_or_path | moadel_name | fp16/bf16 | template | 
+| --- | --- | --- | --- | --- |
+| llama2-13b-iepile-lora | LLaMA2-13B-Chat | llama | bf16 | llama2 |
+| baichuan2-13b-iepile-lora | BaiChuan2-13B-Chat | baichuan | bf16 | baichuan2 |
+| OneKE | OneKE | llama | bf16 | llama2_zh |
 
 
 ```bash
-output_dir='lora/llama2-13b-chat-v1-continue'
+output_dir='lora/oneke-continue'
 mkdir -p ${output_dir}
 CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 src/finetune.py \
     --do_train --do_eval \
     --overwrite_output_dir \
-    --model_name_or_path 'models/llama2-13B-Chat' \
-    --checkpoint_dir 'lora/llama2-13b-iepile-lora' \
+    --model_name_or_path 'models/OneKE' \
     --stage 'sft' \
     --model_name 'llama' \
-    --template 'llama2' \
+    --template 'llama2_zh' \
     --train_file 'data/train.json' \
     --valid_file 'data/dev.json' \
     --output_dir=${output_dir} \
@@ -437,10 +444,10 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
 
 > 请注意，在使用 `llama2-13b-iepile-lora`、`baichuan2-13b-iepile-lora` 时，保持lora_r和lora_alpha均为64，对于这些参数，我们不提供推荐设置。
 
-* 若要基于微调后的模型权重继续训练，只需设定 `model_name_or_path` 参数为权重路径，如`'zjunlp/KnowLM-IE-v2'`，无需设置`checkpoint_dir`。
+* 若要基于微调后的模型权重继续训练，只需设定 `model_name_or_path` 参数为权重路径，如`'zjunlp/OneKE'`，无需设置`checkpoint_dir`。
 
 
-脚本可以在 [ft_scripts/fine_continue.bash](./ft_scripts/fine_continue.bash) 中找到。
+脚本可以在 [ft_scripts/fine_continue.bash](./ft_scripts/fine_continue.bash)、[ft_scripts/fine_continue_oneke.bash](./ft_scripts/fine_continue_oneke.bash) 中找到。
 
 
 
@@ -553,12 +560,12 @@ CUDA_VISIBLE_DEVICES=0 python src/inference.py \
 ```bash
 CUDA_VISIBLE_DEVICES=0 python src/inference.py \
     --stage sft \
-    --model_name_or_path 'models/KnowLM-IE-v2' \
-    --model_name 'baichuan' \
-    --template 'baichuan2' \
+    --model_name_or_path 'models/OneKE' \
+    --model_name 'llama' \
+    --template 'llama2_zh' \
     --do_predict \
     --input_file 'data/input.json' \
-    --output_file 'results/KnowLM-IE-v2_output.json' \
+    --output_file 'results/OneKE_output.json' \
     --output_dir 'lora/test' \
     --predict_with_generate \
     --cutoff_len 512 \
