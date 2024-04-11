@@ -616,20 +616,22 @@ Part of the code is derived from [Alpaca-LoRA](https://github.com/tloen/alpaca-l
 
 @article{DBLP:journals/corr/abs-2402-14710,
   author       = {Honghao Gui and
-                  Hongbin Ye and
                   Lin Yuan and
+                  Hongbin Ye and
                   Ningyu Zhang and
                   Mengshu Sun and
                   Lei Liang and
                   Huajun Chen},
-  title        = {IEPile: Unearthing Large-Scale Schema-Based Information Extraction Corpus},
+  title        = {IEPile: Unearthing Large-Scale Schema-Based Information Extraction
+                  Corpus},
   journal      = {CoRR},
   volume       = {abs/2402.14710},
   year         = {2024},
   url          = {https://doi.org/10.48550/arXiv.2402.14710},
   doi          = {10.48550/ARXIV.2402.14710},
-  eprinttype   = {arXiv},
+  eprinttype    = {arXiv},
   eprint       = {2402.14710},
+  timestamp    = {Tue, 09 Apr 2024 07:32:43 +0200},
   biburl       = {https://dblp.org/rec/journals/corr/abs-2402-14710.bib},
   bibsource    = {dblp computer science bibliography, https://dblp.org}
 }

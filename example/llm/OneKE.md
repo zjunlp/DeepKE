@@ -35,6 +35,7 @@
   - [4bit量化OneKE](#4bit量化oneke)
 - [继续训练](#继续训练)
 - [项目贡献人员](#项目贡献人员)
+- [引用](#引用)
 
 
 ## 什么是OneKE?
@@ -501,11 +502,26 @@ model = AutoModelForCausalLM.from_pretrained(
 如果您使用了OneKE， 烦请引用下列论文: 
 
 ```bibtex
-@article{gui2024iepile,
-  title={IEPile: Unearthing Large-Scale Schema-Based Information Extraction Corpus},
-  author={Gui, Honghao and Ye, Hongbin and Yuan, Lin and Zhang, Ningyu and Sun, Mengshu and Liang, Lei and Chen, Huajun},
-  journal={arXiv preprint arXiv:2402.14710},
-  year={2024}
+@article{DBLP:journals/corr/abs-2402-14710,
+  author       = {Honghao Gui and
+                  Lin Yuan and
+                  Hongbin Ye and
+                  Ningyu Zhang and
+                  Mengshu Sun and
+                  Lei Liang and
+                  Huajun Chen},
+  title        = {IEPile: Unearthing Large-Scale Schema-Based Information Extraction
+                  Corpus},
+  journal      = {CoRR},
+  volume       = {abs/2402.14710},
+  year         = {2024},
+  url          = {https://doi.org/10.48550/arXiv.2402.14710},
+  doi          = {10.48550/ARXIV.2402.14710},
+  eprinttype    = {arXiv},
+  eprint       = {2402.14710},
+  timestamp    = {Tue, 09 Apr 2024 07:32:43 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2402-14710.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 
