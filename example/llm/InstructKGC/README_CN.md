@@ -260,7 +260,7 @@ mkdir data
 
 * [zjunlp/llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora/tree/main) （底座模型是LLaMA2-13B-Chat）
 * [zjunlp/baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) （底座模型是BaiChuan2-13B-Chat）
-* [zjunlp/knowlm-ie-v2](https://huggingface.co/zjunlp/knowlm-ie-v2)
+* [zjunlp/OneKE](https://huggingface.co/zjunlp/OneKE)
 
 
 ### 4.1基础参数
@@ -496,7 +496,7 @@ deepspeed --include localhost:0 src/finetuning_pt.py \
 
 * [zjunlp/llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora/tree/main) 
 * [zjunlp/baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) 
-* [zjunlp/knowlm-ie-v2](https://huggingface.co/zjunlp/knowlm-ie-v2)
+
 
 
 | checkpoint_dir | model_name_or_path | moadel_name | fp16/bf16 | template | 
@@ -524,7 +524,8 @@ CUDA_VISIBLE_DEVICES=0 python src/inference.py \
     --predict_with_generate \
     --cutoff_len 512 \
     --bf16 \
-    --max_new_tokens 300
+    --max_new_tokens 300 \
+    --bits 4
 ```
 
 * 在进行推理时，`model_name`, `template`, 和 `bf16` 必须与训练时的设置相同。
@@ -538,6 +539,15 @@ CUDA_VISIBLE_DEVICES=0 python src/inference.py \
 
 
 #### 6.1.2IE专用模型
+
+| checkpoint_dir | model_name_or_path | moadel_name | fp16/bf16 | template | 
+| --- | --- | --- | --- | --- |
+| OneKE | OneKE | llama | bf16 | llama2_zh |
+
+
+**`OneKE(based on chinese-alpaca2)`** 模型下载链接：[zjunlp/OneKE](https://huggingface.co/zjunlp/OneKE)
+
+
 若要使用**已训练的模型**（无LoRA或LoRA已集成到模型参数中），可以执行以下命令进行预测：
 
 ```bash
@@ -553,7 +563,8 @@ CUDA_VISIBLE_DEVICES=0 python src/inference.py \
     --predict_with_generate \
     --cutoff_len 512 \
     --bf16 \
-    --max_new_tokens 300 
+    --max_new_tokens 300 \
+    --bits 4
 ```
 
 `model_name_or_path`: IE专用模型权重路径

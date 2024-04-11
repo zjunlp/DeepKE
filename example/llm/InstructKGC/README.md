@@ -262,7 +262,7 @@ Here are some of the models supported by the code in this repository:
 Below are some models that have been trained with ample information extraction instruction data:
 * [zjunlp/llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora/tree/main) (The base model is LLaMA2-13B-Chat)
 * [zjunlp/baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) (The base model is BaiChuan2-13B-Chat)
-* [zjunlp/knowlm-ie-v2](https://huggingface.co/zjunlp/knowlm-ie-v2)
+* [zjunlp/OneKE](https://huggingface.co/zjunlp/OneKE)
 
 
 ### 4.1 Basic Parameters
@@ -391,6 +391,15 @@ The corresponding script can be found in [ft_scripts/fine_baichuan.bash](./ft_sc
 
 Although the `llama2-13b-iepile-lora` and `baichuan2-13b-iepile-lora` models have undergone extensive instruction fine-tuning on multiple general datasets and thus possess a degree of **general information extraction capability**, they may still exhibit certain limitations when processing data in **specific domains** (such as `law`, `education`, `science`, `telecommunications`). To address this challenge, it is recommended to conduct **secondary training** of these models on datasets specific to these domains. This will help the models better adapt to the semantic and structural characteristics of the specific domains, enhancing their **information extraction capability within those domains**.
 
+**`LLaMA2-IEPile`** | **`Baichuan2-IEPile`** | **`OneKE`** 模型下载链接：[zjunlp/llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora/tree/main) | [zjunlp/baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) | [zjunlp/OneKE](https://huggingface.co/zjunlp/OneKE)
+
+| checkpoint_dir | model_name_or_path | moadel_name | fp16/bf16 | template | 
+| --- | --- | --- | --- | --- |
+| llama2-13b-iepile-lora | LLaMA2-13B-Chat | llama | bf16 | llama2 |
+| baichuan2-13b-iepile-lora | BaiChuan2-13B-Chat | baichuan | bf16 | baichuan2 |
+| OneKE | OneKE | llama | bf16 | llama2_zh |
+
+
 
 ```bash
 output_dir='lora/llama2-13b-chat-v1-continue'
@@ -496,7 +505,6 @@ Below are some models optimized through training with LoRA technology (**LoRA we
 
 * [zjunlp/llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora/tree/main) 
 * [zjunlp/baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) 
-* [zjunlp/knowlm-ie-v2](https://huggingface.co/zjunlp/knowlm-ie-v2)
 
 
 | checkpoint_dir | model_name_or_path | moadel_name | fp16/bf16 | template | 
@@ -525,7 +533,8 @@ CUDA_VISIBLE_DEVICES=0 python src/inference.py \
     --predict_with_generate \
     --cutoff_len 512 \
     --bf16 \
-    --max_new_tokens 300
+    --max_new_tokens 300 \
+    --bits 4
 ```
 
 * During inference, `model_name`, `template`, and `bf16` must be the same as the settings used during training.
@@ -540,6 +549,15 @@ CUDA_VISIBLE_DEVICES=0 python src/inference.py \
 
 
 #### 6.1.2 IE-Specific Model
+
+| checkpoint_dir | model_name_or_path | moadel_name | fp16/bf16 | template | 
+| --- | --- | --- | --- | --- |
+| OneKE | OneKE | llama | bf16 | llama2_zh |
+
+
+Model download links for **`OneKE(based on chinese-alpaca2)`**: [zjunlp/OneKE](https://huggingface.co/zjunlp/OneKE)
+
+
 If you want to use a trained model (without LoRA or with LoRA integrated into the model parameters), you can execute the following command for prediction:
 
 ```bash
@@ -555,7 +573,8 @@ CUDA_VISIBLE_DEVICES=0 python src/inference.py \
     --predict_with_generate \
     --cutoff_len 512 \
     --bf16 \
-    --max_new_tokens 300
+    --max_new_tokens 300 \
+    --bits 4
 ```
 
 `model_name_or_path`: The path to the weights of the model specialized for Information Extraction (IE).
