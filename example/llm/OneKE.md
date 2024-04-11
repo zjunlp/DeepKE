@@ -32,7 +32,6 @@
   - [OneKE指令格式](#oneke指令格式)
   - [OneKE指令格式转换](#oneke指令格式转换)
   - [定制化schema解释指令](#定制化schema解释指令)
-  - [4bit量化OneKE](#4bit量化oneke)
 - [继续训练](#继续训练)
 - [项目贡献人员](#项目贡献人员)
 - [引用](#引用)
@@ -83,6 +82,7 @@ pip install -r requirements.txt
 
 [HuggingFace](https://huggingface.co/zjunlp/OneKE), [ModelScope](https://modelscope.cn/models/ZJUNLP/OneKE), [WiseModel](https://wisemodel.cn/models/zjunlp/OneKE)  
 
+
 ### 快速运行
 
 ```python
@@ -91,17 +91,30 @@ from transformers import (
     AutoConfig,
     AutoTokenizer,
     AutoModelForCausalLM,
-    GenerationConfig
+    GenerationConfig,
+    BitsAndBytesConfig
 )
 
 model_path = 'zjunlp/OneKE'
 config = AutoConfig.from_pretrained(model_path, trust_remote_code=True)
 tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
 
+
+# 4bit量化OneKE
+quantization_config=BitsAndBytesConfig(     
+    load_in_4bit=True,
+    llm_int8_threshold=6.0,
+    llm_int8_has_fp16_weight=False,
+    bnb_4bit_compute_dtype=torch.bfloat16,
+    bnb_4bit_use_double_quant=True,
+    bnb_4bit_quant_type="nf4",
+)
+
 model = AutoModelForCausalLM.from_pretrained(
     model_path,
     config=config,
     device_map="auto",  
+    quantization_config=quantization_config,
     torch_dtype=torch.bfloat16,
     trust_remote_code=True,
 )
@@ -121,6 +134,8 @@ output = tokenizer.decode(generation_output, skip_special_tokens=True)
 
 print(output)
 ```
+
+
 
 
 ## 专业使用OneKE
@@ -457,30 +472,6 @@ for split_schema in split_schemas:
 </details>
 
 
-
-### 4bit量化OneKE
-
-```python
-import torch
-from transformers import BitsAndBytesConfig
-
-quantization_config=BitsAndBytesConfig(     
-    load_in_4bit=True,
-    llm_int8_threshold=6.0,
-    llm_int8_has_fp16_weight=False,
-    bnb_4bit_compute_dtype=torch.bfloat16,
-    bnb_4bit_use_double_quant=True,
-    bnb_4bit_quant_type="nf4",
-)
-model = AutoModelForCausalLM.from_pretrained(
-    model_path,
-    config=config,
-    device_map="auto", 
-    quantization_config=quantization_config,
-    torch_dtype=torch.bfloat16,
-    trust_remote_code=True,
-)
-```
 
 从输出文本中提取结构并评估可参考[InstructKGC/README_CN.md/7.评估](./InstructKGC/README_CN.md/#🧾-7评估)
 
