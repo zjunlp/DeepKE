@@ -1,7 +1,7 @@
 torch==2.0.0
 accelerate==0.21.0
 transformers==4.33.0
-bitsandbytes==0.39.2
+bitsandbytes==0.39.1
 peft==0.4.0
 datasets==2.16.1
 sentencepiece==0.1.98
