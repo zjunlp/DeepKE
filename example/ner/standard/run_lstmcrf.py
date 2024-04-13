@@ -11,15 +11,15 @@ from torch.nn.utils.rnn import pad_packed_sequence, pack_padded_sequence
 from torch.optim.lr_scheduler import StepLR
 from torch.optim import Adam
 
-import wandb
+# import wandb
 
 logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt = '%m/%d/%Y %H:%M:%S',
                     level = logging.INFO)
 logger = logging.getLogger(__name__)
 
-wandb.init(project="DeepKE_NER_Standard")
-@hydra.main(config_path="conf", config_name='config')
+# wandb.init(project="DeepKE_NER_Standard")
+# @hydra.main(config_path="conf", config_name='config')
 
 
 def main(cfg):
