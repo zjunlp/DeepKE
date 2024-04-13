@@ -5,6 +5,7 @@
 # populated at runtime
 cwd: ???
 lan: "zh" # en
+use_wandb: False
 
 defaults:
     - hydra/output: custom
