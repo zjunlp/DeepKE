@@ -62,9 +62,11 @@ class TrainNer(BertForTokenClassification):
             return logits
 
 
-wandb.init(project="DeepKE_NER_Standard")
+
 @hydra.main(config_path="conf", config_name='config')
 def main(cfg):
+    if cfg.use_wandb:
+        wandb.init(project="DeepKE_NER_Standard")
     # Use gpu or not
     USE_MULTI_GPU = cfg.use_multi_gpu
     if USE_MULTI_GPU and torch.cuda.device_count() > 1:
@@ -170,9 +172,10 @@ def main(cfg):
                     scheduler.step()  # Update learning rate schedule
                     model.zero_grad()
                     global_step += 1
-            wandb.log({
-                "train_loss":tr_loss/nb_tr_steps
-            })
+            if cfg.use_wandb:
+                wandb.log({
+                    "train_loss":tr_loss/nb_tr_steps
+                })
         # Save a trained model and the associated configuration
         model_to_save = model.module if hasattr(model, 'module') else model  # Only save the model it-self
         model_to_save.save_pretrained(os.path.join(utils.get_original_cwd(), cfg.output_dir))
