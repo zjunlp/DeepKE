@@ -19,7 +19,7 @@ warnings.filterwarnings("ignore", category=UserWarning)
 
 import wandb
 
-writer = wandb.init(project="DeepKE_NER_Few")
+
 
 logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt = '%m/%d/%Y %H:%M:%S',
@@ -70,6 +70,10 @@ MAPPING = {
 
 @hydra.main(config_path="./conf", config_name="config.yaml")
 def main(cfg):
+    if cfg.use_wandb:
+        writer = wandb.init(project="DeepKE_NER_Few")
+    else:
+        writer = None
     cwd = utils.get_original_cwd()
     cfg.cwd = cwd
     print(cfg)
