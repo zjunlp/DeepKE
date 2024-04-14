@@ -30,10 +30,13 @@ def logging(log_dir, s, print_=True, log_=True):
                 f_log.write(s + '\n')
 
 
-wandb.init(project="DeepKE_RE_Few")
-wandb.watch_called = False
+
 @hydra.main(config_path="./conf", config_name="config.yaml")
 def main(cfg):
+    if cfg.use_wandb:
+        wandb.init(project="DeepKE_RE_Few")
+        wandb.watch_called = False
+
     cwd = get_original_cwd()
     os.chdir(cwd)
     if not os.path.exists(f"data/{cfg.model_name_or_path}.pt"):
@@ -58,7 +61,8 @@ def main(cfg):
     #     model = torch.nn.DataParallel(model, device_ids = list(range(torch.cuda.device_count())))
 
     model.to(device)
-    wandb.watch(model, log="all")
+    if cfg.use_wandb:
+        wandb.watch(model, log="all")
 
     lit_model = BertLitModel(args=cfg, model=model, device=device, tokenizer=data.tokenizer)
 
@@ -109,9 +113,10 @@ def main(cfg):
                 log_loss = 0
         avrg_loss = total_loss / num_batch
 
-        wandb.log({
-                "train_loss": avrg_loss
-            })
+        if cfg.use_wandb:
+            wandb.log({
+                    "train_loss": avrg_loss
+                })
 
         logging(cfg.log_dir,
             '| epoch {:2d} | train loss {:5.3f}'.format(
@@ -132,10 +137,11 @@ def main(cfg):
                 '| best_f1: {}'.format(best_f1))
             logging(cfg.log_dir,'-' * 89)
 
-            wandb.log({
-                "dev_result": f1,
-                "best_f1":best_f1
-            })
+            if cfg.use_wandb:
+                wandb.log({
+                    "dev_result": f1,
+                    "best_f1":best_f1
+                })
             
             if cfg.save_path != "" and best != -1:
                 save_path = cfg.save_path
