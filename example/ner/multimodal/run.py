@@ -8,6 +8,7 @@ from torch.utils.data import DataLoader
 from deepke.name_entity_re.multimodal.models.IFA_model import IFANERCRFModel
 from deepke.name_entity_re.multimodal.modules.dataset import MMPNERProcessor, MMPNERDataset
 from deepke.name_entity_re.multimodal.modules.train import Trainer
+import wandb
 
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -17,9 +18,7 @@ logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(messa
                     level = logging.INFO)
 logger = logging.getLogger(__name__)
 
-# import wandb
-# writer = wandb.init(project="DeepKE_NER_MM")
-writer=None
+
 
 DATA_PATH = {
     'twitter15': {'train': 'data/twitter2015/train.txt',
@@ -68,6 +67,11 @@ def set_seed(seed=2021):
 
 @hydra.main(config_path="./conf", config_name='config.yaml')
 def main(cfg):
+    if cfg.use_wandb:
+        writer = wandb.init(project="DeepKE_NER_MM")
+    else:
+        writer=None
+
     cwd = utils.get_original_cwd()
     cfg.cwd = cwd
     print(cfg)
