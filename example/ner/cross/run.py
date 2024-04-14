@@ -42,7 +42,7 @@ import hydra
 from hydra import utils
 import wandb
 import json
-writer = wandb.init(project="DeepKE_NER_Few")
+# writer = wandb.init(project="DeepKE_NER_Few")
 
 logger = logging.getLogger(__name__)
 
