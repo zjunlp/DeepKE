@@ -18,7 +18,7 @@ logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(messa
 logger = logging.getLogger(__name__)
 
 import wandb
-writer = wandb.init(project="DeepKE_RE_MM")
+
 
 DATA_PATH = {
     'twitter15':{
@@ -56,6 +56,10 @@ def set_seed(seed=2021):
 
 @hydra.main(config_path="conf/config.yaml")
 def main(cfg):
+    if cfg.use_wandb:
+        writer = wandb.init(project="DeepKE_RE_MM")
+    else:
+        writer = None
     cwd = utils.get_original_cwd()
     cfg.cwd = cwd
     print(cfg)
