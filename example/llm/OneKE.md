@@ -98,6 +98,7 @@ from transformers import (
     BitsAndBytesConfig
 )
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model_path = 'zjunlp/OneKE'
 config = AutoConfig.from_pretrained(model_path, trust_remote_code=True)
 tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
@@ -128,7 +129,7 @@ system_prompt = '<<SYS>>\nYou are a helpful assistant. 你是一个乐于助人�
 sintruct = "{\"instruction\": \"You are an expert in named entity recognition. Please extract entities that match the schema definition from the input. Return an empty list if the entity type does not exist. Please respond in the format of a JSON string.\", \"schema\": [\"person\", \"organization\", \"else\", \"location\"], \"input\": \"284 Robert Allenby ( Australia ) 69 71 71 73 , Miguel Angel Martin ( Spain ) 75 70 71 68 ( Allenby won at first play-off hole )\"}"
 sintruct = '[INST] ' + system_prompt + sintruct + '[/INST]'
 
-input_ids = tokenizer.encode(sintruct, return_tensors="pt")
+input_ids = tokenizer.encode(sintruct, return_tensors="pt").to(device)
 input_length = input_ids.size(1)
 generation_output = model.generate(input_ids=input_ids, generation_config=GenerationConfig(max_length=1024, max_new_tokens=512, return_dict_in_generate=True))
 generation_output = generation_output.sequences[0]

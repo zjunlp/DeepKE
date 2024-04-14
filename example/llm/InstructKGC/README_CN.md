@@ -25,6 +25,8 @@
     - [4.7LoRA微调Moss](#47lora微调moss)
     - [4.8LoRA微调Baichuan](#48lora微调baichuan)
     - [4.9领域内数据继续训练](#49领域内数据继续训练)
+      - [Lora微调](#lora微调)
+      - [全量微调](#全量微调)
   - [🥊 5.P-Tuning微调](#-5p-tuning微调)
     - [5.1P-Tuning微调ChatGLM](#51p-tuning微调chatglm)
   - [🔴 6.预测](#-6预测)
@@ -404,6 +406,7 @@ output_dir='path to save Zhixi Lora'
 | OneKE | OneKE | llama | bf16 | llama2_zh |
 
 
+#### Lora微调
 ```bash
 output_dir='lora/oneke-continue'
 mkdir -p ${output_dir}
@@ -445,6 +448,43 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
 > 请注意，在使用 `llama2-13b-iepile-lora`、`baichuan2-13b-iepile-lora` 时，保持lora_r和lora_alpha均为64，对于这些参数，我们不提供推荐设置。
 
 * 若要基于微调后的模型权重继续训练，只需设定 `model_name_or_path` 参数为权重路径，如`'zjunlp/OneKE'`，无需设置`checkpoint_dir`。
+
+
+#### 全量微调
+
+```bash
+output_dir='lora/oneke-continue'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 src/finetune.py \
+    --do_train --do_eval \
+    --overwrite_output_dir \
+    --model_name_or_path 'models/OneKE' \
+    --stage 'sft' \
+    --finetuning_type 'full' \
+    --model_name 'llama' \
+    --template 'llama2_zh' \
+    --train_file 'data/train.json' \
+    --valid_file 'data/dev.json' \
+    --output_dir=${output_dir} \
+    --per_device_train_batch_size 2 \
+    --per_device_eval_batch_size 2 \
+    --gradient_accumulation_steps 4 \
+    --preprocessing_num_workers 16 \
+    --num_train_epochs 10 \
+    --learning_rate 5e-5 \
+    --max_grad_norm 0.5 \
+    --optim "adamw_torch" \
+    --max_source_length 400 \
+    --cutoff_len 700 \
+    --max_target_length 300 \
+    --evaluation_strategy "epoch" \
+    --save_strategy "epoch" \
+    --save_total_limit 10 \
+    --lora_dropout 0.05 \
+    --bf16 
+```
+
+
 
 
 脚本可以在 [ft_scripts/fine_continue.bash](./ft_scripts/fine_continue.bash)、[ft_scripts/fine_continue_oneke.bash](./ft_scripts/fine_continue_oneke.bash) 中找到。

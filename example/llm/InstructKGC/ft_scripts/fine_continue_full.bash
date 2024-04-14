@@ -1,13 +1,13 @@
-output_dir='lora/llama2-13b-chat-v1-continue'
+output_dir='lora/oneke-continue'
 mkdir -p ${output_dir}
 CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 src/finetune.py \
     --do_train --do_eval \
     --overwrite_output_dir \
-    --model_name_or_path 'models/llama2-13B-Chat' \
-    --checkpoint_dir 'zjunlp/llama2-13b-iepile-lora' \
+    --model_name_or_path 'models/OneKE' \
     --stage 'sft' \
+    --finetuning_type 'full' \
     --model_name 'llama' \
-    --template 'llama2' \
+    --template 'llama2_zh' \
     --train_file 'data/train.json' \
     --valid_file 'data/dev.json' \
     --output_dir=${output_dir} \
@@ -25,8 +25,5 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
     --evaluation_strategy "epoch" \
     --save_strategy "epoch" \
     --save_total_limit 10 \
-    --lora_r 64 \
-    --lora_alpha 64 \
     --lora_dropout 0.05 \
     --bf16 
-

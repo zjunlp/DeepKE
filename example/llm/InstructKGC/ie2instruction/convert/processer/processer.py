@@ -26,6 +26,15 @@ class Processer:
         raise NotImplementedError
     
 
+    def set_hard_dict(self, hard_dict=None):
+        if hard_dict is None:
+            self.hard_dict = {}
+            return
+        self.hard_dict = {}
+        for key, value in hard_dict.items():
+            self.hard_dict[key] = set(value)
+
+
     def read_data(self, path):
         datas = []
         with open(path, 'r', encoding='utf-8') as reader:
@@ -110,3 +119,32 @@ class Processer:
         # 按照split_num划分
         return self.split_total_by_num(split_num, tmp_total_schemas)
 
+
+    def negative_cluster_sample(self, record, split_num=4, random_sort=True):
+        task_record = self.get_task_record(record)
+        positive, type_role = self.get_positive_type_role(task_record)
+        if len(type_role) == 1:    
+            total_cluster = list(type_role)
+        elif len(positive) == 0:  
+            neg_length = sum(np.random.binomial(1, self.negative / 2 , self.label_length))
+            neg_length = max(neg_length, 1)
+            total_cluster = random.sample(list(type_role), neg_length)
+        else:
+            total_cluster = set()
+            for key in positive:         
+                negative = self.hard_dict[key].copy()   
+                total_cluster.update(negative)  
+            total_cluster.update(positive) 
+
+            out_hard = type_role - total_cluster
+            out_length = min(len(out_hard), split_num)
+            if out_length != 0:
+                out_hard = random.sample(list(out_hard), out_length)
+                total_cluster.update(out_hard)
+            total_cluster = list(total_cluster)
+            if not random_sort:
+                total_cluster = sorted(total_cluster)
+            else:
+                random.shuffle(total_cluster)
+
+        return self.split_total_by_num(split_num, total_cluster)
