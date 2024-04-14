@@ -4,6 +4,7 @@
 
 # populated at runtime
 cwd: ???
+use_wandb: False
 
 
 defaults:
