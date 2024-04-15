@@ -322,10 +322,12 @@ def relation_train(args):
 
         relation_print_pred_json(eval_dataset, eval_examples, preds, id2label, os.path.join(args.relation_output_dir, args.relation_prediction_file))
 
-wandb.init(project="DeepKE_TRIPLE_PURE")
-wandb.watch_called = False
+
 @hydra.main(config_path="conf", config_name="config")
 def main(args):
+    if args.use_wandb:
+        wandb.init(project="DeepKE_TRIPLE_PURE")
+        wandb.watch_called = False
     cwd = get_original_cwd()
     os.chdir(cwd)
     print("Start training Entity Model")
