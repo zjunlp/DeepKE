@@ -165,16 +165,19 @@ def train_and_evaluate(model, params, ex_params, restore_file=''):
             logging.info("Best val f1: {:05.2f}".format(best_val_f1))
             break
         
-        wandb.log({
-            "best_val_f1":best_val_f1,
-        })
+        if params.use_wandb:
+            wandb.log({
+                "best_val_f1":best_val_f1,
+            })
         
 
 
-wandb.init(project="DeepKE_TRIPLE_PRGC")
-wandb.watch_called = False
+
 @hydra.main(config_path="conf", config_name="config")
 def main(cfg):
+    if cfg.use_wandb:
+        wandb.init(project="DeepKE_TRIPLE_PRGC")
+        wandb.watch_called = False
     cwd = get_original_cwd()
     os.chdir(cwd)
     params = util.Params(cfg.ex_index, cfg.corpus_type)
@@ -185,6 +188,7 @@ def main(cfg):
     setattr(params, 'bert_model_dir', os.path.join(params.root_path, f'pretrain_models', cfg.pretrain_model))
     setattr(params, 'rel2idx', json.load(open(os.path.join(params.data_dir,'rel2id.json'), 'r', encoding='utf-8'))[-1])
     setattr(params, 'rel_num', len(params.rel2idx))
+    setattr(params, 'use_wandb', cfg.use_wandb)
     for key,value in cfg.items():
         setattr(params, key, value)
     
