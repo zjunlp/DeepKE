@@ -19,7 +19,7 @@
 
 
 <h1 align="center">
-    <p>OneKE: A Bilingual Large Language Model for <br>Knowledge Extraction</p>
+    <p>中英双语大模型知识抽取框架</p>
 </h1>
 
 - [什么是OneKE?](#什么是oneke)
@@ -40,7 +40,12 @@
 
 ## 什么是OneKE?
 
-浙江大学与蚂蚁集团依托多年积累的知识图谱与自然语言处理技术，与2024年联合升级并发布新版中英双语知识抽取大模型OneKE。该模型采用基于Schema的轮询指令构造技术，专门针对提升大模型在结构化信息抽取的泛化能力进行了优化。
+OneKE是由蚂蚁集团和浙江大学联合研发的大模型知识抽取框架，具备中英文双语、多领域多任务的泛化知识抽取能力，并提供了完善的工具链支持。OneKE以开源形式贡献给OpenKG开放知识图谱社区。
+
+
+基于非结构化文档的知识构建一直是知识图谱大规模落地的关键难题之一，因为真实世界的信息高度碎片化、非结构化，大语言模型在处理信息抽取任务时仍因抽取内容与自然语言表述之间的巨大差异导致效果不佳，自然语言文本信息表达中因隐式、长距离上下文关联存在较多的歧义、多义、隐喻等，给知识抽取任务带来较大的挑战。针对上述问题，蚂蚁集团与浙江大学依托多年积累的知识图谱与自然语言处理技术，联合构建和升级蚂蚁百灵大模型在知识抽取领域的能力，并发布中英双语大模型知识抽取框架OneKE，同时开源基于LLaMA2全参数微调的版本。测评指标显示，OneKE在多个全监督及零样本实体/关系/事件抽取任务上取得了相对较好的效果。
+
+统一知识抽取框架有比较广阔的应用场景，可大幅降低领域知识图谱的构建成本。通过从海量的数据中萃取结构化知识，构建高质量知识图谱并建立知识要素间的逻辑关联，可以实现可解释的推理决策，也可用于增强大模型缓解幻觉并提升稳定性，加速大模型垂直领域的落地应用。如应用在医疗领域通过知识抽取实现医生经验的知识化规则化管理，构建可控的辅助诊疗和医疗问答。应用在金融领域抽取金融指标、风险事件、因果逻辑及产业链等，实现自动的金融研报生成、风险预测、产业链分析等。应用在政务场景实现政务法规的知识化，提升政务服务的办事效率和准确决策。
 
 <p align="center" width="100%">
 <a href="" target="_blank"><img src="assets/oneke.gif" alt="OneKE" style="width: 100%; min-width: 20px; display: block; margin: auto;"></a>
@@ -48,10 +53,10 @@
 
 ## OneKE是怎么训的?
 
-OneKE主要聚焦基于Schema可泛化的信息抽取。由于现有的抽取指令数据存在格式不统一、数据噪音、多样性弱等问题，如下图所示OneKE采取了抽取指令的归一化与清洗、难负样本采样、基于Schema的轮询指令构造等技术，相关内容可查阅论文“**[IEPile: Unearthing Large-Scale Schema-Based Information Extraction Corpus](https://arxiv.org/abs/2402.14710) [[Github](https://github.com/zjunlp/IEPile)]**”。
+OneKE主要聚焦基于Schema可泛化的信息抽取。由于现有的抽取指令数据存在格式不统一、数据噪音、多样性弱等问题，OneKE采取了基于Schema的轮询指令构造技术，专门针对提升大模型在结构化信息抽取的泛化能力进行了优化，相关内容可查阅论文“**[IEPile: Unearthing Large-Scale Schema-Based Information Extraction Corpus](https://arxiv.org/abs/2402.14710) [[Github](https://github.com/zjunlp/IEPile)]**”。
 
 
-OneKE在零样本泛化性上与其他大模型的对比结果
+OneKE在零样本泛化性上与其他大模型的对比结果：
 * `NER-en`: CrossNER_AI、CrossNER_literature、CrossNER_music、CrossNER_politics、CrossNER_science
 * `NER-zh`: WEIBONER、boson
 * `RE-zh`: COAE2016、IPRE、SKE2020
@@ -489,10 +494,15 @@ for split_schema in split_schemas:
 继续训练OneKE可参考[InstructKGC/4.9领域内数据继续训练](./InstructKGC/README_CN.md/#49领域内数据继续训练)
 
 
-
 ## 项目贡献人员
 
-张宁豫、桂鸿浩、袁琳、孙梦姝、徐军、渠源、王昊奋、罗玉洁、梁磊、张志强、周俊、陈华钧
+CO-PI：张宁豫（浙江大学）、梁磊（蚂蚁集团）
+
+桂鸿浩（浙江大学）、袁琳（蚂蚁集团）、孙梦姝（蚂蚁集团）、徐军（蚂蚁集团）、渠源（蚂蚁集团）、王昊奋（客座专家，同济大学）、张锦添（浙江大学）、张文（浙江大学）、张强（浙江大学）、乔硕斐（浙江大学）、徐欣（浙江大学）、方继展（浙江大学）、罗玉洁（浙江大学）、张志强（蚂蚁集团）
+
+## 学术指导组
+
+陈华钧（浙江大学）、周俊（蚂蚁集团）、陈文光（清华大学）
 
 
 ## 引用
