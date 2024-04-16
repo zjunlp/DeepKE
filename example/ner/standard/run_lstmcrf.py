@@ -18,10 +18,13 @@ logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(messa
                     level = logging.INFO)
 logger = logging.getLogger(__name__)
 
-# wandb.init(project="DeepKE_NER_Standard")
-# @hydra.main(config_path="conf", config_name='config')
+with open('conf/config.yaml', 'r') as f:
+    config = yaml.safe_load(f)
+# Check if 'use_wandb' is set to True in the configuration file
+if config['use_wandb']:
+    wandb.init(project="DeepKE_NER_Standard")
 
-
+@hydra.main(config_path="conf", config_name='config')
 def main(cfg):
     torch.manual_seed(cfg.seed)
     random.seed(cfg.seed)

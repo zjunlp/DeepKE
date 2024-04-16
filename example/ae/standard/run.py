@@ -28,8 +28,9 @@ def main(cfg):
     cfg.pos_size = 2 * cfg.pos_limit + 2
     logger.info(f'\n{cfg.pretty()}')
 
-    wandb.init(project="DeepKE_AE_Standard", name=cfg.model_name)
-    wandb.watch_called = False
+    if cfg.use_wandb:
+        wandb.init(project="DeepKE_AE_Standard", name=cfg.model_name)
+        wandb.watch_called = False
 
     __Model__ = {
         'cnn': models.PCNN,
@@ -87,7 +88,8 @@ def main(cfg):
         device = device_ids[0]
     model.to(device)
 
-    wandb.watch(model, log="all")
+    if cfg.use_wandb:
+        wandb.watch(model, log="all")
     logger.info(f'\n {model}')
 
     optimizer = optim.Adam(model.parameters(), lr=cfg.learning_rate, weight_decay=cfg.weight_decay)
@@ -119,10 +121,11 @@ def main(cfg):
         train_losses.append(train_loss)
         valid_losses.append(valid_loss)
 
-        wandb.log({
-            "train_loss":train_loss,
-            "valid_loss":valid_loss
-        })
+        if cfg.use_wandb:
+            wandb.log({
+                "train_loss":train_loss,
+                "valid_loss":valid_loss
+            })
 
 
         if best_f1 < valid_f1:
@@ -169,9 +172,10 @@ def main(cfg):
     logger.info('=====start test performance====')
     _ , test_loss = validate(-1, model, test_dataloader, criterion, device, cfg)
 
-    wandb.log({
-        "test_loss":test_loss,
-    })
+    if cfg.use_wandb:
+        wandb.log({
+            "test_loss":test_loss,
+        })
     
     logger.info('=====ending====')
 
