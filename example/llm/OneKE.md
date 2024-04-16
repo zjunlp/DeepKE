@@ -131,7 +131,7 @@ sintruct = '[INST] ' + system_prompt + sintruct + '[/INST]'
 
 input_ids = tokenizer.encode(sintruct, return_tensors="pt").to(device)
 input_length = input_ids.size(1)
-generation_output = model.generate(input_ids=input_ids, generation_config=GenerationConfig(max_length=1024, max_new_tokens=512, return_dict_in_generate=True))
+generation_output = model.generate(input_ids=input_ids, generation_config=GenerationConfig(max_length=1024, max_new_tokens=512, return_dict_in_generate=True), pad_token_id=tokenizer.eos_token_id)
 generation_output = generation_output.sequences[0]
 generation_output = generation_output[input_length:]
 output = tokenizer.decode(generation_output, skip_special_tokens=True)
