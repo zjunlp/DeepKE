@@ -76,7 +76,7 @@ Please note that the `requirements.txt` file is located in the `example/llm` fol
 
 # News
 
-* [2024/04] We release a new bilingual (Chinese and English) schema-based information extraction model called [OneKE](https://huggingface.co/zjunlp/OneKE).
+* [2024/04] We release a new bilingual (Chinese and English) schema-based information extraction model called [OneKE](https://huggingface.co/zjunlp/OneKE) based on Chinese-Alpaca-2-13B.
 * [2024/02] We release a large-scale (0.32B tokens) high-quality bilingual (Chinese and English) Information Extraction (IE) instruction dataset named [IEPile](https://huggingface.co/datasets/zjunlp/iepie), along with two models trained with `IEPile`, [baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) and [llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora).
 * [2023/11] The weights of [knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main) have been updated. This update mainly adjusted the NAN outputs, shortened the inference length, and added support for instructions without a specified schema.
 * [2023/10] We released a new bilingual (Chinese and English) theme-based Information Extraction (IE) instruction dataset named [InstructIE](https://huggingface.co/datasets/zjunlp/InstructIE).
