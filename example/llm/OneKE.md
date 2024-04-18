@@ -54,9 +54,9 @@ OneKE是由蚂蚁集团和浙江大学联合研发的大模型知识抽取框架
 <a href="" target="_blank"><img src="assets/oneke.gif" alt="OneKE" style="width: 100%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
-## OneKE是怎么训的?
+## OneKE的开源模型版本是怎么训的?
 
-OneKE目前版本提供了基于Schema的可泛化信息抽取。由于现有的抽取指令数据存在格式不统一、数据噪音、多样性弱等问题，OneKE采取了基于Schema的轮询指令构造技术，专门针对提升大模型在结构化信息抽取的泛化能力进行了优化，相关内容可查阅论文“**[IEPile: Unearthing Large-Scale Schema-Based Information Extraction Corpus](https://arxiv.org/abs/2402.14710) [[Github](https://github.com/zjunlp/IEPile)]**”。
+OneKE目前的开源模型版本提供了基于Schema的可泛化信息抽取。由于现有的抽取指令数据存在格式不统一、数据噪音、多样性弱等问题，OneKE采取了基于Schema的轮询指令构造技术，专门针对提升大模型在结构化信息抽取的泛化能力进行了优化，相关内容可查阅论文“**[IEPile: Unearthing Large-Scale Schema-Based Information Extraction Corpus](https://arxiv.org/abs/2402.14710) [[Github](https://github.com/zjunlp/IEPile)]**”。
 
 
 OneKE在零样本泛化性上与其他大模型的对比结果：
