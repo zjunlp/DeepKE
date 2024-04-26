@@ -81,7 +81,7 @@ class Trainer(object):
                         pbar.update(1)
                         pbar.set_postfix_str(print_output)            
                         # self.writer.add_scalar(tag='loss', scalar_value=avg_loss, global_step=self.step)    # tensorbordx
-                        self.writer.log({ 'avg_loss':avg_loss})
+                        if self.writer:    self.writer.log({ 'avg_loss':avg_loss})
                         avg_loss = 0
                         
                 if epoch >= self.eval_begin_epoch:
@@ -112,7 +112,7 @@ class Trainer(object):
                 # self.writer.add_scalars('evaluate', {'f1': eva_result['f'],
                 #                                     'recall': eva_result['rec'],
                 #                                     'precision': eva_result['pre']}, epoch)
-                self.writer.log({'f1': eva_result['f'],'recall': eva_result['rec'],'precision': eva_result['pre']})
+                if self.writer:    self.writer.log({'f1': eva_result['f'],'recall': eva_result['rec'],'precision': eva_result['pre']})
 
                 if eva_result['f'] >= self.best_metric:  # this epoch get best performance
                     self.logger.info("Get better performance at epoch {}".format(epoch))
