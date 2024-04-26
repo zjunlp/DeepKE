@@ -33,6 +33,8 @@
 
 - ❗想用**大模型**做抽取吗？试试[DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm/README_CN.md)和[OneKE](https://github.com/zjunlp/DeepKE/blob/main/example/llm/OneKE.md)！
 - ❗想自己全监督训抽取模型吗？试试[快速上手](#快速上手), 我们提供实体识别模型 (例如[LightNER(COLING'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/few-shot/README_CN.md), [W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/w2ner/README_CN.md))、关系抽取模型(例如[KnowPrompt(WWW'22)](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/README_CN.md)), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC/README_CN.md), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE/README_CN.md)), 和基于cnSchema的开箱即用模型[DeepKE-cnSchema](https://github.com/zjunlp/DeepKE/tree/main/example/triple/cnschema/README_CN.md)！
+- 推荐使用Linux，如果使用Windows，路径中请使用`\\`
+- 如果因为网络问题无法从HuggingFace下载模型，可以使用wisemodel和modescope
 
 **如果您在安装DeepKE和DeepKE-LLM中遇到任何问题（一般是包的版本兼容性问题）不用心急，您可以查阅[常见问题](https://github.com/zjunlp/DeepKE/blob/main/README_CN.md#%E5%A4%87%E6%B3%A8%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)或直接提[Issue](https://github.com/zjunlp/DeepKE/issues)，我们会尽全力帮助您解决问题**！
 
