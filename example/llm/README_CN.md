@@ -74,8 +74,8 @@ pip install -r requirements.txt
 
 # 新闻
 
-* [2024/04] 浙江大学与蚂蚁集团依托多年积累的知识图谱与自然语言处理技术，与2024年4月联合升级并发布新版中英双语知识抽取大模型 [OneKE](https://huggingface.co/zjunlp/OneKE)。该模型采用基于Schema的轮询指令构造技术，专门针对提升大模型在结构化信息抽取的泛化能力进行了优化。
-* [2024/02] 我们发布了一个大规模(`0.32B` tokens)高质量**双语**(中文和英文)信息抽取(IE)指令微调数据集，名为 [IEPile](https://huggingface.co/datasets/zjunlp/iepie), 以及基于 `IEPile` 训练的两个模型[baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora)、[llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora)。
+* [2024/04] 发布中英双语大模型知识抽取框架[OneKE](http://oneke.openkg.cn/)，同时开源基于Chinese-Alpaca-2-13B全参数微调的版本。
+* [2024/02] 发布大规模(`0.32B` tokens)**双语**(中文和英文)信息抽取(IE)指令数据集[IEPile](https://huggingface.co/datasets/zjunlp/iepie), 以及基于 `IEPile` 训练的两个模型[baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora)、[llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora)。
 * [2023/11] [knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main)权重进行了更新，这次更新主要是调整了NAN输出，缩短了推理长度，并支持了不指定schema的指令。
 * [2023/10] 我们发布了一个新的**双语**(中文和英文)基于主题的信息抽取(IE)指令数据集，名为[InstructIE](https://huggingface.co/datasets/zjunlp/InstructIE)和[论文](https://arxiv.org/abs/2305.11527)。
 * [2023/08] 推出了专门用于信息抽取(IE)的KnowLM版本，命名为[knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main)。
@@ -170,7 +170,7 @@ pip install -r requirements.txt
 ## OneKE
 
 
-浙江大学中英双语抽取大模型: [使用指南](./OneKE.md)
+中英双语大模型知识抽取框架OneKE和基于Chinese-Alpaca-2-13B全参数微调的版本: [使用指南](./OneKE.md)
 
 
 ## LLaMA系列

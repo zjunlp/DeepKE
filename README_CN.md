@@ -31,8 +31,10 @@
 
 [DeepKE](https://arxiv.org/pdf/2201.03335.pdf) 是一个开源的知识图谱抽取与构建工具，支持<b>cnSchema、低资源、长篇章、多模态</b>的知识抽取工具，可以基于<b>PyTorch</b>实现<b>命名实体识别</b>、<b>关系抽取</b>和<b>属性抽取</b>功能。同时为初学者提供了[文档](https://zjunlp.github.io/DeepKE/)，[在线演示](http://deepke.zjukg.cn/CN/index.html), [论文](https://arxiv.org/pdf/2201.03335.pdf), [演示文稿](https://github.com/zjunlp/DeepKE/blob/main/docs/slides/Slides-DeepKE-cn.pdf)和[海报](https://drive.google.com/file/d/1vd7xVHlWzoAxivN4T5qKrcqIGDcSM1_7/view)。
 
-- ❗想用大模型做抽取吗？试试[DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm/README_CN.md)和[KnowLM](https://github.com/zjunlp/KnowLM)！
-- ❗想自己全监督训抽取模型吗？试试[快速上手](#快速上手), 我们提供实体识别模型 (例如[LightNER(COLING'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/few-shot/README_CN.md), [W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/w2ner/README_CN.md))、关系抽取模型(例如[KnowPrompt(WWW'22)](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/README_CN.md))、实体关系联合抽取模型(例如[ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP/README_CN.md), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC/README_CN.md), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE/README_CN.md)), 和基于cnSchema的开箱即用模型[DeepKE-cnSchema](https://github.com/zjunlp/DeepKE/tree/main/example/triple/cnschema/README_CN.md)！
+- ❗想用**大模型**做抽取吗？试试[DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm/README_CN.md)和[OneKE](https://github.com/zjunlp/DeepKE/blob/main/example/llm/OneKE.md)！
+- ❗想自己全监督训抽取模型吗？试试[快速上手](#快速上手), 我们提供实体识别模型 (例如[LightNER(COLING'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/few-shot/README_CN.md), [W2NER(AAAI'22)](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/w2ner/README_CN.md))、关系抽取模型(例如[KnowPrompt(WWW'22)](https://github.com/zjunlp/DeepKE/tree/main/example/re/few-shot/README_CN.md)), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC/README_CN.md), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE/README_CN.md)), 和基于cnSchema的开箱即用模型[DeepKE-cnSchema](https://github.com/zjunlp/DeepKE/tree/main/example/triple/cnschema/README_CN.md)！
+- 推荐使用Linux，如果使用Windows，路径中请使用`\\`
+- 如果因为网络问题无法从HuggingFace下载模型，可以使用wisemodel和modescope
 
 **如果您在安装DeepKE和DeepKE-LLM中遇到任何问题（一般是包的版本兼容性问题）不用心急，您可以查阅[常见问题](https://github.com/zjunlp/DeepKE/blob/main/README_CN.md#%E5%A4%87%E6%B3%A8%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)或直接提[Issue](https://github.com/zjunlp/DeepKE/issues)，我们会尽全力帮助您解决问题**！
 
@@ -65,8 +67,8 @@
 <br>
 
 # 新版特性
-* `2024年4月` 浙江大学与蚂蚁集团依托多年积累的知识图谱与自然语言处理技术，与2024年4月联合升级并发布新版中英双语知识抽取大模型 [OneKE](https://huggingface.co/zjunlp/OneKE)。该模型采用基于Schema的轮询指令构造技术，专门针对提升大模型在结构化信息抽取的泛化能力进行了优化。
-* `2024年2月` 我们发布了一个大规模(`0.32B` tokens)高质量**双语**(中文和英文)信息抽取(IE)指令微调数据集，名为 [IEPile](https://huggingface.co/datasets/zjunlp/iepie), 以及基于 `IEPile` 训练的两个模型[baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora)、[llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora)。
+* `2024年4月`发布中英双语大模型知识抽取框架[OneKE](http://oneke.openkg.cn/)，同时开源基于Chinese-Alpaca-2-13B全参数微调的版本。
+* `2024年2月` 发布大规模(`0.32B` tokens)**双语**(中文和英文)信息抽取(IE)指令数据集[IEPile](https://huggingface.co/datasets/zjunlp/iepie), 以及基于 `IEPile` 训练的两个模型[baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora)、[llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora)。
 * `2023年9月` 为基于指令的知识图谱构建任务(Instruction-based KGC)发布了一个中英双语信息抽取(IE)指令数据集 `InstructIE`, 具体参见[此处](./example/llm/README_CN.md/#数据)。
 * `2023年6月` 为[DeepKE-LLM](https://github.com/zjunlp/DeepKE/tree/main/example/llm)新增多个大模型(如[ChatGLM](https://github.com/THUDM/ChatGLM-6B)、LLaMA系列、GPT系列、抽取大模型[智析](https://github.com/zjunlp/KnowLM))支持。
 * `2023年4月` 新增实体关系抽取模型[CP-NER(IJCAI'23)](https://github.com/zjunlp/DeepKE/blob/main/example/ner/cross/README_CN.md), [ASP(EMNLP'22)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/ASP/README_CN.md), [PRGC(ACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PRGC/README_CN.md), [PURE(NAACL'21)](https://github.com/zjunlp/DeepKE/tree/main/example/triple/PURE/README_CN.md), 支持[事件抽取](https://github.com/zjunlp/DeepKE/blob/main/example/ee/standard/README_CN.md)(中文、英文), 提供对Python库高级版本的支持 (例如Transformers)。

@@ -76,15 +76,14 @@ Please note that the `requirements.txt` file is located in the `example/llm` fol
 
 # News
 
-* [2024/04] Zhejiang University and Ant Group, leveraging years of accumulated expertise in knowledge graphs and natural language processing, jointly upgraded and released a new bilingual (Chinese and English) knowledge extraction model called [OneKE](https://huggingface.co/zjunlp/OneKE) in April 2024. The model employs schema-based polling instruction construction technology specifically optimized to enhance the large model's generalization capabilities in structured information extraction.
-* [2024/02] We released a large-scale (0.32B tokens) high-quality bilingual (Chinese and English) Information Extraction (IE) instruction tuning dataset named [IEPile](https://huggingface.co/datasets/zjunlp/iepie), along with two models trained on `IEPile`, [baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) and [llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora).
+* [2024/04] We release a new bilingual (Chinese and English) schema-based information extraction model called [OneKE](https://huggingface.co/zjunlp/OneKE) based on Chinese-Alpaca-2-13B.
+* [2024/02] We release a large-scale (0.32B tokens) high-quality bilingual (Chinese and English) Information Extraction (IE) instruction dataset named [IEPile](https://huggingface.co/datasets/zjunlp/iepie), along with two models trained with `IEPile`, [baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) and [llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora).
 * [2023/11] The weights of [knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main) have been updated. This update mainly adjusted the NAN outputs, shortened the inference length, and added support for instructions without a specified schema.
 * [2023/10] We released a new bilingual (Chinese and English) theme-based Information Extraction (IE) instruction dataset named [InstructIE](https://huggingface.co/datasets/zjunlp/InstructIE).
 * [2023/08] A specialized version of KnowLM for information extraction (IE), named [knowlm-13b-ie](https://huggingface.co/zjunlp/knowlm-13b-ie/tree/main), was launched.
 * [2023/07] Some of the instruction datasets used for training were released, including [knowlm-ke](https://huggingface.co/datasets/zjunlp/knowlm-ke) and [KnowLM-IE](https://huggingface.co/datasets/zjunlp/KnowLM-IE).
 * [2023/06] The first version of pre-trained weights, [knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0), and the first version of [zhixi-13b-lora](https://huggingface.co/zjunlp/zhixi-13b-lora) were released.
 * [2023/05] We initiated an instruction-based Information Extraction project.
-
 
 
 
@@ -170,7 +169,7 @@ The data instance belongs to the `NER` task, is part of the `CoNLL2003` dataset,
 
 ## OneKE
 
-A Bilingual Large Language Model for Knowledge Extraction:  [Chinese Tutorial](./OneKE.md).
+A Bilingual Large Language Model for Information Extraction:  [Chinese Tutorial](./OneKE.md).
 
 
 
