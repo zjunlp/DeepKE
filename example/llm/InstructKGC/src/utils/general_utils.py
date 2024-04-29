@@ -16,22 +16,30 @@ from transformers import (
 
 MODEL_DICT = {
     "llama":["llama", "alpaca", "vicuna", "zhixi"],
+    "custom":["custom"],
     "falcon":["falcon"],
-    "baichuan":["baichuan"],
-    "chatglm":["chatglm"],
     "qwen":["qwen"],
+    "qwen2":["qwen2"],
+    "baichuan":["baichuan", "baichuan2"],
+    "chatglm":["chatglm"],
     "moss": ["moss"],
+    "cpm-bee": ["cpm-bee"],
     "openba":["openba"],
+    "mistral":["mistral"],
 }
 
 LORA_TARGET_MODULES_DICT = {
     "llama":['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_proj', 'down_proj'],
+    "custom":['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_proj', 'down_proj'],
     "falcon":['query_key_value', 'dense', 'dense_h_to_4h', 'dense_4h_to_h'],
     "baichuan":['W_pack','o_proj','gate_proj','down_proj','up_proj'],
     "chatglm":['query_key_value', 'dense', 'dense_h_to_4h', 'dense_4h_to_h'],
     "qwen":['c_attn', 'attn.c_proj', 'w1', 'w2', 'mlp.c_proj'],
+    "qwen2":['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_proj', 'down_proj'],
     "moss": ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_proj', 'down_proj'],
+    "cpm-bee": ["project_q", "project_v"],
     "openba":["q", "kv", 'qkv', 'o', 'fc_in', 'fc_out'],
+    "mistral": ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_proj', 'down_proj'],
 }
 
 
