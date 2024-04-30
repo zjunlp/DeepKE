@@ -23,7 +23,7 @@
 </h1>
 
 - [什么是OneKE?](#什么是oneke)
-- [OneKE是怎么训的?](#oneke是怎么训的)
+- [OneKE的开源模型版本是怎么训的?](#oneke的开源模型版本是怎么训的)
 - [快速上手OneKE](#快速上手oneke)
   - [环境安装](#环境安装)
   - [模型下载](#模型下载)
@@ -71,6 +71,27 @@ OneKE在零样本泛化性上与其他大模型的对比结果：
 <p align="center" width="50%">
 <a href="" target="_blank"><img src="assets/oneke_results.png" alt="OneKE" style="width: 50%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
+
+
+<details>
+  <summary><b>零样本信息抽取结果</b></summary>
+
+![zero_en](./assets/zero_en.jpg)
+
+![zero_zh](./assets/zero_zh.jpg)
+
+</details>
+
+<details>
+  <summary><b>全监督数据集结果</b></summary>
+
+![supervision_ner](./assets/supervision_ner.jpg)
+
+![supervision_re](./assets/supervision_re.jpg)
+
+![supervision_ee](./assets/supervision_ee.jpg)
+
+</details>
 
 
 ## 快速上手OneKE
