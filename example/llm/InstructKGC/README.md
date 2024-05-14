@@ -1,10 +1,10 @@
-# InstructKGC-CCKS2023 Evaluation of Instruction-based Knowledge Graph Construction
+# InstructKGC-Instruction-based Knowledge Graph Construction
 
 <p align="left">
     <b> English | <a href="https://github.com/zjunlp/DeepKE/tree/main/example/llm/InstructKGC/README_CN.md">简体中文</a> </b>
 </p>
 
-- [InstructKGC-CCKS2023 Evaluation of Instruction-based Knowledge Graph Construction](#instructkgc-ccks2023-evaluation-of-instruction-based-knowledge-graph-construction)
+- [InstructKGC-Instruction-based Knowledge Graph Construction](#instructkgc-instruction-based-knowledge-graph-construction)
   - [News](#news)
   - [🎯 1.Task Object](#-1task-object)
   - [📊 2.Data](#-2data)
