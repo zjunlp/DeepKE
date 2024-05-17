@@ -657,7 +657,7 @@ python ie2instruction/eval_func.py \
 
 ## 👋 8.Acknowledgment
 
-Part of the code comes from [Alpaca-LoRA](https://github.com/tloen/alpaca-lora)、[qlora](https://github.com/artidoro/qlora.git) many thanks.
+Part of the code comes from [Alpaca-LoRA](https://github.com/tloen/alpaca-lora)、[qlora](https://github.com/artidoro/qlora.git), [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory) many thanks.
 
 
 
