@@ -264,6 +264,8 @@ Here are some of the models supported by the code in this repository:
 Below are some models that have been trained with ample information extraction instruction data:
 * [zjunlp/llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora/tree/main) (The base model is LLaMA2-13B-Chat)
 * [zjunlp/baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) (The base model is BaiChuan2-13B-Chat)
+* [zjunlp/llama3-8b-iepile-lora](https://huggingface.co/zjunlp/llama3-8b-iepile-lora)
+* [zjunlp/qwen1.5-14b-iepile-lora](https://huggingface.co/zjunlp/qwen1.5-14b-iepile-lora)
 * [zjunlp/OneKE](https://huggingface.co/zjunlp/OneKE)
 
 
@@ -395,13 +397,15 @@ The corresponding script can be found in [ft_scripts/fine_baichuan.bash](./ft_sc
 Although the `llama2-13b-iepile-lora` and `baichuan2-13b-iepile-lora` models have undergone extensive instruction fine-tuning on multiple general datasets and thus possess a degree of **general information extraction capability**, they may still exhibit certain limitations when processing data in **specific domains** (such as `law`, `education`, `science`, `telecommunications`). To address this challenge, it is recommended to conduct **secondary training** of these models on datasets specific to these domains. This will help the models better adapt to the semantic and structural characteristics of the specific domains, enhancing their **information extraction capability within those domains**.
 
 
-**`LLaMA2-IEPile`** | **`Baichuan2-IEPile`** | **`OneKE`** 模型下载链接：[zjunlp/llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora/tree/main) | [zjunlp/baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) | [zjunlp/OneKE](https://huggingface.co/zjunlp/OneKE)
+Model Download Links: [zjunlp/llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora/tree/main) | [zjunlp/baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) | [zjunlp/llama3-8b-iepile-lora](https://huggingface.co/zjunlp/llama3-8b-iepile-lora) | [zjunlp/qwen1.5-14b-iepile-lora](https://huggingface.co/zjunlp/qwen1.5-14b-iepile-lora) | [zjunlp/OneKE](https://huggingface.co/zjunlp/OneKE) 
 
 
 | checkpoint_dir | model_name_or_path | moadel_name | fp16/bf16 | template | 
 | --- | --- | --- | --- | --- |
 | llama2-13b-iepile-lora | LLaMA2-13B-Chat | llama | bf16 | llama2 |
 | baichuan2-13b-iepile-lora | BaiChuan2-13B-Chat | baichuan | bf16 | baichuan2 |
+| llama3-8b-iepile-lora | LLaMA3-8B-Instruct | llama | bf16 | alpaca |
+| qwen1.5-14b-iepile-lora | Qwen1.5-14B-Chat | qwen2 | bf16 | qwen |
 | OneKE | OneKE | llama | bf16 | llama2_zh |
 
 
@@ -554,6 +558,9 @@ Below are some models optimized through training with LoRA technology (**LoRA we
 | --- | --- | --- | --- | --- |
 | llama2-13b-iepile-lora | LLaMA2-13B-Chat | llama | bf16 | llama2 |
 | baichuan2-13b-iepile-lora | BaiChuan2-13B-Chat | baichuan | bf16 | baichuan2 |
+| llama3-8b-iepile-lora | LLaMA3-8B-Instruct | llama | bf16 | alpaca |
+| qwen1.5-14b-iepile-lora | Qwen1.5-14B-Chat | qwen2 | bf16 | qwen |
+
 
 </details>
 
