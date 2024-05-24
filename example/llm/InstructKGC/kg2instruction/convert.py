@@ -47,7 +47,7 @@ def convert_ie(
         neg_sampler,
         converter,
         neg_ratio:0.1,
-        input_text='input',
+        input_text='text',
         random_sort=True,
     ):
     if sample == -1:           # 从4种指令和4种输出格式(共16种)中随机采样其中一种
@@ -169,7 +169,7 @@ def process(
                 input_text='text',
                 random_sort=random_sort,
             )
-            new_record = {'id': stable_hash(record['text']),'instruction': sinstruct, 'input': record['input'], 'output': output_text}
+            new_record = {'id': stable_hash(record['text']),'instruction': sinstruct, 'input': record['text'], 'output': output_text}
             writer.write(json.dumps(new_record, ensure_ascii=False)+"\n")
 
 
