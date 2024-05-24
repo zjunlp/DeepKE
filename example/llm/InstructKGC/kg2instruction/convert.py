@@ -166,10 +166,10 @@ def process(
                 neg_sampler,
                 converter,
                 neg_ratio=neg_ratio,
-                input_text='input',
+                input_text='text',
                 random_sort=random_sort,
             )
-            new_record = {'id': stable_hash(record['input']),'instruction': sinstruct, 'input': record['input'], 'output': output_text}
+            new_record = {'id': stable_hash(record['text']),'instruction': sinstruct, 'input': record['input'], 'output': output_text}
             writer.write(json.dumps(new_record, ensure_ascii=False)+"\n")
 
 

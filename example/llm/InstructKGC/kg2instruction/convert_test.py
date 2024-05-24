@@ -114,9 +114,9 @@ def process(
                 neg_sampler,
                 converter,
             )
-            iid = stable_hash(record['input'])
+            iid = stable_hash(record['text'])
             for i in range(0, len(sinstruct)):
-                new_record = {'id': iid, 'split':i, 'instruction': sinstruct[i], 'input': record['input']}
+                new_record = {'id': iid, 'split':i, 'instruction': sinstruct[i], 'input': record['text']}
                 writer.write(json.dumps(new_record, ensure_ascii=False)+"\n")
 
 
