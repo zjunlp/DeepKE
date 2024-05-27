@@ -231,7 +231,8 @@ Users can directly download the [model](https://drive.google.com/drive/folders/1
 Users can directly download the [model](https://drive.google.com/drive/folders/1wb_QIZduKDwrHeri0s5byibsSQrrJTEv) for usage. The details are as follows：
 
 1. Enter the directory `DeepKE/example/re/standard`
-3. Modify the parameter `fp`in `conf/config.yaml`to the path of downloaded file, `num_relations`in `conf/embedding.yaml`to 51(relation nums) and `model` in `conf/config.yaml`to `lm`.
+2. Modify the parameter `fp`in `conf/config.yaml`to the path of downloaded file, `num_relations`in `conf/embedding.yaml`to 51(relation nums) and `model` in `conf/config.yaml`to `lm`.
+3. Download the [dataset](https://drive.google.com/drive/folders/1UurqpjePe3zhXxbDDNwLAjVvt7UyUMuQ) , and put files in the directory `example/re/standard/data/origin`.
 4. Predict. The text and entity pairs to be predicted are fed to the program through the terminal.
 
 	```bash
