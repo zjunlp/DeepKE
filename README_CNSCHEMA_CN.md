@@ -231,7 +231,8 @@ DeepKE-cnSchema特别版为支持中文领域知识图谱构建推出的开箱�
 
 1. 进入目录`example/re/standard`
 2. 修改 `conf/predict.yaml`中的参数`fp`为下载文件的路径，`conf/embedding.yaml`中`num_relations`为51（关系个数）,`conf/config.yaml`中的参数model为`lm`
-3. 进行预测，需要预测的文本及实体对通过终端输入给程序
+3. 下载[数据集](https://drive.google.com/drive/folders/1UurqpjePe3zhXxbDDNwLAjVvt7UyUMuQ)，放入目录`example/re/standard/data/origin`中
+4. 进行预测，需要预测的文本及实体对通过终端输入给程序
 
     ```bash
     python predict.py
