@@ -19,24 +19,28 @@ def collate_fn(cfg):
 
         max_len = 512
 
-        def _padding(x, max_len):
-            return x + [0] * (max_len - len(x))
+        def _truncate_or_pad(x, max_len):
+            if len(x) > max_len and (cfg.model_name == 'lm' or cfg.model_name == 'transformer'): 
+                return x[:max_len]
+            elif len(x) < max_len: 
+                return x + [0] * (max_len - len(x))
+            return x
 
         x, y = dict(), []
         word, word_len = [], []
         head_pos, tail_pos = [], []
         pcnn_mask = []
         for data in batch:
-            word.append(_padding(data['token2idx'], max_len))
+            word.append(_truncate_or_pad(data['token2idx'], max_len))
             word_len.append(data['seq_len'])
             y.append(int(data['rel2idx']))
 
             if cfg.model_name != 'lm':
-                head_pos.append(_padding(data['head_pos'], max_len))
-                tail_pos.append(_padding(data['tail_pos'], max_len))
+                head_pos.append(_truncate_or_pad(data['head_pos'], max_len))
+                tail_pos.append(_truncate_or_pad(data['tail_pos'], max_len))
                 if cfg.model_name == 'cnn':
                     if cfg.use_pcnn:
-                        pcnn_mask.append(_padding(data['entities_pos'], max_len))
+                        pcnn_mask.append(_truncate_or_pad(data['entities_pos'], max_len))
 
         x['word'] = torch.tensor(word)
         x['lens'] = torch.tensor(word_len)

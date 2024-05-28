@@ -77,9 +77,6 @@ def _get_predict_instance(cfg):
 
     return instance
 
-
-
-
 @hydra.main(config_path='conf/config.yaml')
 def main(cfg):
     cwd = utils.get_original_cwd()
@@ -120,11 +117,24 @@ def main(cfg):
     model.to(device)
     model.eval()
 
-    x = dict()
-    x['word'], x['lens'] = torch.tensor([data[0]['token2idx'] + [0] * (512 - len(data[0]['token2idx']))]), torch.tensor([data[0]['seq_len']])
-    
+    def process_single_piece(model, piece, device, rels):
+        with torch.no_grad():
+            for key in piece.keys():
+                piece[key] = piece[key].to(device)
+            y_pred = model(piece)
+            y_pred = torch.softmax(y_pred, dim=-1)[0]  
+            prob = y_pred.max().item()
+            index = y_pred.argmax().item()
+            if index >= len(rels):
+                print("The index {} is out of range for 'rels' with length {}.".format(index, len(rels)))
+                return [], 0, 0
+            prob_rel = list(rels.keys())[index]
+            return prob_rel, prob, y_pred
+        
     if cfg.model_name != 'lm':
+        x['word'], x['lens'] = torch.tensor([data[0]['token2idx'] + [0] * (512 - len(data[0]['token2idx']))]), torch.tensor([data[0]['seq_len']])
         x['head_pos'], x['tail_pos'] = torch.tensor(data[0]['head_pos'] + [0] * (512 - len(data[0]['token2idx']))), torch.tensor(data[0]['tail_pos'] + [0] * (512 - len(data[0]['token2idx'])))
+        
         if cfg.model_name == 'cnn':
             if cfg.use_pcnn:
                 x['pcnn_mask'] = torch.tensor([data[0]['entities_pos']])
@@ -133,16 +143,29 @@ def main(cfg):
             adj = torch.empty(1,512,512).random_(2)
             x['adj'] = adj
 
-
-    for key in x.keys():
-        x[key] = x[key].to(device)
-
-    with torch.no_grad():
-        y_pred = model(x)
-        y_pred = torch.softmax(y_pred, dim=-1)[0]
-        prob = y_pred.max().item()
-        prob_rel = list(rels.keys())[y_pred.argmax().item()]
+        prob_rel, prob, y_pred = process_single_piece(model, x, device, rels)
+        
         logger.info(f"\"{data[0]['head']}\" 和 \"{data[0]['tail']}\" 在句中关系为：\"{prob_rel}\"，置信度为{prob:.2f}。")
+    
+    else: 
+        # 分片处理
+        max_prob = -1
+        best_relation = ''
+
+        tokenized_input = data[0]['token2idx']
+        max_len = 512  # 根据模型限制设置
+        num_pieces = len(tokenized_input) // max_len + (1 if len(tokenized_input) % max_len > 0 else 0)
+        
+        for i in range(num_pieces):
+            start_idx = i * max_len
+            end_idx = min((i + 1) * max_len, len(tokenized_input))
+            current_piece_input = {'word': torch.tensor([tokenized_input[start_idx:end_idx] + [0] * (max_len - (end_idx - start_idx))]),
+                                'lens': torch.tensor([min(end_idx - start_idx, max_len)])}
+            relation, prob, y_pred  = process_single_piece(model, current_piece_input, device, rels)
+            if prob > max_prob:
+                max_prob = prob
+                best_relation = relation
+        logger.info(f"\"{data[0]['head']}\" 和 \"{data[0]['tail']}\" 在句中关系为：\"{best_relation}\"，置信度为{max_prob:.2f}。")
 
     if cfg.predict_plot:
         # maplot 默认显示不支持中文
