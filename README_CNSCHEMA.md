@@ -182,7 +182,7 @@ DeepKE-cnSchema is an off-the-shelf version that supports the Chinese knowledge 
 | 21  | cns:人物     | cns:影视作品  | cns:编辑   | 22  | cns:国家     | cns:人物    | cns:国籍   |
 | 23  | cns:人物     | cns:影视作品  | cns:编剧   | 24  | cns:网站     | cns:网站小说  | cns:连载网络 |
 | 25  | cns:人物     | cns:人物    | cns:丈夫   | 26  | cns:Text   | cns:历史人物  | cns:朝代   |
-| 27  | cns:Text   | cns:人物    | cns:民族   | 28  | cns:Text   | cns:历史人物  | cns:朝代   |
+| 27  | cns:Text   | cns:人物    | cns:民族   | 28  | cns:Text   | cns:历史人物  | cns:号   |
 | 29  | cns:出版社    | cns:书籍    | cns:出版社  | 30  | cns:人物     | cns:电视综艺  | cns:主持人  |
 | 31  | cns:Text   | cns:学科专业  | cns:专业代码 | 32  | cns:人物     | cns:歌曲    | cns:歌手   |
 | 33  | cns:人物     | cns:歌曲    | cns:作曲   | 34  | cns:人物     | cns:网络小说  | cns:主角   |
