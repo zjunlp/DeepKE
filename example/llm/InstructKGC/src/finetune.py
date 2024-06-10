@@ -78,10 +78,12 @@ def train(model_args, data_args, training_args, finetuning_args, generating_args
         logger.info(f"resume_from_checkpoint: {training_args.resume_from_checkpoint}")
         train_result = trainer.train(resume_from_checkpoint=training_args.resume_from_checkpoint)
         metrics = train_result.metrics
+        trainer.save_model()
         trainer.log_metrics("train", metrics)
         trainer.save_metrics("train", metrics)
         trainer.save_state()
         all_metrics.update(metrics)
+        
     if training_args.do_eval:
         logger.info("*** Evaluate ***")
         metrics = trainer.evaluate(metric_key_prefix="eval")
