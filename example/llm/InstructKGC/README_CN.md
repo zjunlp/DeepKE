@@ -198,8 +198,8 @@ python ie2instruction/convert_func.py \
 ```
 
 * `language`: 支持`zh`, `en`两种语言, 不同语言使用的指令模版不同。
-* `task`: 目前支持['`RE`', '`NER`', '`EE`', '`EET`', '`EEA`']五类任务。
-* `split_num`: 定义单个指令中可包含的最大schema数目。默认值为4，设置为-1则不进行切分。推荐的任务切分数量依任务而异：**NER建议为6，RE、EE、EET、EEA均推荐为4**。
+* `task`: 目前支持['`RE`', '`NER`', '`EE`', '`EET`', '`EEA`', 'KG']任务。
+* `split_num`: 定义单个指令中可包含的最大schema数目。默认值为4，设置为-1则不进行切分。推荐的任务切分数量依任务而异：**NER建议为6，RE、EE、EET、EEA均推荐为4、KG推荐为1**。
 * `random_sort`: 是否对指令中的schema随机排序, 默认为False, 即按字母顺序排序。
 * `split`: 指定数据集类型，可选`train`或`test`。
 

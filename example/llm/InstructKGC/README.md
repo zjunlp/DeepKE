@@ -224,7 +224,7 @@ python ie2instruction/convert_func.py \
     --split test
 ```
 
-When setting `split` to **test**, select the appropriate number of schemas according to the task type: **6 is recommended for NER, while 4 is recommended for RE, EE, EET, EEA**. The transformed test data will contain five fields: `id`, `task`, `source`, `instruction`, `label`.
+When setting `split` to **test**, select the appropriate number of schemas according to the task type: **6 is recommended for NER, while 4 is recommended for RE, EE, EET, EEA, 1 is recommended for KG**. The transformed test data will contain five fields: `id`, `task`, `source`, `instruction`, `label`.
 
 The `label` field will be used for subsequent evaluation. If the input data lacks the annotation fields (`entity`, `relation`, `event`), the transformed test data will not contain the `label` field, which is suitable for scenarios where no original annotated data is available.
 
