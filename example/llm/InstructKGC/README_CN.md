@@ -596,6 +596,9 @@ CUDA_VISIBLE_DEVICES=0 python src/inference.py \
 > 可通过设置 `bits` = 4 进行量化, RTX3090建议量化。
 
 
+
+
+
 #### 6.1.2IE专用模型
 
 | checkpoint_dir | model_name_or_path | moadel_name | fp16/bf16 | template | 
@@ -627,6 +630,58 @@ CUDA_VISIBLE_DEVICES=0 python src/inference.py \
 
 `model_name_or_path`: IE专用模型权重路径
 
+
+#### 6.1.3合并基础模型+Lora导出
+
+将底座模型和训练的Lora权重合并, 导出模型 
+
+```bash
+python src/export_model.py \
+    --model_name_or_path 'models/Baichuan2-13B-Chat' \
+    --checkpoint_dir 'lora_results/baichuan2-13b-v1/checkpoint-xxx' \
+    --export_dir 'lora_results/baichuan2-13b-v1/baichuan2-13b-v1' \
+    --stage 'sft' \
+    --model_name 'baichuan' \
+    --template 'baichuan2' \
+    --output_dir 'lora_results/test'
+```
+
+注意 `template`、`model_name` 与训练时保持一致。
+
+
+#### 6.1.4vllm加速推理
+
+推荐环境:
+
+```bash
+pip install tiktoken
+pip install peft==0.7.1
+pip install transformers==4.41.2
+
+pip install vllm==0.3.0
+pip install jinja2==3.0.1
+pip install pydantic==1.9.2
+
+ip route add 8.8.8.8 via 127.0.0.1
+```
+
+
+```bash
+python src/infer_vllm.py \
+    --stage sft \
+    --model_name_or_path 'lora_results/baichuan2-13b-v1/baichuan2-13b-v1' \
+    --model_name 'baichuan' \
+    --template 'baichuan2' \
+    --do_predict \
+    --input_file 'data/input.json' \
+    --output_file 'results/baichuan2-13b-IEPile-lora_output.json' \
+    --output_dir 'lora_results/test' \
+    --batch_size 4 \
+    --predict_with_generate \
+    --max_source_length 1024 \
+    --bf16 \
+    --max_new_tokens 512
+```
 
 
 ### 6.2P-Tuning预测
