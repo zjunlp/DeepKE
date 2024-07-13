@@ -9,7 +9,7 @@ OneKE是由蚂蚁集团和浙江大学联合研发的大模型知识抽取框架
 统一知识抽取框架有比较广阔的应用场景，可大幅降低领域知识图谱的构建成本。通过从海量的数据中萃取结构化知识，构建高质量知识图谱并建立知识要素间的逻辑关联，可以实现可解释的推理决策，也可用于增强大模型缓解幻觉并提升稳定性，加速大模型垂直领域的落地应用。如应用在医疗领域通过知识抽取实现医生经验的知识化规则化管理，构建可控的辅助诊疗和医疗问答。应用在金融领域抽取金融指标、风险事件、因果逻辑及产业链等，实现自动的金融研报生成、风险预测、产业链分析等。应用在政务场景实现政务法规的知识化，提升政务服务的办事效率和准确决策。
 
 <p align="center" width="100%">
-<a href="" target="_blank"><img src="./oneke.gif" alt="OneKE" style="width: 100%; min-width: 20px; display: block; margin: auto;"></a>
+<a href="" target="_blank"><img src="./assets/oneke.gif" alt="OneKE" style="width: 100%; min-width: 20px; display: block; margin: auto;"></a>
 </p>
 
 ## 模型使用
