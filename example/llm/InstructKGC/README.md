@@ -656,7 +656,7 @@ python ie2instruction/eval_func.py \
   --task NER 
 ```
 
-* `path1` is the output file of the model. One data sample is shown as follows. After being transformed by the data transformation script, the data has fields of id, instruction, label, and the output field is the actual output of the model after the model prediction step.
+* `path1` is the output file of the model. One data sample is shown as follows. After being transformed by the data transformation script, the data (`test.json`) has fields of `id`, `instruction`, `label`, and the `output` field is the actual output of the model after the model prediction step.
 
 ```json
 {

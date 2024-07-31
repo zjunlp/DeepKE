@@ -710,7 +710,7 @@ python ie2instruction/eval_func.py \
   --task NER 
 ```
 
-* `path1` 是模型的输出文件, 其中一条数据样本如下所示, 经测试数据转换脚本转换后的数据具有`id`、`instruction`、`label`字段, `output`字段是经过模型预测脚步后的模型真实输出。
+* `path1` 是模型的输出文件, 其中一条数据样本如下所示, 经测试数据转换脚本转换后的数据(`test.json`)具有`id`、`instruction`、`label`字段, `output`字段是经过模型预测脚本后的模型真实输出。
 
 ```json
 {
