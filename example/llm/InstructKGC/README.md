@@ -652,12 +652,24 @@ We provide scripts for evaluating the F1 scores for various tasks.
 
 ```bash
 python ie2instruction/eval_func.py \
-  --path1 data/NER/processed.json \
+  --path1 results/llm_output.json \
   --task NER 
+```
+
+* `path1` is the output file of the model. One data sample is shown as follows. After being transformed by the data transformation script, the data has fields of id, instruction, label, and the output field is the actual output of the model after the model prediction step.
+
+```json
+{
+  "id": "e88d2b42f8ca14af1b77474fcb18671ed3cacc0c75cf91f63375e966574bd187", 
+  "instruction": "{\"instruction\": \"You are an expert specializing in entity extraction. Please extract the entities that conform to the schema definition from the input. Return an empty list for non-existent entity types. Please answer in the format of a JSON string.\", \"schema\": [\"Organization\", \"Geographical Location\", \"Person\"], \"input\": \"In contrast, although the rain battle between Qingdao Hainiu Team and Guangzhou Songri Team was also 0∶0, it was lackluster.\"}", 
+  "label": "[{\"entity\": \"Guangzhou Songri Team\", \"entity_type\": \"Organization\"}, {\"entity\": \"Qingdao Hainiu Team\", \"entity_type\": \"Organization\"}]",
+  "output": "{\"Organization\": [\"Guangzhou Songri Team\", \"Qingdao Hainiu Team\"], \"Person\": [], \"Geographical Location\": []}"
+} 
 ```
 
 * `task`: Currently supports five types of tasks: ['`RE`', '`NER`', '`EE`', '`EET`', '`EEA`'].
 * You can set `sort_by` to `source` to calculate the F1 scores on each dataset separately.
+
 
 
 

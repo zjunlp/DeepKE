@@ -33,6 +33,8 @@
     - [6.1LoRA预测](#61lora预测)
       - [6.1.1基础模型+Lora](#611基础模型lora)
       - [6.1.2IE专用模型](#612ie专用模型)
+      - [6.1.3合并基础模型+Lora导出](#613合并基础模型lora导出)
+      - [6.1.4vllm加速推理](#614vllm加速推理)
     - [6.2P-Tuning预测](#62p-tuning预测)
   - [🧾 7.评估](#-7评估)
   - [👋 8.Acknowledgment](#-8acknowledgment)
@@ -704,8 +706,19 @@ CUDA_VISIBLE_DEVICES=0 python src/inference_pt.py \
 
 ```bash
 python ie2instruction/eval_func.py \
-  --path1 data/NER/processed.json \
+  --path1 results/llm_output.json \
   --task NER 
+```
+
+* `path1` 是模型的输出文件, 其中一条数据样本如下所示, 经测试数据转换脚本转换后的数据具有`id`、`instruction`、`label`字段, `output`字段是经过模型预测脚步后的模型真实输出。
+
+```json
+{
+  "id": "e88d2b42f8ca14af1b77474fcb18671ed3cacc0c75cf91f63375e966574bd187", 
+  "instruction": "{\"instruction\": \"你是专门进行实体抽取的专家。请从input中抽取出符合schema定义的实体，不存在的实体类型返回空列表。请按照JSON字符串的格式回答。\", \"schema\": [\"组织机构\", \"地理位置\", \"人物\"], \"input\": \"相比之下，青岛海牛队和广州松日队的雨中之战虽然也是0∶0，但乏善可陈。\"}", 
+  "label": "[{\"entity\": \"广州松日队\", \"entity_type\": \"组织机构\"}, {\"entity\": \"青岛海牛队\", \"entity_type\": \"组织机构\"}]",
+  "output": "{\"组织机构\": [\"广州松日队\", \"青岛海牛队\"], \"人物\": [], \"地理位置\": []}"
+}
 ```
 
 * `task`: 目前支持['RE', 'NER', 'EE', 'EET', 'EEA']五类任务。
