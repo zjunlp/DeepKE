@@ -274,10 +274,12 @@ Below are some models that have been trained with ample information extraction i
 > Important Note: All the commands below should be executed within the `IEPile` directory. For example, if you want to run the fine-tuning script, you should use the following command: `bash ft_scripts/fine_llama.bash`. Please ensure your current working directory is correct.
 
 
+**Start single GPU fine-tuning with the following command**:
+
 ```bash
 output_dir='lora/llama2-13b-chat-v1'
 mkdir -p ${output_dir}
-CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 src/test_finetune.py \
+CUDA_VISIBLE_DEVICES="0,1,2,3" python3 src/test_finetune.py \
     --do_train --do_eval \
     --overwrite_output_dir \
     --model_name_or_path 'models/llama2-13b-chat' \
@@ -307,6 +309,17 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
     --bf16 \
     --bits 4
 ```
+
+
+**Model Parallel Training**
+
+```bash
+output_dir='lora/llama2-13b-chat-v1'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 src/test_finetune.py \
+    ...Other as above
+```
+
 
 * `model_name`: Specifies the **name of the model architecture** you want to use (7B, 13B, Base, Chat belong to the same model architecture). Currently supported models include: ["`llama`", "`alpaca`", "`vicuna`", "`zhixi`", "`falcon`", "`baichuan`", "`chatglm`", "`qwen`", "`moss`", "`openba`"]. **Please note**, this parameter should be distinguished from `--model_name_or_path`.
 * `model_name_or_path`: Model path, please download the corresponding model from [HuggingFace](https://huggingface.co/models).

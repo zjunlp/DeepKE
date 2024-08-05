@@ -273,11 +273,11 @@ mkdir data
 
 > 重要提示：以下的所有命令均应在InstrctKGC目录下执行。例如，如果您想运行微调脚本，您应该使用如下命令：bash ft_scripts/fine_llama.bash。请确保您的当前工作目录正确。
 
-
+**单机单卡训练**
 ```bash
 output_dir='lora/llama2-13b-chat-v1'
 mkdir -p ${output_dir}
-CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 src/finetune.py \
+CUDA_VISIBLE_DEVICES="0" python3 src/finetune.py \
     --do_train --do_eval \
     --overwrite_output_dir \
     --model_name_or_path 'models/llama2-13b-chat' \
@@ -306,6 +306,15 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
     --lora_dropout 0.05 \
     --bf16 \
     --bits 4
+```
+
+
+**单机多卡训练**
+```bash
+output_dir='lora/llama2-13b-chat-v1'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 src/finetune.py \
+    ...其余同上
 ```
 
 * `model_name`: 指定所需的**模型架构名称**(7B、13B、Base、Chat属于同一模型架构)。当前支持的模型包括：["`llama`", "`alpaca`", "`vicuna`", "`zhixi`", "`falcon`", "`baichuan`", "`chatglm`", "`qwen`", "`moss`", "`openba`"]。**请注意**，此参数应与 `--model_name_or_path` 区分。
