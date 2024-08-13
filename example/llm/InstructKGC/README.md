@@ -203,7 +203,7 @@ python ie2instruction/convert_func.py \
 * `task`: Currently supports five types of tasks: ['`RE`', '`NER`', '`EE`', '`EET`', '`EEA`'].
 * `split_num`: Defines the maximum number of schemas that can be included in a single instruction. The default value is 4, and setting it to -1 means no splitting is done. The recommended number of task splits varies by task: **6 for NER, and 4 for RE, EE, EET, EEA**.
 * `random_sort`: Whether to randomize the order of schemas in the instructions. The default is False, which means schemas are sorted alphabetically.
-* `split`: Specifies the type of dataset, with options `train` or `test`.
+* `split`: Specifies the type of dataset, with options `train` (used for both training and validation sets) or `test`.
 
 The converted training data will contain four fields: `task`, `source`, `instruction`, `output`.
 
@@ -324,9 +324,9 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
 * `model_name`: Specifies the **name of the model architecture** you want to use (7B, 13B, Base, Chat belong to the same model architecture). Currently supported models include: ["`llama`", "`alpaca`", "`vicuna`", "`zhixi`", "`falcon`", "`baichuan`", "`chatglm`", "`qwen`", "`moss`", "`openba`"]. **Please note**, this parameter should be distinguished from `--model_name_or_path`.
 * `model_name_or_path`: Model path, please download the corresponding model from [HuggingFace](https://huggingface.co/models).
 * `template`: The **name of the template** used, including: `alpaca`, `baichuan`, `baichuan2`, `chatglm3`, etc. Refer to [src/datamodule/template.py](./src/datamodule/template.py) to see all supported template names. The default is the `alpaca` template. **For `Chat` versions of models, it is recommended to use the matching template, while `Base` version models can default to using `alpaca`**.
-* `train_file`, `valid_file (optional)`: The **file paths** for the training set and validation set. Note: Currently, the format for files only supports **JSON format**.
+* `train_file`, `valid_file (optional)`: The **file paths** for the training set and validation set. Note: Currently, the format for files only supports **JSON format**. `valid_file` cannot be specified as a `test.json` file (without an `output` field, it will report an error). It can be replaced with the `valid_file` parameter by specifying the `val_dst_size` parameter.
 * `output_dir`: The **path to save the weight parameters** after LoRA fine-tuning.
-* `val_set_size`: The number of samples in the **validation set**, default is 1000.
+* `val_set_size`: The number of samples in the **validation set**, default is 1000.  If `valid_file` is not specified, a corresponding number of samples will be partitioned from `train_file` as the validation set.
 * `per_device_train_batch_size`, `per_device_eval_batch_size`: The `batch_size` on each GPU device, adjust according to the size of the memory. For RTX3090, it is recommended to set between 2 and 4.
 * `max_source_length`, `max_target_length`, `cutoff_len`: The maximum input and output lengths, and the cutoff length, which can simply be considered as the maximum input length + maximum output length. Set appropriate values according to specific needs and memory size.
 * Using `deepspeed`, you can set `--deepspeed configs/ds_config_bf16_stage2.json`.
