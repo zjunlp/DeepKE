@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: deepke
+Version: 2.2.7
+Summary: DeepKE is a knowledge extraction toolkit for knowledge graph construction supporting low-resource, document-level and multimodal scenarios for entity, relation and attribute extraction.
+Home-page: https://github.com/zjunlp/deepke
+Author: ZJUNLP
+Author-email: zhangningyu@zju.edu.cn
+License: MIT
+Keywords: pip,RE,NER,AE
+Platform: any
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+License-File: LICENSE

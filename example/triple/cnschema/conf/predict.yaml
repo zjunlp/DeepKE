@@ -1,4 +1,4 @@
 # text: "此次合作达成后，上述艺人的歌曲已经可以在网易云音乐听到，其中包括新生代们听到旋律就可以唱出歌词的田馥甄的《小幸运》、《寂寞寂寞就好》"
 text: '此外网易云平台还上架了一系列歌曲，其中包括田馥甄的《小幸运》等'
-nerfp: 'xxx/checkpoints_bert'
-refp: 'xxx/re_bert.pth'
+nerfp: '/disk/disk_20T/luoyujie/Model/checkpoints_bert'
+refp: '/disk/disk_20T/luoyujie/Model/re_bert.pth'
