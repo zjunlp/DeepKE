@@ -203,7 +203,7 @@ python ie2instruction/convert_func.py \
 * `task`: Currently supports five types of tasks: ['`RE`', '`NER`', '`EE`', '`EET`', '`EEA`'].
 * `split_num`: Defines the maximum number of schemas that can be included in a single instruction. The default value is 4, and setting it to -1 means no splitting is done. The recommended number of task splits varies by task: **6 for NER, and 4 for RE, EE, EET, EEA**.
 * `random_sort`: Whether to randomize the order of schemas in the instructions. The default is False, which means schemas are sorted alphabetically.
-* `split`: Specifies the type of dataset, with options `train` or `test`.
+* `split`: Specifies the type of dataset, with options `train` (used for both training and validation sets) or `test`.
 
 The converted training data will contain four fields: `task`, `source`, `instruction`, `output`.
 
@@ -224,7 +224,7 @@ python ie2instruction/convert_func.py \
     --split test
 ```
 
-When setting `split` to **test**, select the appropriate number of schemas according to the task type: **6 is recommended for NER, while 4 is recommended for RE, EE, EET, EEA**. The transformed test data will contain five fields: `id`, `task`, `source`, `instruction`, `label`.
+When setting `split` to **test**, select the appropriate number of schemas according to the task type: **6 is recommended for NER, while 4 is recommended for RE, EE, EET, EEA, 1 is recommended for KG**. The transformed test data will contain five fields: `id`, `task`, `source`, `instruction`, `label`.
 
 The `label` field will be used for subsequent evaluation. If the input data lacks the annotation fields (`entity`, `relation`, `event`), the transformed test data will not contain the `label` field, which is suitable for scenarios where no original annotated data is available.
 
@@ -274,10 +274,12 @@ Below are some models that have been trained with ample information extraction i
 > Important Note: All the commands below should be executed within the `IEPile` directory. For example, if you want to run the fine-tuning script, you should use the following command: `bash ft_scripts/fine_llama.bash`. Please ensure your current working directory is correct.
 
 
+**Start single GPU fine-tuning with the following command**:
+
 ```bash
 output_dir='lora/llama2-13b-chat-v1'
 mkdir -p ${output_dir}
-CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 src/test_finetune.py \
+CUDA_VISIBLE_DEVICES="0,1,2,3" python3 src/test_finetune.py \
     --do_train --do_eval \
     --overwrite_output_dir \
     --model_name_or_path 'models/llama2-13b-chat' \
@@ -308,12 +310,23 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
     --bits 4
 ```
 
+
+**Model Parallel Training**
+
+```bash
+output_dir='lora/llama2-13b-chat-v1'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 src/test_finetune.py \
+    ...Other as above
+```
+
+
 * `model_name`: Specifies the **name of the model architecture** you want to use (7B, 13B, Base, Chat belong to the same model architecture). Currently supported models include: ["`llama`", "`alpaca`", "`vicuna`", "`zhixi`", "`falcon`", "`baichuan`", "`chatglm`", "`qwen`", "`moss`", "`openba`"]. **Please note**, this parameter should be distinguished from `--model_name_or_path`.
 * `model_name_or_path`: Model path, please download the corresponding model from [HuggingFace](https://huggingface.co/models).
 * `template`: The **name of the template** used, including: `alpaca`, `baichuan`, `baichuan2`, `chatglm3`, etc. Refer to [src/datamodule/template.py](./src/datamodule/template.py) to see all supported template names. The default is the `alpaca` template. **For `Chat` versions of models, it is recommended to use the matching template, while `Base` version models can default to using `alpaca`**.
-* `train_file`, `valid_file (optional)`: The **file paths** for the training set and validation set. Note: Currently, the format for files only supports **JSON format**.
+* `train_file`, `valid_file (optional)`: The **file paths** for the training set and validation set. Note: Currently, the format for files only supports **JSON format**. `valid_file` cannot be specified as a `test.json` file (without an `output` field, it will report an error). It can be replaced with the `valid_file` parameter by specifying the `val_dst_size` parameter.
 * `output_dir`: The **path to save the weight parameters** after LoRA fine-tuning.
-* `val_set_size`: The number of samples in the **validation set**, default is 1000.
+* `val_set_size`: The number of samples in the **validation set**, default is 1000.  If `valid_file` is not specified, a corresponding number of samples will be partitioned from `train_file` as the validation set.
 * `per_device_train_batch_size`, `per_device_eval_batch_size`: The `batch_size` on each GPU device, adjust according to the size of the memory. For RTX3090, it is recommended to set between 2 and 4.
 * `max_source_length`, `max_target_length`, `cutoff_len`: The maximum input and output lengths, and the cutoff length, which can simply be considered as the maximum input length + maximum output length. Set appropriate values according to specific needs and memory size.
 * Using `deepspeed`, you can set `--deepspeed configs/ds_config_bf16_stage2.json`.
@@ -652,12 +665,24 @@ We provide scripts for evaluating the F1 scores for various tasks.
 
 ```bash
 python ie2instruction/eval_func.py \
-  --path1 data/NER/processed.json \
+  --path1 results/llm_output.json \
   --task NER 
+```
+
+* `path1` is the output file of the model. One data sample is shown as follows. After being transformed by the data transformation script, the data (`test.json`) has fields of `id`, `instruction`, `label`, and the `output` field is the actual output of the model after the model prediction step.
+
+```json
+{
+  "id": "e88d2b42f8ca14af1b77474fcb18671ed3cacc0c75cf91f63375e966574bd187", 
+  "instruction": "{\"instruction\": \"You are an expert specializing in entity extraction. Please extract the entities that conform to the schema definition from the input. Return an empty list for non-existent entity types. Please answer in the format of a JSON string.\", \"schema\": [\"Organization\", \"Geographical Location\", \"Person\"], \"input\": \"In contrast, although the rain battle between Qingdao Hainiu Team and Guangzhou Songri Team was also 0∶0, it was lackluster.\"}", 
+  "label": "[{\"entity\": \"Guangzhou Songri Team\", \"entity_type\": \"Organization\"}, {\"entity\": \"Qingdao Hainiu Team\", \"entity_type\": \"Organization\"}]",
+  "output": "{\"Organization\": [\"Guangzhou Songri Team\", \"Qingdao Hainiu Team\"], \"Person\": [], \"Geographical Location\": []}"
+} 
 ```
 
 * `task`: Currently supports five types of tasks: ['`RE`', '`NER`', '`EE`', '`EET`', '`EEA`'].
 * You can set `sort_by` to `source` to calculate the F1 scores on each dataset separately.
+
 
 
 

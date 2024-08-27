@@ -132,6 +132,7 @@ def main(cfg):
             return prob_rel, prob, y_pred
         
     if cfg.model_name != 'lm':
+        x = dict()
         x['word'], x['lens'] = torch.tensor([data[0]['token2idx'] + [0] * (512 - len(data[0]['token2idx']))]), torch.tensor([data[0]['seq_len']])
         x['head_pos'], x['tail_pos'] = torch.tensor(data[0]['head_pos'] + [0] * (512 - len(data[0]['token2idx']))), torch.tensor(data[0]['tail_pos'] + [0] * (512 - len(data[0]['token2idx'])))
         

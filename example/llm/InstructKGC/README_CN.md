@@ -33,6 +33,8 @@
     - [6.1LoRA预测](#61lora预测)
       - [6.1.1基础模型+Lora](#611基础模型lora)
       - [6.1.2IE专用模型](#612ie专用模型)
+      - [6.1.3合并基础模型+Lora导出](#613合并基础模型lora导出)
+      - [6.1.4vllm加速推理](#614vllm加速推理)
     - [6.2P-Tuning预测](#62p-tuning预测)
   - [🧾 7.评估](#-7评估)
   - [👋 8.Acknowledgment](#-8acknowledgment)
@@ -198,10 +200,10 @@ python ie2instruction/convert_func.py \
 ```
 
 * `language`: 支持`zh`, `en`两种语言, 不同语言使用的指令模版不同。
-* `task`: 目前支持['`RE`', '`NER`', '`EE`', '`EET`', '`EEA`']五类任务。
-* `split_num`: 定义单个指令中可包含的最大schema数目。默认值为4，设置为-1则不进行切分。推荐的任务切分数量依任务而异：**NER建议为6，RE、EE、EET、EEA均推荐为4**。
+* `task`: 目前支持['`RE`', '`NER`', '`EE`', '`EET`', '`EEA`', 'KG']任务。
+* `split_num`: 定义单个指令中可包含的最大schema数目。默认值为4，设置为-1则不进行切分。推荐的任务切分数量依任务而异：**NER建议为6，RE、EE、EET、EEA均推荐为4、KG推荐为1**。
 * `random_sort`: 是否对指令中的schema随机排序, 默认为False, 即按字母顺序排序。
-* `split`: 指定数据集类型，可选`train`或`test`。
+* `split`(必选): 指定数据集类型，`train`(训练集train.json、验证集dev.json均使用`train`)或`test`。
 
 转换后的训练数据将包含 `task`, `source`, `instruction`, `output` 四个字段。
 
@@ -271,11 +273,11 @@ mkdir data
 
 > 重要提示：以下的所有命令均应在InstrctKGC目录下执行。例如，如果您想运行微调脚本，您应该使用如下命令：bash ft_scripts/fine_llama.bash。请确保您的当前工作目录正确。
 
-
+**单机单卡训练**
 ```bash
 output_dir='lora/llama2-13b-chat-v1'
 mkdir -p ${output_dir}
-CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 src/finetune.py \
+CUDA_VISIBLE_DEVICES="0" python3 src/finetune.py \
     --do_train --do_eval \
     --overwrite_output_dir \
     --model_name_or_path 'models/llama2-13b-chat' \
@@ -306,12 +308,21 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
     --bits 4
 ```
 
+
+**单机多卡训练**
+```bash
+output_dir='lora/llama2-13b-chat-v1'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 src/finetune.py \
+    ...其余同上
+```
+
 * `model_name`: 指定所需的**模型架构名称**(7B、13B、Base、Chat属于同一模型架构)。当前支持的模型包括：["`llama`", "`alpaca`", "`vicuna`", "`zhixi`", "`falcon`", "`baichuan`", "`chatglm`", "`qwen`", "`moss`", "`openba`"]。**请注意**，此参数应与 `--model_name_or_path` 区分。
 * `model_name_or_path`: 模型路径, 请到 [HuggingFace](https://huggingface.co/models) 下载相应模型。
 * `template`: 使用的**模板名称**，包括：`alpaca`, `baichuan`, `baichuan2`, `chatglm3`等, 请参考 [src/datamodule/template.py](./src/datamodule/template.py) 查看所有支持的模版名称, 默认使用的是`alpaca`模板, **`Chat`版本的模型建议使用配套的模版, Base版本模型可默认使用`alpaca`**。
-* `train_file`, `valid_file（可选）`: 训练集和验证集的**文件路径**。注意：目前仅支持json格式的文件。
+* `train_file`, `valid_file（可选）`: 训练集和验证集的**文件路径**。注意：目前仅支持json格式的文件。`valid_file`不能指定为`test.json`文件(不包含output字段,会报错)，可以通过指定`val_set_size`参数替代`valid_file`。
 * `output_dir`: LoRA微调后的**权重参数保存路径**。
-* `val_set_size`: **验证集的样本数量**, 默认为1000。
+* `val_set_size`: **验证集的样本数量**, 默认为1000。若没有指定`valid_file`, 将会从`train_file`中划分出对应数量的样本作为验证集。
 * `per_device_train_batch_size`, `per_device_eval_batch_size`: 每台GPU设备上的`batch_size`, 根据显存大小调整, RTX3090建议设置2~4。
 * `max_source_length`, `max_target_length`, `cutoff_len`: 最大输入、输出长度、截断长度, 截断长度可以简单地视作最大输入长度 + 最大输出长度, 需根据具体需求和显存大小设置合适值。
 * 使用`deepspeed`, 可设置 `--deeepspeed configs/ds_config_bf16_stage2.json`
@@ -596,6 +607,9 @@ CUDA_VISIBLE_DEVICES=0 python src/inference.py \
 > 可通过设置 `bits` = 4 进行量化, RTX3090建议量化。
 
 
+
+
+
 #### 6.1.2IE专用模型
 
 | checkpoint_dir | model_name_or_path | moadel_name | fp16/bf16 | template | 
@@ -628,6 +642,58 @@ CUDA_VISIBLE_DEVICES=0 python src/inference.py \
 `model_name_or_path`: IE专用模型权重路径
 
 
+#### 6.1.3合并基础模型+Lora导出
+
+将底座模型和训练的Lora权重合并, 导出模型 
+
+```bash
+python src/export_model.py \
+    --model_name_or_path 'models/Baichuan2-13B-Chat' \
+    --checkpoint_dir 'lora_results/baichuan2-13b-v1/checkpoint-xxx' \
+    --export_dir 'lora_results/baichuan2-13b-v1/baichuan2-13b-v1' \
+    --stage 'sft' \
+    --model_name 'baichuan' \
+    --template 'baichuan2' \
+    --output_dir 'lora_results/test'
+```
+
+注意 `template`、`model_name` 与训练时保持一致。
+
+
+#### 6.1.4vllm加速推理
+
+推荐环境:
+
+```bash
+pip install tiktoken
+pip install peft==0.7.1
+pip install transformers==4.41.2
+
+pip install vllm==0.3.0
+pip install jinja2==3.0.1
+pip install pydantic==1.9.2
+
+ip route add 8.8.8.8 via 127.0.0.1
+```
+
+
+```bash
+python src/infer_vllm.py \
+    --stage sft \
+    --model_name_or_path 'lora_results/baichuan2-13b-v1/baichuan2-13b-v1' \
+    --model_name 'baichuan' \
+    --template 'baichuan2' \
+    --do_predict \
+    --input_file 'data/input.json' \
+    --output_file 'results/baichuan2-13b-IEPile-lora_output.json' \
+    --output_dir 'lora_results/test' \
+    --batch_size 4 \
+    --predict_with_generate \
+    --max_source_length 1024 \
+    --bf16 \
+    --max_new_tokens 512
+```
+
 
 ### 6.2P-Tuning预测
 
@@ -649,8 +715,19 @@ CUDA_VISIBLE_DEVICES=0 python src/inference_pt.py \
 
 ```bash
 python ie2instruction/eval_func.py \
-  --path1 data/NER/processed.json \
+  --path1 results/llm_output.json \
   --task NER 
+```
+
+* `path1` 是模型的输出文件, 其中一条数据样本如下所示, 经测试数据转换脚本转换后的数据(`test.json`)具有`id`、`instruction`、`label`字段, `output`字段是经过模型预测脚本后的模型真实输出。
+
+```json
+{
+  "id": "e88d2b42f8ca14af1b77474fcb18671ed3cacc0c75cf91f63375e966574bd187", 
+  "instruction": "{\"instruction\": \"你是专门进行实体抽取的专家。请从input中抽取出符合schema定义的实体，不存在的实体类型返回空列表。请按照JSON字符串的格式回答。\", \"schema\": [\"组织机构\", \"地理位置\", \"人物\"], \"input\": \"相比之下，青岛海牛队和广州松日队的雨中之战虽然也是0∶0，但乏善可陈。\"}", 
+  "label": "[{\"entity\": \"广州松日队\", \"entity_type\": \"组织机构\"}, {\"entity\": \"青岛海牛队\", \"entity_type\": \"组织机构\"}]",
+  "output": "{\"组织机构\": [\"广州松日队\", \"青岛海牛队\"], \"人物\": [], \"地理位置\": []}"
+}
 ```
 
 * `task`: 目前支持['RE', 'NER', 'EE', 'EET', 'EEA']五类任务。

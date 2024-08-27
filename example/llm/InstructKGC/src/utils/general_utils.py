@@ -15,7 +15,7 @@ from transformers import (
 )
 
 MODEL_DICT = {
-    "llama":["llama", "alpaca", "vicuna", "zhixi"],
+    "llama":["llama", "llama2", "llama3", "alpaca", "vicuna", "zhixi"],
     "custom":["custom"],
     "falcon":["falcon"],
     "qwen":["qwen"],
@@ -44,9 +44,7 @@ LORA_TARGET_MODULES_DICT = {
 
 
 def get_model_tokenizer_trainer(model_name):
-    if model_name == 'llama':
-        return LlamaForCausalLM, LlamaTokenizer, Trainer
-    elif model_name == 'chatglm':
+    if model_name == 'chatglm':
         return AutoModel, AutoTokenizer, Seq2SeqTrainer
     elif model_name == "openba":
         return AutoModelForSeq2SeqLM, AutoTokenizer, Seq2SeqTrainer
