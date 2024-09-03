@@ -66,6 +66,18 @@ def load_model_and_tokenizer(
         model_to_load = model_args.model_name_or_path
 
     config = AutoConfig.from_pretrained(model_to_load, **config_kwargs)
+    
+    # Fix tokenizer
+    if tokenizer.bos_token_id is None:
+        tokenizer.bos_token = "<|beginoftext|>"
+    
+    if tokenizer.eos_token_id is None:
+        tokenizer.eos_token = "<|endoftext|>"
+        logger.info("Add eos token: {}".format(tokenizer.eos_token))
+
+    if tokenizer.pad_token_id is None:
+        tokenizer.pad_token = tokenizer.eos_token
+        logger.info("Add pad token: {}".format(tokenizer.pad_token))
 
     # Fix tokenizer (for ChatGLM2 and ChatGLM3)
     if getattr(config, "model_type", None) == "chatglm":
