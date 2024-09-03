@@ -341,6 +341,7 @@ The specific script for fine-tuning the `LLaMA2-13B-Chat` model can be found in 
 ### 4.2 LoRA Fine-tuning LLaMA
 The specific script for fine-tuning the LLaMA model can be found in [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash).
 
+* `LLaMA3` uses the same script, just change `--template 'alpaca'`.
 
 ### 4.3 LoRA Fine-tuning Alpaca
 When fine-tuning the Alpaca model, you can follow the steps similar to [fine-tuning the LLaMA model](./README_CN.md/#42lora微调llama). To fine-tune, make the following **changes** to the [ft_scripts/fine_llama.bash](./ft_scripts/fine_llama.bash) file:
@@ -404,8 +405,17 @@ The corresponding script can be found in [ft_scripts/fine_baichuan.bash](./ft_sc
 5. We recommend using `--bf16`.
 6. If memory overflow occurs when saving after evaluation, set `evaluation_strategy no`.
 
+### 4.9 LoRA Fine-tuning Qwen
+The corresponding script can be found in [ft_scripts/fine_qwen2.bash](./ft_scripts/fine_qwen2.bash).
 
-### 4.9 Continue Training with Domain-specific Data
+
+2. **Please update the version of accelerate to 0.27.2 and transformers to 4.38.0, otherwise issues may arise.**
+3. `model_name = qwen2`
+4. `template qwen`
+
+* `Qwen1.5` uses the same script, just change `model_name = qwen`.
+
+### 4.10 Continue Training with Domain-specific Data
 
 Although the `llama2-13b-iepile-lora` and `baichuan2-13b-iepile-lora` models have undergone extensive instruction fine-tuning on multiple general datasets and thus possess a degree of **general information extraction capability**, they may still exhibit certain limitations when processing data in **specific domains** (such as `law`, `education`, `science`, `telecommunications`). To address this challenge, it is recommended to conduct **secondary training** of these models on datasets specific to these domains. This will help the models better adapt to the semantic and structural characteristics of the specific domains, enhancing their **information extraction capability within those domains**.
 

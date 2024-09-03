@@ -221,6 +221,15 @@ LLaMA，它是一组从7B到65B参数的基础语言模型。我们还提供了�
 
 
 
+## MOSS
+<p align="center" width="100%">
+<a href="" target="_blank"><img src="assets/qwen_logo.png" alt="Qwen" style="width: 25%; min-width: 25px; display: block; margin: auto;"></a>
+
+### 案例一：Lora微调Qwen完成CCKS2023指令驱动的知识图谱构建 [英文](./InstructKGC//README.md/#49lora-fine-tuning-with-qwen) | [中文](./InstructKGC//README_CN.md/#49lora微调qwen) 
+
+
+
+
 ## GPT系列
 
 <p align="center" width="100%">

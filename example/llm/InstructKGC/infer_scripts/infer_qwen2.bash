@@ -1,0 +1,16 @@
+CUDA_VISIBLE_DEVICES=0 python src/inference.py \
+    --stage sft \
+    --model_name_or_path 'your model path' \
+    --checkpoint_dir 'lora/qwen2-v1' \
+    --model_name 'qwen2' \
+    --template 'qwen' \
+    --do_predict \
+    --input_file 'data/NER/test.json' \
+    --output_file 'results/qwen2-lora.json' \
+    --finetuning_type lora \
+    --output_dir 'lora/test' \
+    --predict_with_generate \
+    --cutoff_len 512 \
+    --bf16 \
+    --max_new_tokens 300 \
+    --bits 4

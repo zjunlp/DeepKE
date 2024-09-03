@@ -408,9 +408,17 @@ output_dir='path to save Zhixi Lora'
 5. 我们建议使用 `--bf16`
 6. 如果出现在eval后保存时爆显存请设置 `evaluation_strategy no`
 
+### 4.9LoRA微调Qwen
 
+相应的脚本在 [ft_scripts/fine_qwen2.bash](./ft_scripts/fine_qwen2.bash)
 
-### 4.9领域内数据继续训练
+1. **请将accelerate版本更新为0.27.2，transformers版本更新为4.38.0, 否则可能出现问题**
+2. `model_name = qwen2`
+3. `template qwen`
+
+* `Qwen1.5` 采用的脚本也一致, 仅需修改 `model_name = qwen`
+
+### 4.10领域内数据继续训练
 
 尽管 [zjunlp/llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora/tree/main) | [zjunlp/baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) | [zjunlp/llama3-8b-iepile-lora](https://huggingface.co/zjunlp/llama3-8b-iepile-lora) | [zjunlp/qwen1.5-14b-iepile-lora](https://huggingface.co/zjunlp/qwen1.5-14b-iepile-lora) | [zjunlp/OneKE](https://huggingface.co/zjunlp/OneKE) 等模型已在多个通用数据集上接受了广泛的指令微调，并因此获得了一定的**通用信息抽取能力**，但它们在**特定领域**（如`法律`、`教育`、`科学`、`电信`）的数据处理上可能仍显示出一定的局限性。针对这一挑战，建议对这些模型在特定领域的数据集上进行**二次训练**。这将有助于模型更好地适应特定领域的语义和结构特征，从而增强其在**该领域内的信息抽取能力**。
 

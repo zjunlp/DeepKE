@@ -222,6 +222,15 @@ ZhiXi follows a two-step approach: (1) It performs further full pre-training on 
 
 
 
+## Qwen
+<p align="center" width="100%">
+<a href="" target="_blank"><img src="assets/qwen_logo.png" alt="Qwen" style="width: 25%; min-width: 25px; display: block; margin: auto;"></a>
+
+
+### Case 1: OpenDelta Fine-tuning of Qwen for CCKS2023 Instruction-based KG Construction [English](./InstructKGC//README.md/#49lora-fine-tuning-with-qwen) | [Chinese](./InstructKGC//README_CN.md/#49lora微调qwen) 
+
+
+
 
 ## CPM-Bee
 ### Case 1: OpenDelta Fine-tuning of CPM-Bee for CCKS2023 Instruction-based KG Construction [English](./CPM-Bee/README.md) | [Chinese](./CPM-Bee/README_CN.md) 
