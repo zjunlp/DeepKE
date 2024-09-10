@@ -23,7 +23,8 @@
     - [4.6 LoRA Fine-tuning ChatGLM](#46-lora-fine-tuning-chatglm)
     - [4.7 LoRA Fine-tuning Moss](#47-lora-fine-tuning-moss)
     - [4.8 LoRA Fine-tuning Baichuan](#48-lora-fine-tuning-baichuan)
-    - [4.9 Continue Training with Domain-specific Data](#49-continue-training-with-domain-specific-data)
+    - [4.9 LoRA Fine-tuning Qwen](#49-lora-fine-tuning-qwen)
+    - [4.10 Continue Training with Domain-specific Data](#410-continue-training-with-domain-specific-data)
       - [Lora Fine-tuning](#lora-fine-tuning)
       - [Full Fine-tuning](#full-fine-tuning)
   - [🥊 5.P-Tuning Fine-tuning](#-5p-tuning-fine-tuning)
@@ -570,8 +571,7 @@ Below are some models optimized through training with LoRA technology (**LoRA we
 
 </details>
 
-<details>
-  <summary><b>Version V1(Recommended)</b></summary>
+**Version V2(Recommended)**
 
 * [zjunlp/llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora/tree/main) 
 * [zjunlp/baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) 
@@ -584,8 +584,6 @@ Below are some models optimized through training with LoRA technology (**LoRA we
 | llama3-8b-iepile-lora | LLaMA3-8B-Instruct | llama | bf16 | alpaca |
 | qwen1.5-14b-iepile-lora | Qwen1.5-14B-Chat | qwen2 | bf16 | qwen |
 
-
-</details>
 
 
 

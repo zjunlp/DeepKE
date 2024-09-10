@@ -24,7 +24,8 @@
     - [4.6LoRA微调ChatGLM](#46lora微调chatglm)
     - [4.7LoRA微调Moss](#47lora微调moss)
     - [4.8LoRA微调Baichuan](#48lora微调baichuan)
-    - [4.9领域内数据继续训练](#49领域内数据继续训练)
+    - [4.9LoRA微调Qwen](#49lora微调qwen)
+    - [4.10领域内数据继续训练](#410领域内数据继续训练)
       - [Lora微调](#lora微调)
       - [全量微调](#全量微调)
   - [🥊 5.P-Tuning微调](#-5p-tuning微调)
@@ -564,8 +565,7 @@ deepspeed --include localhost:0 src/finetuning_pt.py \
 
 </details>
 
-<details>
-  <summary><b>V2版本(推荐)</b></summary>
+**V2版本(推荐)**
 
 * [zjunlp/llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora/tree/main) 
 * [zjunlp/baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) 
@@ -580,8 +580,6 @@ deepspeed --include localhost:0 src/finetuning_pt.py \
 | llama3-8b-iepile-lora | LLaMA3-8B-Instruct | llama | bf16 | alpaca |
 | qwen1.5-14b-iepile-lora | Qwen1.5-14B-Chat | qwen2 | bf16 | qwen |
 
-
-</details>
 
 
 要使用这些**训练好的**LoRA模型进行预测，可以执行以下命令：
