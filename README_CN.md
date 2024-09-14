@@ -160,6 +160,7 @@ conda activate deepke
 pip install deepke
 ```
 - 请确保您当前的pip版本<=24.0
+  
 2） 基于源码安装
 
 ```bash
