@@ -177,7 +177,7 @@ conda activate deepke
    ```bash
    pip install deepke
    ```
-   - Please make sure that pip version <= 24.1
+   - Please make sure that pip version <= 24.0
 
 **Step3** Enter the task directory
 
