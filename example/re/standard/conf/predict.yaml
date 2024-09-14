@@ -1,2 +1,2 @@
 # the path of the model / checkpoint to be used
-fp: '/disk/disk_20T/luoyujie/Model/re_robert.pth'
+fp: 'xxx/checkpoints/2019-12-03_17-35-30/cnn_epoch21.pth'
