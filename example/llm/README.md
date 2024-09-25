@@ -28,9 +28,18 @@
     <p>DeepKE-LLM: A Large Language Model Based<br>Knowledge Extraction Toolkit</p>
 </h1>
 
+Deepke-llm is **a knowledge extraction toolkit** based on Large Language Models (LLMs) and is an iterative version of the original [Deepke](https://github.com/zjunlp/DeepKE) Toolkit. We have adapted the existing Deepke framework to support LLMs for knowledge extraction tasks. Our toolkit offers **in-context learning** methods for knowledge extraction, along with support for various well-known large language models ([LLaMA3](https://huggingface.co/meta-llama/Meta-Llama-3.1-8B-Instruct), [Qwen2.5](https://huggingface.co/Qwen/Qwen2.5-7B-Instruct), etc.) for both **inference** and **fine-tuning** in knowledge extraction tasks.
 
-- [Requirements](#requirements)
+Additionally, we've released a series of **instruction-tuning datasets** for knowledge extraction, including [IEPile](https://huggingface.co/datasets/zjunlp/iepile), [InstructIE](https://huggingface.co/datasets/zjunlp/InstructIE), as well as **proprietary models** like [OneKE](https://huggingface.co/zjunlp/OneKE) and [KnowLM](https://huggingface.co/zjunlp/knowlm-13b-zhixi) for your use. We encourage you to explore and utilize these resources!
+
+**If you encounter any issues during the installation of DeepKE and DeepKE-LLM, please check [Tips](https://github.com/zjunlp/DeepKE#tips) or promptly submit an [issue](https://github.com/zjunlp/DeepKE/issues), and we will assist you with resolving the problem!**
+
+
+# Table of Contents
+
 - [News](#news)
+- [Quick Start](#quick-start)
+- [Requirements](#requirements)
 - [Dataset](#dataset)
 - [Models](#models)
   - [OneKE](#oneke)
@@ -59,21 +68,6 @@
 - [Citation](#citation)
 
 
-# Requirements
-
-In the era of large models, DeepKE-LLM utilizes a completely new environment dependency.
-
-```
-conda create -n deepke-llm python=3.9
-conda activate deepke-llm
-
-cd example/llm
-pip install -r requirements.txt
-```
-
-Please note that the `requirements.txt` file is located in the `example/llm` folder.
-
-
 # News
 
 * [2024/04] We release a new bilingual (Chinese and English) schema-based information extraction model called [OneKE](https://huggingface.co/zjunlp/OneKE) based on Chinese-Alpaca-2-13B.
@@ -85,6 +79,21 @@ Please note that the `requirements.txt` file is located in the `example/llm` fol
 * [2023/06] The first version of pre-trained weights, [knowlm-13b-base-v1.0](https://huggingface.co/zjunlp/knowlm-13b-base-v1.0), and the first version of [zhixi-13b-lora](https://huggingface.co/zjunlp/zhixi-13b-lora) were released.
 * [2023/05] We initiated an instruction-based Information Extraction project.
 
+
+
+# Quick Start
+
+comming soon
+
+# Requirements
+
+In the era of large models, DeepKE-LLM utilizes a completely new environment dependency.
+
+```
+conda create -n deepke-llm python=3.9
+conda activate deepke-llm
+pip install -r requirements.txt
+```
 
 
 # Dataset
