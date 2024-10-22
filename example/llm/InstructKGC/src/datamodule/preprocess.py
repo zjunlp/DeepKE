@@ -85,6 +85,7 @@ def preprocess_dataset(
             model_inputs["input_ids"].append(input_ids)
             model_inputs["attention_mask"].append([1] * len(input_ids))
             model_inputs["labels"].append(labels)
+            model_inputs["length"].append(len(input_ids))
         
         return model_inputs
 
