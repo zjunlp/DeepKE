@@ -684,7 +684,7 @@ ip route add 8.8.8.8 via 127.0.0.1
 
 
 ```bash
-python src/infer_vllm.py \
+python src/inference_vllm.py \
     --stage sft \
     --model_name_or_path 'lora_results/baichuan2-13b-v1/baichuan2-13b-v1' \
     --model_name 'baichuan' \
