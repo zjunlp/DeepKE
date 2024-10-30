@@ -47,7 +47,7 @@ def preprocess_dataset(
     def preprocess_supervised_dataset(examples: Dict[str, List[Any]]) -> Dict[str, List[List[int]]]:
         # build inputs with format `<bos> X Y <eos>` and labels with format `<ignore> ... <ignore> Y <eos>`
         # for multiturn examples, we only mask the prompt part in each prompt-response pair.
-        model_inputs = {"input_ids": [], "attention_mask": [], "labels": [], "length": []}
+        model_inputs = {"input_ids": [], "attention_mask": [], "labels": [], }  # "length": []}
 
         for query, response, history, system in construct_example(examples):
             if not (isinstance(query, str) and isinstance(response, str) and query != "" and response != ""):
@@ -85,7 +85,7 @@ def preprocess_dataset(
             model_inputs["input_ids"].append(input_ids)
             model_inputs["attention_mask"].append([1] * len(input_ids))
             model_inputs["labels"].append(labels)
-            model_inputs["length"].append(len(input_ids))
+            #model_inputs["length"].append(len(input_ids))
         
         return model_inputs
 
