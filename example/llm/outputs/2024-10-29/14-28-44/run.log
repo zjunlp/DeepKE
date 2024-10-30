@@ -1,3 +1,0 @@
-[2024-10-29 14:28:53,950][httpx][INFO] - HTTP Request: POST https://api.chatanywhere.tech/v1/chat/completions "HTTP/1.1 200 OK"
-[2024-10-29 14:28:53,957][__main__][INFO] - 输入：秦始皇于公元前221年统一了中国，建立了中央集权的封建制度，首都定于陕西省西安市。
-输出：[{'E': 'PER', 'W': '秦始皇'}, {'E': 'TIME', 'W': '公元前221年'}, {'E': 'LOC', 'W': '中国'}, {'E': 'LOC', 'W': '陕西省'}, {'E': 'LOC', 'W': '西安市'}]
