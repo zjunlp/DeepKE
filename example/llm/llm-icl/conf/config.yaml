@@ -4,7 +4,7 @@ cwd: ""  # 项目路径
 task: "ner"
 text_input: "秦始皇于公元前221年统一了中国，建立了中央集权的封建制度，首都定于陕西省西安市。"
 instruction: "请标注实体"
-language: "ch"  # ch而不是cn 或 en
+language: "ch"  # ch而不是cn 或者 en
 
 api_key: ""
 openai_api_base: ""
