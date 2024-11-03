@@ -1,1 +1,0 @@
-[2024-11-02 17:04:30,386][httpx][INFO] - HTTP Request: POST https://api.chatanywhere.tech/v1/chat/completions "HTTP/1.1 200 OK"
