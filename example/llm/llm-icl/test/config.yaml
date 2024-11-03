@@ -1,0 +1,50 @@
+cwd: null  # 会自动设置
+api_key: "sk-7kVvoLKWePIdvvirGUXY80MVqAsofr3f37kqqHUw7Pnmil3u"
+engine: "gpt-3.5-turbo"
+task: "ner"
+
+zero_shot: False
+data_path: "/disk/disk_20T/ruxiangyuan/projects/references/llm-icl/data" # prompt路径
+language: "ch"  # ch 或者 en
+
+text_input: "百度贴吧是百度旗下独立品牌，全球领先的中文社区，结合搜索引擎建立的交流平台，让那些对同一个话题感兴趣的人们聚集在一起。"
+
+
+
+instruction: "请标注实体"
+
+openai_api_base: "https://api.chatanywhere.org/v1"
+
+domain: "general"
+labels: ["ORG", "PERSON", "LOCATION"]
+
+
+
+#task: "ner"
+#text_input: "秦始皇于公元前221年统一了中国，建立了中央集权的封建制度，首都定于陕西省西安市。"
+#api_key: " sk-7kVvoLKWePIdvvirGUXY80MVqAsofr3f37kqqHUw7Pnmil3u"
+#engine: "gpt-3.5-turbo"
+#zero_shot: False
+#data_path: "/disk/disk_20T/ruxiangyuan/projects/references/llm-icl/data"
+#language: "ch"
+#domain: "general"
+#instruction: "请标注实体"
+#labels: ["ORG", "PERSON", "LOCATION"]
+#cwd: "/disk/disk_20T/ruxiangyuan/projects/references/llm-icl"  # 你当前项目的绝对路径
+#openai_api_base: "https://api.chatanywhere.org/v1"
+
+#run.yaml:
+#task: "ee"                 # [ner, re, ee, rte, da]
+#language: "en"                # ["en", "ch"]
+#engine: "text-davinci-003"    # ["text-davinci-003", "text-curie-001", "text-babbage-001", "text-ada-001"]
+#api_key: ""
+#text_input: "历经4小时51分钟的体力、意志力鏖战，北京时间9月9日上午纳达尔在亚瑟·阿什球场，以7比5、6比3、5比7、4比6和6比4击败赛会5号种子俄罗斯球员梅德韦杰夫，夺得了2019年美国网球公开赛男单冠军。"
+#zero_shot: True
+#instruction: None
+#data_path: ""
+#domain: "sport"
+#labels: None   # ['PER', 'ORG', 'LOC']
+#head_type: ""
+#head_entity: ""
+#tail_type: ""
+#tail_entity: ""

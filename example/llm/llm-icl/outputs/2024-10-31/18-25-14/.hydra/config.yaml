@@ -1,0 +1,15 @@
+cwd: null
+api_key: sk-7kVvoLKWePIdvvirGUXY80MVqAsofr3f37kqqHUw7Pnmil3u
+engine: gpt-3.5-turbo
+task: ner
+zero_shot: false
+data_path: /disk/disk_20T/ruxiangyuan/projects/references/llm-icl/data
+language: ch
+text_input: 百度贴吧是百度旗下独立品牌，全球领先的中文社区，结合搜索引擎建立的交流平台，让那些对同一个话题感兴趣的人们聚集在一起。
+instruction: 请标注实体
+openai_api_base: https://api.chatanywhere.org/v1
+domain: general
+labels:
+- ORG
+- PERSON
+- LOCATION

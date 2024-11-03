@@ -1,15 +1,22 @@
-data_path: "" # prompt路径
-cwd: ""  # 项目路径
 
-task: "ner"
-text_input: "秦始皇于公元前221年统一了中国，建立了中央集权的封建制度，首都定于陕西省西安市。"
-instruction: "请标注实体"
-language: "ch"  # ch而不是cn 或者 en
-
-api_key: ""
-openai_api_base: ""
-engine: "gpt-3.5-turbo"
-
-zero_shot: False
-domain: "general
-labels: ["ORG", "PERSON", "LOCATION"]
+cwd: null
+engine: "ChatGPT"
+model_id: "gpt-3.5-turbo"
+api_key: "sk-7kVvoLKWePIdvvirGUXY80MVqAsofr3f37kqqHUw7Pnmil3u"
+base_url: "https://api.chatanywhere.tech/v1"
+temperature: 0.3
+top_p: 0.9
+max_tokens: 300
+stop: null
+task: "da"
+language: "ch"
+in_context: true
+#instruction: ""
+data_path: "data"
+text_input: "创立"
+domain:
+labels: ["人物", "公司"]
+#head_entity:
+#head_type:
+#tail_entity:
+#tail_type:

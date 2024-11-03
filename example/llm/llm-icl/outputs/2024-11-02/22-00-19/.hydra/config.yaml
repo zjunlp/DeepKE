@@ -1,0 +1,21 @@
+cwd: null
+engine: ChatGPT
+model_id: gpt-3.5-turbo
+api_key: sk-7kVvoLKWePIdvvirGUXY80MVqAsofr3f37kqqHUw7Pnmil3u
+base_url: https://api.chatanywhere.tech/v1
+temperature: 0.3
+top_p: 0.9
+max_tokens: 100
+stop: null
+task: re
+language: en
+in_context: true
+data_path: data
+text_input: 艾伦就读于湖滨中学，在这里他遇到对计算机痴迷的盖茨。
+domain: 学业
+labels:
+- 履历
+head_entity: 盖茨
+head_type: 人物
+tail_entity: 湖滨中学
+tail_type: 地点

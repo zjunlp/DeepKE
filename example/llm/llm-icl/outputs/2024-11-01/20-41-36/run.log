@@ -1,0 +1,2 @@
+[2024-11-01 20:41:37,096][httpx][INFO] - HTTP Request: POST https://api.chatanywhere.tech/v1/chat/completions "HTTP/1.1 200 OK"
+[2024-11-01 20:41:37,104][__main__][INFO] - 正确，中国的首都是北京。

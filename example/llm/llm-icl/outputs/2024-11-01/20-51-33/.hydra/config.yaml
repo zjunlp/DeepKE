@@ -1,0 +1,22 @@
+cwd: null
+engine: ChatGPT
+model_id: gpt-3.5-turbo
+api_key: sk-7kVvoLKWePIdvvirGUXY80MVqAsofr3f37kqqHUw7Pnmil3u
+base_url: https://api.chatanywhere.tech/v1
+temperature: 0.3
+top_p: 0.9
+max_tokens: 100
+stop: null
+task: ner
+language: ch
+in_context: false
+data_path: null
+text_input: 中国的首都是北京。
+domain: null
+labels:
+- 地名
+- 国家
+head_entity: null
+head_type: null
+tail_entity: null
+tail_type: null

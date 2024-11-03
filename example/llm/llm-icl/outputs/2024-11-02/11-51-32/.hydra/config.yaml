@@ -1,0 +1,23 @@
+cwd: null
+engine: ChatGPT
+model_id: gpt-3.5-turbo
+api_key: sk-7kVvoLKWePIdvvirGUXY80MVqAsofr3f37kqqHUw7Pnmil3u
+base_url: https://api.chatanywhere.tech/v1
+temperature: 0.3
+top_p: 0.9
+max_tokens: 100
+stop: null
+task: re
+language: en
+in_context: true
+data_path: ../data
+text_input: Clint is Bob's son, and Alice's grandfather is Clint, so Alice is the
+  author of Bob's biography.
+domain: Social
+labels:
+- family relationship
+- biography author
+head_entity: Alice
+head_type: Person
+tail_entity: Bob
+tail_type: Person
