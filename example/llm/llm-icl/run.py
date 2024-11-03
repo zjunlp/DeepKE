@@ -1,6 +1,9 @@
 """
 run.py
 
+The entrance of this project.
+
+main:
 <01: Confirm Config>
 <02: Build Prompt>
 <03: Model Response>
@@ -8,13 +11,12 @@ run.py
 """
 
 import hydra
-# import logging
 import os
 
 from utils.custom_prompt import CustomPrompt
+from utils.interact import FaceDesign
 from utils.llm_def import LLaMA, Qwen, MiniCPM, ChatGLM, ChatGPT, DeepSeek
 from utils.preprocess import prepare_examples
-from utils.set_config import config_from_keyboard
 
 
 MODEL_CLASSES = {
@@ -26,42 +28,23 @@ MODEL_CLASSES = {
     "DeepSeek": DeepSeek
 }
 
-# logger = logging.getLogger(__name__)
 
 @hydra.main(version_base=None, config_path="conf", config_name="config")
 def main(cfg):
-    """
-    need <config.yaml> be like:
-    """
     # <01: Confirm Config>
-    # Support Keyboard Input
-    # use_keyboard = input("是否要使用键盘输入新的 config 字段？(y/n): ").strip().lower()
-    # if use_keyboard == 'y':
-    #     config_from_keyboard(cfg)
-    #     with open("config.yaml", "r") as yaml_file:
-    #         cfg = yaml.safe_load(yaml_file)
-    # cwd:
-    cfg.cwd = hydra.utils.get_original_cwd()
-    # engine:
-    if cfg.engine not in MODEL_CLASSES:
-        raise ValueError("Your model is not support now.")
+    # Setting Config
+    f_d = FaceDesign()
+    cfg.update(f_d.config)
+    print("All Your Config: ", cfg)
+    # Checking Config
     # api_key:
     api_key = cfg.api_key if "api_key" in cfg else os.getenv("OPENAI_API_KEY")
     if not api_key:
         raise ValueError("Need an API Key.")
-    # task:
-    if cfg.task not in ["ner", "re", "ee", "rte", "da"]:
-        raise ValueError("The task name should be one of ner, re, ee, rte for Information Extraction or da for Data Augmentation.")
-    # language:
-    if cfg.language not in ["en", "ch"]:
-        raise ValueError("Now we only support language of 'en' (English) and 'ch' (Chinese).")
     # in_context: instruction: / data_path:->examples
     examples = None
     if cfg.in_context:
         examples = prepare_examples(cfg.task, cfg.language, cfg.data_path)
-    # text_input:
-    if "text_input" not in cfg:
-        raise ValueError("Need your text input first!")
 
     # <02: Build Prompt>
     ie_prompter = CustomPrompt(
@@ -82,7 +65,7 @@ def main(cfg):
     )
     print("Your final customized-prompt: " + prompt)
 
-    # return 1
+    # return
 
     # <03: Model Response>
     ModelClass = MODEL_CLASSES[cfg.engine]
@@ -110,8 +93,8 @@ def main(cfg):
         )
 
     # <04: Log and Output>
-    print("Model response: " + response)
-    # logger.info(response)
+    # print(response)
+    print("Model Response: " + response)
 
 
 if __name__ == '__main__':

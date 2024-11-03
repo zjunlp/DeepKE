@@ -1,5 +1,13 @@
 # deepke llm readme 结构
 
+## TODO
+
+1. README，requirement
+2. 交互方式、运行bash
+3. 全面测试、测试完成后语句撤掉
+4. 注释完善
+5. 
+
 
 
 ## 1 整体介绍

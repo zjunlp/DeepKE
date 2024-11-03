@@ -1,4 +1,0 @@
-[2024-11-03 13:31:10,054][httpx][INFO] - HTTP Request: POST https://api.chatanywhere.tech/v1/chat/completions "HTTP/1.1 503 Service Temporarily Unavailable"
-[2024-11-03 13:31:10,057][openai._base_client][INFO] - Retrying request to /chat/completions in 0.864224 seconds
-[2024-11-03 13:31:53,034][httpx][INFO] - HTTP Request: POST https://api.chatanywhere.tech/v1/chat/completions "HTTP/1.1 503 Service Temporarily Unavailable"
-[2024-11-03 13:31:53,035][openai._base_client][INFO] - Retrying request to /chat/completions in 1.823974 seconds

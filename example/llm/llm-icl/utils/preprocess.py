@@ -1,3 +1,9 @@
+"""
+preprocess.py
+
+Mainly prepares example data for those tasks.
+"""
+
 import os
 import json
 
@@ -8,10 +14,21 @@ def prepare_examples(
         data_path: str = "data"
 ):
     """
-        :param data_path: (str) 数据文件所在的目录路径，包含任务和语言特定的 JSON 文件。
-        :param task: (str) 任务类型，包括 'ner'（命名实体识别）、're'（关系抽取）、'da'（对话生成）、'ee'（事件抽取）和 'rte'（推理任务）。
-        :param language: (str) 语言标识符，用于指定数据文件的语言（例如 'zh' 表示中文）。
-        :return: (list) 返回一个包含准备好的示例数据的字典列表，每个字典对应一个示例，格式根据任务类型不同而不同。
+    This function loads data from a JSON file corresponding to the given task
+    and language. It processes the data into a list of dictionaries, where each
+    dictionary represents an example formatted according to the task type.
+
+    :param task: (str) The type of task, which can be 'ner' (Named Entity Recognition),
+    're' (Relation Extraction), 'da' (Dialogue Generation),
+    'ee' (Event Extraction), or 'rte' (Reasoning Task).
+    :param language: (str) The language identifier used to specify the language of
+    the data file (e.g., 'zh' for Chinese).
+    :param data_path: (str) The directory path where the data files are located,
+    containing task and language-specific JSON files.
+    Defaults to "data".
+    :return: (list) A list of dictionaries containing prepared example data,
+    with each dictionary corresponding to a specific example.
+    The format of each dictionary varies depending on the task type.
     """
     data_name = task + '_' + language + '.json'
     data_path = os.path.join(data_path, data_name)
@@ -52,4 +69,3 @@ if __name__ == "__main__":
     print(prepare_examples(data_path='../data', task='ner', language='ch'))
     print(prepare_examples(data_path='../data', task='re', language='en'))
     print(prepare_examples(data_path='../data', task='rte', language='ch'))
-

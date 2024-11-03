@@ -1,5 +1,7 @@
 """
-utils/custom_prompt.py
+custom_prompt.py
+
+Mainly create custom prompts for those tasks to better chat with LLMs.
 """
 
 # from openai import OpenAI
@@ -60,6 +62,11 @@ DA_CH_LABELS = (
 
 class CustomPrompt:
     """
+    A class to create custom prompts for various NLP tasks.
+
+    This class generates prompts based on user-defined parameters and task requirements,
+    supporting tasks such as named entity recognition (NER), relation extraction (RE),
+    event extraction (EE), relation triplet extraction (RTE), and data augmentation (DA).
     """
     def __init__(
             self,
@@ -70,6 +77,13 @@ class CustomPrompt:
             example: Dict = None
     ):
         """
+        Initializes the CustomPrompt with task details and settings.
+
+        :param task: The type of NLP task (e.g., 'ner', 're', 'ee', 'rte', 'da').
+        :param language: The language for the task ('en' for English, 'ch' for Chinese).
+        :param in_context: Indicates whether to use in-context examples.
+        :param instruction: Custom instruction for the prompt (if any).
+        :param example: Examples to use for in-context learning.
         """
         self.task = task
         self.language = language
@@ -88,6 +102,16 @@ class CustomPrompt:
             tail_type: str = None,
     ) -> str:
         """
+        Constructs the final prompt based on the provided inputs and task parameters.
+
+        :param prompt: The initial prompt input by the user.
+        :param domain: The domain of the input text (if applicable).
+        :param labels: List of labels relevant to the task (if applicable).
+        :param head_entity: The head entity for relation extraction tasks.
+        :param head_type: The type of the head entity for relation extraction tasks.
+        :param tail_entity: The tail entity for relation extraction tasks.
+        :param tail_type: The type of the tail entity for relation extraction tasks.
+        :return: The constructed prompt ready for model input.
         """
         # <01: check>
         if self.task == "da" and labels is None:
@@ -130,6 +154,11 @@ class CustomPrompt:
 
     def _get_default_instruction(self, domain, labels):
         """
+        Generates default instructions based on the task and provided parameters.
+
+        :param domain: The domain for the task (if applicable).
+        :param labels: List of labels relevant to the task (if applicable).
+        :return: A string containing the default instruction.
         """
         instruction = ""
         # English
@@ -226,6 +255,10 @@ class CustomPrompt:
 
     def _get_incontext_examples(self, examples):
         """
+        Retrieves and formats in-context examples based on the task and language.
+
+        :param examples: A list of example data to format for in-context learning.
+        :return: A list of formatted in-context examples.
         """
         final_examples = []
         # English
@@ -307,6 +340,12 @@ class CustomPrompt:
             n_shots: int = 2,
     ) -> str:
         """
+        Builds a prompt that incorporates in-context examples into the final prompt.
+
+        :param prompt: The initial prompt to which examples will be added.
+        :param in_context_examples: A list of examples to use for in-context learning.
+        :param n_shots: The number of examples to include in the prompt.
+        :return: The final prompt that includes in-context examples.
         """
         n_shots = min(len(in_context_examples), n_shots)
 
@@ -329,7 +368,7 @@ class CustomPrompt:
 
     def get_llm_result(self, ):
         pass
-        # client = OpenAI(base_url="https://api.chatanywhere.tech/v1")
+        # client = OpenAI()
         # self.engine = engine
         # if engine in API_NAME_DICT["openai"]["gpt-3"]:
         #     response = client.completions.create(
