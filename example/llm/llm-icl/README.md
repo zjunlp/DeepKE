@@ -1,201 +1,258 @@
-# Requirement, Data and Configuration
-<a id="requirements"></a>
-- Requirement
+# deepke llm readme 结构
 
-  The LLM module of Deepke calls the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tookit(An Easy-to-use Framework to Instruct Large Language Models).
+## TODO
 
-  ```
-  >> pip install git+https://github.com/zjunlp/EasyInstruct
-  >> pip install hydra-core
-  ```
-
-- Data
-
-  The data here refers to the examples data used for in-context learning, which is stored in the `data` folder. The `.json` files in it are the default examples data for various tasks. Users can customize the examples in them, but they need to follow the given data format.
-
-- Configuration
-
-  The `conf` folder stores the set parameters. The parameters required to call the GPT3 interface are passed in through the files in this folder.
-
-  - In the Named Entity Recognition (`ner`) task, `text_input` parameter is the prediction text; `domain` is the domain of the prediction text, which can be empty; `label` is the entity label set, which can also be empty. 
-
-  - In the Relation Extraction (`re`) task, `text_input` parameter is the text; `domain` indicates the domain to which the text belongs, and it can be empty; `labels` is the set of relationship type labels. If there is no custom label set, this parameter can be empty; `head_entity` and `tail_entity` are the head entity and tail entity of the relationship to be predicted, respectively; `head_type` and `tail_type` are the types of the head and tail entities to be predicted in the relationship.
-
-  - In the Event Extraction (`ee`) task, `text_input` parameter is the prediction text; `domain` is the domain of the prediction text, which can also be empty. 
-
-  - In the Relational Triple Extraction (`rte`) task, `text_input` parameter is the prediction text; `domain` is the domain of the prediction text, which can also be empty.
-
-  - The specific meanings of other parameters are as follows:
-    - `task` parameter is used to specify the task type, where `ner` represents named entity recognition task, `re` represents relation extraction task, `ee` represents event extraction task, and `rte` represents triple extraction task;
-    - `language` indicates the language of the task, where `en` represents English extraction tasks, and `ch` represents Chinese extraction tasks;
-    - `engine` indicates the name of the large model used, which should be consistent with the model name specified by the OpenAI API;
-    - `api_key` is the user's API key;
-    - `zero_shot` indicates whether zero-shot setting is used. When it is set to `True`, only the instruction prompt model is used for information extraction, and when it is set to `False`, in-context form is used for information extraction;
-    - `instruction` parameter is used to specify the user-defined prompt instruction, and the default instruction is used when it is empty;
-    - `data_path` indicates the directory where in-context examples are stored, and the default is the `data` folder.
+1. README，requirement
+2. 交互方式、运行bash
+3. 全面测试、测试完成后语句撤掉
+4. 注释完善
+5. 
 
 
 
-# IE with Large Language Models
+## 1 整体介绍
 
-We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](#requirements) for the environment and data. 
+1里面加致谢
 
-### Run and Examples
+1 里 加一个动图 就是到时候做的前端演示系统
 
-Once the parameters are set, you can directly run the `run.py`：
 
-```
->> python run.py
+
+### 1-?: 参数设置
+
+
+```yaml
+cwd:
+engine:
+model_id:
+api_key:
+base_url:
+temperature:
+top_p:
+max_tokens:
+stop:
+task:
+language:
+in_context:
+instruction:
+data_path:
+text_input:
+domain:
+labels:
+head_entity:
+head_type:
+tail_entity:
+tail_type:
 ```
 
-Below are input and output examples for different tasks:
+全参数表：
 
-| Task |                            Input                             |                            Output                            |
-| :--: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| NER  | Japan began the defence of their Asian Cup title with a lucky 2-1 win against Syria in a Group C championship match on Friday. | [{'E': 'Country', 'W': 'Japan'}, {'E': 'Country', 'W': 'Syria'}, {'E': 'Competition', 'W': 'Asian Cup'}, {'E': 'Competition', 'W': 'Group C championship'}] |
-|  RE  | The Dutch newspaper Brabants Dagblad said the boy was probably from Tilburg in the southern Netherlands and that he had been on safari in South Africa with his mother Trudy , 41, father Patrick, 40, and brother Enzo, 11. |                           parents                            |
-|  EE  | In Baghdad, a cameraman died when an American tank fired on the Palestine Hotel. | event_list: [ event_type: [arguments: [role: "cameraman", argument: "Baghdad"], [role: "American tank", argument: "Palestine Hotel"]] ] |
-| RTE  |    The most common audits were about waste and recycling.    | [['audit', 'type', 'waste'], ['audit', 'type', 'recycling']] |
+| 分类 | 参数名称    | 类型      | 意义                                                         | 限定                                                         |
+| ---- | ----------- | --------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 系统 | cwd         | str       | 当前工作目录。                                               |                                                              |
+| 设定 | engine      | str       | 表示所用的大模型名称。                                       | ["LLaMA", "Qwen", "MiniCPM", "ChatGLM",  "ChatGPT", "DeepSeek"] |
+| 设定 | api_key     | str       | 用户的API密钥。                                              |                                                              |
+| 设定 | base_url    | str       |                                                              |                                                              |
+| 设定 | temperature | float     |                                                              |                                                              |
+| 设定 | top_p       | float     |                                                              |                                                              |
+| 设定 | max_tokens  | int       |                                                              |                                                              |
+| 设定 | stop        | ?         | ?                                                            |                                                              |
+| 设定 | task        | str       | 参数用于指定任务类型，其中`ner`表示命名实体识别任务，`re`表示关系抽取任务`ee`表示事件抽取任务，`rte`表示三元组抽取任务。 | ["ner", "re", "ee", "rte", "da"]                             |
+| 设定 | language    | str       | 表示任务的语言。                                             | ["en", "ch"]                                                 |
+| 设定 | in_context  | bool      | 是否为零样本设定，为`False`时表示只使用instruction提示模型进行信息抽取，为`True`时表示使用in-context的形式进行信息抽取； |                                                              |
+| 设定 | instruction | str       | 规定用户自定义的提示指令，当为空时采用默认的指令；           | （不建议使用）in_context == False时可以自设examples          |
+| 设定 | data_path   | str       | 表示in-context examples的存储目录，默认为`data`文件夹。      | in_context == True                                           |
+| 任务 | text_input  | str       | 在命名实体识别任务(`ner`)中，`text_input`参数为预测文本；在关系抽取任务(`re`)中，`text_input`参数为文本；在事件抽取任务(`ee`)中，`text_input`参数为待预测文本；在三元组抽取任务(`rte`)中，`text_input`参数为待预测文本。 | ner、re、ee、rte、da                                         |
+| 任务 | domain      | str       | 在命名实体识别任务(`ner`)中，`domain`为预测文本所属领域，可为空；在关系抽取任务(`re`)中，`domain`为文本所属领域，可为空；在事件抽取任务(`ee`)中，`domain`为预测文本所属领域，可为空；在三元组抽取任务(`rte`)中，`domain`为预测文本所属领域，可为空。 | ner、re、ee、rte                                             |
+| 任务 | labels      | List[str] | 在命名实体识别任务(`ner`)中，`labels`为实体标签集，如无自定义的标签集，该参数可为空；在关系抽取任务(`re`)中，`labels`为关系类型标签集，如无自定义的标签集，该参数可为空。`da`中`lables`为头尾实体被预先分类的类型。 | ner、re、da                                                  |
+| 任务 | head_entity | str       | 待预测关系的头实体和尾实体；                                 | re                                                           |
+| 任务 | tail_entity | str       | 待预测关系的头实体和尾实体；                                 | re                                                           |
+| 任务 | head_type   | str       | 待预测关系的头尾实体类型。                                   | re                                                           |
+| 任务 | tail_type   | str       | 待预测关系的头尾实体类型。                                   | re                                                           |
+
+
+
+  `conf`文件夹保存所设置的参数。调用大模型接口所需要的参数都通过此文件夹中文件传入。
+
+  - 在命名实体识别任务(`ner`)中，`text_input`参数为预测文本；`domain`为预测文本所属领域，可为空；`labels`为实体标签集，如无自定义的标签集，该参数可为空。
+
+  - 在关系抽取任务(`re`)中，`text_input`参数为文本；`domain`为文本所属领域，可为空；`labels`为关系类型标签集，如无自定义的标签集，该参数可为空；`head_entity`和`tail_entity`为待预测关系的头实体和尾实体；`head_type`和`tail_type`为待预测关系的头尾实体类型。
+
+  - 在事件抽取任务(`ee`)中，`text_input`参数为待预测文本；`domain`为预测文本所属领域，可为空。
+
+  - 在三元组抽取任务(`rte`)中，`text_input`参数为待预测文本；`domain`为预测文本所属领域，可为空。
+
+  - 其他参数的具体含义：
+    - `task`参数用于指定任务类型，其中`ner`表示命名实体识别任务，`re`表示关系抽取任务`ee`表示事件抽取任务，`rte`表示三元组抽取任务；
+    - `language`表示任务的语言，`en`表示英文抽取任务，`ch`表示中文抽取任务；
+    - `engine`表示所用的大模型名称，要与OpenAI API规定的模型名称一致；
+    - `api_key`是用户的API密钥；
+    - `zero_shot`表示是否为零样本设定，为`True`时表示只使用instruction提示模型进行信息抽取，为`False`时表示使用in-context的形式进行信息抽取；
+    - `instruction`参数用于规定用户自定义的提示指令，当为空时采用默认的指令；
+    - `data_path`表示in-context examples的存储目录，默认为`data`文件夹。
 
 
 
 
-# Data Augmentation with Large Language Models
+
+## 2 快速启动 包含prompt 例子一个和sft 例子一个 用qwen
+
+在Python中，如果在`config.yaml`中未指定某个参数，而该参数在代码中被引用，则通常会导致KeyError，除非在代码中为其提供了默认值或处理了不存在的情况。因此，最好在配置文件中写全所有参数，即便一些参数未明确需要使用。这样可以保证运行的稳定性，减少出错的可能性。
+
+以下是每个`config.yaml`的全参数示例，确保所有配置文件中都包含每个可能使用的参数，并为未使用的参数指定默认值（通常为`null`）。
 
 
-To compensate for the lack of labeled data in few-shot scenarios for relation extraction, we have designed prompts with data style descriptions to guide large language models to automatically generate more labeled data based on existing few-shot data.
 
-
-### Configuration
-
-- Set `task` to `da`;
-- Set `text_input` to the relationship label to be enhanced, such as `org:founded_by`;
-- Set `zero_shot` to `False` and set the low-sample example in the corresponding file under the `data` folder for the `da` task;
-- The range of entity labels can be specified in `labels`.
-
-### Run and Examples
-
-We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](#requirements) for the environment and data. 
-
-Once the parameters are set, you can directly run the `run.py`：
+```yaml
+cwd: null
+engine: "ChatGPT"
+model_id: "gpt-3.5-turbo"
+api_key: "sk-7kVvoLKWePIdvvirGUXY80MVqAsofr3f37kqqHUw7Pnmil3u"
+base_url: "https://api.chatanywhere.tech/v1"
+temperature: 0.3
+top_p: 0.9
+max_tokens: 100
+stop: null
+task: "ner"
+language: "ch"
+in_context: true
+#instruction:
+data_path: "data"
+text_input: "比尔·盖茨是美国企业家、软件工程师、慈善家、微软公司创始人、中国工程院外籍院士。曾任微软董事长、CEO和首席软件设计师。"
+domain: "人物"
+labels: ["头衔", "任职"]
+head_entity:
+head_type:
+tail_entity:
+tail_type:
 
 ```
->> python run.py
-```
-
-
-Here is an example of a data augmentation `prompt`:
-
-```python
-'''
-One sample in relation extraction datasets consists of a relation, a context, a pair of head and tail entities in the context and their entity types. 
-
-The head entity has the relation with the tail entity and entities are pre-categorized as the following types: URL, LOCATION, IDEOLOGY, CRIMINAL CHARGE, TITLE, STATE OR PROVINCE, DATE, PERSON, NUMBER, CITY, DURATION, CAUSE OF DEATH, COUNTRY, NATIONALITY, RELIGION, ORGANIZATION, MISCELLANEOUS. 
-
-Here are some samples for relation 'org:founded_by':
-
-Relation: org:founded_by. Context: Talansky is also the US contact for the New Jerusalem Foundation , an organization founded by Olmert while he was Jerusalem 's mayor . Head Entity: New Jerusalem Foundation. Head Type: ORGANIZATION. Tail Entity: Olmert. Tail Type: PERSON.
-
-Relation: org:founded_by. Context: Sharpton has said he will not endorse any candidate until hearing more about their views on civil rights and other issues at his National Action Network convention next week in New York City . Head Entity: National Action Network. Head Type: ORGANIZATION. Tail Entity: his. Tail Type: PERSON.
-
-Relation: org:founded_by. Context: `` We believe that we can best serve our clients by offering a single multistrategy hedge fund platform , '' wrote John Havens , who was a founder of Old Lane with Pandit and is president of the alternative investment group . Head Entity: Old Lane. Head Type: ORGANIZATION. Tail Entity: John Havens. Tail Type: PERSON.
-
-Generate more samples for the relation 'org:founded_by'.
-'''
-```
 
 
 
-# CCKS2023 Instruction-based Knowledge Graph Construction with Large Language Models
+```yaml
+cwd: null
+engine: "ChatGPT"
+model_id: "gpt-3.5-turbo"
+api_key: "sk-7kVvoLKWePIdvvirGUXY80MVqAsofr3f37kqqHUw7Pnmil3u"
+base_url: "https://api.chatanywhere.tech/v1"
+temperature: 0.3
+top_p: 0.9
+max_tokens: 100
+stop: null
+task: "re"
+language: "ch"
+in_context: true
+#instruction:
+data_path: "data"
+text_input: "艾伦就读于湖滨中学，在这里他遇到和自己一样对计算机编程痴迷的盖茨。"
+domain: "情感识别"
+labels: ["感情"]
+head_entity: "艾伦"
+head_type: "人物"
+tail_entity: "计算机编程"
+tail_type: "事件"
 
-
-The following is a baseline description of the *ChatGPT/GPT-4* for the **Instruction-based Knowledge Graph Construction** task in the **[CCKS2023 Open Environment Knowledge Graph Construction and Completion Evaluation competition](https://tianchi.aliyun.com/competition/entrance/532080/introduction?spm=5176.12281957.0.0.4c885d9b2YX9Nu)**.
-
-### Task Object
-
-Extract relevant entities and relations according to user input instructions to construct a knowledge graph. This task may include knowledge graph completion, where the model is required to complete missing triples while extracting entity-relation triples.
-
-Below is an example of a **Knowledge Graph Construction Task**. Given an input text `input` and an `instruction` (including the desired entity types and relationship types), output all relationship triples `output` in the form of `(ent1, rel, ent2)` found within the `input`:
-
-```python
-instruction="使用自然语言抽取三元组,已知下列句子,请从句子中抽取出可能的实体、关系,抽取实体类型为{'专业','时间','人类','组织','地理地区','事件'},关系类型为{'体育运动','包含行政领土','参加','国家','邦交国','夺得','举办地点','属于','获奖'},你可以先识别出实体再判断实体之间的关系,以(头实体,关系,尾实体)的形式回答"
-input="2006年，弗雷泽出战中国天津举行的女子水球世界杯，协助国家队夺得冠军。2008年，弗雷泽代表澳大利亚参加北京奥运会女子水球比赛，赢得铜牌。"
-output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗雷泽,属于,国家队)(弗雷泽,国家,澳大利亚)(弗雷泽,参加,北京奥运会女子水球比赛)(中国,包含行政领土,天津)(中国,邦交国,澳大利亚)(北京奥运会女子水球比赛,举办地点,北京)(女子水球世界杯,体育运动,水球)(国家队,夺得,冠军)"
 ```
 
 
 
-### Datasets
+```yaml
+cwd: null
+engine: "ChatGPT"
+model_id: "gpt-3.5-turbo"
+api_key: "sk-7kVvoLKWePIdvvirGUXY80MVqAsofr3f37kqqHUw7Pnmil3u"
+base_url: "https://api.chatanywhere.tech/v1"
+temperature: 0.3
+top_p: 0.9
+max_tokens: 300
+stop: null
+task: "ee"
+language: "ch"
+in_context: true
+#instruction:
+data_path: "data"
+text_input: "2007年11月6日，阿里巴巴正式以港币13.5元在香港联合交易所挂牌上市，股票代码为“1688 HK”。阿里巴巴上市开盘价30港元，较发行价提高122%。融资116亿港元，创下中国互联网公司融资规模之最。"
+domain: "财经"
+labels:
+head_entity:
+head_type:
+tail_entity:
+tail_type:
 
-Here are some readily processed datasets:
-
-| Name                   | Download                                                     | Quantity | Description                                                  |
-| ---------------------- | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ |
-| KnowLM-IE.json          | [Google drive](https://drive.google.com/file/d/1hY_R6aFgW4Ga7zo41VpOVOShbTgBqBbL/view?usp=sharing) <br/> [HuggingFace](https://huggingface.co/datasets/zjunlp/KnowLM-IE)  | 281,860  | Dataset mentioned in [InstructIE](https://arxiv.org/abs/2305.11527) |
-| train.json, valid.json | [Google drive](https://drive.google.com/file/d/1vfD4xgToVbCrFP2q-SD7iuRT2KWubIv9/view?usp=sharing) | 5,000    | Preliminary training set and test set for the task "Instruction-Driven Adaptive Knowledge Graph Construction" in [CCKS2023 Open Knowledge Graph Challenge](https://tianchi.aliyun.com/competition/entrance/532080/introduction), randomly selected from instruct_train.json |
-
-`KnowLM-IE.json`: Contains `'id'` (unique identifier), `'cate'` (text category), `'instruction'` (extraction instruction), `'input'` (input text), `'output'` (output text) and `'relation'` (triples) fields, allowing for the flexible construction of extraction instructions and outputs through `'relation'`, `'instruction'` has 16 formats (4 prompts * 4 output formats), and `'output'` is generated according to the specified output format in `'instruction'`.
-
-`train.json`: Same fields as `KnowLM-IE.json`, `'instruction'` and `'output'` have only one format, and extraction instructions and outputs can also be freely constructed through `'relation'`.
-
-`valid.json`: Same fields as `train.json`, but with more accurate annotations achieved through crowdsourcing.
-
-
-Here is an explanation of each field:
-
-|    Field    |                         Description                          |
-| :---------: | :----------------------------------------------------------: |
-|     id      |                   Unique identifier                   |
-|    cate     |     text topic of input (12 topics in total)                        |
-|    input    | Model input text (need to extract all triples involved within) |
-| instruction |   Instruction for the model to perform the extraction task   |
-|    output   | Expected model output |
-|   relation  |             Relation triples(head, relation, tail) involved in the input             |
-
-
-For more information on data processing and data formats, please refer to [../InstructKGC/kg2instruction](../InstructKGC/kg2instruction/README.md)
-
-
-
-### Config Setup
-
-This evaluation task is essentially a triple extraction (rte) task. Detailed parameters and configuration for using this module can be found in the [Environment and Data](#requirements) section above. The main parameter settings are as follows:
-
-- Set `task` to `rte`, indicating a triple extraction task;
-- Set `language` to `ch`, indicating that the task is based on Chinese data;
-- Set `engine` to the desired OpenAI large model name (since the OpenAI GPT-4 API is not fully open, this module currently does not support the use of GPT-4 API);
-- Set `text_input` to the `text` field in the dataset;
-- Set `zero_shot` as needed; if set to `False`, examples for in-context learning need to be set in the `/data/rte_ch.json` file in a specific format;
-- Set `instruction` to the `instruction` field in the dataset; if set to `None`, the default instruction for the module will be used;
-- Set `labels` to the entity types, or leave it empty;
-
-Other parameters can be left at their default values.
-
-We have provided a conversion script for the CCKS2023 competition data format, `LLMICL/ccks2023_convert.py`
-
-### Run and Example
-
-We use the [EasyInstruct](https://github.com/zjunlp/EasyInstruct) tool, a user-friendly framework for instructing large language models, to complete this task. Please refer to [Chapter 1](#requirements) for the environment and data. 
-
-After setting the parameters, simply run the `run.py` file:
-
-```shell
->> python run.py
 ```
 
-Input and output examples for making predictions using ChatGPT:
 
-| Input                                                        | Output                                                       |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| task="rte"<br/>language="ch"<br/>engine="gpt-3.5-turbo"<br/>text_input="2006年，弗雷泽出战中国天津举行的女子水球世界杯，协助国家队夺得冠军。2008年，弗雷泽代表澳大利亚参加北京奥运会女子水球比赛，赢得铜牌。"<br/>instruction="使用自然语言抽取三元组,已知下列句子,请从句子中抽取出可能的实体、关系,抽取实体类型为{'专业','时间','人类','组织','地理地区','事件'},关系类型为{'体育运动','包含行政领土','参加','国家','邦交国','夺得','举办地点','属于','获奖'},你可以先识别出实体再判断实体之间的关系,以(头实体,关系,尾实体)的形式回答" | \[\[弗雷泽,获奖,铜牌\],\[女子水球世界杯,举办地点,天津\],\[弗雷泽,属于,国家队\],\[弗雷泽,国家,澳大利亚\],\[弗雷泽,参加,北京奥运会女子水球比赛\],\[中国,包含行政领土,天津\],\[中国,邦交国,澳大利亚\],\[北京奥运会女子水球比赛,举办地点,北京\],\[女子水球世界杯,体育运动,水球\],\[国家队,夺得,冠军)\] |
 
-### Baseline Results
+```yaml
+cwd: null
+engine: "ChatGPT"
+model_id: "gpt-3.5-turbo"
+api_key: "sk-7kVvoLKWePIdvvirGUXY80MVqAsofr3f37kqqHUw7Pnmil3u"
+base_url: "https://api.chatanywhere.tech/v1"
+temperature: 0.3
+top_p: 0.9
+max_tokens: 150
+stop: null
+task: "rte"
+language: "ch"
+in_context: true
+#instruction: "我让你完成RTE任务。"
+data_path: "data"
+text_input: "卢浮宫始建于1204年，位于法国巴黎市中心的塞纳河北岸。"
+domain: "地理"
+#labels: [""]
+#head_entity:
+#head_type:
+#tail_entity:
+#tail_type:
 
-We conducted a simple 5-shot in-context learning evaluation on the CCKS dataset using **ChatGPT**, and the results are shown in the table below:
+```
 
-|              Metric               | Result |
-| :-------------------------------: | :----: |
-|                F1                 | 0.3995 |
-|             Rougen_2              | 0.7730 |
-| score</br>(0.5\*F1+0.5\*Rougen_2) | 0.5863 |
+
+
+```yaml
+cwd: null
+engine: "ChatGPT"
+model_id: "gpt-3.5-turbo"
+api_key: "sk-7kVvoLKWePIdvvirGUXY80MVqAsofr3f37kqqHUw7Pnmil3u"
+base_url: "https://api.chatanywhere.tech/v1"
+temperature: 0.3
+top_p: 0.9
+max_tokens: 300
+stop: null
+task: "da"
+language: "ch"
+in_context: true
+#instruction: ""
+data_path: "data"
+text_input: "创立"
+domain:
+labels: ["人物", "公司"]
+#head_entity:
+#head_type:
+#tail_entity:
+#tail_type:
+
+```
+
+
+
+## 3  具体prompt 例子 包含 qwen llama chatgpt 和自定义训好的模型llama吧   里面需要有脚本 和输入输出例子
+
+3里单独加一个 以qwen为例 输入不同类型的数据 
+
+
+
+
+
+## 4 一些注意事项 如常见错误
+
+
+
+
+
+## 5 limitation
+
+
 

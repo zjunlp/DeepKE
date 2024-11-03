@@ -9,7 +9,7 @@ stop:
 task:
 language:
 in_context:
-#instruction:
+instruction:
 data_path:
 text_input:
 domain:
