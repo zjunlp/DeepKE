@@ -715,3 +715,43 @@ register_template(
         "\n"
     ]
 )
+
+
+
+register_template(
+    name="llama3_zh",
+    prefix=[
+        "<|start_header_id|>system<|end_header_id|>\n\n{{system}}<|eot_id|>"
+    ],
+    prompt=[
+        "<|start_header_id|>user<|end_header_id|>\n\n{{query}}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
+    ],
+    system=(
+        "You are a helpful assistant. 你是一个乐于助人的助手。"
+    ),
+    sep=[],
+    stop_words=[
+        "<|eot_id|>"
+    ],
+    replace_eos=True,
+)
+
+register_template(
+    name="llama3",
+    prefix=[
+        "<|start_header_id|>system<|end_header_id|>\n\n{{system}}<|eot_id|>"
+    ],
+    prompt=[
+        "<|start_header_id|>user<|end_header_id|>\n\n{{query}}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
+    ],
+    system=(
+        "You are a helpful assistant."
+    ),
+    sep=[],
+    stop_words=[
+        "<|eot_id|>"
+    ],
+    replace_eos=True,
+)
+
+
