@@ -1,11 +1,15 @@
 """
 run.py
+
+<01: Confirm Config>
+<02: Build Prompt>
+<03: Model Response>
+<04: Log and Output>
 """
 
 import hydra
-import logging
+# import logging
 import os
-import yaml
 
 from utils.custom_prompt import CustomPrompt
 from utils.llm_def import LLaMA, Qwen, MiniCPM, ChatGLM, ChatGPT, DeepSeek
@@ -78,7 +82,7 @@ def main(cfg):
     )
     print("Your final customized-prompt: " + prompt)
 
-    return 1
+    # return 1
 
     # <03: Model Response>
     ModelClass = MODEL_CLASSES[cfg.engine]
@@ -105,9 +109,10 @@ def main(cfg):
             max_tokens=cfg.max_tokens if "max_tokens" in cfg else 512
         )
 
-    # <04: Output Log>
+    # <04: Log and Output>
     print("Model response: " + response)
     # logger.info(response)
+
 
 if __name__ == '__main__':
     main()

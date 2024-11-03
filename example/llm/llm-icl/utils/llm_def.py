@@ -5,12 +5,12 @@ Supports:
 - Closed Source: ChatGPT, DeepSeek
 """
 
-from transformers import pipeline
-from transformers import AutoTokenizer, AutoModelForCausalLM, AutoTokenizer
-import torch
-import openai
 import os
+import openai
 from openai import OpenAI
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import pipeline
 
 
 # The inferencing code is taken from the official documentation
@@ -201,12 +201,16 @@ class DeepSeek(BaseModel):
 
 
 if __name__ == "__main__":
-    test_prompt = "What is the importance of renewable energy?"
+    """
+    test
+    """
+
+    test_prompt = "please introduce yourself:"
 
     def test_llama():
         print("\n=== Testing LLaMA Model ===")
         try:
-            llama_model = LLaMA(pretrained_model_name_or_path="/disk/disk_20T/share/Llama-3-8B")
+            llama_model = LLaMA(pretrained_model_name_or_path="")
             llama_response = llama_model.get_chat_response(
                 prompt=test_prompt,
                 temperature=0.5,
@@ -220,7 +224,7 @@ if __name__ == "__main__":
     def test_qwen():
         print("\n=== Testing Qwen Model ===")
         try:
-            qwen_model = Qwen(pretrained_model_name_or_path="huggingface/Qwen2.5")
+            qwen_model = Qwen(pretrained_model_name_or_path="")
             qwen_response = qwen_model.get_chat_response(
                 prompt=test_prompt,
                 temperature=0.5,
@@ -234,7 +238,7 @@ if __name__ == "__main__":
     def test_minicpm():
         print("\n=== Testing MiniCPM Model ===")
         try:
-            minicpm_model = MiniCPM(pretrained_model_name_or_path="huggingface/MiniCPM3")
+            minicpm_model = MiniCPM(pretrained_model_name_or_path="")
             minicpm_response = minicpm_model.get_chat_response(
                 prompt=test_prompt,
                 temperature=0.5,
@@ -248,7 +252,7 @@ if __name__ == "__main__":
     def test_chatglm():
         print("\n=== Testing ChatGLM Model ===")
         try:
-            chatglm_model = ChatGLM(pretrained_model_name_or_path="huggingface/ChatGLM4")
+            chatglm_model = ChatGLM(pretrained_model_name_or_path="")
             chatglm_response = chatglm_model.get_chat_response(
                 prompt=test_prompt,
                 temperature=0.5,
@@ -262,7 +266,7 @@ if __name__ == "__main__":
     def test_chatgpt():
         print("\n=== Testing ChatGPT Model ===")
         try:
-            chatgpt_model = ChatGPT(model_name="gpt-3.5-turbo", api_key="your_openai_api_key")
+            chatgpt_model = ChatGPT(model_name="gpt-3.5-turbo", api_key="")
             chatgpt_response = chatgpt_model.get_chat_response(
                 input=test_prompt,
                 temperature=0.5,
@@ -275,7 +279,7 @@ if __name__ == "__main__":
     def test_deepseek():
         print("\n=== Testing DeepSeek Model ===")
         try:
-            deepseek_model = DeepSeek(model_name="deepseek-v1", api_key="your_deepseek_api_key")
+            deepseek_model = DeepSeek(model_name="deepseek-v1", api_key="")
             deepseek_response = deepseek_model.get_chat_response(
                 input=test_prompt,
                 temperature=0.5,
@@ -285,8 +289,8 @@ if __name__ == "__main__":
         except Exception as e:
             print("DeepSeek Model Test Failed:", str(e))
 
-    # test
-    test_llama()
+
+    # test_llama()
     # test_qwen()
     # test_minicpm()
     # test_chatglm()
