@@ -64,8 +64,8 @@ def prepare_examples(
 
 if __name__ == "__main__":
     # test:
-    print(prepare_examples(data_path='../data', task='da', language='ch'))
-    print(prepare_examples(data_path='../data', task='ee', language='en'))
-    print(prepare_examples(data_path='../data', task='ner', language='ch'))
-    print(prepare_examples(data_path='../data', task='re', language='en'))
-    print(prepare_examples(data_path='../data', task='rte', language='ch'))
+    print(prepare_examples(data_path='data', task='da', language='ch'))
+    print(prepare_examples(data_path='data', task='ee', language='en'))
+    print(prepare_examples(data_path='data', task='ner', language='ch'))
+    print(prepare_examples(data_path='data', task='re', language='en'))
+    print(prepare_examples(data_path='data', task='rte', language='ch'))
