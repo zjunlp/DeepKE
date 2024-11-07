@@ -45,7 +45,7 @@ class FaceDesign:
         if method == '1':
             self.cmd_cfg()
         elif method == '2':
-            print("Not now...")
+            print("Not yet...")
         else:
             raise ValueError("Please press '1' or '2' by your keyboard.")
 
@@ -56,7 +56,7 @@ class FaceDesign:
         This method gathers required parameters for the NLP task from user input,
         ensuring that all necessary settings are provided and valid before execution.
         """
-        # 大模型初级参数
+        # Primary Params of model
         while True:
             _ = input("Your Model: ")
             if _ in MODEL_LIST:
@@ -70,7 +70,7 @@ class FaceDesign:
 
         self.config['model_id'] = input("Your open source name or path / Your closed model ID: ")
 
-        # 大模型高级参数
+        # Advanced Params of model
         _ = input("Do you want use hidden model parameter? (y/n): ").strip().lower()
         if _ == 'y':
             self.config['temperature'] = float(input("Your temperature (can be skipped): ") or 0.7)
@@ -78,7 +78,7 @@ class FaceDesign:
             self.config['max_tokens'] = int(input("Your max tokens (can be skipped): ") or 512)
             self.config['stop'] = input("Your stop label: ") or None
 
-        # 任务初级参数
+        # Primary Params of task
         while True:
             _ = input("Your task: ")
             if _ in TASK_LIST:
@@ -112,7 +112,7 @@ class FaceDesign:
         if _ == 'y':
             self.config['instruction'] = input("Your instruction: ")
 
-        # 任务高级参数
+        # Advanced Params of task
         if self.config['task'] in ["ner", "re", "ee", "rte"]:
             self.config['domain'] = input("Your domain (can be skipped): ") or None
 
@@ -128,6 +128,9 @@ class FaceDesign:
 
 
     def vis_cfg(self):
+        """
+        visual interface
+        """
         pass
 
 
