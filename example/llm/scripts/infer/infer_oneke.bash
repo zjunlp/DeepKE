@@ -1,0 +1,14 @@
+CUDA_VISIBLE_DEVICES=0 python src/inference.py \
+    --stage sft \
+    --model_name_or_path 'models/OneKE' \
+    --model_name 'llama' \
+    --template 'llama2_zh' \
+    --do_predict \
+    --input_file 'data/input.json' \
+    --output_file 'results/OneKE_output.json' \
+    --output_dir 'lora/test' \
+    --predict_with_generate \
+    --cutoff_len 512 \
+    --bf16 \
+    --max_new_tokens 300 \
+    --bits 4

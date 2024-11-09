@@ -1,0 +1,16 @@
+CUDA_VISIBLE_DEVICES=0 python src/inference.py \
+    --stage sft \
+    --model_name_or_path 'models/Baichuan2-13B-Chat' \
+    --checkpoint_dir 'lora/baichuan2-13b-lora' \
+    --model_name 'baichuan' \
+    --template 'baichuan2' \
+    --do_predict \
+    --input_file 'data/NER/test.json' \
+    --output_file 'results/baichuan2-13b-lora.json' \
+    --finetuning_type lora \
+    --output_dir 'lora/test' \
+    --predict_with_generate \
+    --cutoff_len 512 \
+    --bf16 \
+    --max_new_tokens 300 \
+    --bits 4

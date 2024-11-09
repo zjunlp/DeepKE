@@ -1,0 +1,16 @@
+CUDA_VISIBLE_DEVICES=0 python src/inference.py \
+    --stage sft \
+    --model_name_or_path 'models/vicuna-7b' \
+    --checkpoint_dir 'lora/vicuna-7b-lora' \
+    --model_name 'vicuna' \
+    --template 'vicuna' \
+    --do_predict \
+    --input_file 'data/NER/test.json' \
+    --output_file 'results/vicuna-7b-lora.json' \
+    --finetuning_type lora \
+    --output_dir 'lora/test' \
+    --predict_with_generate \
+    --cutoff_len 512 \
+    --bf16 \
+    --max_new_tokens 300 \
+    --bits 4
