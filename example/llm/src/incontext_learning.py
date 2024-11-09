@@ -14,7 +14,7 @@ import hydra
 import os
 
 from utils.custom_prompt import CustomPrompt
-from utils.interact import FaceDesign
+# from utils.interact import FaceDesign
 from utils.llm_def import LLaMA, Qwen, MiniCPM, ChatGLM, ChatGPT, DeepSeek
 from utils.preprocess import prepare_examples
 
@@ -29,14 +29,15 @@ MODEL_CLASSES = {
 }
 
 
-@hydra.main(version_base=None, config_path="conf", config_name="config")
+@hydra.main(version_base=None, config_path="../configs", config_name="icl_conf")
 def main(cfg):
     # <01: Confirm Config>
-    # Setting Config
-    f_d = FaceDesign()
-    cfg.update(f_d.config)
-    print("All Your Config: ", cfg)
-    # Checking Config
+    # <Setting Config>
+    # f_d = FaceDesign()
+    # cfg.update(f_d.config)
+    # print("All Your Config: ", cfg)
+    
+    # <Checking Config>
     # api_key:
     api_key = cfg.api_key if "api_key" in cfg else os.getenv("OPENAI_API_KEY")
     if not api_key:
@@ -65,7 +66,7 @@ def main(cfg):
     )
     print("Your final customized-prompt: " + prompt)
 
-    # return
+    return
 
     # <03: Model Response>
     ModelClass = MODEL_CLASSES[cfg.engine]

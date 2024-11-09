@@ -11,7 +11,7 @@ import json
 def prepare_examples(
         task,
         language,
-        data_path: str = "data"
+        data_path: str = None
 ):
     """
     This function loads data from a JSON file corresponding to the given task
@@ -30,8 +30,12 @@ def prepare_examples(
     with each dictionary corresponding to a specific example.
     The format of each dictionary varies depending on the task type.
     """
+    if data_path is None:
+        data_path = os.path.join(os.getcwd(), "data/icl")
+
     data_name = task + '_' + language + '.json'
     data_path = os.path.join(data_path, data_name)
+    # print(data_path)
 
     data = json.load(open(data_path, 'r'))
     if task == 'ner':
@@ -64,8 +68,9 @@ def prepare_examples(
 
 if __name__ == "__main__":
     # test:
-    print(prepare_examples(data_path='data', task='da', language='ch'))
-    print(prepare_examples(data_path='data', task='ee', language='en'))
-    print(prepare_examples(data_path='data', task='ner', language='ch'))
-    print(prepare_examples(data_path='data', task='re', language='en'))
-    print(prepare_examples(data_path='data', task='rte', language='ch'))
+    current_data_path = os.path.join(os.path.dirname(__file__), "../../data/icl")
+    print(prepare_examples(data_path=current_data_path, task='da', language='ch'))
+    print(prepare_examples(data_path=current_data_path, task='ee', language='en'))
+    print(prepare_examples(data_path=current_data_path, task='ner', language='ch'))
+    print(prepare_examples(data_path=current_data_path, task='re', language='en'))
+    print(prepare_examples(data_path=current_data_path, task='rte', language='ch'))
