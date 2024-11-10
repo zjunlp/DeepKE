@@ -31,7 +31,7 @@ def prepare_examples(
     The format of each dictionary varies depending on the task type.
     """
     if data_path is None:
-        data_path = os.path.join(os.getcwd(), "data/icl")
+        data_path = os.path.join(os.getcwd(), "data/ICL_Examples")
 
     data_name = task + '_' + language + '.json'
     data_path = os.path.join(data_path, data_name)

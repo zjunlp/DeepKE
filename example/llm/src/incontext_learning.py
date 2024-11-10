@@ -9,7 +9,6 @@ import os
 import argparse
 
 from utils.prompt_crafting import PromptCraft
-# from utils.interact import FaceDesign
 from model.llm_def import LLaMA, Qwen, MiniCPM, ChatGLM, ChatGPT, DeepSeek
 from datamodule.preprocess_icl import prepare_examples
 
@@ -92,7 +91,6 @@ def main():
         'tail_type': args.tail_type
     }
     # print("All Your Config: ", cfg) # test
-    # or you can use the <utils/interact.py> to interact with user to get the config
 
     # <02: Checking Config>
 
