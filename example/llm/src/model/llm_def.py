@@ -25,9 +25,9 @@ class BaseModel:
     def get_chat_response(self, prompt):
         raise NotImplementedError
 
-class LLaMA(BaseModel):
+class LLaMA:
     def __init__(self, pretrained_model_name_or_path: str):
-        super().__init__(pretrained_model_name_or_path)
+        # super().__init__(pretrained_model_name_or_path)
         self.model_id = pretrained_model_name_or_path
         self.pipeline = pipeline(
             "text-generation",
@@ -42,18 +42,21 @@ class LLaMA(BaseModel):
 
     def get_chat_response(self, prompt, temperature: float = 0.1, top_p: float = 0.9, max_tokens: int = 512):
         messages = [
-            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "system", "content": "LLaMA, you are a helpful assistant."},
             {"role": "user", "content": prompt},
         ]
+        combined_prompt = "\n".join([message["content"] for message in messages])
         outputs = self.pipeline(
-            messages,
+            combined_prompt,
             max_new_tokens=max_tokens,
             eos_token_id=self.terminators,
             do_sample=True,
             temperature=temperature,
             top_p=top_p,
+            # max_length=1048,
         )
-        return outputs[0]["generated_text"][-1]['content'].strip()
+        # print("outputs:", outputs)
+        return outputs[0]['generated_text']
 
 
 class Qwen(BaseModel):

@@ -1,5 +1,5 @@
 """
-custom_prompt.py
+prompt_crafting.py
 
 Mainly create custom prompts for those tasks to better chat with LLMs.
 """
@@ -60,7 +60,7 @@ DA_CH_LABELS = (
 )
 
 
-class CustomPrompt:
+class PromptCraft:
     """
     A class to create custom prompts for various NLP tasks.
 
@@ -72,12 +72,12 @@ class CustomPrompt:
             self,
             task: str = 'ner',
             language: str = 'en',
-            in_context: bool = False,
+            in_context: bool = True,
             instruction: str = None,
             example: Dict = None
     ):
         """
-        Initializes the CustomPrompt with task details and settings.
+        Initializes the PromptCraft with task details and settings.
 
         :param task: The type of NLP task (e.g., 'ner', 're', 'ee', 'rte', 'da').
         :param language: The language for the task ('en' for English, 'ch' for Chinese).
@@ -116,6 +116,7 @@ class CustomPrompt:
         # <01: check>
         if self.task == "da" and labels is None:
             raise ValueError("Please provide some pre-categorized entity types if the task is Data Augmentation(da).")
+
         # <02: generate>
         # instruction
         if self.instruction is None:
@@ -148,6 +149,7 @@ class CustomPrompt:
             )
         else:
             final_prompt = prompt
+
         # <03: final get>
         final_prompt = self.instruction + final_prompt
         return final_prompt
@@ -250,7 +252,7 @@ class CustomPrompt:
             elif self.task == "da":
                 instruction += DA_CH_LABELS.format("，".join(labels))
         # return
-        print("Auto-gen Instruction: " + instruction)
+        # print("Auto-gen Instruction: " + instruction) # test
         return instruction
 
     def _get_incontext_examples(self, examples):
@@ -330,7 +332,7 @@ class CustomPrompt:
                         }
                     )
         # return
-        print("Your in-context examples: ", final_examples)
+        # print("Your in-context examples: ", final_examples) # test
         return final_examples
 
     def _build_prompt_by_shots(
@@ -363,7 +365,7 @@ class CustomPrompt:
                 )
 
         final_prompt = context + prompt
-        print("Your prompt build by shots: " + final_prompt)
+        # print("Your prompt build by shots: " + final_prompt) # test
         return final_prompt
 
     def get_llm_result(self, ):

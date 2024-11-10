@@ -2,6 +2,9 @@
 interact.py
 
 Mainly provide a user interaction interface.
+
+Now:
+has been discarded, will be re-implemented in the future.
 """
 
 
