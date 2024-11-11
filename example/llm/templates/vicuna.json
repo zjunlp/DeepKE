@@ -1,0 +1,6 @@
+{
+    "description": "Template used by Vicuna.",
+    "prompt_no_input": "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions.\n\nUSER: {instruction} ASSISTANT: ",
+    "prompt_input": "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions.\n\nUSER: {instruction}{input} ASSISTANT: ",
+    "response_split": "ASSISTANT:"
+}

@@ -34,25 +34,25 @@ def multischema_construct_instruction(task, language, schema1, text):
         "schema":schema1,
         "input":text,
     }
-    return json.dumps(instruction, ensure_ascii=False)  
+    return json.dumps(instruction, ensure_ascii=False)
 
 
 def get_test_data(datas, processer, options):
     results = []
     for record in datas:
         iid = stable_hash(record['text'])
-        task_record = processer.get_task_record(record)  
+        task_record = processer.get_task_record(record)
         schemas = processer.get_schemas(task_record)
         if schemas is None:
             continue
-        total_schemas = multischema_split_by_num_test(schemas, options.split_num)  
+        total_schemas = multischema_split_by_num_test(schemas, options.split_num)
         for schema in total_schemas:
             sinstruct = multischema_construct_instruction(options.task, options.language, schema, record['text'])
             record2 = {
                 'id': iid,
                 'task': options.task,
                 'source': options.source,
-                'instruction': sinstruct, 
+                'instruction': sinstruct,
             }
             if task_record is not None:
                 record2['label'] = json.dumps(task_record, ensure_ascii=False)
@@ -79,7 +79,7 @@ def get_train_data(datas, processer, converter, options):
         if options.cluster_mode:
             total_schemas = processer.negative_cluster_sample(record, options.split_num, options.random_sort)
         else:
-            total_schemas = processer.negative_sample(record, options.split_num, options.random_sort)        
+            total_schemas = processer.negative_sample(record, options.split_num, options.random_sort)
         task_record = processer.get_task_record(record)
         output_texts = convert_output(converter, record['text'], total_schemas, task_record)    # 按照split_num切分schema和output_text
         for schema, output_text in zip(total_schemas, output_texts):
@@ -87,7 +87,7 @@ def get_train_data(datas, processer, converter, options):
             record2 = {
                 'task': options.task,
                 'source': options.source,
-                'instruction': sinstruct, 
+                'instruction': sinstruct,
                 'output': output_text
             }
             results.append(record2)
@@ -96,8 +96,8 @@ def get_train_data(datas, processer, converter, options):
 
 def process(options):
     converter = get_converter(options.task)(options.language, NAN='NAN')
-    processer_class = get_processer(options.task)  
-    processer = processer_class.read_from_file(    
+    processer_class = get_processer(options.task)
+    processer = processer_class.read_from_file(
         processer_class, options.schema_path, negative=-1
     )
     if options.cluster_mode:
@@ -106,12 +106,12 @@ def process(options):
 
     options.source = options.src_path.split('/')[-2]  # 用源路径的最后一个文件夹名作为source
     datas = processer.read_data(options.src_path)
-    if options.split == 'test':  
+    if options.split == 'test':
         results = get_test_data(datas, processer, options)
     else:
         results = get_train_data(datas, processer, converter, options)
     write_to_json(options.tgt_path, results)
-    
+
 
 
 '''
@@ -168,5 +168,3 @@ if __name__ == "__main__":
 
     options = parse.parse_args()
     process(options)
-
-    
