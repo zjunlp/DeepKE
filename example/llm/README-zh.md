@@ -822,8 +822,8 @@ python src/incontext_learning_plus.py
 ```
 engine: "ChatGPT"
 model_id: "gpt-3.5-turbo"
-api_key: "sk-7kVvoLKWePIdvvirGUXY80MVqAsofr3f37kqqHUw7Pnmil3u"
-base_url: "https://api.chatanywhere.tech/v1"
+api_key: "your-api-key"
+# base_url:
 temperature: 0.3
 top_p: 0.9
 max_tokens: 300
