@@ -8,6 +8,55 @@ import os
 import json
 
 
+# 注释全部改为英文，再加一个函数注释：
+# 这个函数用于将data_path路径中的train.json文件读取其中的instruction字段并合成。
+def prepare_input_plus(
+        data_path: str = None,
+        language: str = 'en'
+) -> str:
+    # 定义中文和英文的前缀
+    prefix_ch = ""
+    prefix_en = ""
+
+    # 根据语言选择前缀
+    prefix = prefix_ch if language == 'ch' else prefix_en
+
+    # 读取文件中的所有数据
+    with open(data_path, 'r', encoding='utf-8') as file:
+        json_lines = [line.strip() for line in file.readlines()]
+
+    prompts = []
+    first_instruction = None  # 用于存储第一条数据的 instruction
+
+    for idx, line in enumerate(json_lines):
+        # 解析每一行的 JSON 数据
+        entry = json.loads(line)
+        instruction_str = entry.get('instruction', '')
+
+        # 提取 instruction 中的 JSON 内容
+        instruction_json = json.loads(instruction_str)
+
+        instruction = instruction_json.get('instruction', '')
+        schema = instruction_json.get('schema', [])
+        input_text = instruction_json.get('input', '')
+
+        # 处理第一条数据的 instruction
+        if idx == 0:
+            first_instruction = instruction
+
+        # 根据 language 构造不同的 prompt
+        prompt = f"序号 {idx + 1}: {input_text}\nSchema: {', '.join(schema)}" if language == 'ch' else f"Task {idx + 1}: {input_text}\nSchema: {', '.join(schema)}"
+
+        prompts.append(prompt)
+
+    # 生成最终的 prompt
+    final_prompt = [first_instruction] if first_instruction else []
+    final_prompt.append(prefix)
+    final_prompt.extend(prompts)
+
+    return '\n'.join(final_prompt)
+
+
 def prepare_examples(
         task,
         language,
@@ -68,9 +117,14 @@ def prepare_examples(
 
 if __name__ == "__main__":
     # test:
-    current_data_path = os.path.join(os.path.dirname(__file__), "../../data/ICL_Examples")
-    print(prepare_examples(data_path=current_data_path, task='da', language='ch'))
-    print(prepare_examples(data_path=current_data_path, task='ee', language='en'))
-    print(prepare_examples(data_path=current_data_path, task='ner', language='ch'))
-    print(prepare_examples(data_path=current_data_path, task='re', language='en'))
-    print(prepare_examples(data_path=current_data_path, task='rte', language='ch'))
+    # current_data_path = os.path.join(os.path.dirname(__file__), "../../data/ICL_Examples")
+    # print(prepare_examples(data_path=current_data_path, task='da', language='ch'))
+    # print(prepare_examples(data_path=current_data_path, task='ee', language='en'))
+    # print(prepare_examples(data_path=current_data_path, task='ner', language='ch'))
+    # print(prepare_examples(data_path=current_data_path, task='re', language='en'))
+    # print(prepare_examples(data_path=current_data_path, task='rte', language='ch'))
+
+    # file_path = os.path.join(os.path.dirname(__file__), "../../data/RE/test.json")
+    # print(prepare_input_plus(file_path, language='en'))
+
+    pass

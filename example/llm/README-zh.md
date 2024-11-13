@@ -816,3 +816,56 @@ tail_type: "Event"
 ```bash
 python src/incontext_learning_plus.py
 ```
+
+配置参考：
+
+```
+engine: "ChatGPT"
+model_id: "gpt-3.5-turbo"
+api_key: "sk-7kVvoLKWePIdvvirGUXY80MVqAsofr3f37kqqHUw7Pnmil3u"
+base_url: "https://api.chatanywhere.tech/v1"
+temperature: 0.3
+top_p: 0.9
+max_tokens: 300
+stop: null
+task: "re"
+language: "ch"
+in_context: false
+instruction: ""
+data_path: "data/ICL_Examples"
+text_input: "../data/RE/try.json"  # Path to the input file, such as ../data/RE/train.json and so on.
+domain: ""
+labels: [""]
+head_entity: ""
+head_type: ""
+tail_entity: ""
+tail_type: ""
+```
+
+样例运行结果如下：
+
+```
+[
+    {
+        "科": "丝角蝗科",
+        "目": "直翅目",
+        "物种名称": "Oedipodidae"
+    },
+    {
+        "身高": "70公分",
+        "体重": "10公斤",
+        "吉尼斯认证": "是",
+        "出生年份": "1986"
+    },
+    {
+        "作者": "清水秋风",
+        "出版时间": "2014-04-28",
+        "小说名": "逐风行"
+    },
+    {
+        "专辑": "一袖云",
+        "歌手": "刘珂矣"
+    }
+]
+```
+

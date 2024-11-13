@@ -9,7 +9,7 @@ import os
 
 from utils.prompt_crafting import PromptCraft
 from model.llm_def import LLaMA, Qwen, MiniCPM, ChatGLM, ChatGPT, DeepSeek
-from datamodule.preprocess_icl import prepare_examples
+from datamodule.preprocess_icl import prepare_examples, prepare_input_plus
 
 
 MODEL_CLASSES = {
@@ -37,13 +37,11 @@ TASK_LIST = [
 ]
 
 
-@hydra.main(version_base=None, config_path="../examples/incontext_learning", config_name="re_chatgpt")
+@hydra.main(version_base=None, config_path="../examples/incontext_learning", config_name="re_chatgpt_plus")
 def main(cfg):
-    # <01: Confirm Config>
-    # <Setting Config>
-    # f_d = FaceDesign()
-    # cfg.update(f_d.config)
-    # print("All Your Config: ", cfg)
+    # rebuild text_input
+    cfg.text_input = os.path.join(os.path.dirname(__file__), cfg.text_input)
+    cfg.text_input = prepare_input_plus(cfg.text_input, cfg.language)
 
     # <Checking Config>
     # api_key:
@@ -56,22 +54,23 @@ def main(cfg):
         examples = prepare_examples(cfg.task, cfg.language, cfg.data_path)
 
     # <02: Build Prompt>
-    ie_prompter = PromptCraft(
-        task=cfg.task,
-        language=cfg.language,
-        in_context=cfg.in_context,
-        instruction=cfg.instruction if "instruction" in cfg else None,
-        example=examples
-    )
-    prompt = ie_prompter.build_prompt(
-        prompt=cfg.text_input,
-        domain=cfg.domain if "domain" in cfg else None,
-        labels=cfg.labels if "labels" in cfg else None,
-        head_entity=cfg.head_entity if "head_entity" in cfg else None,
-        head_type=cfg.head_type if "head_type" in cfg else None,
-        tail_entity=cfg.tail_entity if "tail_entity" in cfg else None,
-        tail_type=cfg.tail_type if "tail_type" in cfg else None,
-    )
+    # ie_prompter = PromptCraft(
+    #     task=cfg.task,
+    #     language=cfg.language,
+    #     in_context=cfg.in_context,
+    #     instruction=cfg.instruction if "instruction" in cfg else None,
+    #     example=examples
+    # )
+    # prompt = ie_prompter.build_prompt(
+    #     prompt=cfg.text_input,
+    #     domain=cfg.domain if "domain" in cfg else None,
+    #     labels=cfg.labels if "labels" in cfg else None,
+    #     head_entity=cfg.head_entity if "head_entity" in cfg else None,
+    #     head_type=cfg.head_type if "head_type" in cfg else None,
+    #     tail_entity=cfg.tail_entity if "tail_entity" in cfg else None,
+    #     tail_type=cfg.tail_type if "tail_type" in cfg else None,
+    # )
+    prompt = cfg.text_input
     print("Your final customized-prompt: " + prompt)
 
     # return
