@@ -1,3 +1,5 @@
+import sys
+import yaml
 import os
 import json
 import torch
@@ -22,7 +24,7 @@ else:
 try:
     if torch.backends.mps.is_available():
         device = "mps"
-except: 
+except:
     pass
 
 
@@ -67,20 +69,19 @@ def load_samplingparam(generating_args, inference_args):
     return sampling_params
 
 
-
 def inference(model_args, data_args, training_args, finetuning_args, generating_args, inference_args):
     model_class, tokenizer_class, _ = get_model_tokenizer_trainer(model_args.model_name)
     logger.info(f"model_class:{model_class}\ntokenizer_class:{tokenizer_class}\n")
     tokenizer = tokenizer_class.from_pretrained(
         model_args.model_name_or_path, use_fast=model_args.use_fast_tokenizer,
-        split_special_tokens=model_args.split_special_tokens, padding_side="left", 
+        split_special_tokens=model_args.split_special_tokens, padding_side="left",
         trust_remote_code=True, cache_dir=model_args.cache_dir, revision=model_args.model_revision,
     )
 
-    llm = LLM(model=model_args.model_name_or_path, trust_remote_code=True)  
+    llm = LLM(model=model_args.model_name_or_path, trust_remote_code=True)
     sampling_params = load_samplingparam(generating_args, inference_args)
-    
-    
+
+
     os.makedirs(inference_args.output_file, exist_ok=True)
     if inference_args.process_mode == 'file':
         input_files = inference_args.input_file.split(',')
@@ -95,10 +96,10 @@ def inference(model_args, data_args, training_args, finetuning_args, generating_
                     continue
             predict_dataset = convert_datas2datasets(records)
             predict_dataset = preprocess_dataset(predict_dataset, tokenizer, data_args, training_args, finetuning_args.stage)
-            
+
             outputs = llm.generate(
                 sampling_params=sampling_params,
-                prompt_token_ids=predict_dataset["input_ids"], 
+                prompt_token_ids=predict_dataset["input_ids"],
                 use_tqdm=True,
             )
 
@@ -106,7 +107,6 @@ def inference(model_args, data_args, training_args, finetuning_args, generating_
                 for record, output in zip(records, outputs):
                     record['output'] = output.outputs[0].text
                     writer.write(json.dumps(record, ensure_ascii=False)+'\n')
-   
 
 
 def main(args=None):
@@ -115,8 +115,23 @@ def main(args=None):
     # model_name映射
     model_args.model_name = get_model_name(model_args.model_name)
     inference(model_args, data_args, training_args, finetuning_args, generating_args, inference_args)
- 
- 
+
+
+def load_yaml_config(yaml_file):
+    with open(yaml_file, 'r') as file:
+        return yaml.safe_load(file)
+
+
+def construct_args_from_config(config):
+    args = []
+    for key, value in config.items():
+        args.append(f'--{key}')
+        args.append(str(value))
+    return args
+
 
 if __name__ == "__main__":
+    config = load_yaml_config('example/llm/examples/fine_turning/vllm_baichuan.yaml')
+    sys.argv = ['src/inference_vllm.py'] + construct_args_from_config(config)
+
     main()

@@ -1,0 +1,13 @@
+stage: sft
+model_name_or_path: 'models/llama2-13B-Chat'
+checkpoint_dir: 'lora/llama2-13b-IEPile-lora'
+model_name: 'llama'
+template: 'llama2'
+input_file: 'data/input.json'
+output_file: 'results/llama2-13b-IEPile-lora_output.json'
+finetuning_type: lora
+output_dir: 'lora/test'
+cutoff_len: 512
+bf16: true
+max_new_tokens: 300
+bits: 4

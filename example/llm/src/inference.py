@@ -1,3 +1,5 @@
+import yaml
+import argparse
 import os
 import sys
 sys.path.append('./')
@@ -21,7 +23,7 @@ else:
 try:
     if torch.backends.mps.is_available():
         device = "mps"
-except: 
+except:
     pass
 
 
@@ -39,7 +41,7 @@ def convert_datas2datasets(records):
         dataset_mapping['response'].append(record.get('output', 'test'))
     dataset = Dataset.from_dict(dataset_mapping)
     return dataset
-        
+
 
 def inference(model_args, data_args, training_args, finetuning_args, generating_args, inference_args):
     model_class, tokenizer_class, _ = get_model_tokenizer_trainer(model_args.model_name)
@@ -55,7 +57,7 @@ def inference(model_args, data_args, training_args, finetuning_args, generating_
     if model_args.bits >= 8:
         model.to(device)
     print(f"BOS:{tokenizer.bos_token_id},{tokenizer.bos_token}\tEOS:{tokenizer.eos_token_id},{tokenizer.eos_token}\tPAD:{tokenizer.pad_token_id},{tokenizer.pad_token}")
-    
+
 
     def evaluate(
         input_ids,
@@ -98,25 +100,49 @@ def inference(model_args, data_args, training_args, finetuning_args, generating_
             records.append(data)
     predict_dataset = convert_datas2datasets(records)
     predict_dataset = preprocess_dataset(predict_dataset, tokenizer, data_args, training_args, finetuning_args.stage)
-    
+
 
     with open(inference_args.output_file, 'w') as writer:
         for record, model_inputs in zip(records, predict_dataset["input_ids"]):
             result = evaluate(model_inputs, generating_args)
             print(result)
             record['output'] = result
-            writer.write(json.dumps(record, ensure_ascii=False)+'\n') 
+            writer.write(json.dumps(record, ensure_ascii=False)+'\n')
 
+
+def load_config(config_path):
+    with open(config_path, 'r') as file:
+        config = yaml.safe_load(file)
+    return config
+
+
+def parse_args_from_yaml(config):
+    parser = argparse.ArgumentParser()
+    for key, value in config.items():
+        parser.add_argument(f"--{key}", type=type(value), default=value)
+    args = parser.parse_args()
+    return args
+
+
+# def print_command_like_args(args):
+#     cmd_args = [f"--{k} {v}" for k, v in vars(args).items()]
+#     print("CMD:\npython src/finetune.py " + " ".join(cmd_args))
 
 
 def main(args=None):
     model_args, data_args, training_args, finetuning_args, generating_args, inference_args = get_infer_args(args)
     # model_name映射
     model_args.model_name = get_model_name(model_args.model_name)
+    # print(model_args.model_name, model_args, data_args, training_args, finetuning_args, generating_args, inference_args, sep='\n')
+    # return
     inference(model_args, data_args, training_args, finetuning_args, generating_args, inference_args)
- 
+
 
 
 
 if __name__ == "__main__":
-    main()
+    config = load_config("examples/fine_turning/infer_llama.yaml")
+    args = parse_args_from_yaml(config)
+    # print_command_like_args(args)
+
+    main(args)

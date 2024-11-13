@@ -68,7 +68,7 @@ def prepare_examples(
 
 if __name__ == "__main__":
     # test:
-    current_data_path = os.path.join(os.path.dirname(__file__), "../../data/icl")
+    current_data_path = os.path.join(os.path.dirname(__file__), "../../data/ICL_Examples")
     print(prepare_examples(data_path=current_data_path, task='da', language='ch'))
     print(prepare_examples(data_path=current_data_path, task='ee', language='en'))
     print(prepare_examples(data_path=current_data_path, task='ner', language='ch'))

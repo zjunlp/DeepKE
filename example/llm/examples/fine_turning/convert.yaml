@@ -1,0 +1,32 @@
+mode: train
+
+train:
+  src_path: data/NER/sample.json
+  tgt_path: data/NER/train.json
+  schema_path: data/NER/schema.json
+  language: zh
+  task: NER
+  split_num: 6
+  random_sort: true
+  split: train
+
+test:
+  src_path: data/NER/sample.json
+  tgt_path: data/NER/test.json
+  schema_path: data/NER/schema.json
+  language: zh
+  task: NER
+  split_num: 6
+  split: test
+
+hard_train:
+  src_path: data/SPO/sample.json
+  tgt_path: data/SPO/train.json
+  schema_path: data/SPO/schema.json
+  cluster_mode: true
+  hard_negative_path: data/hard_negative/SPO_DuIE2.0.json
+  language: zh
+  task: SPO
+  split_num: 4
+  random_sort: true
+  split: train

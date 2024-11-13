@@ -1,3 +1,5 @@
+import argparse
+import yaml
 import os
 import sys
 sys.path.append('./')
@@ -9,10 +11,10 @@ from transformers import DataCollatorForSeq2Seq
 
 
 from utils.general_utils import (
-    LORA_TARGET_MODULES_DICT, 
-    seed_torch, 
-    get_model_tokenizer_trainer, 
-    get_model_name, 
+    LORA_TARGET_MODULES_DICT,
+    seed_torch,
+    get_model_tokenizer_trainer,
+    get_model_name,
     get_format_time,
 )
 from utils.logging import get_logger
@@ -26,13 +28,32 @@ os.environ["WANDB_DISABLED"] = "true"
 logger = get_logger(__name__)
 
 
+def load_config(config_path):
+    with open(config_path, 'r') as file:
+        config = yaml.safe_load(file)
+    return config
+
+
+def parse_args_from_yaml(config):
+    parser = argparse.ArgumentParser()
+    for key, value in config.items():
+        parser.add_argument(f"--{key}", type=type(value), default=value)
+    args = parser.parse_args()
+    return args
+
+
+# def print_command_like_args(args):
+#     cmd_args = [f"--{k} {v}" for k, v in vars(args).items()]
+#     print("CMD:\npython src/finetune.py " + " ".join(cmd_args))
+
+
 def train(model_args, data_args, training_args, finetuning_args, generating_args):
     logger.info(f"Start Time: {get_format_time()}")
     logger.info(f"model_args:{model_args}\ndata_args:{data_args}\ntraining_args:{training_args}\nfinetuning_args:{finetuning_args}\ngenerating_args:{generating_args}")
     # 获得特定于model name的特有类
     model_class, tokenizer_class, trainer_class = get_model_tokenizer_trainer(model_args.model_name)
     logger.info(f"model_class:{model_class}\ntokenizer_class:{tokenizer_class}\ntrainer_class:{trainer_class}\n")
-    
+
 
     model, tokenizer = load_model_and_tokenizer(
         model_class,
@@ -47,12 +68,12 @@ def train(model_args, data_args, training_args, finetuning_args, generating_args
 
     train_data_dict, train_data, valid_data = load_train_datasets(training_args, data_args)
     train_data, valid_data = process_datasets(
-        training_args, 
-        data_args, 
-        finetuning_args, 
-        tokenizer, 
-        train_data_dict, 
-        train_data, 
+        training_args,
+        data_args,
+        finetuning_args,
+        tokenizer,
+        train_data_dict,
+        train_data,
         valid_data,
     )
     data_collator = DataCollatorForSeq2Seq(
@@ -83,7 +104,7 @@ def train(model_args, data_args, training_args, finetuning_args, generating_args
         trainer.save_metrics("train", metrics)
         trainer.save_state()
         all_metrics.update(metrics)
-        
+
     if training_args.do_eval:
         logger.info("*** Evaluate ***")
         metrics = trainer.evaluate(metric_key_prefix="eval")
@@ -97,12 +118,12 @@ def train(model_args, data_args, training_args, finetuning_args, generating_args
 
 def main(args=None):
     model_args, data_args, training_args, finetuning_args, generating_args = get_train_args(args)
-    
+
     # model_name映射
     model_args.model_name = get_model_name(model_args.model_name)
-    
-    # 如果为None则通过model_name加载默认的lora_target_modules, 否则加载传入的 
-    if finetuning_args.lora_target_modules:  
+
+    # 如果为None则通过model_name加载默认的lora_target_modules, 否则加载传入的
+    if finetuning_args.lora_target_modules:
         finetuning_args.lora_target_modules = eval(finetuning_args.lora_target_modules)
     else:
         finetuning_args.lora_target_modules = LORA_TARGET_MODULES_DICT[model_args.model_name]
@@ -114,4 +135,10 @@ def main(args=None):
 
 
 if __name__ == "__main__":
-    main()
+    config = load_config("examples/fine_turning/fine_llama.yaml")
+    args = parse_args_from_yaml(config)
+
+    # print_command_like_args(args)
+
+    os.makedirs(args.output_dir, exist_ok=True) # 创建输出文件夹
+    main(args)

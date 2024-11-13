@@ -1,0 +1,7 @@
+model_name_or_path: 'models/Baichuan2-13B-Chat'
+checkpoint_dir: 'lora_results/baichuan2-13b-v1/checkpoint-xxx'
+export_dir: 'lora_results/baichuan2-13b-v1/baichuan2-13b-v1'
+stage: 'sft'
+model_name: 'baichuan'
+template: 'baichuan2'
+output_dir: 'lora_results/test'

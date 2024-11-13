@@ -1,3 +1,5 @@
+import yaml
+import subprocess
 from modeling_chatglm import ChatGLMForConditionalGeneration
 from tokenization_chatglm import ChatGLMTokenizer
 from configuration_chatglm import ChatGLMConfig
@@ -8,6 +10,27 @@ from torch.utils.data import RandomSampler, DataLoader
 from data_set import Seq2SeqDataSet, coll_fn
 import os
 from shutil import copy
+
+
+def load_config(config_path="examples/fine_turning/fine_pt_chatglm.yaml"):
+    with open(config_path, 'r') as file:
+        config = yaml.safe_load(file)
+    return config
+
+
+def build_command(config):
+    command = [
+        "deepspeed", "--include", "localhost:0", "src/finetuning_pt.py"
+    ]
+    for key, value in config.items():
+        command.append(f"--{key}")
+        command.append(str(value))
+    return command
+
+
+# def print_command_like_args(args):
+#     cmd_args = [f"--{k} {v}" for k, v in vars(args).items()]
+#     print("CMD:\npython src/finetune.py " + " ".join(cmd_args))
 
 
 def print_trainable_parameters(model):
@@ -47,6 +70,8 @@ def set_args():
 
 def main():
     args = set_args()
+    # print_command_like_args(args)
+    # return
     config = ChatGLMConfig.from_pretrained(args.model_dir)
     config.pre_seq_len = args.pre_seq_len
     config.prefix_projection = args.prefix_projection
@@ -136,5 +161,10 @@ def main():
 
 
 if __name__ == "__main__":
+    # 从 YAML 配置构建命令行
+    config = load_config()
+    command = build_command(config)
+    subprocess.run(command)
+
     main()
     # CUDA_VISIBLE_DEVICES=1 deepspeed finetuning_pt.py
