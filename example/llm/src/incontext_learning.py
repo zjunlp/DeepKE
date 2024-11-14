@@ -40,12 +40,6 @@ TASK_LIST = [
 @hydra.main(version_base=None, config_path="../examples/incontext_learning", config_name="re_chatgpt")
 def main(cfg):
     # <01: Confirm Config>
-    # <Setting Config>
-    # f_d = FaceDesign()
-    # cfg.update(f_d.config)
-    # print("All Your Config: ", cfg)
-
-    # <Checking Config>
     # api_key:
     api_key = cfg.api_key if "api_key" in cfg else os.getenv("OPENAI_API_KEY")
     if not api_key:
@@ -72,7 +66,7 @@ def main(cfg):
         tail_entity=cfg.tail_entity if "tail_entity" in cfg else None,
         tail_type=cfg.tail_type if "tail_type" in cfg else None,
     )
-    print("Your final customized-prompt: " + prompt)
+    # print("Your final customized-prompt: " + prompt)
 
     # return
 
@@ -102,8 +96,8 @@ def main(cfg):
         )
 
     # <04: Log and Output>
-    # print(response)
-    print("Model Response: " + response)
+    print(response)
+    # print("Model Response: " + response)
 
 
 if __name__ == "__main__":

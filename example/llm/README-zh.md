@@ -1,5 +1,9 @@
 # 微调
 
+<details>
+  <summary><b>👇🏻 Show more detail...</b></summary>
+
+
 ## 🎯 1.任务目标
 
 我们将`Instruction-based KGC`制定为一种遵循指令的自回归生成任务。模型首先需要理解指令识别其意图，然后根据指令内容，模型会基于输入的文本抽取相应的三元组并以指定的格式输出。本文的 **`instruction`** 格式采纳了类JSON字符串的结构，实质上是一种字典型字符串。它由以下三个字段构成：
@@ -61,6 +65,7 @@
 
 <details>
   <summary><b>InstructIE详细信息</b></summary>
+
 **一条数据的示例**
 
 
@@ -734,11 +739,14 @@ python ie2instruction/eval_func.py \
 * `task`: 目前支持['RE', 'NER', 'EE', 'EET', 'EEA']五类任务。
 * 可以设置 `sort_by` 为 `source`, 分别计算每个数据集上的F1分数。
 
+</details>
 
-
-
+#
 
 # 上下文学习
+
+<details>
+  <summary><b>👇🏻 Show more detail...</b></summary>
 
 ## 📗 单次推理
 
@@ -869,3 +877,4 @@ tail_type: ""
 ]
 ```
 
+</details>

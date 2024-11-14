@@ -27,7 +27,7 @@ class BaseModel:
 
 class LLaMA:
     def __init__(self, pretrained_model_name_or_path: str):
-        # super().__init__(pretrained_model_name_or_path)
+        super().__init__(pretrained_model_name_or_path)
         self.model_id = pretrained_model_name_or_path
         self.pipeline = pipeline(
             "text-generation",
@@ -45,18 +45,17 @@ class LLaMA:
             {"role": "system", "content": "LLaMA, you are a helpful assistant."},
             {"role": "user", "content": prompt},
         ]
-        combined_prompt = "\n".join([message["content"] for message in messages])
+        # combined_prompt = "\n".join([message["content"] for message in messages])
         outputs = self.pipeline(
-            combined_prompt,
+            messages, # or combined_prompt
             max_new_tokens=max_tokens,
             eos_token_id=self.terminators,
             do_sample=True,
             temperature=temperature,
             top_p=top_p,
-            # max_length=1048,
         )
-        # print("outputs:", outputs)
-        return outputs[0]['generated_text']
+        # return outputs[0]['generated_text']
+        return outputs[0]["generated_text"][-1]['content'].strip()
 
 
 class Qwen(BaseModel):

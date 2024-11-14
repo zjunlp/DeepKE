@@ -8,48 +8,53 @@ import os
 import json
 
 
-# 注释全部改为英文，再加一个函数注释：
-# 这个函数用于将data_path路径中的train.json文件读取其中的instruction字段并合成。
 def prepare_input_plus(
         data_path: str = None,
         language: str = 'en'
 ) -> str:
-    # 定义中文和英文的前缀
+    """
+    This function reads the 'train.json' file from the specified data_path and concatenates the 'instruction' fields.
+
+    Args:
+        data_path (str): The path to the data file.
+        language (str): The language of the instructions ('en' for English, 'ch' for Chinese).
+
+    Returns:
+        str: The concatenated instructions.
+    """
+    # Define prefixes for Chinese and English
     prefix_ch = ""
     prefix_en = ""
-
-    # 根据语言选择前缀
     prefix = prefix_ch if language == 'ch' else prefix_en
 
-    # 读取文件中的所有数据
     with open(data_path, 'r', encoding='utf-8') as file:
         json_lines = [line.strip() for line in file.readlines()]
 
     prompts = []
-    first_instruction = None  # 用于存储第一条数据的 instruction
+    first_instruction = None  # To store the instruction of the first entry
 
     for idx, line in enumerate(json_lines):
-        # 解析每一行的 JSON 数据
+        # Parse each line as JSON
         entry = json.loads(line)
         instruction_str = entry.get('instruction', '')
 
-        # 提取 instruction 中的 JSON 内容
+        # Extract JSON content from the instruction
         instruction_json = json.loads(instruction_str)
 
         instruction = instruction_json.get('instruction', '')
         schema = instruction_json.get('schema', [])
         input_text = instruction_json.get('input', '')
 
-        # 处理第一条数据的 instruction
+        # Handle the instruction of the first entry
         if idx == 0:
             first_instruction = instruction
 
-        # 根据 language 构造不同的 prompt
+        # Construct different prompts based on language
         prompt = f"序号 {idx + 1}: {input_text}\nSchema: {', '.join(schema)}" if language == 'ch' else f"Task {idx + 1}: {input_text}\nSchema: {', '.join(schema)}"
 
         prompts.append(prompt)
 
-    # 生成最终的 prompt
+    # Generate the final prompt
     final_prompt = [first_instruction] if first_instruction else []
     final_prompt.append(prefix)
     final_prompt.extend(prompts)

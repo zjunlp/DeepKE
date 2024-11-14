@@ -16,4 +16,4 @@ tiktoken==0.6.0
 jieba
 rouge_chinese
 huggingface-hub==0.20.3
-hydra-core
+hydra-core==1.0.6

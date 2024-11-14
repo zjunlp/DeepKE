@@ -1,6 +1,6 @@
-✨ *These two projects are our previous research work:* ✨
+✨ *These two projects are our previous research:* ✨
 
-# 1️⃣ CodeKGC-Code Language Models for Knowledge Graph Construction
+# ✅ CodeKGC-Code Language Models for Knowledge Graph Construction
 
 <details>
   <summary><b>👇🏻 Show more detail...</b></summary>
@@ -14,7 +14,7 @@
 To better address Relational Triple Extraction (rte) task in Knowledge Graph Construction, we have designed code-style prompts to model the structure of  Relational Triple, and used Code-LLMs to generate more accurate predictions. The key step of code-style prompt construction is to transform (text, output triples) pairs into semantically equivalent program language written in Python.
 
 <div align=center>
-<img src="./codekgc_figure.png" width="85%" height="75%" />
+<img src="./CodeKGC/codekgc_figure.png" width="85%" height="75%" />
 </div>
 
 ## Data and Configuration
@@ -129,9 +129,9 @@ If you use the code, please cite the following paper:
 
 </details>
 
+#
 
-
-# 2️⃣ How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?
+# ✅ How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?
 
 <details>
   <summary><b>👇🏻 Show more datail...</b></summary>
@@ -142,17 +142,19 @@ If you use the code, please cite the following paper:
 
 
 ## Contents
-- [1️⃣ CodeKGC-Code Language Models for Knowledge Graph Construction](#1️⃣-codekgc-code-language-models-for-knowledge-graph-construction)
+- [✅ CodeKGC-Code Language Models for Knowledge Graph Construction](#-codekgc-code-language-models-for-knowledge-graph-construction)
   - [Data and Configuration](#data-and-configuration)
   - [Run and Examples](#run-and-examples)
   - [Citation](#citation)
-- [2️⃣ How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?](#2️⃣-how-to-unleash-the-power-of-large-language-models-for-few-shot-relation-extraction)
+- [](#)
+- [✅ How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?](#-how-to-unleash-the-power-of-large-language-models-for-few-shot-relation-extraction)
   - [Contents](#contents)
   - [Requirements and Datasets](#requirements-and-datasets)
   - [Prompts](#prompts)
   - [In-context Learning](#in-context-learning)
   - [Data Generation via LLMs](#data-generation-via-llms)
   - [Citation](#citation-1)
+- [](#-1)
 
 
 ## Requirements and Datasets
@@ -169,7 +171,7 @@ If you use the code, please cite the following paper:
 
 
 ## Prompts
-![prompt](LLM.png)
+![prompt](UnleashLLMRE/LLM.png)
 
 ## In-context Learning
 To elicit comprehension of the relation extraction task from large language models (LLMs), in-context learning is applied by providing LLMs with demonstrations in prompts. As shown above, two kinds of prompts are designed: **TEXT PROMPT** only with essential elements for RE and **INSTRUCT PROMPT** with constructions related to relation extraction. Meanwhile, entity types as schemas can also be added to prompts for better performance.
@@ -245,3 +247,7 @@ Obtain augmented data:
 ```
 
 </details>
+
+#
+
+✨ *Thanks for reading!* ✨

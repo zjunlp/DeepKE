@@ -252,7 +252,7 @@ class PromptCraft:
             elif self.task == "da":
                 instruction += DA_CH_LABELS.format("，".join(labels))
         # return
-        print("Auto-gen Instruction: " + instruction) # test
+        # print("Auto-gen Instruction: " + instruction) # test
         return instruction
 
     def _get_incontext_examples(self, examples):
@@ -332,7 +332,7 @@ class PromptCraft:
                         }
                     )
         # return
-        print("Your in-context examples: ", final_examples) # test
+        # print("Your in-context examples: ", final_examples) # test
         return final_examples
 
     def _build_prompt_by_shots(
@@ -365,7 +365,7 @@ class PromptCraft:
                 )
 
         final_prompt = context + prompt
-        print("Your prompt build by shots: " + final_prompt) # test
+        # print("Your prompt build by shots: " + final_prompt) # test
         return final_prompt
 
     def get_llm_result(self, ):
