@@ -328,7 +328,7 @@ bits: 4
 * `val_set_size`: **验证集的样本数量**, 默认为1000。若没有指定`valid_file`, 将会从`train_file`中划分出对应数量的样本作为验证集。
 * `per_device_train_batch_size`, `per_device_eval_batch_size`: 每台GPU设备上的`batch_size`, 根据显存大小调整, RTX3090建议设置2~4。
 * `max_source_length`, `max_target_length`, `cutoff_len`: 最大输入、输出长度、截断长度, 截断长度可以简单地视作最大输入长度 + 最大输出长度, 需根据具体需求和显存大小设置合适值。
-* 使用`deepspeed`, 可设置 `--deeepspeed configs/ds_config_bf16_stage2.json`
+* 使用`deepspeed`, 可设置 `--deeepspeed data/DeepSpeed/ds_config_bf16_stage2.json`
 
 > 可通过设置 `bits` = 4 进行量化, RTX3090建议量化。
 
@@ -468,7 +468,7 @@ bits: 4
 
 * 若要基于微调后的LoRA权重继续训练，仅需将 `checkpoint_dir` 参数指向LoRA权重路径，例如设置为`'zjunlp/llama2-13b-iepile-lora'`。
 
-* 使用`deepspeed`, 可设置 `deeepspeed: "configs/ds_config_bf16_stage2.json"`
+* 使用`deepspeed`, 可设置 `deeepspeed: "data/DeepSpeed/ds_config_bf16_stage2.json"`
 
 > 可通过设置 `bits` = 4 进行量化, RTX3090建议量化。
 
