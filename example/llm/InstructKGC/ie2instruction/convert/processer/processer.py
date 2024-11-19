@@ -10,11 +10,11 @@ random.seed(42)
 
 class Processer:
     def __init__(self, type_list, role_list, type_role_dict, negative=-1):
-        self.type_list = set(type_list)
-        self.role_list = set(role_list)
-        self.type_role_dict = defaultdict(set)
+        self.type_list = list(type_list)
+        self.role_list = list(role_list)
+        self.type_role_dict = defaultdict(list)
         for key, value in type_role_dict.items():
-            self.type_role_dict[key] = set(value)
+            self.type_role_dict[key] = list(value)
         self.negative = negative
 
     
