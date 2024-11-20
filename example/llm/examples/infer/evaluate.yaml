@@ -1,0 +1,6 @@
+path1: "results/baichuan2-13b-iepile-lora_output.json"
+task: "RE"
+language: "zh"
+sort_by: "source"
+match_mode: "normal"
+metrics_list: "f1"

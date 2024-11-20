@@ -1,4 +1,5 @@
 # coding=utf-8
+import yaml
 import json
 import os
 import sys
@@ -42,7 +43,7 @@ def convert_kg(outputs, task):
 def evaluate(options):
     extracter_class = get_extracter(options.task)
     metric_class = get_metric(options.task)
-    
+
     mapper = defaultdict(dict)
     with open(options.path1, 'r') as reader:
         for line in reader:
@@ -106,31 +107,43 @@ def evaluate(options):
     json.dump(all_result, open(options.out_path, 'w'), ensure_ascii=False, indent=4)
 
 
+def load_config_from_yaml(yaml_path):
+    with open(yaml_path, 'r', encoding='utf-8') as f:
+        config = yaml.safe_load(f)
+    return config
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--path1", type=str, default=None)
+    parser.add_argument("--task", type=str, default=None, choices=['NER', 'RE', 'EE', 'SPO', 'EET', 'EEA', 'KG', 'MRC'])
+    parser.add_argument("--language", type=str, default=None, choices=['zh', 'en'])
+    parser.add_argument("--NAN", type=str, default="")
+    parser.add_argument("--prefix", type=str, default='')
+    parser.add_argument("--sort_by", type=str, default='')
+    parser.add_argument("--match_mode", type=str, default="normal")
+    parser.add_argument("--metrics_list", type=str, default="f1")
+
+    options = parser.parse_args()
+
+    # if user does not specify the path1, task, language, then use the default config
+    if not any([options.path1, options.task, options.language]):
+        yaml_config = load_config_from_yaml('examples/infer/evaluate.yaml')
+        for key, value in yaml_config.items():
+            if value is not None:
+                setattr(options, key, value)
+
+    return options
+
 
 def main():
-    '''
-    python ie2instruction/eval_func.py \
-        --path1 results/baichuan2-13b-iepile-lora_output.json \
-        --task RE \
-        --sort_by source 
-    '''
-    parse = argparse.ArgumentParser()
-    parse.add_argument("--path1", type=str, default="")
-    parse.add_argument("--task", type=str, default='re', choices=['NER', 'RE', 'EE', 'SPO', 'EET', 'EEA', 'KG', 'MRC'])
-    parse.add_argument("--language", type=str, default='zh', choices=['zh', 'en']) 
-    parse.add_argument("--NAN", type=str, default="")
-    parse.add_argument("--prefix", type=str, default='')
-    parse.add_argument("--sort_by", type=str, default='')
-    parse.add_argument("--match_mode", type=str, default="normal")
-    parse.add_argument("--metrics_list", type=str, default="f1")
-    options = parse.parse_args()
+    options = parse_args()
 
     dname = os.path.dirname(options.path1)
     fname = os.path.basename(options.path1)
     os.makedirs(os.path.join(dname, "output_msg"), exist_ok=True)
     options.out_path = os.path.join(dname, "output_msg", fname)
     evaluate(options)
-
 
 
 if __name__=="__main__":

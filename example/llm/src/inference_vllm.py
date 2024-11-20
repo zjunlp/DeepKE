@@ -1,5 +1,4 @@
-import sys
-import yaml
+import argparse
 import os
 import json
 import torch
@@ -11,6 +10,7 @@ from args.parser import get_infer_args
 from datamodule.preprocess import preprocess_dataset
 from utils.general_utils import get_model_tokenizer_trainer, get_model_name
 from utils.logging import get_logger
+from utils.load_cmd import load_config_from_yaml
 
 from vllm import LLM, SamplingParams
 from vllm.lora.request import LoRARequest
@@ -69,6 +69,7 @@ def load_samplingparam(generating_args, inference_args):
     return sampling_params
 
 
+
 def inference(model_args, data_args, training_args, finetuning_args, generating_args, inference_args):
     model_class, tokenizer_class, _ = get_model_tokenizer_trainer(model_args.model_name)
     logger.info(f"model_class:{model_class}\ntokenizer_class:{tokenizer_class}\n")
@@ -109,7 +110,37 @@ def inference(model_args, data_args, training_args, finetuning_args, generating_
                     writer.write(json.dumps(record, ensure_ascii=False)+'\n')
 
 
+def set_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--config', type=str, default=None, help="Path to the YAML config file")
+    parser.add_argument('--stage', type=str, default='sft', help="Stage of the model")
+    parser.add_argument('--model_name_or_path', type=str, default='lora_results/baichuan2-13b-v1/baichuan2-13b-v1', help="Path to model or model name")
+    parser.add_argument('--model_name', type=str, default='baichuan', help="Model name")
+    parser.add_argument('--template', type=str, default='baichuan2', help="Template name")
+    parser.add_argument('--do_predict', action='store_true', default=True, help="Whether to perform prediction")
+    parser.add_argument('--input_file', type=str, default='data/input.json', help="Path to the input file")
+    parser.add_argument('--output_file', type=str, default='results/baichuan2-13b-IEPile-lora_output.json', help="Path to the output file")
+    parser.add_argument('--output_dir', type=str, default='lora_results/test', help="Directory to save output")
+    parser.add_argument('--batch_size', type=int, default=4, help="Batch size for inference")
+    parser.add_argument('--predict_with_generate', action='store_true', default=True, help="Whether to use generation during inference")
+    parser.add_argument('--max_source_length', type=int, default=1024, help="Maximum source length")
+    parser.add_argument('--bf16', action='store_true', default=True, help="Whether to use bf16")
+    parser.add_argument('--max_new_tokens', type=int, default=512, help="Maximum number of new tokens to generate")
+    args = parser.parse_args()
+
+    if args.config:
+        #  if user provided a config file, load it
+        config = load_config_from_yaml(args.config)
+        for key, value in config.items():
+            if hasattr(args, key):
+                setattr(args, key, value)
+
+    return args
+
+
 def main(args=None):
+    args = set_args()
+
     model_args, data_args, training_args, finetuning_args, generating_args, inference_args = get_infer_args(args)
 
     # model_name映射
@@ -117,21 +148,5 @@ def main(args=None):
     inference(model_args, data_args, training_args, finetuning_args, generating_args, inference_args)
 
 
-def load_yaml_config(yaml_file):
-    with open(yaml_file, 'r') as file:
-        return yaml.safe_load(file)
-
-
-def construct_args_from_config(config):
-    args = []
-    for key, value in config.items():
-        args.append(f'--{key}')
-        args.append(str(value))
-    return args
-
-
 if __name__ == "__main__":
-    config = load_yaml_config('example/llm/examples/fine_turning/vllm_baichuan.yaml')
-    sys.argv = ['src/inference_vllm.py'] + construct_args_from_config(config)
-
     main()

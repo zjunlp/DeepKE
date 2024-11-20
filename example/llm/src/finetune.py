@@ -1,5 +1,4 @@
 import argparse
-import yaml
 import os
 import sys
 sys.path.append('./')
@@ -17,6 +16,7 @@ from utils.general_utils import (
     get_model_name,
     get_format_time,
 )
+from utils.load_cmd import load_config_from_yaml
 from utils.logging import get_logger
 from utils.constants import IGNORE_INDEX
 from args.parser import get_train_args
@@ -26,25 +26,6 @@ from datamodule.get_datasets import load_train_datasets, process_datasets
 os.environ["WANDB_DISABLED"] = "true"
 
 logger = get_logger(__name__)
-
-
-def load_config(config_path):
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-    return config
-
-
-def parse_args_from_yaml(config):
-    parser = argparse.ArgumentParser()
-    for key, value in config.items():
-        parser.add_argument(f"--{key}", type=type(value), default=value)
-    args = parser.parse_args()
-    return args
-
-
-# def print_command_like_args(args):
-#     cmd_args = [f"--{k} {v}" for k, v in vars(args).items()]
-#     print("CMD:\npython src/finetune.py " + " ".join(cmd_args))
 
 
 def train(model_args, data_args, training_args, finetuning_args, generating_args):
@@ -116,8 +97,26 @@ def train(model_args, data_args, training_args, finetuning_args, generating_args
 
 
 
-def main(args=None):
-    model_args, data_args, training_args, finetuning_args, generating_args = get_train_args(args)
+def main():
+    parse = argparse.ArgumentParser()
+    parse.add_argument("--config", type=str, default=None, help="Path to the YAML config file")
+    parse.add_argument("--do_train", action='store_true', help="Flag to train the model")
+    parse.add_argument("--do_eval", action='store_true', help="Flag to evaluate the model")
+    parse.add_argument("--deepspeed", type=str, default=None, help="Path to deepspeed config file")
+    args = parse.parse_args()
+
+    # if user provides a config file, load the config file
+    if args.config:
+        print(f"Loading configuration from {args.config}")
+        config = load_config_from_yaml(args.config)
+        # put the config into the args
+        model_args = config['model_args']
+        data_args = config['data_args']
+        training_args = config['training_args']
+        finetuning_args = config['finetuning_args']
+        generating_args = config['generating_args']
+    else:
+        model_args, data_args, training_args, finetuning_args, generating_args = get_train_args(args)
 
     # model_name映射
     model_args.model_name = get_model_name(model_args.model_name)
@@ -130,15 +129,13 @@ def main(args=None):
 
     seed_torch(training_args.seed)
     os.makedirs(training_args.output_dir, exist_ok=True)
+
     train(model_args, data_args, training_args, finetuning_args, generating_args)
 
 
-
 if __name__ == "__main__":
-    config = load_config("examples/fine_turning/fine_llama.yaml")
-    args = parse_args_from_yaml(config)
+    main()
 
-    # print_command_like_args(args)
-
-    os.makedirs(args.output_dir, exist_ok=True) # 创建输出文件夹
-    main(args)
+"""
+python3 src/finetune.py --config examples/infer/fine_llama.yaml
+"""

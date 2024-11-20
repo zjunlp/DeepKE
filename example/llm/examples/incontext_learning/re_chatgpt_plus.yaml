@@ -4,7 +4,7 @@ api_key: "your-api-key"
 # base_url:
 temperature: 0.3
 top_p: 0.9
-max_tokens: 300
+max_tokens: 512
 stop: null
 task: "re"
 language: "ch"

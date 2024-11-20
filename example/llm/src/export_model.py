@@ -1,12 +1,13 @@
-import sys
-import yaml
-
+import os
+import argparse
 from args.parser import get_infer_args
 from model.loader import load_model_and_tokenizer
 from datamodule.template import get_template_and_fix_tokenizer
 from typing import Any, Dict, Optional
 from utils.logging import get_logger
 from utils.general_utils import get_model_tokenizer_trainer, get_model_name
+from utils.load_cmd import load_config_from_yaml
+
 
 logger = get_logger(__name__)
 
@@ -37,49 +38,28 @@ def export_model(args: Optional[Dict[str, Any]] = None, max_shard_size: Optional
         logger.warning("Cannot save tokenizer, please copy the files manually.")
 
 
-def load_yaml_config(yaml_file):
-    with open(yaml_file, 'r') as file:
-        return yaml.safe_load(file)
+def set_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--config', type=str, default=None, help="Path to the YAML config file")
+    parser.add_argument('--model_name_or_path', type=str, default='models/llama-3-8b-Instruct', help="Path to model or model name")
+    parser.add_argument('--checkpoint_dir', type=str, default='lora_results/llama3-v1/checkpoint-xxx', help="Checkpoint directory")
+    parser.add_argument('--export_dir', type=str, default='lora_results/llama3-v1/llama3-v1', help="Directory to export the model")
+    parser.add_argument('--stage', type=str, default='sft', help="Stage of the model")
+    parser.add_argument('--model_name', type=str, default='llama', help="Model name")
+    parser.add_argument('--template', type=str, default='llama3', help="Template name")
+    parser.add_argument('--output_dir', type=str, default='lora_results/test', help="Output directory")
+    args = parser.parse_args()
 
-def construct_args_from_config(config):
-    args = []
-    for key, value in config.items():
-        args.append(f'--{key}')
-        args.append(str(value))
+    if args.config:
+        # if user specifies a config file, load the config from the file
+        config = load_config_from_yaml(args.config)
+        for key, value in config.items():
+            if hasattr(args, key):
+                setattr(args, key, value)
+
     return args
 
+
 if __name__ == "__main__":
-    config = load_yaml_config('examples/fine_turning/export_baichuan.yaml')
-    sys.argv = ['src/export_model.py'] + construct_args_from_config(config)
-
-    export_model()
-
-
-'''
-python src/export_model.py \
-    --model_name_or_path 'models/llama-3-8b-Instruct' \
-    --checkpoint_dir 'lora_results/llama3-v1/checkpoint-xxx' \
-    --export_dir 'lora_results/llama3-v1/llama3-v1' \
-    --stage 'sft' \
-    --model_name 'llama' \
-    --template 'llama3' \
-    --output_dir 'lora_results/test'
-
-python src/export_model.py \
-    --model_name_or_path 'models/Qwen__Qwen2-1.5B-Instruct' \
-    --checkpoint_dir 'lora_results/qwen2-1.5b-v1/checkpoint-xxx' \
-    --export_dir 'lora_results/qwen2-1.5b-v1/qwen2-1.5b-v1' \
-    --stage 'sft' \
-    --model_name 'qwe2' \
-    --template 'qwen' \
-    --output_dir 'lora_results/test'
-
-python src/export_model.py \
-    --model_name_or_path 'models/Baichuan2-13B-Chat' \
-    --checkpoint_dir 'lora_results/baichuan2-13b-v1/checkpoint-xxx' \
-    --export_dir 'lora_results/baichuan2-13b-v1/baichuan2-13b-v1' \
-    --stage 'sft' \
-    --model_name 'baichuan' \
-    --template 'baichuan2' \
-    --output_dir 'lora_results/test'
-'''
+    args = set_args()
+    export_model(args)

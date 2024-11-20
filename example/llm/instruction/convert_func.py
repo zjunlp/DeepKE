@@ -1,6 +1,7 @@
+import yaml
 import sys
 sys.path.append("./")
-import yaml
+import argparse
 import json
 import random
 random.seed(42)
@@ -45,13 +46,13 @@ def get_test_data(datas, processer, options):
         schemas = processer.get_schemas(task_record)
         if schemas is None:
             continue
-        total_schemas = multischema_split_by_num_test(schemas, options['split_num'])
+        total_schemas = multischema_split_by_num_test(schemas, options.split_num)
         for schema in total_schemas:
-            sinstruct = multischema_construct_instruction(options['task'], options['language'], schema, record['text'])
+            sinstruct = multischema_construct_instruction(options.task, options.language, schema, record['text'])
             record2 = {
                 'id': iid,
-                'task': options['task'],
-                'source': options['source'],
+                'task': options.task,
+                'source': options.source,
                 'instruction': sinstruct,
             }
             if task_record is not None:
@@ -76,17 +77,17 @@ def convert_output(converter, text, schemas, task_record):
 def get_train_data(datas, processer, converter, options):
     results = []
     for record in datas:
-        if options.get('cluster_mode'):
-            total_schemas = processer.negative_cluster_sample(record, options['split_num'], options.get('random_sort', False))
+        if options.cluster_mode:
+            total_schemas = processer.negative_cluster_sample(record, options.split_num, options.random_sort)
         else:
-            total_schemas = processer.negative_sample(record, options['split_num'], options.get('random_sort', False))
+            total_schemas = processer.negative_sample(record, options.split_num, options.random_sort)
         task_record = processer.get_task_record(record)
-        output_texts = convert_output(converter, record['text'], total_schemas, task_record)    # Split `schema` and `output_text` according to `split_num`
+        output_texts = convert_output(converter, record['text'], total_schemas, task_record)    # 按照split_num切分schema和output_text
         for schema, output_text in zip(total_schemas, output_texts):
-            sinstruct = multischema_construct_instruction(options['task'], options['language'], schema, record['text'])
+            sinstruct = multischema_construct_instruction(options.task, options.language, schema, record['text'])
             record2 = {
-                'task': options['task'],
-                'source': options['source'],
+                'task': options.task,
+                'source': options.source,
                 'instruction': sinstruct,
                 'output': output_text
             }
@@ -94,35 +95,56 @@ def get_train_data(datas, processer, converter, options):
     return results
 
 
-def load_config(config_path):
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-    return config
-
-
 def process(options):
-    converter = get_converter(options['task'])(options['language'], NAN='NAN')
-    processer_class = get_processer(options['task'])
+    converter = get_converter(options.task)(options.language, NAN='NAN')
+    processer_class = get_processer(options.task)
     processer = processer_class.read_from_file(
-        processer_class, options['schema_path'], negative=-1
+        processer_class, options.schema_path, negative=-1
     )
-    if options.get('cluster_mode'):
-        processer.set_hard_dict(json.load(open(options['hard_negative_path'], 'r')))
-    processer.set_negative(options.get('neg_schema', -1))
+    if options.cluster_mode:
+        processer.set_hard_dict(json.load(open(options.hard_negative_path, 'r')))
+    processer.set_negative(options.neg_schema)
 
-    options['source'] = options['src_path'].split('/')[-2]  # Use the last folder name in the source path as `source`
-    datas = processer.read_data(options['src_path'])
-    if options['split'] == 'test':
+    options.source = options.src_path.split('/')[-2]  # 用源路径的最后一个文件夹名作为source
+    datas = processer.read_data(options.src_path)
+    if options.split == 'test':
         results = get_test_data(datas, processer, options)
     else:
         results = get_train_data(datas, processer, converter, options)
-    write_to_json(options['tgt_path'], results)
+    write_to_json(options.tgt_path, results)
+
+
+def load_config_from_yaml(yaml_path):
+    with open(yaml_path, 'r', encoding='utf-8') as f:
+        config = yaml.safe_load(f)
+    return config
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--src_path", type=str, default=None)
+    parser.add_argument("--tgt_path", type=str, default=None)
+    parser.add_argument("--schema_path", type=str, default=None)
+    parser.add_argument("--hard_negative_path", type=str, default=None)
+    parser.add_argument("--cluster_mode", action='store_true', help="是否使用cluster模式")
+    parser.add_argument("--language", type=str, default=None, choices=['zh', 'en'])
+    parser.add_argument("--task", type=str, default=None, choices=['RE', 'NER', 'EE', 'EET', 'EEA', 'SPO', 'KG'])
+    parser.add_argument("--split", type=str, default=None, choices=['train', 'test'])
+    parser.add_argument("--split_num", type=int, default=4)
+    parser.add_argument("--neg_schema", type=float, default=1.0)
+    parser.add_argument("--random_sort", action='store_true', help="是否对指令中的schema随机排序")
+    args = parser.parse_args()
+
+    # if user don't pass any parameters, try to load configuration from yaml
+    if not any([args.src_path, args.tgt_path, args.schema_path, args.language, args.task]):
+        yaml_config = load_config_from_yaml('examples/infer/convert.yaml')
+        for key, value in yaml_config.items():
+            if value is not None:
+                setattr(args, key, value)
+
+    return args
 
 
 if __name__ == "__main__":
-    config = load_config('examples/fine_turning/convert.yaml')
-    mode = config.get('mode', 'train')
-    options = config[mode]
-
+    options = parse_args()
     process(options)
-
