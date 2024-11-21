@@ -1,0 +1,13 @@
+stage: sft
+model_name_or_path: 'lora_results/baichuan2-13b-v1/baichuan2-13b-v1'
+model_name: 'baichuan'
+template: 'baichuan2'
+do_predict: true
+input_file: 'data/input.json'
+output_file: 'results/baichuan2-13b-IEPile-lora_output.json'
+output_dir: 'lora_results/test'
+batch_size: 4
+predict_with_generate: true
+max_source_length: 1024
+bf16: true
+max_new_tokens: 512
