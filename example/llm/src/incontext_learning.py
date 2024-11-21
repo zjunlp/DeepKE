@@ -4,9 +4,9 @@ incontext_learning.py
 The entrance of this project.
 """
 
+import argparse
 import re
 import os
-import argparse
 
 from utils.prompt_crafting import PromptCraft
 from utils.load_cmd import load_config_from_yaml

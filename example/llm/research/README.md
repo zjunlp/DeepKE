@@ -1,6 +1,6 @@
-✨ *These two projects are our previous research:* ✨
+✨ **_These two projects are our previous research_**: ✨
 
-# ✅ CodeKGC-Code Language Models for Knowledge Graph Construction
+# 📌 CodeKGC-Code Language Models for Knowledge Graph Construction
 
 <details>
   <summary><b>👇🏻 Show more detail...</b></summary>
@@ -129,9 +129,9 @@ If you use the code, please cite the following paper:
 
 </details>
 
-#
+-----
 
-# ✅ How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?
+# 📌 How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?
 
 <details>
   <summary><b>👇🏻 Show more datail...</b></summary>
@@ -142,19 +142,17 @@ If you use the code, please cite the following paper:
 
 
 ## Contents
-- [✅ CodeKGC-Code Language Models for Knowledge Graph Construction](#-codekgc-code-language-models-for-knowledge-graph-construction)
+- [📌 CodeKGC-Code Language Models for Knowledge Graph Construction](#-codekgc-code-language-models-for-knowledge-graph-construction)
   - [Data and Configuration](#data-and-configuration)
   - [Run and Examples](#run-and-examples)
   - [Citation](#citation)
-- [](#)
-- [✅ How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?](#-how-to-unleash-the-power-of-large-language-models-for-few-shot-relation-extraction)
+- [📌 How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?](#-how-to-unleash-the-power-of-large-language-models-for-few-shot-relation-extraction)
   - [Contents](#contents)
   - [Requirements and Datasets](#requirements-and-datasets)
   - [Prompts](#prompts)
   - [In-context Learning](#in-context-learning)
   - [Data Generation via LLMs](#data-generation-via-llms)
   - [Citation](#citation-1)
-- [](#-1)
 
 
 ## Requirements and Datasets
@@ -248,6 +246,6 @@ Obtain augmented data:
 
 </details>
 
-#
+-----
 
-✨ *Thanks for reading!* ✨
+✨ **_Thanks for your reading!_** ✨

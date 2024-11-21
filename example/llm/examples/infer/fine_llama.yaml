@@ -8,7 +8,7 @@ data_args:
   valid_file: 'data/dev.json'
 
 training_args:
-  output_dir: 'output_dir'
+  output_dir: 'lora/llama2-13b-chat-v1'
   per_device_train_batch_size: 2
   per_device_eval_batch_size: 2
   gradient_accumulation_steps: 4

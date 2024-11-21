@@ -4,9 +4,9 @@ incontext_learning_plus.py
 The entrance of this project.
 """
 
+import argparse
 import re
 import os
-import argparse
 
 from utils.load_cmd import load_config_from_yaml
 from model.llm_def import LLaMA, Qwen, MiniCPM, ChatGLM, ChatGPT, DeepSeek

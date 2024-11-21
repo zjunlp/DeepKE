@@ -1,13 +1,10 @@
-numpy
-hydra
-tqdm
-pyyaml
-tiktoken==0.6.0
-openai==1.45.0
-torch==2.0.0
-datasets==2.16.1
-transformers==4.33.0 accelerate==0.21.0
+accelerate==0.21.0
 bitsandbytes==0.39.1
+datasets==2.16.1
+huggingface-hub==0.20.3
+openai==1.45.0
 peft==0.4.0
-vllm
-deepspeed
+torch==2.0.0
+tiktoken==0.6.0
+transformers==4.33.0
+vllm==0.3.0

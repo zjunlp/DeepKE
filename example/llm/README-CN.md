@@ -1,7 +1,37 @@
-# 微调
+<p align="center">
+    <a> <img src="assets/LLM_logo.png" width="400"/></a>
+<p>
+<p align="center">
+    <a href="http://deepke.zjukg.cn">
+        <img alt="Documentation" src="https://img.shields.io/badge/demo-website-blue">
+    </a>
+    <a href="https://pypi.org/project/deepke/#files">
+        <img alt="PyPI" src="https://img.shields.io/pypi/v/deepke">
+    </a>
+    <a href="https://github.com/zjunlp/DeepKE/blob/master/LICENSE">
+        <img alt="GitHub" src="https://img.shields.io/github/license/zjunlp/deepke">
+    </a>
+    <a href="http://zjunlp.github.io/DeepKE">
+        <img alt="Documentation" src="https://img.shields.io/badge/doc-website-red">
+    </a>
+    <a href="https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing">
+        <img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg">
+    </a>
+</p>
+
+
+<p align="center">
+    <b> 简体中文 | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/README.md">English</a> </b>
+</p>
+
+<h1 align="center">
+    <p>DeepKE-LLM: 基于深度学习的开源中文知识图谱抽取框架 （大模型版）</p>
+</h1>
+
+# 📌 微调
 
 <details>
-  <summary><b>👇🏻 Show more detail...</b></summary>
+  <summary><b>👇🏻 详情请看...</b></summary>
 
 
 ## 🎯 1.任务目标
@@ -44,12 +74,7 @@
 
 </details>
 
-[instruction.py](./ie2instruction/convert/utils/instruction.py) 中提供了各个任务的指令模版。
-
-
-
-> **注意**⚠️: 老版的数据样式请参考[kg2instruction/README.md](./kg2instruction/README.md)
-
+[instruction.py](./instruction/convert/utils/instruction.py) 中提供了各个任务的指令模版。
 
 
 ## 📊 2.数据
@@ -59,8 +84,8 @@
 
 | 名称       | 下载                                                         | 数量  | 描述                                                         |
 | ---------- | ------------------------------------------------------------ | ----- | ------------------------------------------------------------ |
-| InstructIE | [Google drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [Hugging Face](https://huggingface.co/datasets/zjunlp/InstructIE) <br/> [ModelScope](https://modelscope.cn/datasets/ZJUNLP/InstructIE)<br/> [WiseModel](https://wisemodel.cn/datasets/zjunlp/InstructIE) | 30w+  | **双语**(中文和英文)基于主题的信息抽取(IE)指令数据集         |
-| IEPile     | [Google Drive](https://drive.google.com/file/d/1jPdvXOTTxlAmHkn5XkeaaCFXQkYJk5Ng/view?usp=sharing) <br/> [Hugging Face](https://huggingface.co/datasets/zjunlp/iepile) <br/> [WiseModel](https://wisemodel.cn/datasets/zjunlp/IEPile) <br/> [ModelScpoe](https://modelscope.cn/datasets/ZJUNLP/IEPile) | 200w+ | 大规模(`0.32B` tokens)高质量**双语**(中文和英文)信息抽取(IE)指令微调数据集 |
+| InstructIE | [1,Google drive](https://drive.google.com/file/d/1raf0h98x3GgIhaDyNn1dLle9_HvwD6wT/view?usp=sharing) <br/> [2,Hugging Face](https://huggingface.co/datasets/zjunlp/InstructIE) <br/> [3,ModelScope](https://modelscope.cn/datasets/ZJUNLP/InstructIE)<br/> [4,WiseModel](https://wisemodel.cn/datasets/zjunlp/InstructIE) | 30w+  | **双语**(中文和英文)基于主题的信息抽取(IE)指令数据集         |
+| IEPile     | [1,Google Drive](https://drive.google.com/file/d/1jPdvXOTTxlAmHkn5XkeaaCFXQkYJk5Ng/view?usp=sharing) <br/> [2,Hugging Face](https://huggingface.co/datasets/zjunlp/iepile) <br/> [3,ModelScpoe](https://modelscope.cn/datasets/ZJUNLP/IEPile) <br/> [4,WiseModel](https://wisemodel.cn/datasets/zjunlp/IEPile) | 200w+ | 大规模(`0.32B` tokens)高质量**双语**(中文和英文)信息抽取(IE)指令微调数据集 |
 
 
 <details>
@@ -134,7 +159,7 @@
 
 **提前准备：**
 
-数据集下载链接：[Google Drive](https://drive.google.com/file/d/1jPdvXOTTxlAmHkn5XkeaaCFXQkYJk5Ng/view?usp=sharing) | [Hugging Face](https://huggingface.co/datasets/zjunlp/IEPile)，并确保项目结构如下：
+数据集下载链接：[Google Drive](https://drive.google.com/file/d/1jPdvXOTTxlAmHkn5XkeaaCFXQkYJk5Ng/view?usp=sharing) | [Hugging Face](https://huggingface.co/datasets/zjunlp/IEPile)，确保项目结构如下：
 
 ```
 llm
@@ -161,52 +186,30 @@ llm
 使用这个命令进行数据转换（需要自己修改yaml参数调整是**训练数据集**和**测试数据集**，以及其他参数）
 
 
-```bash
+```
 python src/finetune.py
 ```
 
-可以自己修改配置：[examples/fine_turning/convert.yaml]()
-
-```bash
-mode: train # 切为test即为测试数据集转换，其他不用改
-
-train:
-  src_path: data/NER/sample.json
-  tgt_path: data/NER/train.json
-  schema_path: data/NER/schema.json
-  language: zh
-  task: NER
-  split_num: 6
-  random_sort: true
-  split: train
-
-test:
-  src_path: data/NER/sample.json
-  tgt_path: data/NER/test.json
-  schema_path: data/NER/schema.json
-  language: zh
-  task: NER
-  split_num: 6
-  split: test
-
-hard_train:
-  src_path: data/SPO/sample.json
-  tgt_path: data/SPO/train.json
-  schema_path: data/SPO/schema.json
-  cluster_mode: true
-  hard_negative_path: data/hard_negative/SPO_DuIE2.0.json
-  language: zh
-  task: SPO
-  split_num: 4
-  random_sort: true
-  split: train
+或者（效果一样）
 
 ```
+python instruction/convert_func.py \
+    --src_path data/NER/sample.json \
+    --tgt_path data/NER/train.json \
+    --schema_path data/NER/schema.json \
+    --language zh \
+    --task NER \
+    --split_num 6 \
+    --random_sort \
+    --split train
+```
+
+可以自己修改**配置或参数**：[convert.yaml](./examples/infer/convert.yaml)
+
 
 参数说明：
 
 * `mode` 是用户自己选择生成训练数据还是测试数据。
-
 * `src_path` 是样例，即描述了转换前数据的格式。
 * `tgt_path` 是转换后的数据。**测试与训练数据不同, 测试数据的输入无需包含标注字段（`entity`, `relation`, `event`）**。
 * `language`: 支持`zh`, `en`两种语言, 不同语言使用的指令模版不同。
@@ -214,11 +217,8 @@ hard_train:
 * `split_num`: 定义单个指令中可包含的最大schema数目。默认值为4，设置为-1则不进行切分。推荐的任务切分数量依任务而异：**NER建议为6，RE、EE、EET、EEA均推荐为4、KG推荐为1**。
 * `random_sort`: 是否对指令中的schema随机排序, 默认为False, 即按字母顺序排序。
 * `split`(必选): 指定数据集类型，`train` (训练集train.json、验证集dev.json均使用`train`) 或`test`。设置 `split` 为 **test** 时，请根据任务类型选择适当的schema数量：**NER推荐为6，而RE、EE、EET、EEA推荐为4**。
-
 * 转换后的训练数据将包含 `task`, `source`, `instruction`, `output` 四个字段。
-
 * 转换后的测试数据将含有`id`, `task`, `source`, `instruction`, `label`五个字段。`label` 字段将用于后续评估。若输入数据中缺少标注字段（`entity`, `relation`, `event`），则转换后的测试数据将不包含`label`字段，适用于那些无原始标注数据的场景。
-
 
 
 ## 🚴 3.准备
@@ -226,7 +226,7 @@ hard_train:
 
 ### 🛠️ 3.1环境
 
-在开始之前，请确保根据[DeepKE/example/llm/README_CN.md](../README_CN.md/#环境依赖)中的指导创建了适当的Python虚拟环境。创建并配置好**虚拟环境**后，请通过以下命令激活名为 `deepke-llm` 的环境：
+请通过以下命令，创建并配置好**虚拟环境**：
 
 ```bash
 cd example/llm
@@ -271,51 +271,59 @@ pip install -r requirements.txt # 注意！！是example/llm文件夹下的 requ
 NUM_GPUS=$(nvidia-smi -L | wc -l)
 ```
 
-如果使用多卡训练，则：
+如果使用单卡训练，则：（多卡训练需要设置 `CUDA_VISIBLE_DEVICES="0,1,2,3"` ，其余一致）
 
 ```bash
-CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=$NUM_GPUS --master_port=1287 src/finetune.py
+output_dir='lora/llama2-13b-chat-v1'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0"
+python3 src/finetune.py --config examples/infer/fine_llama.yaml
 ```
 
-如果使用单卡训练，则：
+或者（两者等同）
 
 ```bash
-CUDA_VISIBLE_DEVICES="0" python3 src/finetune.py
+bash scripts/tune/fine_llama.bash
 ```
 
-其中，配置参数在`example/llm/examples/fine_turning/fine_llama.yaml`中，可供自行修改：
+其中，配置参数在 [fine_llama.yaml](./examples/infer/fine_llama.yaml) 中，可供自行修改：
 
 ```bash
-output_dir: 'lora/llama2-7b-chat-v1'
-do_train: true
-do_eval: true
-overwrite_output_dir: true
-stage: 'sft'
-model_name_or_path: 'models/llama2-7b-chat'
-model_name: 'llama'
-template: 'llama2'
-train_file: 'data/NER/train.json'
-valid_file: 'data/dev.json'
-val_set_size: 100
-per_device_train_batch_size: 2
-per_device_eval_batch_size: 2
-gradient_accumulation_steps: 4
-preprocessing_num_workers: 16
-num_train_epochs: 10
-learning_rate: 5e-5
-max_grad_norm: 0.5
-optim: "adamw_torch"
-max_source_length: 400
-cutoff_len: 700
-max_target_length: 300
-evaluation_strategy: "epoch"
-save_strategy: "epoch"
-save_total_limit: 10
-lora_r: 8
-lora_alpha: 16
-lora_dropout: 0.05
-bf16: true
-bits: 4
+model_args:
+  model_name_or_path: 'models/llama2-13b-chat'
+  model_name: 'llama'
+  template: 'llama2'
+
+data_args:
+  train_file: 'data/train.json'
+  valid_file: 'data/dev.json'
+
+training_args:
+  output_dir: 'lora/llama2-13b-chat-v1'
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size: 2
+  gradient_accumulation_steps: 4
+  preprocessing_num_workers: 16
+  num_train_epochs: 10
+  learning_rate: 5e-5
+  max_grad_norm: 0.5
+  optim: 'adamw_torch'
+  max_source_length: 400
+  cutoff_len: 700
+  max_target_length: 300
+  evaluation_strategy: 'epoch'
+  save_strategy: 'epoch'
+  save_total_limit: 10
+  bf16: true
+  bits: 4
+  deepspeed: None
+
+finetuning_args:
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+
+generating_args: {}
 ```
 
 参数说明：
@@ -343,7 +351,7 @@ bits: 4
 
 ### 4.3LoRA微调Alpaca
 
-微调Alpaca模型时，您可遵循与[微调LLaMA模型](./README_CN.md/#42lora微调llama)类似的步骤。要进行微调，请**修改**：
+微调Alpaca模型时，您可遵循类似的步骤。要进行微调，请**修改这部分**：
 
 ```bash
 output_dir: 'path to save Alpaca Lora'
@@ -372,8 +380,6 @@ template: 'alpaca'
 
 ### 4.5LoRA微调Vicuna
 
-相应的配置文件在 [examples/fine_turning/fine_vicuna.yaml]()
-
 修改以下配置：
 
 ```yaml
@@ -391,7 +397,6 @@ template: 'vicuna'  # 改动
 1. ChatGLM模型我们采用[THUDM/chatglm3-6b](https://huggingface.co/THUDM/chatglm3-6b)
 2. `model_name = chatglm`
 3. `template chatglm3`
-
 
 
 ### 4.7LoRA微调Moss
@@ -434,36 +439,38 @@ template: 'vicuna'  # 改动
 #### Lora微调
 
 ```bash
-output_dir: 'lora/oneke-continue'
-do_train: true
-do_eval: true
-overwrite_output_dir: true
-stage: 'sft'
-model_name_or_path: 'models/OneKE'
-model_name: 'llama'
-template: 'llama2_zh'
-train_file: 'data/train.json'
-valid_file: 'data/dev.json'
-val_set_size: 100
-per_device_train_batch_size: 2
-per_device_eval_batch_size: 2
-gradient_accumulation_steps: 4
-preprocessing_num_workers: 16
-num_train_epochs: 10
-learning_rate: 5e-5
-max_grad_norm: 0.5
-optim: "adamw_torch"
-max_source_length: 400
-cutoff_len: 700
-max_target_length: 300
-evaluation_strategy: "epoch"
-save_strategy: "epoch"
-save_total_limit: 10
-lora_r: 64
-lora_alpha: 64
-lora_dropout: 0.05
-bf16: true
-bits: 4
+output_dir='lora/oneke-continue'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1,2,3"  # or "0"
+torchrun --nproc_per_node=4 --master_port=1287 src/finetune.py \
+    --do_train --do_eval \
+    --overwrite_output_dir \
+    --model_name_or_path 'models/OneKE' \
+    --stage 'sft' \
+    --model_name 'llama' \
+    --template 'llama2_zh' \
+    --train_file 'data/train.json' \
+    --valid_file 'data/dev.json' \
+    --output_dir=${output_dir} \
+    --per_device_train_batch_size 2 \
+    --per_device_eval_batch_size 2 \
+    --gradient_accumulation_steps 4 \
+    --preprocessing_num_workers 16 \
+    --num_train_epochs 10 \
+    --learning_rate 5e-5 \
+    --max_grad_norm 0.5 \
+    --optim "adamw_torch" \
+    --max_source_length 400 \
+    --cutoff_len 700 \
+    --max_target_length 300 \
+    --evaluation_strategy "epoch" \
+    --save_strategy "epoch" \
+    --save_total_limit 10 \
+    --lora_r 64 \
+    --lora_alpha 64 \
+    --lora_dropout 0.05 \
+    --bf16 \
+    --bits 4
 ```
 
 * 若要基于微调后的LoRA权重继续训练，仅需将 `checkpoint_dir` 参数指向LoRA权重路径，例如设置为`'zjunlp/llama2-13b-iepile-lora'`。
@@ -480,39 +487,37 @@ bits: 4
 #### 全量微调
 
 ```bash
-output_dir: 'lora/oneke-continue'
-do_train: true
-do_eval: true
-overwrite_output_dir: true
-stage: 'sft'
-model_name_or_path: 'models/OneKE'
-model_name: 'llama'
-template: 'llama2_zh'
-train_file: 'data/train.json'
-valid_file: 'data/dev.json'
-val_set_size: 100
-per_device_train_batch_size: 2
-per_device_eval_batch_size: 2
-gradient_accumulation_steps: 4
-preprocessing_num_workers: 16
-num_train_epochs: 10
-learning_rate: 5e-5
-max_grad_norm: 0.5
-optim: "adamw_torch"
-max_source_length: 400
-cutoff_len: 700
-max_target_length: 300
-evaluation_strategy: "epoch"
-save_strategy: "epoch"
-save_total_limit: 10
-lora_dropout: 0.05
-bf16: true
-finetuning_type: 'full'
+output_dir='lora/oneke-continue'
+mkdir -p ${output_dir}
+CUDA_VISIBLE_DEVICES="0,1,2,3"  # or "0"
+torchrun --nproc_per_node=4 --master_port=1287 src/finetune.py \
+    --do_train --do_eval \
+    --overwrite_output_dir \
+    --model_name_or_path 'models/OneKE' \
+    --stage 'sft' \
+    --finetuning_type 'full' \
+    --model_name 'llama' \
+    --template 'llama2_zh' \
+    --train_file 'data/train.json' \
+    --valid_file 'data/dev.json' \
+    --output_dir=${output_dir} \
+    --per_device_train_batch_size 2 \
+    --per_device_eval_batch_size 2 \
+    --gradient_accumulation_steps 4 \
+    --preprocessing_num_workers 16 \
+    --num_train_epochs 10 \
+    --learning_rate 5e-5 \
+    --max_grad_norm 0.5 \
+    --optim "adamw_torch" \
+    --max_source_length 400 \
+    --cutoff_len 700 \
+    --max_target_length 300 \
+    --evaluation_strategy "epoch" \
+    --save_strategy "epoch" \
+    --save_total_limit 10 \
+    --lora_dropout 0.05 \
+    --bf16
 ```
-
-
-脚本可以在 [examples/fine_turning/fine_continue.yaml]()、[examples/fine_turning/fine_continue_full.yaml]() 中找到。
-
 
 
 ## 🥊 5.P-Tuning微调
@@ -522,18 +527,21 @@ finetuning_type: 'full'
 你可以通过下面的命令使用P-Tuning方法来finetune模型:
 
 ```bash
-deepspeed --include localhost:0 src/finetuning_chatglm_pt.py
+CUDA_VISIBLE_DEVICES=1
+deepspeed \
+--include localhost:0 src/finetune_chatglm_pt.py \
+--config examples/infer/fine_pt_chatglm.yaml
 ```
 
-配置（放在`examples/fine_turning/fine_pt_chatglm.yaml`）：
+配置放在 [fine_pt_chatglm.yaml](./examples/infer/fine_chatglm_pt.yaml) ，可供自行修改：
 
 ```yaml
-train_path: 'data/train.json'
-model_dir: '/model'
+train_path: data/train.json
+model_dir: /model
 num_train_epochs: 20
 train_batch_size: 2
 gradient_accumulation_steps: 1
-output_dir: 'output_dir_pt'
+output_dir: output_dir_pt
 log_steps: 10
 max_len: 768
 max_src_len: 450
@@ -589,7 +597,7 @@ prefix_projection: true
 要使用这些**训练好的**LoRA模型进行预测，可以执行以下命令：
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python src/inference.py
+python src/inference.py --config examples/infer/infer_llama.yaml
 ```
 
 配置如下：
@@ -600,12 +608,12 @@ model_name_or_path: 'models/llama2-13B-Chat'
 checkpoint_dir: 'lora/llama2-13b-IEPile-lora'
 model_name: 'llama'
 template: 'llama2'
-# do_predict:
+do_predict: true
 input_file: 'data/input.json'
 output_file: 'results/llama2-13b-IEPile-lora_output.json'
-finetuning_type: lora
+finetuning_type: 'lora'
 output_dir: 'lora/test'
-# predict_with_generate:
+predict_with_generate: true
 cutoff_len: 512
 bf16: true
 max_new_tokens: 300
@@ -638,11 +646,11 @@ stage: sft
 model_name_or_path: 'models/OneKE'
 model_name: 'llama'
 template: 'llama2_zh'
-# do_predict
+do_predict: true
 input_file: 'data/input.json'
 output_file: 'results/OneKE_output.json'
 output_dir: 'lora/test'
-# predict_with_generate
+predict_with_generate: true
 cutoff_len: 512
 bf16: true
 max_new_tokens: 300
@@ -653,19 +661,19 @@ bits: 4
 
 #### 6.1.3合并基础模型+Lora导出
 
-```yaml
-python src/export_model.py
+```bash
+python src/export_model.py --config examples/infer/export.yaml
 ```
 
 将底座模型和训练的Lora权重合并, 导出模型
 
-```bash
-model_name_or_path: 'models/Baichuan2-13B-Chat'
-checkpoint_dir: 'lora_results/baichuan2-13b-v1/checkpoint-xxx'
-export_dir: 'lora_results/baichuan2-13b-v1/baichuan2-13b-v1'
+```yaml
+model_name_or_path: 'models/llama-3-8b-Instruct'
+checkpoint_dir: 'lora_results/llama3-v1/checkpoint-xxx'
+export_dir: 'lora_results/llama3-v1/llama3-v1'
 stage: 'sft'
-model_name: 'baichuan'
-template: 'baichuan2'
+model_name: 'llama'
+template: 'llama3'
 output_dir: 'lora_results/test'
 ```
 
@@ -690,23 +698,23 @@ ip route add 8.8.8.8 via 127.0.0.1
 
 运行脚本
 
-```yaml
-python src/inference_vllm.py
+```bash
+python src/inference_vllm.py --config examples/infer/infer_baichuan_vllm.yaml
 ```
 
-参考配置`examples/fine_turning/vllm_baichuan.yaml`:
+参考配置 [vllm_baichuan.yaml](./examples/infer/infer_baichuan_vllm.yaml):
 
 ```yaml
 stage: sft
 model_name_or_path: 'lora_results/baichuan2-13b-v1/baichuan2-13b-v1'
 model_name: 'baichuan'
 template: 'baichuan2'
-# do_predict:
+do_predict: true
 input_file: 'data/input.json'
 output_file: 'results/baichuan2-13b-IEPile-lora_output.json'
 output_dir: 'lora_results/test'
 batch_size: 4
-# predict_with_generate:
+predict_with_generate: true
 max_source_length: 1024
 bf16: true
 max_new_tokens: 512
@@ -720,9 +728,16 @@ max_new_tokens: 512
 我们提供了评估各个任务F1分数的脚本。
 
 ```bash
-python ie2instruction/eval_func.py \
-  --path1 results/llm_output.json \
-  --task NER
+python instruction/eval_func.py
+```
+
+或者
+
+```bash
+python instruction/eval_func.py \
+    --path1 results/baichuan2-13b-iepile-lora_output.json \
+    --task RE \
+    --sort_by source
 ```
 
 * `path1` 是模型的输出文件, 其中一条数据样本如下所示, 经测试数据转换脚本转换后的数据(`test.json`)具有`id`、`instruction`、`label`字段, `output`字段是经过模型预测脚本后的模型真实输出。
@@ -741,48 +756,47 @@ python ie2instruction/eval_func.py \
 
 </details>
 
-#
+------
 
-# 上下文学习
+# 📌 上下文学习
 
 <details>
-  <summary><b>👇🏻 Show more detail...</b></summary>
+  <summary><b>👇🏻 详情请看...</b></summary>
 
 ## 📗 单次推理
 
 运行命令：
 
 ```bash
-python src/incontext_learning.py
+python src/incontext_learning.py --config examples/incontext_learning/da_qwen.yaml
 ```
 
 配置示例：
 
-```bash
-cwd: null
-engine: "ChatGPT"
-model_id: "gpt-3.5-turbo"
-api_key: "Your API Key"
+```yaml
+engine: "Qwen"
+model_id: "your-model-path"
+# api_key:
 # base_url:
 temperature: 0.3
 top_p: 0.9
-max_tokens: 100
+max_tokens: 512
 stop: null
-task: "re"
-language: "en"
+task: "da"
+language: "ch"
 in_context: true
-#instruction:
+#instruction: ""
 data_path: "data/ICL_Examples"
-text_input: "Allen attended Lakeside School, where he met Gates, who was as obsessed with computer programming as he was."
-domain: "Emotion Recognition"
-labels: ["Emotion"]
-head_entity: "Allen"
-head_type: "People"
-tail_entity: "Computer Programming"
-tail_type: "Event"
+text_input: "创立"
+domain:
+labels: ["人物", "公司"]
+#head_entity:
+#head_type:
+#tail_entity:
+#tail_type:
 ```
 
-更多脚本样例见于： `scripts/incontext_learning` 目录
+脚本样例见于： [da_qwen.yaml](./examples/incontext_learning/da_qwen.yamls) 。
 
 脚本全参数说明：
 
@@ -822,19 +836,19 @@ tail_type: "Event"
 运行脚本：
 
 ```bash
-python src/incontext_learning_plus.py
+python src/incontext_learning_plus.py --config examples/incontext_learning/re_chatgpt_plus.yaml
 ```
 
 配置参考：
 
-```
+```yaml
 engine: "ChatGPT"
 model_id: "gpt-3.5-turbo"
 api_key: "your-api-key"
 # base_url:
 temperature: 0.3
 top_p: 0.9
-max_tokens: 300
+max_tokens: 512
 stop: null
 task: "re"
 language: "ch"
@@ -852,7 +866,7 @@ tail_type: ""
 
 样例运行结果如下：
 
-```
+```json
 [
     {
         "科": "丝角蝗科",
@@ -878,3 +892,7 @@ tail_type: ""
 ```
 
 </details>
+
+-------
+
+✨ **感谢您的阅读!** ✨
