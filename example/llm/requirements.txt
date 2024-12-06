@@ -1,6 +1,7 @@
 accelerate==0.21.0
 bitsandbytes==0.44.1
 datasets==2.16.1
+httpx==0.27.2
 huggingface-hub==0.20.3
 numpy==1.24.4
 openai==1.45.0

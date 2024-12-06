@@ -4,12 +4,11 @@ incontext_learning.py
 The entrance of this project.
 """
 
-import argparse
 import re
 import os
+import argparse
 
 from utils.prompt_crafting import PromptCraft
-from utils.load_cmd import load_config_from_yaml
 from model.llm_def import LLaMA, Qwen, MiniCPM, ChatGLM, ChatGPT, DeepSeek
 from datamodule.preprocess_icl import prepare_examples
 
@@ -41,7 +40,6 @@ TASK_LIST = [
 
 def parse_args():
     parser = argparse.ArgumentParser(description="In-context learning script")
-    parser.add_argument("--config", type=str, default=None, help="Path to the configuration YAML file")
     parser.add_argument("--engine", type=str, choices=MODEL_LIST, help="Model engine")
     parser.add_argument("--model_id", type=str, help="Model ID")
     parser.add_argument("--api_key", type=str, help="API key")
@@ -66,35 +64,32 @@ def parse_args():
 
 
 def main():
-    # <01: Confirm Config>
-    args = parse_args()
-    cfg = {}
 
-    if args.config:
-        cfg = load_config_from_yaml(args.config)
-    else:
-        cfg = {
-            'engine': args.engine,
-            'model_id': args.model_id,
-            'api_key': args.api_key,
-            'base_url': args.base_url,
-            'temperature': args.temperature,
-            'top_p': args.top_p,
-            'max_tokens': args.max_tokens,
-            'stop': args.stop,
-            'task': args.task,
-            'language': args.language,
-            'in_context': args.in_context,
-            'instruction': args.instruction,
-            'data_path': args.data_path,
-            'text_input': args.text_input,
-            'domain': args.domain,
-            'labels': re.split(r'[，,]', args.labels) if args.labels else None,
-            'head_entity': args.head_entity,
-            'head_type': args.head_type,
-            'tail_entity': args.tail_entity,
-            'tail_type': args.tail_type
-        }
+    # <01: Confirm Config>
+
+    args = parse_args()
+    cfg = {
+        'engine': args.engine,
+        'model_id': args.model_id,
+        'api_key': args.api_key,
+        'base_url': args.base_url,
+        'temperature': args.temperature,
+        'top_p': args.top_p,
+        'max_tokens': args.max_tokens,
+        'stop': args.stop,
+        'task': args.task,
+        'language': args.language,
+        'in_context': args.in_context,
+        'instruction': args.instruction,
+        'data_path': args.data_path,
+        'text_input': args.text_input,
+        'domain': args.domain,
+        'labels': re.split(r'[，,]', args.labels) if args.labels else None,
+        'head_entity': args.head_entity,
+        'head_type': args.head_type,
+        'tail_entity': args.tail_entity,
+        'tail_type': args.tail_type
+    }
     # print("All Your Config: ", cfg) # test
 
     # <02: Checking Config>
