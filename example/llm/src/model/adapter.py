@@ -154,8 +154,8 @@ def init_adapter(
         logger.info("Fine-tuning method: LoRA")
         checkpoint_to_resume = None
 
-        if model_args.checkpoint_dir is not None:   
-            if is_trainable and finetuning_args.resume_lora_training: 
+        if model_args.checkpoint_dir is not None:
+            if is_trainable and finetuning_args.resume_lora_training:
                 checkpoints_to_merge, checkpoint_to_resume = model_args.checkpoint_dir[:-1], model_args.checkpoint_dir[-1]
             else:
                 checkpoints_to_merge = model_args.checkpoint_dir

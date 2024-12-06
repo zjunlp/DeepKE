@@ -3,10 +3,10 @@ from typing import TYPE_CHECKING, Literal, Optional, Tuple
 import torch
 
 from transformers import (
-    AutoConfig, 
-    PretrainedConfig, 
-    PreTrainedModel, 
-    PreTrainedTokenizerBase, 
+    AutoConfig,
+    PretrainedConfig,
+    PreTrainedModel,
+    PreTrainedTokenizerBase,
     BitsAndBytesConfig,
 )
 from transformers.utils.versions import require_version
@@ -54,7 +54,7 @@ def load_model_and_tokenizer(
         model_args.model_name_or_path,
         use_fast=model_args.use_fast_tokenizer,
         split_special_tokens=model_args.split_special_tokens,
-        padding_side="left", 
+        padding_side="left",
         **config_kwargs
     )
 
@@ -66,18 +66,6 @@ def load_model_and_tokenizer(
         model_to_load = model_args.model_name_or_path
 
     config = AutoConfig.from_pretrained(model_to_load, **config_kwargs)
-    
-    # Fix tokenizer
-    if tokenizer.bos_token_id is None:
-        tokenizer.bos_token = "<|beginoftext|>"
-    
-    if tokenizer.eos_token_id is None:
-        tokenizer.eos_token = "<|endoftext|>"
-        logger.info("Add eos token: {}".format(tokenizer.eos_token))
-
-    if tokenizer.pad_token_id is None:
-        tokenizer.pad_token = tokenizer.eos_token
-        logger.info("Add pad token: {}".format(tokenizer.pad_token))
 
     # Fix tokenizer (for ChatGLM2 and ChatGLM3)
     if getattr(config, "model_type", None) == "chatglm":
@@ -102,10 +90,12 @@ def load_model_and_tokenizer(
 
         if model_args.bits == 8:
             require_version("bitsandbytes>=0.37.0", "To fix: pip install bitsandbytes>=0.37.0")
+            config_kwargs["load_in_8bit"] = True
             config_kwargs["quantization_config"] = BitsAndBytesConfig(load_in_8bit=True)
 
         if model_args.bits == 4:
             require_version("bitsandbytes>=0.39.0", "To fix: pip install bitsandbytes>=0.39.0")
+            config_kwargs["load_in_4bit"] = True
             config_kwargs["quantization_config"] = BitsAndBytesConfig(
                 load_in_4bit=True,
                 bnb_4bit_compute_dtype=model_args.compute_dtype,
@@ -116,7 +106,7 @@ def load_model_and_tokenizer(
         config_kwargs["device_map"] = {"": get_current_device()}
         logger.info("Quantizing model to {} bit.".format(model_args.bits))
 
-    
+
     # Load pre-trained models (without valuehead)
     model = model_class.from_pretrained(
         model_to_load,
@@ -154,7 +144,7 @@ def load_model_and_tokenizer(
     # Prepare model for inference
     if not is_trainable:
         model.requires_grad_(False) # fix all model params
-        model = model.to(model_args.compute_dtype) if model_args.bits >= 8 else model
+        model = model.to(model_args.compute_dtype) if model_args.bits <= 8 else model
 
     trainable_params, all_param = count_parameters(model)
     logger.info("trainable params: {:d} || all params: {:d} || trainable%: {:.4f}".format(

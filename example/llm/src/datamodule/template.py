@@ -22,7 +22,7 @@ class DatasetAttr:
     role: Optional[str] = "from"
     content: Optional[str] = "value"
 
-    
+
 @dataclass
 class Template:
 
@@ -199,7 +199,8 @@ def register_template(
     sep: List[Union[str, Dict[str, str]]],
     stop_words: Optional[List[str]] = [],
     use_history: Optional[bool] = True,
-    efficient_eos: Optional[bool] = False
+    efficient_eos: Optional[bool] = False,
+    # replace_eos: Optional[bool] = False  # 添加 replace_eos 参数
 ) -> None:
     template_class = Llama2Template if "llama2" in name else Template
     templates[name] = template_class(
@@ -733,7 +734,7 @@ register_template(
     stop_words=[
         "<|eot_id|>"
     ],
-    replace_eos=True,
+    # replace_eos=True,
 )
 
 register_template(
@@ -751,7 +752,5 @@ register_template(
     stop_words=[
         "<|eot_id|>"
     ],
-    replace_eos=True,
+    # replace_eos=True,
 )
-
-

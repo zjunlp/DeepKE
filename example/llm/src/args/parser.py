@@ -39,7 +39,7 @@ def parse_args(parser: "HfArgumentParser", args: Optional[Dict[str, Any]] = None
     elif len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
         return parser.parse_json_file(os.path.abspath(sys.argv[1]))
     else:
-        return parser.parse_args_into_dataclasses() 
+        return parser.parse_args_into_dataclasses()
 
 
 def _verify_model_args(model_args: "ModelArguments", finetuning_args: "FinetuningArguments") -> None:
@@ -84,7 +84,7 @@ def get_train_args(args: Optional[Dict[str, Any]] = None) -> _TRAIN_CLS:
 
     if training_args.do_train and training_args.predict_with_generate:
         raise ValueError("`predict_with_generate` cannot be set as True while training.")
-    
+
 
     _verify_model_args(model_args, finetuning_args)
 
@@ -152,4 +152,3 @@ def get_infer_args(args: Optional[Dict[str, Any]] = None) -> _INFER_CLS:
     _verify_model_args(model_args, finetuning_args)
 
     return model_args, data_args, training_args, finetuning_args, generating_args, inference_args
-

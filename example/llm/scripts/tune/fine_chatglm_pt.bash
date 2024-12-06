@@ -1,4 +1,3 @@
-# CUDA_VISIBLE_DEVICES=1
 deepspeed --include localhost:0 src/finetune_chatglm_pt.py \
   --train_path data/train.json \
   --model_dir /model \
@@ -12,7 +11,4 @@ deepspeed --include localhost:0 src/finetune_chatglm_pt.py \
   --pre_seq_len 16 \
   --prefix_projection true
 
-# CUDA_VISIBLE_DEVICES=1
-# deepspeed \
-# --include localhost:0 src/finetune_chatglm_pt.py \
-# --config examples/infer/fine_pt_chatglm.yaml
+# python run.py --mood pt

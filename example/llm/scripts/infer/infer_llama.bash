@@ -16,4 +16,4 @@ python src/inference.py \
     --max_new_tokens 300 \
     --bits 4
 
-# python src/inference.py --config examples/infer/infer_llama.yaml
+# python run.py --mood infer

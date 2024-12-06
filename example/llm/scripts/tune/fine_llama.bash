@@ -31,7 +31,4 @@ python3 src/finetune.py \
     --bf16 \
     --bits 4
 
-# output_dir='lora/llama2-13b-chat-v1'
-# mkdir -p ${output_dir}
-# CUDA_VISIBLE_DEVICES="0"
-# python3 src/finetune.py --config examples/infer/fine_llama.yaml
+# python run.py --mood lora

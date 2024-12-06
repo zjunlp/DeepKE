@@ -14,7 +14,7 @@ class ModelArguments:
     use_auth_token: Optional[bool] = field(default=False, metadata={"help": "Enables using Huggingface auth token from Git Credentials."})
     model_revision: Optional[str] = field(default="main", metadata={"help": "The specific model version to use (can be a branch name, tag name or commit id)."})
     split_special_tokens: Optional[bool] = field(default=False, metadata={"help": "Whether or not the special tokens should be split during the tokenization process."})
-    
+
     bits: int = field(default=16, metadata={"help": "How many bits to use."})
     adam8bit: bool = field(default=False, metadata={"help": "Use 8-bit adam."})
     double_quant: bool = field(default=True, metadata={"help": "Compress the quantization statistics through double quantization."})
@@ -35,4 +35,3 @@ class ModelArguments:
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
-    

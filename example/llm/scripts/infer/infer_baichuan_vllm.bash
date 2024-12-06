@@ -13,4 +13,4 @@ python src/inference_vllm.py \
   --bf16 \
   --max_new_tokens 512
 
-# python src/inference_vllm.py --config examples/infer/infer_baichuan_vllm.yaml
+# python src/run.py --mood infer_vllm

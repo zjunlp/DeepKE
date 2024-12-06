@@ -1,10 +1,12 @@
 ✨ **_These two projects are our previous research_**: ✨
 
+> [CodeKGC-Code Language Models for Knowledge Graph Construction](#-codekgc-code-language-models-for-knowledge-graph-construction)
+
+
+ > [How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?](#-how-to-unleash-the-power-of-large-language-models-for-few-shot-relation-extraction)
+
+
 # 📌 CodeKGC-Code Language Models for Knowledge Graph Construction
-
-<details>
-  <summary><b>👇🏻 Show more detail...</b></summary>
-
 
 <p align="left">
     <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/CodeKGC/README_CN.md">简体中文</a> </b>
@@ -127,14 +129,10 @@ If you use the code, please cite the following paper:
 }
 ```
 
-</details>
-
 -----
 
 # 📌 How to Unleash the Power of Large Language Models for Few-shot Relation Extraction?
 
-<details>
-  <summary><b>👇🏻 Show more datail...</b></summary>
 
 <p align="left">
     <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/example/llm/UnleashLLMRE/README_CN.md">简体中文</a> </b>
@@ -243,8 +241,6 @@ Obtain augmented data:
     pages = "190--200",
 }
 ```
-
-</details>
 
 -----
 

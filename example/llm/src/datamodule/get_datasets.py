@@ -5,7 +5,7 @@ from datamodule.preprocess import preprocess_dataset
 
 
 def rename_dataset_colume(dataset, dataset_attr, column_names):
-    for column_name in ["prompt", "query", "response", "history"]: 
+    for column_name in ["prompt", "query", "response", "history"]:
         original_column = getattr(dataset_attr, column_name)
         if getattr(dataset_attr, column_name) and original_column in column_names and original_column != column_name:
             dataset = dataset.rename_column(getattr(dataset_attr, column_name), column_name)
@@ -29,7 +29,7 @@ def load_train_datasets(training_args, data_args):
         )["train"]
         column_names = list(next(iter(valid_data)).keys())
         valid_data = rename_dataset_colume(valid_data, dataset_attr, column_names)
-    else:    
+    else:
         if training_args.do_eval and data_args.val_set_size > 0:
             train_val = train_data.train_test_split(test_size=data_args.val_set_size, shuffle=True, seed=42)
             train_data = train_val["train"]
@@ -45,4 +45,3 @@ def process_datasets(training_args, data_args, finetuning_args, tokenizer, train
     if training_args.do_eval:
         valid_data = preprocess_dataset(valid_data, tokenizer, data_args, training_args, stage=finetuning_args.stage)
     return train_data, valid_data
-
