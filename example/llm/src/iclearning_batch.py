@@ -1,16 +1,15 @@
 """
-incontext_learning.py
+iclearning_batch.py
 
 The entrance of this project.
 """
 
+import argparse
 import re
 import os
-import argparse
 
-from utils.prompt_crafting import PromptCraft
 from model.llm_def import LLaMA, Qwen, MiniCPM, ChatGLM, ChatGPT, DeepSeek
-from datamodule.preprocess_icl import prepare_examples
+from datamodule.preprocess_icl import prepare_examples, prepare_input_plus
 
 
 MODEL_CLASSES = {
@@ -40,6 +39,7 @@ TASK_LIST = [
 
 def parse_args():
     parser = argparse.ArgumentParser(description="In-context learning script")
+    parser.add_argument("--config", type=str, default=None, help="Path to the configuration YAML file")
     parser.add_argument("--engine", type=str, choices=MODEL_LIST, help="Model engine")
     parser.add_argument("--model_id", type=str, help="Model ID")
     parser.add_argument("--api_key", type=str, help="API key")
@@ -64,9 +64,7 @@ def parse_args():
 
 
 def main():
-
     # <01: Confirm Config>
-
     args = parse_args()
     cfg = {
         'engine': args.engine,
@@ -94,6 +92,10 @@ def main():
 
     # <02: Checking Config>
 
+    # rebuild text_input
+    cfg['text_input'] = os.path.join(os.path.dirname(__file__), cfg['text_input'])
+    cfg['text_input'] = prepare_input_plus(cfg['text_input'], cfg['language'])
+
     # check if the model is supported
     if cfg['engine'] not in MODEL_LIST:
         raise ValueError("Your model is not supported now, we only support " + ", ".join(MODEL_LIST) + ". Try again please.")
@@ -119,24 +121,10 @@ def main():
     if cfg['in_context']:
         examples = prepare_examples(cfg['task'], cfg['language'], cfg['data_path'])
 
+
     # <03: Build Prompt>
 
-    ie_prompter = PromptCraft(
-        task=cfg['task'],
-        language=cfg['language'],
-        in_context=cfg['in_context'],
-        instruction=cfg['instruction'] if "instruction" in cfg else None,  # not recommend to set instruction by yourself
-        example=examples,
-    )
-    prompt = ie_prompter.build_prompt(
-        prompt=cfg['text_input'],
-        domain=cfg['domain'] if "domain" in cfg else None,
-        labels=cfg['labels'] if "labels" in cfg else None,
-        head_entity=cfg['head_entity'] if "head_entity" in cfg else None,
-        head_type=cfg['head_type'] if "head_type" in cfg else None,
-        tail_entity=cfg['tail_entity'] if "tail_entity" in cfg else None,
-        tail_type=cfg['tail_type'] if "tail_type" in cfg else None,
-    )
+    prompt = cfg['text_input']
     # print("Your final customized-prompt: " + prompt) # test
 
     # <04: Model Response>

@@ -1,5 +1,5 @@
 """
-prompt_crafting.py
+prompt.py
 
 Mainly create custom prompts for those tasks to better chat with LLMs.
 """

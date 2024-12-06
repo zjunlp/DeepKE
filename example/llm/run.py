@@ -45,12 +45,12 @@ def main():
         base_command = ["python", "src/inference.py"]
 
     elif args.mood == 'icl':
-        yaml_config_path = 'examples/incontext_learning/da_qwen.yaml'
-        base_command = ["python", "src/incontext_learning.py"]
+        yaml_config_path = 'examples/icl/icl_qwen.yaml'
+        base_command = ["python", "src/iclearning.py"]
 
     elif args.mood == 'icl_batch':
-        yaml_config_path = 'examples/incontext_learning/re_chatgpt_plus.yaml'
-        base_command = ["python", "src/incontext_learning_plus.py"]
+        yaml_config_path = 'examples/icl/icl_batch_chatgpt.yaml'
+        base_command = ["python", "src/iclearning_batch.py"]
 
     config = load_yaml_config(yaml_config_path)
     command = generate_command_from_yaml(config, base_command)
