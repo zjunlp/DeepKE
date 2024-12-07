@@ -200,7 +200,7 @@ def register_template(
     stop_words: Optional[List[str]] = [],
     use_history: Optional[bool] = True,
     efficient_eos: Optional[bool] = False,
-    # replace_eos: Optional[bool] = False  # 添加 replace_eos 参数
+    # replace_eos: Optional[bool] = True  # replace_eos
 ) -> None:
     template_class = Llama2Template if "llama2" in name else Template
     templates[name] = template_class(

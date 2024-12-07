@@ -7,7 +7,7 @@ model_name: 'llama'
 template: 'llama2'
 train_file: 'data/train.json'
 valid_file: 'data/dev.json'
-output_dir: '${output_dir}'  # 你可以在执行时设置该环境变量
+output_dir: '${output_dir}'
 per_device_train_batch_size: 2
 per_device_eval_batch_size: 2
 gradient_accumulation_steps: 4

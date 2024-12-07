@@ -29,8 +29,12 @@ def main():
 
     # according to the mood, choose the corresponding yaml config file and base command
     if args.mood == 'test':
-        print("this is test\n")
+        print("this is test:\n")
         return
+
+    elif args.mood == 'convert':
+        yaml_config_path = 'examples/infer/convert.yaml'
+        base_command = ["python", "instruction/convert_func.py"]
 
     elif args.mood == 'sft_lora':
         yaml_config_path = 'examples/infer/fine_llama.yaml'
@@ -40,9 +44,21 @@ def main():
         yaml_config_path = ''
         base_command = []
 
+    elif args.mood == 'export':
+        yaml_config_path = 'examples/infer/export.yaml'
+        base_command = ["python", "src/export_model.py"]
+
     elif args.mood == 'infer':
         yaml_config_path = 'examples/infer/infer_llama.yaml'
         base_command = ["python", "src/inference.py"]
+
+    elif args.mood == 'infer_vllm':
+        yaml_config_path = 'examples/infer/infer_baichuan_vllm.yaml'
+        base_command = ["python", "src/inference_vllm.py"]
+
+    elif args.mood == 'evaluate':
+        yaml_config_path = 'examples/infer/evaluate.yaml'
+        base_command = ["python", "instruction/eval_func.py"]
 
     elif args.mood == 'icl':
         yaml_config_path = 'examples/icl/icl_qwen.yaml'
@@ -51,6 +67,10 @@ def main():
     elif args.mood == 'icl_batch':
         yaml_config_path = 'examples/icl/icl_batch_chatgpt.yaml'
         base_command = ["python", "src/iclearning_batch.py"]
+
+    else:
+        print(f"Error: Unsupported mood '{args.mood}'")
+        return
 
     config = load_yaml_config(yaml_config_path)
     command = generate_command_from_yaml(config, base_command)
