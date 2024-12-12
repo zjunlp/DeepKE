@@ -14,6 +14,6 @@ transformers==4.33.0
 
 protobuf==3.20.1
 pydantic==1.10.7
-jieba
-rouge_chinese
-deepspeed
+jieba==0.42.1
+rouge_chinese==1.0.3
+deepspeed==0.14.5

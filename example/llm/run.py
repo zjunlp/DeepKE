@@ -40,10 +40,6 @@ def main():
         yaml_config_path = 'examples/infer/fine_llama.yaml'
         base_command = ["python", "src/finetune.py"]
 
-    elif args.mood == 'sft_pt':
-        yaml_config_path = ''
-        base_command = []
-
     elif args.mood == 'export':
         yaml_config_path = 'examples/infer/export.yaml'
         base_command = ["python", "src/export_model.py"]
