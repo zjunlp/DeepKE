@@ -24,3 +24,4 @@ example/llm/models/
 example/llm/data/dev.json
 example/llm/data/train.json
 example/llm/data/input.json
+example/llm/scripts/
