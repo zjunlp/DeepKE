@@ -1,5 +1,5 @@
 model_name: "bert"
-bert_model: "bert-base-chinese"
+bert_model: "bert-base-chinese"  # Modify to your local bert model path, e.g., "path/to/your/local/bert-base-chinese"
 do_lower_case: True
 fp16: False
 fp16_opt_level: "01"
