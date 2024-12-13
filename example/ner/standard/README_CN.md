@@ -1,97 +1,128 @@
-## 快速上手
+### 快速上手
 
 <p align="left">
-    <b> <a href="https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/README.md">English</a> | 简体中文 </b>
+    <b><a href="https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/README.md">English</a> | 简体中文</b>
 </p>
+
+---
 
 ### 模型内容
 
-本项目实现了Standard场景下NER任务的提取模型，对应路径分别为：
-* [BiLSTM-CRF](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/models/BiLSTM_CRF.py)
-* [Bert](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/models/InferBert.py)
-* [W2NER](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/w2ner)
+本项目实现了 **Standard** 场景下的 NER 任务提取模型，具体实现如下：
+- [**BiLSTM-CRF**](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/models/BiLSTM_CRF.py)  
+- [**Bert**](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/models/InferBert.py)  
+- [**W2NER**](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/w2ner)  
 
+---
 
 ### 实验结果
-| 模型        | 准确率   | 召回率   | f1值   | 推理速度([People's Daily](https://github.com/OYE93/Chinese-NLP-Corpus/tree/master/NER/People's%20Daily)) |
-|-----------|-------|-------|-------|------------------------------------------------------------------------------------------------------|
-| BERT      | 91.15 | 93.68 | 92.40 | 106s                                                                                                 |
-| BiLSTM-CRF | 92.11 | 88.56 | 90.29 | 39s                                                                                                  |
-| W2NER     | 96.76 | 96.11 | 96.43 | -                                                                                                    |
-### 环境依赖
 
-> python == 3
-```bash
-pip install -r requirements.txt
-```
+| 模型         | 准确率   | 召回率   | F1 值  | 推理速度 ([People's Daily](https://github.com/OYE93/Chinese-NLP-Corpus/tree/master/NER/People's%20Daily)) |
+|--------------|----------|----------|--------|---------------------------------------------------------------------------------------------------------|
+| **BERT**     | 91.15    | 93.68    | 92.40  | 106s                                                                                                    |
+| **BiLSTM-CRF** | 92.11    | 88.56    | 90.29  | 39s                                                                                                     |
+| **W2NER**    | 96.76    | 96.11    | 96.43  | -                                                                                                       |
 
-
+---
 
 ### 克隆代码
 
-```
+```bash
 git clone https://github.com/zjunlp/DeepKE.git
 cd DeepKE/example/ner/standard
 ```
 
+---
 
+### 环境依赖
 
-### 使用pip安装
+#### 1. 创建虚拟环境
+```bash
+conda create -n deepke python=3.8
+conda activate deepke
+```
 
-首先创建python虚拟环境，再进入虚拟环境
+#### 2. 安装依赖
+```bash
+pip install -r requirements.txt
+```
 
-- 安装依赖：`pip install -r requirements.txt`
+---
 
 ### 参数设置
 
-#### 1.model parameters
+#### 1. 模型参数
+模型的参数配置文件存放在 [`conf/hydra/model/*.yaml`](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/conf/hydra/model) 路径下，例如模型路径、隐藏层维度、大小写敏感设置等。
 
-[`conf/hydra/model/*.yaml`](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/conf/hydra/model)路径下为模型的参数配置，例如控制模型的隐藏层维度、是否Case Sensitive......
+#### 2. 其他参数
+其他超参数（如环境路径、训练参数）存放于 [`train.yaml`](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/conf/train.yaml) 和 [`custom.yaml`](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/conf/custom.yaml) 中。
 
-#### 2.other parameters
+**注意**： 
+- 使用 `Bert` 模型时，词典（vocab）来自 Hugging Face 的预训练权重。
+- 使用 `BiLSTM-CRF` 模型时，需基于训练集构建词典，并保存为 `.pkl` 文件供预测和评估使用（配置在 `lstmcrf.yaml` 的 `model_vocab_path` 属性中）。
+- 模型下载推荐使用[Hugging Face镜像网站](https://hf-mirror.com/) ，下载到本地后修改`conf/hydra/model/*.yaml`中的模型路径。
 
-环境路径以及训练过程中的其他超参数在[`train.yaml`、`custom.yaml`](https://github.com/zjunlp/DeepKE/tree/main/example/ner/standard/conf)中进行设置。
+---
 
-> 注： 训练过程中所用到的词典
-> 
-> 使用`Bert`模型时vocab来自huggingface的预训练权重
-> 
-> 使用`BiLSTM_CRF`则需要根据训练集构建词典，并存储在pkl文件中供预测和评价使用。(配置为`lstmcrf.yaml`中的`model_vocab_path`属性)
+### 使用数据进行训练
 
-### 使用数据进行训练预测
+#### 数据准备
+- **支持格式**：`json`、`docx` 和 `txt`，详情请参考 `data` 文件夹。
+- **默认数据**：本项目采用 **People's Daily** 中文 NER 数据集，格式为 `{word, label}` 对。  
+- **英文数据集**：如需使用英文数据集，请在预测前修改 `config.yaml` 中的 `lan` 参数，并安装 `nltk` 和 `nltk.download('punkt')`。
 
-- 支持三种类型文件格式，包含json格式、docx格式以及txt格式，详细可参考`data`文件夹。模型采用的数据是People's Daily(中文NER)，文本数据采用{word, label}对格式
-- **默认支持中文数据集，如需使用英文数据集，prediction前需修改config.yaml中的lan，并安装nltk，下载nltk.download('punkt')**
+#### 数据存放
+下载数据并解压：
+```bash
+wget 120.27.214.45/Data/ner/standard/data.tar.gz
+tar -xzvf data.tar.gz
+```
+将数据存放至 `data` 文件夹：
+- `train.txt`：训练数据集  
+- `valid.txt`：验证数据集  
+- `test.txt`：测试数据集  
 
-- 存放数据： 可先下载数据 ```wget 120.27.214.45/Data/ner/standard/data.tar.gz```在此目录下
+#### 开始训练
+根据目标场景选择模型：
+1. **Bert**  
+   ```bash
+   python run_bert.py
+   ```  
+   - 修改 [config.yaml](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/conf/config.yaml) 中 `hydra/model` 为 `bert`，超参数设置详见 [bert.yaml](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/conf/hydra/model/bert.yaml)。
+   - 支持多卡训练，请调整 `train.yaml` 中的 `use_multi_gpu` 参数和指定 GPU 配置。
+   - 若使用上文下载的默认数据：推荐设置`train.yaml` 中的`learning_rate`为`2e-5`。设置`num_train_epochs`为`10`。
+   - 提示：数据量较小时建议减小学习率，以避免参数更新过快；数据量较大时可以尝试增大学习率，加速模型收敛。可结合wandb监控训练过程loss（设置`config.yaml`中的`use_wandb`参数为True），调整学习率与训练轮数，以达到最佳效果。
 
-  在`data`文件夹下存放数据：
-  
-  - `train.txt`：存放训练数据集
-  - `valid.txt`：存放验证数据集
-  - `test.txt`：存放测试数据集
-- 开始训练(可根据**目标场景**选Bert或者BiLSTM-CRF或者W2NER)：
+2. **BiLSTM-CRF**  
+   ```bash
+   python run_lstmcrf.py
+   ```  
+   超参数设置详见 `lstmcrf.yaml`，其余参数在 `conf` 文件夹中调整。
 
-  1. ```python run_bert.py``` (修改[config.yaml](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/conf/config.yaml)中hydra/model为bert，bert超参设置在[bert.yaml](https://github.com/zjunlp/DeepKE/blob/main/example/ner/standard/conf/hydra/model/bert.yaml)中，训练所用到参数都在conf文件夹中，修改即可).该任务支持多卡训练，修改trian.yaml中的use_multi_gpu参数为True，run_bert.py中osviron['CUDA_VISIBLE_DEVICES']为指定gpu，以逗号为间隔，第一张卡为计算主卡，需使用略多内存。
-  2. ```python run_lstmcrf.py``` (BiLSTM-CRF超参设置在`lstmcrf.yaml`中，训练所用到参数都在conf文件夹中，修改即可)
-  3. ```cd w2ner ---> python run.py``` (w2nerF超参设置在`model.yaml`中，训练所用到参数都在conf文件夹中，修改即可。其中`device`为指定GPU的编号，若只有单卡GPU，设置为0)
+3. **W2NER**  
+   ```bash
+   cd w2ner
+   python run.py
+   ```  
+   参数配置详见 `model.yaml`，包括 GPU 指定参数 `device`。
 
-- 每次训练的日志保存在 `logs` 文件夹内，模型结果保存在 `checkpoints` 文件夹内。
-- 如果训练BERT，建议训练batch size不小于64
+#### 训练输出
+- **日志**：保存在 `logs` 文件夹中。  
+- **模型结果**：保存在 `checkpoints` 文件夹中。  
+- **Batch Size**：建议 BERT 模型训练时，batch size 不小于 64。
 
-- 模型加载和保存位置以及配置可以在conf的 `*.yaml`文件中修改
+#### 预测
+使用以下命令进行预测：
+```bash
+python predict.py
+```
 
-- 进行预测 ```python predict.py```
+---
 
 ### 样本自动化打标
 
-如果您只有文本数据和对应的词典，而没有规范的训练数据。
+如果只有文本数据和词典，没有规范的训练数据，可通过自动化打标方法生成弱监督的格式化训练数据。请确保：
+1. 提供高质量的词典。  
+2. 准备足够的文本数据。
 
-您可以通过自动化打标方法得到弱监督的格式化训练数据，请确保：
-
-- 提供高质量的词典
-- 充足的文本数据
-
-<p align="left">
-<a href="https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data/README.md">prepare-data</a> </b>
-</p>
+相关详情请参考 [prepare-data](https://github.com/zjunlp/DeepKE/blob/main/example/ner/prepare-data/README.md)。

@@ -1,6 +1,6 @@
 model_name: "lstmcrf"
 model_save_name: "model.pth"
-model_vocab_path: "data_bilstm.pkl"
+model_vocab_path: "data_bilstm.pkl"  # Modify to your local path, e.g., "path/to/your/vocab/data_bilstm.pkl"
 word_dim: 128
 hidden_dim: 384
 drop_out: 0.5
