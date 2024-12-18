@@ -1,13 +1,9 @@
-import os
-import argparse
 from args.parser import get_infer_args
 from model.loader import load_model_and_tokenizer
 from datamodule.template import get_template_and_fix_tokenizer
 from typing import Any, Dict, Optional
 from utils.logging import get_logger
 from utils.general_utils import get_model_tokenizer_trainer, get_model_name
-from utils.load_cmd import load_config_from_yaml
-
 
 logger = get_logger(__name__)
 
@@ -37,29 +33,5 @@ def export_model(args: Optional[Dict[str, Any]] = None, max_shard_size: Optional
     except:
         logger.warning("Cannot save tokenizer, please copy the files manually.")
 
-
-def set_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--config', type=str, default=None, help="Path to the YAML config file")
-    parser.add_argument('--model_name_or_path', type=str, default='models/llama-3-8b-Instruct', help="Path to model or model name")
-    parser.add_argument('--checkpoint_dir', type=str, default='lora_results/llama3-v1/checkpoint-xxx', help="Checkpoint directory")
-    parser.add_argument('--export_dir', type=str, default='lora_results/llama3-v1/llama3-v1', help="Directory to export the model")
-    parser.add_argument('--stage', type=str, default='sft', help="Stage of the model")
-    parser.add_argument('--model_name', type=str, default='llama', help="Model name")
-    parser.add_argument('--template', type=str, default='llama3', help="Template name")
-    parser.add_argument('--output_dir', type=str, default='lora_results/test', help="Output directory")
-    args = parser.parse_args()
-
-    if args.config:
-        # if user specifies a config file, load the config from the file
-        config = load_config_from_yaml(args.config)
-        for key, value in config.items():
-            if hasattr(args, key):
-                setattr(args, key, value)
-
-    return args
-
-
 if __name__ == "__main__":
-    args = set_args()
-    export_model(args)
+    export_model()

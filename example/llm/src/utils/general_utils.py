@@ -4,9 +4,9 @@ import time
 import numpy as np
 import torch
 from transformers import (
-    AutoTokenizer, 
+    AutoTokenizer,
     AutoModel,
-    AutoModelForCausalLM, 
+    AutoModelForCausalLM,
     AutoModelForSeq2SeqLM,
     LlamaForCausalLM,
     LlamaTokenizer,
@@ -15,7 +15,7 @@ from transformers import (
 )
 
 MODEL_DICT = {
-    "llama":["llama", "llama2", "llama3", "alpaca", "vicuna", "zhixi"],
+    "llama":["llama", "alpaca", "vicuna", "zhixi"],
     "custom":["custom"],
     "falcon":["falcon"],
     "qwen":["qwen"],
@@ -44,13 +44,15 @@ LORA_TARGET_MODULES_DICT = {
 
 
 def get_model_tokenizer_trainer(model_name):
-    if model_name == 'chatglm':
+    if model_name == 'llama':
+        return LlamaForCausalLM, LlamaTokenizer, Trainer
+    elif model_name == 'chatglm':
         return AutoModel, AutoTokenizer, Seq2SeqTrainer
     elif model_name == "openba":
         return AutoModelForSeq2SeqLM, AutoTokenizer, Seq2SeqTrainer
     else:
         return AutoModelForCausalLM, AutoTokenizer, Trainer
-    
+
 
 def get_model_name(model_name):
     model_name = model_name.lower()
@@ -79,6 +81,3 @@ def get_format_time():
     localtime = time.localtime(current_time)
     dt = time.strftime('%Y:%m:%d %H:%M:%S', localtime)
     return dt
-
-
-

@@ -1,4 +1,3 @@
-import yaml
 import sys
 sys.path.append("./")
 import argparse
@@ -105,7 +104,7 @@ def process(options):
         processer.set_hard_dict(json.load(open(options.hard_negative_path, 'r')))
     processer.set_negative(options.neg_schema)
 
-    options.source = options.src_path.split('/')[-2]  # 用源路径的最后一个文件夹名作为source
+    options.source = options.src_path.split('/')[-2]  # use the folder name as the source
     datas = processer.read_data(options.src_path)
     if options.split == 'test':
         results = get_test_data(datas, processer, options)
@@ -114,37 +113,20 @@ def process(options):
     write_to_json(options.tgt_path, results)
 
 
-def load_config_from_yaml(yaml_path):
-    with open(yaml_path, 'r', encoding='utf-8') as f:
-        config = yaml.safe_load(f)
-    return config
-
-
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--src_path", type=str, default=None)
-    parser.add_argument("--tgt_path", type=str, default=None)
-    parser.add_argument("--schema_path", type=str, default=None)
-    parser.add_argument("--hard_negative_path", type=str, default=None)
-    parser.add_argument("--cluster_mode", action='store_true', help="是否使用cluster模式")
-    parser.add_argument("--language", type=str, default=None, choices=['zh', 'en'])
-    parser.add_argument("--task", type=str, default=None, choices=['RE', 'NER', 'EE', 'EET', 'EEA', 'SPO', 'KG'])
-    parser.add_argument("--split", type=str, default=None, choices=['train', 'test'])
-    parser.add_argument("--split_num", type=int, default=4)
-    parser.add_argument("--neg_schema", type=float, default=1.0)
-    parser.add_argument("--random_sort", action='store_true', help="是否对指令中的schema随机排序")
-    args = parser.parse_args()
-
-    # if user don't pass any parameters, try to load configuration from yaml
-    if not any([args.src_path, args.tgt_path, args.schema_path, args.language, args.task]):
-        yaml_config = load_config_from_yaml('examples/infer/convert.yaml')
-        for key, value in yaml_config.items():
-            if value is not None:
-                setattr(args, key, value)
-
-    return args
-
-
 if __name__ == "__main__":
-    options = parse_args()
+    parse = argparse.ArgumentParser()
+    parse.add_argument("--src_path", type=str, default="data/NER/sample.json")
+    parse.add_argument("--tgt_path", type=str, default="data/NER/processed.json")
+    parse.add_argument("--schema_path", type=str, default='data/NER/schema.json')
+    parse.add_argument("--hard_negative_path", type=str, default=None)
+    parse.add_argument("--cluster_mode", action='store_true', help="是否使用cluster模式, 负样本只包括难负样本+split_num个其他负样本")
+    parse.add_argument("--language", type=str, default='zh', choices=['zh', 'en'], help="不同语言使用的template及转换脚本不同")
+    parse.add_argument("--task", type=str, default="NER", choices=['RE', 'NER', 'EE', 'EET', 'EEA', 'SPO', 'KG'])
+    parse.add_argument("--split", type=str, default='train', choices=['train', 'test'])
+
+    parse.add_argument("--split_num", type=int, default=4, help="单个指令中最大schema数量。默认为4, -1表示不切分, 各个任务推荐的切分数量不同: NER:6, RE:4, EE:4, EET:4, EEA:4, KG:1")
+    parse.add_argument("--neg_schema", type=float, default=1, help="指令中负样本的比例, 默认为1, 即采用全部负样本")
+    parse.add_argument("--random_sort", action='store_true', help="是否对指令中的schema随机排序, 默认为False, 即按字母顺序排序")
+
+    options = parse.parse_args()
     process(options)

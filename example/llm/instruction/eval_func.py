@@ -1,5 +1,4 @@
 # coding=utf-8
-import yaml
 import json
 import os
 import sys
@@ -90,8 +89,7 @@ def evaluate(options):
             gold_list=label_kgs, pred_list=converted_preds
         )
 
-
-    # 写入结果到json文件
+    # write the results into json file
     cate_results = {}
     if options.sort_by:
         cate_dict = dict(sorted(cate_dict.items()))
@@ -107,37 +105,18 @@ def evaluate(options):
     json.dump(all_result, open(options.out_path, 'w'), ensure_ascii=False, indent=4)
 
 
-def load_config_from_yaml(yaml_path):
-    with open(yaml_path, 'r', encoding='utf-8') as f:
-        config = yaml.safe_load(f)
-    return config
-
-
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--path1", type=str, default=None)
-    parser.add_argument("--task", type=str, default=None, choices=['NER', 'RE', 'EE', 'SPO', 'EET', 'EEA', 'KG', 'MRC'])
-    parser.add_argument("--language", type=str, default=None, choices=['zh', 'en'])
-    parser.add_argument("--NAN", type=str, default="")
-    parser.add_argument("--prefix", type=str, default='')
-    parser.add_argument("--sort_by", type=str, default='')
-    parser.add_argument("--match_mode", type=str, default="normal")
-    parser.add_argument("--metrics_list", type=str, default="f1")
-
-    options = parser.parse_args()
-
-    # if user does not specify the path1, task, language, then use the default config
-    if not any([options.path1, options.task, options.language]):
-        yaml_config = load_config_from_yaml('examples/infer/evaluate.yaml')
-        for key, value in yaml_config.items():
-            if value is not None:
-                setattr(options, key, value)
-
-    return options
-
 
 def main():
-    options = parse_args()
+    parse = argparse.ArgumentParser()
+    parse.add_argument("--path1", type=str, default="")
+    parse.add_argument("--task", type=str, default='re', choices=['NER', 'RE', 'EE', 'SPO', 'EET', 'EEA', 'KG', 'MRC'])
+    parse.add_argument("--language", type=str, default='zh', choices=['zh', 'en'])
+    parse.add_argument("--NAN", type=str, default="")
+    parse.add_argument("--prefix", type=str, default='')
+    parse.add_argument("--sort_by", type=str, default='')
+    parse.add_argument("--match_mode", type=str, default="normal")
+    parse.add_argument("--metrics_list", type=str, default="f1")
+    options = parse.parse_args()
 
     dname = os.path.dirname(options.path1)
     fname = os.path.basename(options.path1)

@@ -1,33 +1,31 @@
 """
-llm_daf.py
-
-Mainly provide an interface to connect with LLMs.
-
+Surpported Models.
 Supports:
 - Open Source:LLaMA3, Qwen2.5, MiniCPM3, ChatGLM4
 - Closed Source: ChatGPT, DeepSeek
 """
 
-import os
-import openai
-from openai import OpenAI
-import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import pipeline
-
+from transformers import AutoTokenizer, AutoModelForCausalLM, AutoTokenizer
+import torch
+import openai
+import os
+from openai import OpenAI
 
 # The inferencing code is taken from the official documentation
 
-class BaseModel:
+class BaseEngine:
     def __init__(self, pretrained_model_name_or_path: str):
+        self.name = None
         self.tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path, trust_remote_code=True)
 
     def get_chat_response(self, prompt):
         raise NotImplementedError
 
-class LLaMA:
+class LLaMA(BaseEngine):
     def __init__(self, pretrained_model_name_or_path: str):
         super().__init__(pretrained_model_name_or_path)
+        self.name = "llama"
         self.model_id = pretrained_model_name_or_path
         self.pipeline = pipeline(
             "text-generation",
@@ -40,27 +38,25 @@ class LLaMA:
             self.pipeline.tokenizer.convert_tokens_to_ids("<|eot_id|>")
         ]
 
-    def get_chat_response(self, prompt, temperature: float = 0.1, top_p: float = 0.9, max_tokens: int = 512):
+    def get_chat_response(self, prompt, temperature: float = 0.1, top_p: float = 0.9, max_tokens: int = 1024):
         messages = [
-            {"role": "system", "content": "LLaMA, you are a helpful assistant."},
+            {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt},
         ]
-        # combined_prompt = "\n".join([message["content"] for message in messages])
         outputs = self.pipeline(
-            messages, # or combined_prompt
+            messages,
             max_new_tokens=max_tokens,
             eos_token_id=self.terminators,
             do_sample=True,
             temperature=temperature,
             top_p=top_p,
         )
-        # return outputs[0]['generated_text']
         return outputs[0]["generated_text"][-1]['content'].strip()
 
-
-class Qwen(BaseModel):
+class Qwen(BaseEngine):
     def __init__(self, pretrained_model_name_or_path: str):
         super().__init__(pretrained_model_name_or_path)
+        self.name = "qwen"
         self.model_id = pretrained_model_name_or_path
         self.model = AutoModelForCausalLM.from_pretrained(
             self.model_id,
@@ -68,7 +64,7 @@ class Qwen(BaseModel):
             device_map="auto"
         )
 
-    def get_chat_response(self, prompt, temperature: float = 0.1, top_p: float = 0.9, max_tokens: int = 512):
+    def get_chat_response(self, prompt, temperature: float = 0.1, top_p: float = 0.9, max_tokens: int = 1024):
         messages = [
             {"role": "system", "content": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant."},
             {"role": "user", "content": prompt}
@@ -92,10 +88,10 @@ class Qwen(BaseModel):
 
         return response
 
-
-class MiniCPM(BaseModel):
+class MiniCPM(BaseEngine):
     def __init__(self, pretrained_model_name_or_path: str):
         super().__init__(pretrained_model_name_or_path)
+        self.name = "minicpm"
         self.model_id = pretrained_model_name_or_path
         self.model = AutoModelForCausalLM.from_pretrained(
             self.model_id,
@@ -104,13 +100,12 @@ class MiniCPM(BaseModel):
             trust_remote_code=True
         )
 
-    def get_chat_response(self, prompt, temperature: float = 0.1, top_p: float = 0.9, max_tokens: int = 512):
+    def get_chat_response(self, prompt, temperature: float = 0.1, top_p: float = 0.9, max_tokens: int = 1024):
         messages = [
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt}
         ]
-        model_inputs = self.tokenizer.apply_chat_template(messages, return_tensors="pt", add_generation_prompt=True).to(
-            self.model.device)
+        model_inputs = self.tokenizer.apply_chat_template(messages, return_tensors="pt", add_generation_prompt=True).to(self.model.device)
         model_outputs = self.model.generate(
             model_inputs,
             temperature=temperature,
@@ -124,10 +119,10 @@ class MiniCPM(BaseModel):
 
         return response
 
-
-class ChatGLM(BaseModel):
+class ChatGLM(BaseEngine):
     def __init__(self, pretrained_model_name_or_path: str):
         super().__init__(pretrained_model_name_or_path)
+        self.name = "chatglm"
         self.model_id = pretrained_model_name_or_path
         self.model = AutoModelForCausalLM.from_pretrained(
             self.model_id,
@@ -137,14 +132,12 @@ class ChatGLM(BaseModel):
             trust_remote_code=True
         )
 
-    def get_chat_response(self, prompt, temperature: float = 0.1, top_p: float = 0.9, max_tokens: int = 512):
+    def get_chat_response(self, prompt, temperature: float = 0.1, top_p: float = 0.9, max_tokens: int = 1024):
         messages = [
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt}
         ]
-        model_inputs = self.tokenizer.apply_chat_template(messages, return_tensors="pt", return_dict=True,
-                                                          add_generation_prompt=True, tokenize=True).to(
-            self.model.device)
+        model_inputs = self.tokenizer.apply_chat_template(messages, return_tensors="pt", return_dict=True, add_generation_prompt=True, tokenize=True).to(self.model.device)
         model_outputs = self.model.generate(
             **model_inputs,
             temperature=temperature,
@@ -156,9 +149,9 @@ class ChatGLM(BaseModel):
 
         return response
 
-
-class ChatGPT(BaseModel):
+class ChatGPT(BaseEngine):
     def __init__(self, model_name: str, api_key: str, base_url=openai.base_url):
+        self.name = model_name
         self.model = model_name
         self.base_url = base_url
         if api_key != "":
@@ -167,7 +160,7 @@ class ChatGPT(BaseModel):
             self.api_key = os.environ["OPENAI_API_KEY"]
         self.client = OpenAI(api_key=self.api_key, base_url=self.base_url)
 
-    def get_chat_response(self, input, temperature=0.1, max_tokens=512, stop=None):
+    def get_chat_response(self, input, temperature=0.1, max_tokens=1024, stop=None):
         response = self.client.chat.completions.create(
             model=self.model,
             messages=[
@@ -180,9 +173,9 @@ class ChatGPT(BaseModel):
         )
         return response.choices[0].message.content
 
-
-class DeepSeek(BaseModel):
+class DeepSeek(BaseEngine):
     def __init__(self, model_name: str, api_key: str, base_url="https://api.deepseek.com"):
+        self.name = model_name
         self.model = model_name
         self.base_url = base_url
         if api_key != "":
@@ -191,7 +184,7 @@ class DeepSeek(BaseModel):
             self.api_key = os.environ["DEEPSEEK_API_KEY"]
         self.client = OpenAI(api_key=self.api_key, base_url=self.base_url)
 
-    def get_chat_response(self, input, temperature=0.1, max_tokens=512, stop=None):
+    def get_chat_response(self, input, temperature=0.1, max_tokens=1024, stop=None):
         response = self.client.chat.completions.create(
             model=self.model,
             messages=[
@@ -203,101 +196,3 @@ class DeepSeek(BaseModel):
             stop=stop
         )
         return response.choices[0].message.content
-
-
-if __name__ == "__main__":
-    """
-    test
-    """
-
-    test_prompt = "please introduce yourself:"
-
-    def test_llama():
-        print("\n=== Testing LLaMA Model ===")
-        try:
-            llama_model = LLaMA(pretrained_model_name_or_path="")
-            llama_response = llama_model.get_chat_response(
-                prompt=test_prompt,
-                temperature=0.5,
-                top_p=0.9,
-                max_tokens=100
-            )
-            print("LLaMA Response:", llama_response)
-        except Exception as e:
-            print("LLaMA Model Test Failed:", str(e))
-
-    def test_qwen():
-        print("\n=== Testing Qwen Model ===")
-        try:
-            qwen_model = Qwen(pretrained_model_name_or_path="")
-            qwen_response = qwen_model.get_chat_response(
-                prompt=test_prompt,
-                temperature=0.5,
-                top_p=0.9,
-                max_tokens=100
-            )
-            print("Qwen Response:", qwen_response)
-        except Exception as e:
-            print("Qwen Model Test Failed:", str(e))
-
-    def test_minicpm():
-        print("\n=== Testing MiniCPM Model ===")
-        try:
-            minicpm_model = MiniCPM(pretrained_model_name_or_path="")
-            minicpm_response = minicpm_model.get_chat_response(
-                prompt=test_prompt,
-                temperature=0.5,
-                top_p=0.9,
-                max_tokens=100
-            )
-            print("MiniCPM Response:", minicpm_response)
-        except Exception as e:
-            print("MiniCPM Model Test Failed:", str(e))
-
-    def test_chatglm():
-        print("\n=== Testing ChatGLM Model ===")
-        try:
-            chatglm_model = ChatGLM(pretrained_model_name_or_path="")
-            chatglm_response = chatglm_model.get_chat_response(
-                prompt=test_prompt,
-                temperature=0.5,
-                top_p=0.9,
-                max_tokens=100
-            )
-            print("ChatGLM Response:", chatglm_response)
-        except Exception as e:
-            print("ChatGLM Model Test Failed:", str(e))
-
-    def test_chatgpt():
-        print("\n=== Testing ChatGPT Model ===")
-        try:
-            chatgpt_model = ChatGPT(model_name="gpt-3.5-turbo", api_key="")
-            chatgpt_response = chatgpt_model.get_chat_response(
-                input=test_prompt,
-                temperature=0.5,
-                max_tokens=100
-            )
-            print("ChatGPT Response:", chatgpt_response)
-        except Exception as e:
-            print("ChatGPT Model Test Failed:", str(e))
-
-    def test_deepseek():
-        print("\n=== Testing DeepSeek Model ===")
-        try:
-            deepseek_model = DeepSeek(model_name="deepseek-v1", api_key="")
-            deepseek_response = deepseek_model.get_chat_response(
-                input=test_prompt,
-                temperature=0.5,
-                max_tokens=100
-            )
-            print("DeepSeek Response:", deepseek_response)
-        except Exception as e:
-            print("DeepSeek Model Test Failed:", str(e))
-
-
-    # test_llama()
-    # test_qwen()
-    # test_minicpm()
-    # test_chatglm()
-    # test_chatgpt()
-    # test_deepseek()

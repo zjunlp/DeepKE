@@ -3,10 +3,10 @@ from typing import TYPE_CHECKING, Literal, Optional, Tuple
 import torch
 
 from transformers import (
-    AutoConfig, 
-    PretrainedConfig, 
-    PreTrainedModel, 
-    PreTrainedTokenizerBase, 
+    AutoConfig,
+    PretrainedConfig,
+    PreTrainedModel,
+    PreTrainedTokenizerBase,
     BitsAndBytesConfig,
 )
 from transformers.utils.versions import require_version
@@ -54,7 +54,7 @@ def load_model_and_tokenizer(
         model_args.model_name_or_path,
         use_fast=model_args.use_fast_tokenizer,
         split_special_tokens=model_args.split_special_tokens,
-        padding_side="left", 
+        padding_side="left",
         **config_kwargs
     )
 
@@ -66,11 +66,11 @@ def load_model_and_tokenizer(
         model_to_load = model_args.model_name_or_path
 
     config = AutoConfig.from_pretrained(model_to_load, **config_kwargs)
-    
+
     # Fix tokenizer
     if tokenizer.bos_token_id is None:
         tokenizer.bos_token = "<|beginoftext|>"
-    
+
     if tokenizer.eos_token_id is None:
         tokenizer.eos_token = "<|endoftext|>"
         logger.info("Add eos token: {}".format(tokenizer.eos_token))
@@ -116,7 +116,7 @@ def load_model_and_tokenizer(
         config_kwargs["device_map"] = {"": get_current_device()}
         logger.info("Quantizing model to {} bit.".format(model_args.bits))
 
-    
+
     # Load pre-trained models (without valuehead)
     model = model_class.from_pretrained(
         model_to_load,

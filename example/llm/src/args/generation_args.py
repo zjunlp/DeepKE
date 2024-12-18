@@ -42,9 +42,7 @@ class InferArguments:
     gen_mode: str = field(default='greedy', metadata={"help": "gen_mode."})
     swap_space: int = field(default=4, metadata={"help": "CPU swap space size (GiB) per GPU"})
     gpu_memory_utilization: float = field(default=0.90, metadata={"help": "the percentage of GPU memory to be used for the model executor"})
-    
+
     input_file: str = field(default=None, metadata={"help": "Path to the input file."})
     output_file: str = field(default=None, metadata={"help": "Path to the output file."})
     batch_size: int = field(default=16, metadata={"help": "batch size"})
-
-

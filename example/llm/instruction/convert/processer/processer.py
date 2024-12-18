@@ -17,14 +17,14 @@ class Processer:
             self.type_role_dict[key] = set(value)
         self.negative = negative
 
-    
+
     def filter_lable(self, record):
         raise NotImplementedError
-    
+
 
     def set_negative(self, neg_schema):
         raise NotImplementedError
-    
+
 
     def set_hard_dict(self, hard_dict=None):
         if hard_dict is None:
@@ -60,19 +60,19 @@ class Processer:
 
     def get_schemas(self, task_record=None):
         raise NotImplementedError
-    
+
 
     def get_task_record(self, record):
         raise NotImplementedError
-    
+
 
     def get_positive_type_role(self, records):
         raise NotImplementedError
-    
+
 
     def get_final_schemas(self, total_schemas):
         return total_schemas
-    
+
 
     def split_total_by_num(self,split_num, tmp_total_schemas):
         if split_num == -1:
@@ -102,12 +102,12 @@ class Processer:
         else:
             negative = type_role - positive
             negative = list(negative)
-            if self.negative > 0: 
+            if self.negative > 0:
                 neg_length = sum(np.random.binomial(1, self.negative, self.label_length))
                 if len(positive) == 0:
                     neg_length = max(neg_length, 1)
                 neg_length = min(neg_length, len(negative))
-                negative = random.sample(negative, neg_length) 
+                negative = random.sample(negative, neg_length)
             tmp_total_schemas = negative + list(positive)
 
         # 排序
@@ -123,18 +123,18 @@ class Processer:
     def negative_cluster_sample(self, record, split_num=4, random_sort=True):
         task_record = self.get_task_record(record)
         positive, type_role = self.get_positive_type_role(task_record)
-        if len(type_role) == 1:    
+        if len(type_role) == 1:
             total_cluster = list(type_role)
-        elif len(positive) == 0:  
+        elif len(positive) == 0:
             neg_length = sum(np.random.binomial(1, self.negative / 2 , self.label_length))
             neg_length = max(neg_length, 1)
             total_cluster = random.sample(list(type_role), neg_length)
         else:
             total_cluster = set()
-            for key in positive:         
-                negative = self.hard_dict[key].copy()   
-                total_cluster.update(negative)  
-            total_cluster.update(positive) 
+            for key in positive:
+                negative = self.hard_dict[key].copy()
+                total_cluster.update(negative)
+            total_cluster.update(positive)
 
             out_hard = type_role - total_cluster
             out_length = min(len(out_hard), split_num)

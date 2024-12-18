@@ -25,4 +25,3 @@ class DataArguments:
     train_on_prompt: bool = field(default=False, metadata={"help": "If False, masks out inputs in loss."})
     language: Optional[str] = field(default="zh", metadata={"help": "The language."})
     id_text: str = field(default='input')
-
