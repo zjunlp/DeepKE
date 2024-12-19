@@ -10,7 +10,7 @@
 
 本项目实现了 **Standard** 场景下的 NER 任务提取模型，具体实现如下：
 - [**BiLSTM-CRF**](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/models/BiLSTM_CRF.py)  
-- [**Bert**](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/models/InferBert.py)  
+- [**Bert**](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/models/InferBert.py) （提示：若使用我们下文给出的数据集，推荐设置`learning_rate`为`2e-5`，`num_train_epochs`为`10`）  
 - [**W2NER**](https://github.com/zjunlp/DeepKE/blob/main/src/deepke/name_entity_re/standard/w2ner)  
 
 ---
