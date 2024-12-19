@@ -1,3 +1,24 @@
+
+- [OneKE](#oneke)
+- [模型介绍](#模型介绍)
+- [模型使用](#模型使用)
+  - [模型下载](#模型下载)
+  - [环境安装](#环境安装)
+  - [快速运行](#快速运行)
+  - [vLLM 推理](#vllm-推理)
+  - [ollama 推理](#ollama-推理)
+  - [在 Mac 上推理](#在-mac-上推理)
+  - [多卡推理](#多卡推理)
+- [数据准备](#数据准备)
+  - [训练数据](#训练数据)
+  - [测试数据](#测试数据)
+- [模型训练](#模型训练)
+  - [LoRA微调：](#lora微调)
+  - [全量微调：](#全量微调)
+- [模型评估](#模型评估)
+- [常见问题](#常见问题)
+
+
 ## OneKE
 
 ## 模型介绍
@@ -11,23 +32,23 @@ OneKE是一个基于大模型知识抽取框架，具备初步的中英文双语
 
 ## 模型使用
 
-#### 模型下载
+### 模型下载
 
 [HuggingFace](https://huggingface.co/zjunlp/OneKE), [ModelScope](https://modelscope.cn/models/ZJUNLP/OneKE), [WiseModel](https://wisemodel.cn/models/zjunlp/OneKE)
 
-#### 环境安装
+### 环境安装
 
-```
+```bash
 conda create -n OneKE python=3.9
 conda activate OneKE
 pip install -r requirements.txt
 ```
 
-#### 快速运行
+### 快速运行
 
 训练和推理建议至少具备**20GB的显存**
 
-```
+```python
 import torch
 from transformers import (
     AutoConfig,
@@ -78,25 +99,180 @@ output = tokenizer.decode(generation_output, skip_special_tokens=True)
 print(output)
 ```
 
-#### vLLM 推理
+### vLLM 推理
 
 vLLM的环境配置可见其官方安装配置文档 ([Installation](https://vllm.readthedocs.io/en/latest/getting_started/installation.html))
 
 部署服务
 
-```
+```bash
 python -m vllm.entrypoints.openai.api_server --model zjunlp/OneKE
 ```
 
 终端使用Api推理
 
-```
+```bash
 curl http://localhost:8000/v1/completions -H "Content-Type: application/json" -d '{"model": "/data2/lkw/OneKE", "prompt": "[INST] <<SYS>>You are a helpful assistant. 你是一个乐于助人的助手。<</SYS>>{\"instruction\": \"You are an expert in named entity recognition. Please extract entities that match the schema definition from the input. Return an empty list if the entity type does not exist. Please respond in the format of a JSON string.\", \"schema\": [\"person\", \"organization\", \"else\", \"location\"], \"input\": \"284 Robert Allenby ( Australia ) 69 71 71 73 , Miguel Angel Martin ( Spain ) 75 70 71 68 ( Allenby won at first play-off hole )\"}[/INST]", "max_tokens": 1024, "temperature": 0}'
 ```
 
+
+### ollama 推理
+
+ollama 的环境配置可见其官方文档 https://github.com/ollama/ollama/tree/main
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+
+创建 Modelfile 文件
+
+```bash
+FROM /disk/disk_20T/ghh/OneKE-13B-BF16.gguf
+PARAMETER temperature 0
+PARAMETER num_ctx 4096
+TEMPLATE """[INST] <<SYS>>You are a helpful assistant. 你是一个乐于助人的助手。<</SYS>>{{ .Prompt }}[/INST]"""
+```
+
+启动 ollama
+
+```bash
+ollama serve
+```
+
+在另一个终端窗口输入命令
+
+```bash
+ollama create oneke -f Modelfile
+
+ollama run oneke
+```
+
+输入和输出
+
+```
+>>> {\"instruction\": \"你是专门进行实体抽取的专家。请从input中抽取出符合schema定义的实体，不存在的实体类型
+... 返回空列表。请按照JSON字符串的格式回答。\", \"schema\": [\"人物\", \"地理位置\", \"组织机构\"], \"input
+... \": \"在这里恕弟不恭之罪，敢在尊前一诤：前人论书，每曰“字字有来历，笔笔有出处”，细读公字，何尝跳出前人
+... 藩篱，自隶变而后，直至明季，兄有何新出？\"}
+ {"人物": [], "地理位置": [], "组织机构": []}
+
+>>> {\"instruction\": \"你是专门进行实体抽取的专家。请从input中抽取出符合schema定义的实体，不存在的实体类型
+... 返回空列表。请按照JSON字符串的格式回答。\", \"schema\": [\"组织机构\", \"地理位置\", \"人物\"], \"input
+... \": \"胡老说，当画画疲倦时就到院里去看看，给这盆花浇点水，给那棵花剪剪枝，回来再接着画，画累了再出去，
+... 如此循环往复，脑体结合，有益健康，胜过吃药。\"}
+ {"组织机构": [], "地理位置": [], "人物": ["胡"]}
+
+>>> {\"instruction\": \"你是专门进行事件提取的专家。请从input中抽取出符合schema定义的事件，不存在的事件返回
+... 空列表，不存在的论元返回NAN，如果论元存在多值请返回列表。请按照JSON字符串的格式回答。\", \"schema\": [{
+... \"event_type\": \"产品行为-获奖\", \"trigger\": true, \"arguments\": [\"获奖人\", \"颁奖机构\", \"奖项\
+... ", \"时间\"]}, {\"event_type\": \"组织行为-罢工\", \"trigger\": true, \"arguments\": [\"罢工人数\", \"
+... 罢工人员\", \"所属组织\", \"时间\"]}, {\"event_type\": \"组织关系-裁员\", \"trigger\": true, \"argument
+... s\": [\"裁员方\", \"时间\", \"裁员人数\"]}, {\"event_type\": \"组织关系-解散\", \"trigger\": true, \"ar
+... guments\": [\"解散方\", \"时间\"]}], \"input\": \"消失的“外企光环”，5月份在华裁员900余人，香饽饽变“臭”
+... 了\"}
+ {"产品行为-获奖": [], "组织行为-罢工": [], "组织关系-裁员": [{"trigger": "裁员", "arguments": {"裁员方
+": "NAN", "时间": "5月份", "裁员人数": "900余人"}}], "组织关系-解散": []}
+```
+
+
+退出后删除
+
+```bash
+ollama stop oneke
+
+ollama rm oneke
+```
+
+
+### 在 Mac 上推理
+
+```python
+import torch
+from transformers import (
+    AutoConfig,
+    AutoTokenizer,
+    AutoModelForCausalLM,
+    GenerationConfig,
+    BitsAndBytesConfig
+)
+
+device = torch.device("mps")
+model_path = 'zjunlp/OneKE' #选择你下载的模型存储在本地的位置
+config = AutoConfig.from_pretrained(model_path, trust_remote_code=True)
+tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+
+model = AutoModelForCausalLM.from_pretrained(
+    model_path,
+    config=config,
+    device_map="auto",  
+    torch_dtype=torch.bfloat16,
+    trust_remote_code=True,
+)
+model.eval()
+model = model.to(device)
+```
+
+`PYTORCH_ENABLE_MPS_FALLBACK=1 python test.py` 命令行启动。
+
+
+### 多卡推理
+
+```python
+import torch
+from transformers import AutoConfig, AutoModel, AutoTokenizer, GenerationConfig
+from accelerate import init_empty_weights, infer_auto_device_map, load_checkpoint_in_model, dispatch_model
+
+max_memory_each_gpu = '15GiB' 
+gpu_device_ids = [0, 1] 
+no_split_module_classes = ["LlamaDecoderLayer"]
+model_path = '/disk/disk_20T/ghh/OneKE' #选择你下载的模型存储在本地的位置
+
+max_memory = {
+    device_id: max_memory_each_gpu for device_id in gpu_device_ids
+}
+
+config = AutoConfig.from_pretrained(model_path, trust_remote_code=True)
+tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+
+with init_empty_weights():
+    model = AutoModel.from_config(config, torch_dtype=torch.float16, trust_remote_code=True)
+
+device_map = infer_auto_device_map(model, max_memory=max_memory, no_split_module_classes=no_split_module_classes)
+
+print("auto determined device_map", device_map)
+device_map["llm.model.embed_tokens"] = 0
+device_map["llm.model.layers.0"] = 0
+device_map["llm.lm_head"] = 0
+device_map["vpm"] = 0
+device_map["resampler"] = 0
+print("modified device_map", device_map)
+
+load_checkpoint_in_model(model, model_path, device_map=device_map)
+
+model = dispatch_model(model, device_map=device_map)
+torch.set_grad_enabled(False)
+model.eval()
+
+
+system_prompt = '<<SYS>>\nYou are a helpful assistant. 你是一个乐于助人的助手。\n<</SYS>>\n\n'
+sintruct = "{\"instruction\": \"You are an expert in named entity recognition. Please extract entities that match the schema definition from the input. Return an empty list if the entity type does not exist. Please respond in the format of a JSON string.\", \"schema\": [\"person\", \"organization\", \"else\", \"location\"], \"input\": \"284 Robert Allenby ( Australia ) 69 71 71 73 , Miguel Angel Martin ( Spain ) 75 70 71 68 ( Allenby won at first play-off hole )\"}"
+sintruct = '[INST] ' + system_prompt + sintruct + '[/INST]'
+
+input_ids = tokenizer.encode(sintruct, return_tensors="pt")
+input_length = input_ids.size(1)
+generation_output = model.generate(input_ids=input_ids, generation_config=GenerationConfig(max_length=1024, max_new_tokens=512, return_dict_in_generate=True), pad_token_id=tokenizer.eos_token_id)
+generation_output = generation_output.sequences[0]
+generation_output = generation_output[input_length:]
+output = tokenizer.decode(generation_output, skip_special_tokens=True)
+
+print(output)
+```
+
+
 ## 数据准备
 
-#### 训练数据
+### 训练数据
 
 训练数据需要包含task, source, instruction, output四个字段。
 
@@ -106,19 +282,19 @@ curl http://localhost:8000/v1/completions -H "Content-Type: application/json" -d
 
 以'`NER`'任务为例，以下是一条NER任务的训练数据示例：
 
-```
+```json
 {"task": "NER", "source": "NER", "instruction": "{\"instruction\": \"你是专门进行实体抽取的专家。请从input中抽取出符合schema定义的实体，不存在的实体类型返回空列表。请按照JSON字符串的格式回答。\", \"schema\": [\"组织机构\", \"人物\", \"地理位置\"], \"input\": \"相比之下，青岛海牛队和广州松日队的雨中之战虽然也是0∶0，但乏善可陈。\"}", "output": "{\"组织机构\": [\"广州松日队\", \"青岛海牛队\"], \"人物\": [], \"地理位置\": []}"}
 ```
 
 你需要先初步准备数据并写为以下格式：
 
-```
+```json
 {"text": "相比之下，青岛海牛队和广州松日队的雨中之战虽然也是0∶0，但乏善可陈。", "entity": [{"entity": "广州松日队", "entity_type": "组织机构"}, {"entity": "青岛海牛队", "entity_type": "组织机构"}]}
 ```
 
 再利用我们的格式转换脚本[convert_func.py](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/ie2instruction/convert_func.py)：
 
-```
+```bash
 python ie2instruction/convert_func.py \
     --src_path data/NER/sample.json \
     --tgt_path data/NER/train.json \
@@ -139,7 +315,7 @@ python ie2instruction/convert_func.py \
 除此之外，鉴于特定领域内信息抽取的复杂性和对提示的依赖程度较高，我们支持在指令中融入Schema描述和示例Example来提升抽取任务的效果。（以下两个示例只列出了instruction部分，task, source, output 字段并未列出）
 定制化schema解释指令：
 
-```
+```json
 {
   "instruction": "你是专门进行实体抽取的专家。请从input中抽取出符合schema定义的实体，不存在的实体类型返回空列表。请按照JSON字符串的格式回答。", 
   "schema": {
@@ -156,7 +332,7 @@ python ie2instruction/convert_func.py \
 
 定制化example示例指令：
 
-```
+```json
 {
     "instruction": "你是专门进行实体抽取的专家。请从input中抽取出符合schema定义的实体，不存在的实体类型返回空列表。请按照JSON字符串的格式回答。你可以参考example进行抽取。",
     "schema": [
@@ -185,11 +361,11 @@ python ie2instruction/convert_func.py \
 }
 ```
 
-#### 测试数据
+### 测试数据
 
 测试数据的构建流程和训练数据的构建流程较为相似，在准备测试数据转换之前，请访问 [data](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/data) 目录以了解各任务所需的数据结构：1）输入数据格式参见 `sample.json`；2）schema格式请查看 `schema.json`；3）转换后数据格式可参照 `train.json`。**与训练数据不同, 测试数据的输入无需包含标注字段（`entity`, `relation`, `event`）**。
 
-```
+```bash
 python ie2instruction/convert_func.py \
     --src_path data/NER/sample.json \
     --tgt_path data/NER/test.json \
@@ -208,11 +384,11 @@ python ie2instruction/convert_func.py \
 
 我们对OneKE的继续训练提供了两种微调方法：即LoRA和全量微调。
 
-#### LoRA微调：
+### LoRA微调：
 
 在[ft_scripts/fine_continue.bash](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/ft_scripts/fine_continue.bash)文件中进行参数的配置，然后运行。
 
-```
+```bash
 output_dir='lora/oneke-continue'
 mkdir -p ${output_dir}
 CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 src/finetune.py \
@@ -252,11 +428,11 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
 - 请注意，在使用 `llama2-13b-iepile-lora`、`baichuan2-13b-iepile-lora` 时，保持lora_r和lora_alpha均为64，对于这些参数，我们不提供推荐设置。
 - 若要基于微调后的模型权重继续训练，只需设定 `model_name_or_path` 参数为权重路径，如`'zjunlp/OneKE'`，无需设置`checkpoint_dir`。
 
-#### 全量微调：
+### 全量微调：
 
 在[ft_scripts/fine_continue_full.bash](https://github.com/zjunlp/DeepKE/blob/main/example/llm/InstructKGC/ft_scripts/fine_continue_full.bash)文件中进行参数的配置，然后运行。
 
-```
+```bash
 output_dir='lora/oneke-continue'
 mkdir -p ${output_dir}
 CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 src/finetune.py \
