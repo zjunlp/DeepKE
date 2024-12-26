@@ -106,7 +106,7 @@ Choose the appropriate model for your target scenario:
    - Training logs are saved in the `logs` folder.  
    - Model checkpoints are stored in the `checkpoints` folder.
 - **Batch Size**  
-   For BERT training, a batch size of 64 or more is recommended.
+   - For BERT training, a batch size of 64 or more is recommended.
 
 #### Prediction
    Run predictions using:
