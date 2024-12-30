@@ -64,7 +64,7 @@ Event Argument Extraction(EEA): You are an expert in event argument extraction. 
     ```
 </details>
 
-Here [schema](./kg2instruction/convert/utils.py) provides 12 **text topics** and common relationship types under the topic.
+Here [schema](./convert/utils.py) provides 12 **text topics** and common relationship types under the topic.
 
 <details>
     <summary><b>Structural Output Format {s_format}</b></summary>
@@ -85,7 +85,7 @@ Here [schema](./kg2instruction/convert/utils.py) provides 12 **text topics** and
 </details>
 
 
-For a more comprehensive understanding of the templates, please refer to the files [ner_converter.py](./kg2instruction/convert/converter/ner_converter.py)、[re_converter.py](./kg2instruction/convert/converter/re_converter.py)、[ee_converter.py](./kg2instruction/convert/converter/ee_converter.py)、[eet_converter.py](./kg2instruction/convert/converter/eet_converter.py)、[eea_converter.py](./kg2instruction/convert/converter/eea_converter.py) and [configs](./configs).
+For a more comprehensive understanding of the templates, please refer to the files [ner_converter.py](./convert/converter/ner_converter.py)、[re_converter.py](./convert/converter/re_converter.py)、[ee_converter.py](./convert/converter/ee_converter.py)、[eet_converter.py](./convert/converter/eet_converter.py)、[eea_converter.py](./convert/converter/eea_converter.py) and [configs](../configs).
 
 
 
@@ -94,9 +94,9 @@ For a more comprehensive understanding of the templates, please refer to the fil
 
 **Training Data Transformation**
 
-Before inputting data into the model, it needs to be formatted to include `instruction` and `input` fields. To assist with this, we offer a script [kg2instruction/convert.py](./kg2instruction/convert.py), which can batch convert data into a format directly usable by the model.
+Before inputting data into the model, it needs to be formatted to include `instruction` and `input` fields. To assist with this, we offer a script [kg2instruction/convert.py](./convert.py), which can batch convert data into a format directly usable by the model.
 
-> Before using the [kg2instruction/convert.py](./kg2instruction/convert.py) script, please ensure you have referred to the [data](./data) directory. Please consult `sample.json` to understand the format of the data before conversion, `schema.json` illustrates the organization of the schema, and `processed.json` describes the format of the data after conversion.
+> Before using the [kg2instruction/convert.py](./convert.py) script, please ensure you have referred to the [data](../data) directory. Please consult `sample.json` to understand the format of the data before conversion, `schema.json` illustrates the organization of the schema, and `processed.json` describes the format of the data after conversion.
 
 
 ```bash              
@@ -155,12 +155,12 @@ For Event Argument Extraction(EEA) tasks:
 
 </details>
 
-For more detailed information on the schema file, you can refer to the `schema.json` file in the respective task directories under the [data](./data) directory.
+For more detailed information on the schema file, you can refer to the `schema.json` file in the respective task directories under the [data](../data) directory.
 
 
 **Testing Data Transformation**
 
-For test data, you can use the [kg2instruction/convert_test.py](./kg2instruction/convert_test.py) script, which does not require the data to contain label fields (`entity`, `relation`, `event`), just the input field and the corresponding schema_path.
+For test data, you can use the [kg2instruction/convert_test.py](./convert_test.py) script, which does not require the data to contain label fields (`entity`, `relation`, `event`), just the input field and the corresponding schema_path.
 
 ```bash
 python kg2instruction/convert_test.py \
@@ -201,7 +201,7 @@ After data conversion, you will obtain structured data containing the `input` te
 
 
 ## Model Output Conversion & F1 Calculation
-We provide a script, [evaluate.py](./kg2instruction/evaluate.py), to convert the model's string outputs into lists and calculate the F1 score.
+We provide a script, [evaluate.py](./evaluate.py), to convert the model's string outputs into lists and calculate the F1 score.
 
 ```bash
 python kg2instruction/evaluate.py \

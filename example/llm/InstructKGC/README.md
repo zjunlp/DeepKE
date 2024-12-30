@@ -518,7 +518,7 @@ CUDA_VISIBLE_DEVICES="0,1,2,3" torchrun --nproc_per_node=4 --master_port=1287 sr
 
 
 
-The script can be found at [ft_scripts/fine_continue.bash](./ft_scripts/fine_continue.bash)、[ft_scripts/fine_continue_oneke.bash](./ft_scripts/fine_continue_oneke.bash).
+The script can be found at [ft_scripts/fine_continue.bash](./ft_scripts/fine_continue.bash)、[ft_scripts/fine_continue_full.bash](./ft_scripts/fine_continue_full.bash).
 
 
 

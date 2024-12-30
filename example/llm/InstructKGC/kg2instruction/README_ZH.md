@@ -72,7 +72,7 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 </details>
 
-此处 [schema](./kg2instruction/convert/utils.py) 提供了12种**文本主题**, 以及该主题下常见的关系类型。
+此处 [schema](./convert/utils.py) 提供了12种**文本主题**, 以及该主题下常见的关系类型。
 
 
 <details>
@@ -95,7 +95,7 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 
 这些模板中的schema({s_schema})和结构输出格式({s_format})占位符被嵌入在模板中，必须由用户指定。
-有关模板的更全面理解，请参阅配置目录[configs](./configs) 和 文件[ner_converter.py](./kg2instruction/convert/converter/ner_converter.py)、[re_converter.py](./kg2instruction/convert/converter/re_converter.py)、[ee_converter.py](./kg2instruction/convert/converter/ee_converter.py)、[eet_converter.py](./kg2instruction/convert/converter/eet_converter.py)、[eea_converter.py](./kg2instruction/convert/converter/eea_converter.py) .
+有关模板的更全面理解，请参阅配置目录[configs](../configs) 和 文件[ner_converter.py](./convert/converter/ner_converter.py)、[re_converter.py](./convert/converter/re_converter.py)、[ee_converter.py](./convert/converter/ee_converter.py)、[eet_converter.py](./convert/converter/eet_converter.py)、[eea_converter.py](./convert/converter/eea_converter.py) .
 
 
 
@@ -104,9 +104,9 @@ output="(弗雷泽,获奖,铜牌)(女子水球世界杯,举办地点,天津)(弗
 
 **训练数据转换**
 
-在对模型进行数据输入之前，需要将**数据格式化**以包含`instruction`和`input`字段。为此，我们提供了一个脚本 [kg2instruction/convert.py](./kg2instruction/convert.py)，它可以将数据批量转换成模型可以直接使用的格式。
+在对模型进行数据输入之前，需要将**数据格式化**以包含`instruction`和`input`字段。为此，我们提供了一个脚本 [kg2instruction/convert.py](./convert.py)，它可以将数据批量转换成模型可以直接使用的格式。
 
-> 在使用 [kg2instruction/convert.py](./kg2instruction/convert.py) 脚本之前，请确保参考了 [data](./data) 目录。该目录详细说明了每种任务所需的数据格式要求。请参考 sample.json 以了解转换前数据的格式，schema.json 则展示了 schema 的组织结构，而 processed.json 则描述了转换后的数据格式。
+> 在使用 [kg2instruction/convert.py](./convert.py) 脚本之前，请确保参考了 [data](../data) 目录。该目录详细说明了每种任务所需的数据格式要求。请参考 sample.json 以了解转换前数据的格式，schema.json 则展示了 schema 的组织结构，而 processed.json 则描述了转换后的数据格式。
 
 
 ```bash              
@@ -161,12 +161,12 @@ python kg2instruction/convert.py \
 
 </details>
 
-更详细的schema文件信息可在[data](./data)目录下各个任务目录的`schema.json`文件中查看。
+更详细的schema文件信息可在[data](../data)目录下各个任务目录的`schema.json`文件中查看。
 
 
 **测试数据转换**
 
-对于**测试数据**，可以使用 [kg2instruction/convert_test.py](./kg2instruction/convert_test.py) 脚本，它不要求数据包含标签（`entity`、`relation`、`event`）字段，**只需**提供`input`字段和相应的`schema_path`。
+对于**测试数据**，可以使用 [kg2instruction/convert_test.py](./convert_test.py) 脚本，它不要求数据包含标签（`entity`、`relation`、`event`）字段，**只需**提供`input`字段和相应的`schema_path`。
 
 
 ```bash
@@ -262,7 +262,7 @@ python kg2instruction/convert_test.py \
 
 
 ## 模型输出转换&计算F1
-我们提供 [evaluate.py](./kg2instruction/evaluate.py) 的脚本，用于将模型的字符串输出转换为列表并计算 **F1 分数**。
+我们提供 [evaluate.py](./evaluate.py) 的脚本，用于将模型的字符串输出转换为列表并计算 **F1 分数**。
 
 ```bash
 python kg2instruction/evaluate.py \
