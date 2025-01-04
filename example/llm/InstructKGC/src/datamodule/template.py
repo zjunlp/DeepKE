@@ -25,7 +25,6 @@ class DatasetAttr:
     
 @dataclass
 class Template:
-
     prefix: List[Union[str, Dict[str, str]]]
     prompt: List[Union[str, Dict[str, str]]]
     system: str
@@ -33,6 +32,7 @@ class Template:
     stop_words: List[str]
     use_history: bool
     efficient_eos: bool
+    replace_eos: bool
 
     def encode_oneturn(
         self,
@@ -95,7 +95,7 @@ class Template:
         if tokenizer.eos_token_id is None:
             raise ValueError("EOS token is required.")
 
-        if self.efficient_eos: # used in baichuan, qwen, chatglm, etc.
+        if self.efficient_eos:       # used in baichuan, qwen, chatglm, etc.
             eos_ids = []
         else:
             eos_ids = [tokenizer.eos_token_id]
@@ -199,7 +199,8 @@ def register_template(
     sep: List[Union[str, Dict[str, str]]],
     stop_words: Optional[List[str]] = [],
     use_history: Optional[bool] = True,
-    efficient_eos: Optional[bool] = False
+    efficient_eos: Optional[bool] = False,
+    replace_eos: Optional[bool] = False,
 ) -> None:
     template_class = Llama2Template if "llama2" in name else Template
     templates[name] = template_class(
@@ -209,31 +210,57 @@ def register_template(
         sep=sep,
         stop_words=stop_words,
         use_history=use_history,
-        efficient_eos=efficient_eos
+        efficient_eos=efficient_eos,
+        replace_eos=replace_eos
     )
+
+
+def _add_or_replace_eos_token(tokenizer: "PreTrainedTokenizer", eos_token: str) -> None:
+    is_added = tokenizer.eos_token_id is None
+    num_added_tokens = tokenizer.add_special_tokens({"eos_token": eos_token})
+
+    if is_added:
+        logger.info("Add eos token: {}".format(tokenizer.eos_token))
+    else:
+        logger.info("Replace eos token: {}".format(tokenizer.eos_token))
+
+    if num_added_tokens > 0:
+        logger.warning("New tokens have been added, make sure `resize_vocab` is True.")
+
 
 
 def get_template_and_fix_tokenizer(
     name: str,
     tokenizer: "PreTrainedTokenizer"
 ) -> Template:
+    if name is None:
+        return None
+    template = templates.get(name, None)
+    assert template is not None, "Template {} does not exist.".format(name)
+
+    stop_words = template.stop_words
+    if template.replace_eos:
+        if not stop_words:
+            raise ValueError("Stop words are required to replace the EOS token.")
+
+        _add_or_replace_eos_token(tokenizer, eos_token=stop_words[0])
+        stop_words = stop_words[1:]
+
     if tokenizer.eos_token_id is None:
-        tokenizer.eos_token = "<|endoftext|>"
-        logger.info("Add eos token: {}".format(tokenizer.eos_token))
+        _add_or_replace_eos_token(tokenizer, eos_token="<|endoftext|>")
 
     if tokenizer.pad_token_id is None:
         tokenizer.pad_token = tokenizer.eos_token
         logger.info("Add pad token: {}".format(tokenizer.pad_token))
+    
+    if stop_words:
+        num_added_tokens = tokenizer.add_special_tokens(
+            dict(additional_special_tokens=stop_words), replace_additional_special_tokens=False
+        )
+        logger.info("Add {} to stop words.".format(",".join(stop_words)))
+        if num_added_tokens > 0:
+            logger.warning("New tokens have been added, make sure `resize_vocab` is True.")
 
-    if name is None:
-        return None
-
-    template = templates.get(name, None)
-    assert template is not None, "Template {} does not exist.".format(name)
-    tokenizer.add_special_tokens(
-        dict(additional_special_tokens=template.stop_words),
-        replace_additional_special_tokens=False
-    )
     return template
 
 
@@ -505,6 +532,44 @@ register_template(
 )
 
 
+
+register_template(
+    name="llama3_zh",
+    prefix=[
+        "<|start_header_id|>system<|end_header_id|>\n\n{{system}}<|eot_id|>"
+    ],
+    prompt=[
+        "<|start_header_id|>user<|end_header_id|>\n\n{{query}}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
+    ],
+    system=(
+        "You are a helpful assistant. 你是一个乐于助人的助手。"
+    ),
+    sep=[],
+    stop_words=[
+        "<|eot_id|>"
+    ],
+    replace_eos=True,
+)
+
+register_template(
+    name="llama3",
+    prefix=[
+        "<|start_header_id|>system<|end_header_id|>\n\n{{system}}<|eot_id|>"
+    ],
+    prompt=[
+        "<|start_header_id|>user<|end_header_id|>\n\n{{query}}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
+    ],
+    system=(
+        "You are a helpful assistant."
+    ),
+    sep=[],
+    stop_words=[
+        "<|eot_id|>"
+    ],
+    replace_eos=True,
+)
+
+
 register_template(
     name="llama2_zh",
     prefix=[
@@ -576,7 +641,8 @@ register_template(
     stop_words=[
         "<|im_end|>"
     ],
-    efficient_eos=True
+    efficient_eos=True,
+    replace_eos=True,
 )
 
 
@@ -715,43 +781,4 @@ register_template(
         "\n"
     ]
 )
-
-
-
-register_template(
-    name="llama3_zh",
-    prefix=[
-        "<|start_header_id|>system<|end_header_id|>\n\n{{system}}<|eot_id|>"
-    ],
-    prompt=[
-        "<|start_header_id|>user<|end_header_id|>\n\n{{query}}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
-    ],
-    system=(
-        "You are a helpful assistant. 你是一个乐于助人的助手。"
-    ),
-    sep=[],
-    stop_words=[
-        "<|eot_id|>"
-    ],
-    replace_eos=True,
-)
-
-register_template(
-    name="llama3",
-    prefix=[
-        "<|start_header_id|>system<|end_header_id|>\n\n{{system}}<|eot_id|>"
-    ],
-    prompt=[
-        "<|start_header_id|>user<|end_header_id|>\n\n{{query}}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
-    ],
-    system=(
-        "You are a helpful assistant."
-    ),
-    sep=[],
-    stop_words=[
-        "<|eot_id|>"
-    ],
-    replace_eos=True,
-)
-
 
