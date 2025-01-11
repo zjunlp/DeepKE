@@ -68,7 +68,7 @@
 <br>
 
 # What's New
-
+* `December, 2024` We open source the [OneKE](https://github.com/zjunlp/OneKE/tree/main) knowledge extraction framework, supporting multi-agent knowledge extraction across various scenarios.
 * `April, 2024` We release a new bilingual (Chinese and English) schema-based information extraction model called [OneKE](https://huggingface.co/zjunlp/OneKE) based on Chinese-Alpaca-2-13B.
 * `Feb, 2024` We release a large-scale (0.32B tokens) high-quality bilingual (Chinese and English) Information Extraction (IE) instruction dataset named [IEPile](https://huggingface.co/datasets/zjunlp/iepie), along with two models trained with `IEPile`, [baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) and [llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora).
 * `Sep 2023` a bilingual Chinese English Information Extraction (IE) instruction dataset called  `InstructIE` was released for the Instruction based Knowledge Graph Construction Task (Instruction based KGC), as detailed in [here](./example/llm/README.md/#data).
