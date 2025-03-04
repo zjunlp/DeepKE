@@ -44,7 +44,7 @@ cd DeepKE/example/re/few-shot
     tar -xzvf data.tar.gz
     ```
 
-  - The dataset [SEMEVAL](https://semeval2.fbk.eu/semeval2.php?location=tasks#T11) is stored in `data`:
+  - The dataset [SEMEVAL](https://semeval2.fbk.eu/Tasks-long.html#T11) is stored in `data`:
     - `rel2id.json`：Relation Labels / Answer words - ID
 
     - `test.txt`： Test set
