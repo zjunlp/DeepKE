@@ -37,7 +37,7 @@ cd DeepKE/example/re/few-shot
 
 - 存放数据： 可先下载数据 ```wget 120.27.214.45/Data/re/few_shot/data.tar.gz```在此目录下
 
-  在 `data` 文件夹下存放训练数据。模型采用的数据集是[SEMEVAL](https://semeval2.fbk.eu/semeval2.php?location=tasks#T11)，SEMEVAL数据集来自于2010年的国际语义评测大会中Task 8："Multi-Way Classification of Semantic Relations Between Pairs of Nominals"。
+  在 `data` 文件夹下存放训练数据。模型采用的数据集是[SEMEVAL](https://semeval2.fbk.eu/Tasks-long.html#T11)，SEMEVAL数据集来自于2010年的国际语义评测大会中Task 8："Multi-Way Classification of Semantic Relations Between Pairs of Nominals"。
 
 - SEMEVAL包含以下数据：
 
