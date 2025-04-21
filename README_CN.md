@@ -179,7 +179,7 @@ cd DeepKE/example/re/standard
 
 **Step 4**：下载数据集，或根据[数据标注说明](https://github.com/zjunlp/DeepKE/blob/main/README_TAG_CN.md)标注数据
 ```
-wget 120.27.214.45/Data/re/standard/data.tar.gz
+wget 121.41.117.246/Data/re/standard/data.tar.gz
 
 tar -xzvf data.tar.gz
 ```
@@ -273,7 +273,7 @@ docker run -it zjunlp/deepke:latest /bin/bash
      **Step1**: 进入`DeepKE/example/ner/standard`，下载数据集
      
      ```bash
-     wget 120.27.214.45/Data/ner/standard/data.tar.gz
+     wget 121.41.117.246/Data/ner/standard/data.tar.gz
      
      tar -xzvf data.tar.gz
      ```
@@ -296,7 +296,7 @@ docker run -it zjunlp/deepke:latest /bin/bash
     **Step1**: 进入`DeepKE/example/ner/few-shot`，下载数据集
     
     ```bash
-    wget 120.27.214.45/Data/ner/few_shot/data.tar.gz
+    wget 121.41.117.246/Data/ner/few_shot/data.tar.gz
     
     tar -xzvf data.tar.gz
     ```
@@ -322,7 +322,7 @@ docker run -it zjunlp/deepke:latest /bin/bash
     **Step1**: 进入 `DeepKE/example/ner/multimodal`， 下载数据集
 
     ```bash
-    wget 120.27.214.45/Data/ner/multimodal/data.tar.gz
+    wget 121.41.117.246/Data/ner/multimodal/data.tar.gz
     
     tar -xzvf data.tar.gz
     ```
@@ -364,7 +364,7 @@ docker run -it zjunlp/deepke:latest /bin/bash
     **Step1**：进入`DeepKE/example/re/standard`，下载数据集
   
     ```bash
-    wget 120.27.214.45/Data/re/standard/data.tar.gz
+    wget 121.41.117.246/Data/re/standard/data.tar.gz
     
     tar -xzvf data.tar.gz
     ```
@@ -388,7 +388,7 @@ docker run -it zjunlp/deepke:latest /bin/bash
     **Step1**：进入`DeepKE/example/re/few-shot`，下载数据集
 
     ```bash
-    wget 120.27.214.45/Data/re/few_shot/data.tar.gz
+    wget 121.41.117.246/Data/re/few_shot/data.tar.gz
     
     tar -xzvf data.tar.gz
     ```
@@ -414,7 +414,7 @@ docker run -it zjunlp/deepke:latest /bin/bash
     **Step1**：进入`DeepKE/example/re/document`，下载数据集
     
     ```bash
-    wget 120.27.214.45/Data/re/document/data.tar.gz
+    wget 121.41.117.246/Data/re/document/data.tar.gz
     
     tar -xzvf data.tar.gz
     ```
@@ -438,7 +438,7 @@ docker run -it zjunlp/deepke:latest /bin/bash
     **Step1**: 进入 `DeepKE/example/re/multimodal`， 下载数据集
 
     ```bash
-    wget 120.27.214.45/Data/re/multimodal/data.tar.gz
+    wget 121.41.117.246/Data/re/multimodal/data.tar.gz
     
     tar -xzvf data.tar.gz
     ```
@@ -476,7 +476,7 @@ docker run -it zjunlp/deepke:latest /bin/bash
     **Step1**：进入`DeepKE/example/ae/standard`，下载数据集
     
     ```bash
-    wget 120.27.214.45/Data/ae/standard/data.tar.gz
+    wget 121.41.117.246/Data/ae/standard/data.tar.gz
     
     tar -xzvf data.tar.gz
     ```
@@ -561,7 +561,7 @@ docker run -it zjunlp/deepke:latest /bin/bash
     **Step1**：进入`DeepKE/example/ee/standard`，下载数据集
 
     ```bash
-    wget 120.27.214.45/Data/ee/DuEE.zip
+    wget 121.41.117.246/Data/ee/DuEE.zip
     unzip DuEE.zip
     ```
 
