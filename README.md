@@ -188,7 +188,7 @@ cd DeepKE/example/re/standard
 **Step4** Download the dataset, or follow the [annotation instructions](https://github.com/zjunlp/DeepKE/blob/main/README_TAG.md) to obtain data
 
 ```bash
-wget 120.27.214.45/Data/re/standard/data.tar.gz
+wget 121.41.117.246/Data/re/standard/data.tar.gz
 
 tar -xzvf data.tar.gz
 ```
@@ -285,7 +285,7 @@ The remaining steps are the same as **Step 3 and onwards** in **Manual Environme
     **Step1** Enter  `DeepKE/example/ner/standard`.  Download the dataset.
 
     ```bash
-    wget 120.27.214.45/Data/ner/standard/data.tar.gz
+    wget 121.41.117.246/Data/ner/standard/data.tar.gz
     
     tar -xzvf data.tar.gz
     ```
@@ -309,7 +309,7 @@ The remaining steps are the same as **Step 3 and onwards** in **Manual Environme
     **Step1** Enter  `DeepKE/example/ner/few-shot`.  Download the dataset.
 
     ```bash
-    wget 120.27.214.45/Data/ner/few_shot/data.tar.gz
+    wget 121.41.117.246/Data/ner/few_shot/data.tar.gz
     
     tar -xzvf data.tar.gz
     ```
@@ -335,7 +335,7 @@ The remaining steps are the same as **Step 3 and onwards** in **Manual Environme
     **Step1** Enter  `DeepKE/example/ner/multimodal`.  Download the dataset.
 
     ```bash
-    wget 120.27.214.45/Data/ner/multimodal/data.tar.gz
+    wget 121.41.117.246/Data/ner/multimodal/data.tar.gz
     
     tar -xzvf data.tar.gz
     ```
@@ -379,7 +379,7 @@ The remaining steps are the same as **Step 3 and onwards** in **Manual Environme
     **Step1** Enter the `DeepKE/example/re/standard` folder.  Download the dataset.
 
     ```bash
-    wget 120.27.214.45/Data/re/standard/data.tar.gz
+    wget 121.41.117.246/Data/re/standard/data.tar.gz
     
     tar -xzvf data.tar.gz
     ```
@@ -403,7 +403,7 @@ The remaining steps are the same as **Step 3 and onwards** in **Manual Environme
     **Step1** Enter `DeepKE/example/re/few-shot`. Download the dataset.
 
     ```bash
-    wget 120.27.214.45/Data/re/few_shot/data.tar.gz
+    wget 121.41.117.246/Data/re/few_shot/data.tar.gz
     
     tar -xzvf data.tar.gz
     ```
@@ -428,7 +428,7 @@ The remaining steps are the same as **Step 3 and onwards** in **Manual Environme
     **Step1** Enter `DeepKE/example/re/document`.  Download the dataset.
   
     ```bash
-    wget 120.27.214.45/Data/re/document/data.tar.gz
+    wget 121.41.117.246/Data/re/document/data.tar.gz
     
     tar -xzvf data.tar.gz
     ```
@@ -453,7 +453,7 @@ The remaining steps are the same as **Step 3 and onwards** in **Manual Environme
     **Step1** Enter  `DeepKE/example/re/multimodal`.  Download the dataset.
 
     ```bash
-    wget 120.27.214.45/Data/re/multimodal/data.tar.gz
+    wget 121.41.117.246/Data/re/multimodal/data.tar.gz
     
     tar -xzvf data.tar.gz
     ```
@@ -493,7 +493,7 @@ The remaining steps are the same as **Step 3 and onwards** in **Manual Environme
     **Step1** Enter the `DeepKE/example/ae/standard` folder. Download the dataset.
 
     ```bash
-    wget 120.27.214.45/Data/ae/standard/data.tar.gz
+    wget 121.41.117.246/Data/ae/standard/data.tar.gz
     
     tar -xzvf data.tar.gz
     ```
@@ -577,7 +577,7 @@ The remaining steps are the same as **Step 3 and onwards** in **Manual Environme
     **Step1** Enter the `DeepKE/example/ee/standard` folder. Download the dataset.
 
     ```bash
-    wget 120.27.214.45/Data/ee/DuEE.zip
+    wget 121.41.117.246/Data/ee/DuEE.zip
     unzip DuEE.zip
     ```
 
