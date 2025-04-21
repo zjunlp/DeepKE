@@ -124,7 +124,7 @@ cd DeepKE/example/re/multimodal
 ### 使用数据进行训练预测
 
 - 模型采用的数据是[MNRE](https://github.com/thecharm/Mega)，MRE数据集来自于[Multimodal Relation Extraction with Efficient Graph Alignment](https://dl.acm.org/doi/10.1145/3474085.3476968)
-- 存放数据： 可先下载数据 ``wget 120.27.214.45/Data/re/multimodal/data.tar.gz``在此目录下
+- 存放数据： 可先下载数据 ``wget 121.41.117.246/Data/re/multimodal/data.tar.gz``在此目录下
 - MNRE包含以下数据：
   
   - `img_detect`：使用RCNN检测的实体

@@ -60,7 +60,7 @@ cd DeepKE/example/ner/standard/w2ner
   - Download the dataset to this directory.
 
     ```bash
-    wget 120.27.214.45/Data/ner/standard/data.tar.gz
+    wget 121.41.117.246/Data/ner/standard/data.tar.gz
     tar -xzvf data.tar.gz
     ```
   - By default, Chinese data sets are supported. If you want to use English data sets, you need to modify the lan

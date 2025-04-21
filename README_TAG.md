@@ -273,7 +273,7 @@ In order for users to better use `DeepKE` to complete entity recognition tasks, 
   - In English example dict，we adapt Conll dataset. It contains named entities related to persons (PER), locations(LOC), and others (MISC).You can get the Conll dataset with the following command.
 
   ```shell
-  wget 120.27.214.45/Data/ner/few_shot/data.tar.gz
+  wget 121.41.117.246/Data/ner/few_shot/data.tar.gz
   ```
 
   - Pre-provided dict from Google Drive：

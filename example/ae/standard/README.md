@@ -36,7 +36,7 @@ cd DeepKE/example/ae/standard
   - Download the dataset to this directory.
 
     ```bash
-    wget 120.27.214.45/Data/ae/standard/data.tar.gz
+    wget 121.41.117.246/Data/ae/standard/data.tar.gz
     tar -xzvf data.tar.gz
     ```
 

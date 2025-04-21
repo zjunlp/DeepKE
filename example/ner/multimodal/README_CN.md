@@ -103,7 +103,7 @@ cd DeepKE/example/ner/multimodal
 ### 使用数据进行训练预测
 
 - 模型采用的数据是Twitter15和Twitter17，文本数据采用conll格式，更多信息可参考[UMT](https://github.com/jefferyYu/UMT/)
-- 存放数据： 可先下载数据 ``wget 120.27.214.45/Data/ner/multimodal/data.tar.gz``在此目录下
+- 存放数据： 可先下载数据 ``wget 121.41.117.246/Data/ner/multimodal/data.tar.gz``在此目录下
 - Twitter15包含以下数据：
   
   - `twitter15_detect`：使用RCNN检测子图

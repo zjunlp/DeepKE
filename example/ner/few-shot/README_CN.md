@@ -34,7 +34,7 @@ cd DeepKE/example/ner/few-shot
 
 ### 使用数据进行训练预测
 
-- 存放数据： 可先下载数据 ```wget 120.27.214.45/Data/ner/few_shot/data.tar.gz```在此目录下
+- 存放数据： 可先下载数据 ```wget 121.41.117.246/Data/ner/few_shot/data.tar.gz```在此目录下
 
   在 `data` 文件夹下存放训练数据。包含CoNLL2003，MIT-movie, MIT-restaurant和ATIS等数据集。
 

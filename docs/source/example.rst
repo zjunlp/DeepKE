@@ -13,7 +13,7 @@ Enter  ``DeepKE/example/ner/standard`` .
 
 Get data: 
 
-    `wget 120.27.214.45/Data/ner/standard/data.tar.gz`
+    `wget 121.41.117.246/Data/ner/standard/data.tar.gz`
 
     `tar -xzvf data.tar.gz`
 
@@ -44,7 +44,7 @@ Predict:
 
     cd example/ner/standard
 
-    wget 120.27.214.45/Data/ner/standard/data.tar.gz
+    wget 121.41.117.246/Data/ner/standard/data.tar.gz
 
     tar -xzvf data.tar.gz
 
@@ -64,7 +64,7 @@ Enter  ``DeepKE/example/ner/few-shot`` .
 
 Get data:
 
-    `wget 120.27.214.45/Data/ner/few_shot/data.tar.gz`
+    `wget 121.41.117.246/Data/ner/few_shot/data.tar.gz`
 
     `tar -xzvf data.tar.gz`
 
@@ -104,7 +104,7 @@ Predict:
 
     cd example/ner/few-shot
 
-    wget 120.27.214.45/Data/ner/few_shot/data.tar.gz
+    wget 121.41.117.246/Data/ner/few_shot/data.tar.gz
     
     tar -xzvf data.tar.gz
 
@@ -124,7 +124,7 @@ Enter the ``DeepKE/example/ner/multimodal`` folder.
 
 Get data:
 
-    `wget 120.27.214.45/Data/ner/multimodal/data.tar.gz`
+    `wget 121.41.117.246/Data/ner/multimodal/data.tar.gz`
 
     `tar -xzvf data.tar.gz`
 
@@ -169,7 +169,7 @@ Predict:
     
     cd example/ner/multimodal
 
-    wget 120.27.214.45/Data/ner/multimodal/data.tar.gz
+    wget 121.41.117.246/Data/ner/multimodal/data.tar.gz
 
     tar -xzvf data.tar.gz
 
@@ -189,7 +189,7 @@ Enter the ``DeepKE/example/re/standard`` folder.
 
 Get data:
 
-    `wget 120.27.214.45/Data/re/standard/data.tar.gz`
+    `wget 121.41.117.246/Data/re/standard/data.tar.gz`
 
     `tar -xzvf data.tar.gz`
 
@@ -226,7 +226,7 @@ Predict:
 
     cd example/re/standard
 
-    wget 120.27.214.45/Data/re/standard/data.tar.gz
+    wget 121.41.117.246/Data/re/standard/data.tar.gz
 
     tar -xzvf data.tar.gz
 
@@ -246,7 +246,7 @@ Enter ``DeepKE/example/re/few-shot`` .
 
 Get data:
 
-    `wget 120.27.214.45/Data/re/few_shot/data.tar.gz`
+    `wget 121.41.117.246/Data/re/few_shot/data.tar.gz`
     
     `tar -xzvf data.tar.gz`
 
@@ -280,7 +280,7 @@ Predict:
 
     cd example/re/few-shot
 
-    wget 120.27.214.45/Data/re/few_shot/data.tar.gz
+    wget 121.41.117.246/Data/re/few_shot/data.tar.gz
 
     tar -xzvf data.tar.gz
 
@@ -300,7 +300,7 @@ Enter ``DeepKE/example/re/document`` .
 
 Get data:
 
-    `wget 120.27.214.45/Data/re/document/data.tar.gz`
+    `wget 121.41.117.246/Data/re/document/data.tar.gz`
     
     `tar -xzvf data.tar.gz`
 
@@ -342,7 +342,7 @@ Predict:
 
     cd example/re/document
 
-    wget 120.27.214.45/Data/re/document/data.tar.gz
+    wget 121.41.117.246/Data/re/document/data.tar.gz
 
     tar -xzvf data.tar.gz
 
@@ -362,7 +362,7 @@ Enter ``DeepKE/example/re/multimodal`` .
 
 Get data:
 
-    `wget 120.27.214.45/Data/re/multimodal/data.tar.gz`
+    `wget 121.41.117.246/Data/re/multimodal/data.tar.gz`
 
     `tar -xzvf data.tar.gz`
 
@@ -398,7 +398,7 @@ Predict:
 
     cd example/re/multimodal
 
-    wget 120.27.214.45/Data/re/multimodal/data.tar.gz
+    wget 121.41.117.246/Data/re/multimodal/data.tar.gz
 
     tar -xzvf data.tar.gz
 
@@ -418,7 +418,7 @@ Enter the ``DeepKE/example/ae/standard`` folder.
 
 Get data:
 
-    `wget 120.27.214.45/Data/ae/standard/data.tar.gz`
+    `wget 121.41.117.246/Data/ae/standard/data.tar.gz`
 
     `tar -xzvf data.tar.gz`
 
@@ -454,7 +454,7 @@ Predict:
 
     cd example/ae/regular
 
-    wget 120.27.214.45/Data/ae/standard/data.tar.gz
+    wget 121.41.117.246/Data/ae/standard/data.tar.gz
 
     tar -xzvf data.tar.gz
 

@@ -71,7 +71,7 @@ Settings for environment paths and other hyperparameters during training are loc
 #### 2. Prepare Data  
    Download the dataset:
    ```bash
-   wget 120.27.214.45/Data/ner/standard/data.tar.gz
+   wget 121.41.117.246/Data/ner/standard/data.tar.gz
    tar -xzvf data.tar.gz
    ```
    Place the following files in the `data` folder:

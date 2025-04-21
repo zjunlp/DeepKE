@@ -83,7 +83,7 @@ cd DeepKE/example/triple/PURE
 
   ```bas
   cd data/
-  wget 120.27.214.45/Data/triple/PURE/CMeIE.zip
+  wget 121.41.117.246/Data/triple/PURE/CMeIE.zip
   unzip CMeIE.zip
   ```
 

@@ -74,7 +74,7 @@ pip install -r requirements.txt
 #### 数据存放
 下载数据并解压：
 ```bash
-wget 120.27.214.45/Data/ner/standard/data.tar.gz
+wget 121.41.117.246/Data/ner/standard/data.tar.gz
 tar -xzvf data.tar.gz
 ```
 将数据存放至 `data` 文件夹：

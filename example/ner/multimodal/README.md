@@ -112,7 +112,7 @@ cd DeepKE/example/ner/multimodal
     You can download the Twitter2015 and Twitter2017 dataset with detected visual objects using folloing command:
     
     ```bash
-    wget 120.27.214.45/Data/ner/multimodal/data.tar.gz
+    wget 121.41.117.246/Data/ner/multimodal/data.tar.gz
     tar -xzvf data.tar.gz
     ```
   - The twitter15 dataset with detected visual objects is stored in `data`:
