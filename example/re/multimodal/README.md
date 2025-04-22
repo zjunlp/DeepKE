@@ -132,7 +132,7 @@ cd DeepKE/example/re/multimodal
     You can download the MNRE dataset with detected visual objects using folloing command:
     
     ```bash
-    wget 121.41.117.246/Data/re/multimodal/data.tar.gz
+    wget 121.41.117.246:8080/Data/re/multimodal/data.tar.gz
     tar -xzvf data.tar.gz
     ```
   - The dataset [MNRE](https://github.com/thecharm/Mega) with detected visual objects is stored in `data`:

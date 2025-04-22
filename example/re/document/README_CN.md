@@ -38,7 +38,7 @@ cd DeepKE/example/re/d
 
 ### 使用数据进行训练预测
 
-- 存放数据： 可先下载数据 ```wget 121.41.117.246/Data/re/document/data.tar.gz```在此目录下
+- 存放数据： 可先下载数据 ```wget 121.41.117.246:8080/Data/re/document/data.tar.gz```在此目录下
 
   在 `data` 文件夹下存放训练数据。模型采用的数据集是[DocRED](https://github.com/thunlp/DocRED/tree/master/)，DocRED数据集来自于2010年的国际语义评测大会中Task 8："Multi-Way Classification of Semantic Relations Between Pairs of Nominals"。
 

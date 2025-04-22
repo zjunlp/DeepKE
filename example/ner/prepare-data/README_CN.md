@@ -16,7 +16,7 @@
     - 英文示例词典中，我们采用Conll数据集。它包含人员 (PER)、位置 (LOC) 和其他 (MISC) 相关的命名实体识别。你可通过如下命令获得Conll数据集
 
     ```shell
-    wget 121.41.117.246/Data/ner/few_shot/data.tar.gz
+    wget 121.41.117.246:8080/Data/ner/few_shot/data.tar.gz
     ```
 
     - 预提供词典Google Drive下载链接： 

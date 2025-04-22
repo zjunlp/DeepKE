@@ -109,7 +109,7 @@ cd DeepKE/example/triple/ASP
 
     ```
     cd ~/DeepKE/example/triple/ASP/data
-    wget 121.41.117.246/Data/triple/ASP/CMeIE.zip
+    wget 121.41.117.246:8080/Data/triple/ASP/CMeIE.zip
     unzip ./CMeIE.zip
     rm ./CMeIE.zip
     cd ..

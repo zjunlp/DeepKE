@@ -33,7 +33,7 @@ cd DeepKE/example/re/document
   - Download the dataset to this directory.
 
     ```bash
-    wget 121.41.117.246/Data/re/document/data.tar.gz
+    wget 121.41.117.246:8080/Data/re/document/data.tar.gz
     tar -xzvf data.tar.gz
     ```
 

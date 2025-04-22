@@ -30,7 +30,7 @@ cd DeepKE/example/re/standard
 
 ### 使用数据进行训练预测
 
-- 存放数据： 可先下载数据 ```wget 121.41.117.246/Data/re/standard/data.tar.gz```在此目录下
+- 存放数据： 可先下载数据 ```wget 121.41.117.246:8080/Data/re/standard/data.tar.gz```在此目录下
 
   支持三种类型文件格式，包含json格式、xlsx格式以及csv格式，详细可参考`data`文件夹。在 `data/origin` 文件夹下存放训练数据：
 

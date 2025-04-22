@@ -30,7 +30,7 @@ cd DeepKE/example/ae/standard
 
 ### 使用数据进行训练预测
 
-- 存放数据：  可先下载数据 ```wget 121.41.117.246/Data/ae/standard/data.tar.gz```至此目录下
+- 存放数据：  可先下载数据 ```wget 121.41.117.246:8080/Data/ae/standard/data.tar.gz```至此目录下
 
   解压后`data/origin` 文件夹下存放来训练数据：
 

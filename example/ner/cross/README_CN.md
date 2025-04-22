@@ -39,7 +39,7 @@ cd DeepKE/example/ner/cross
   - 先使用以下代码下载处理好的数据：
 
     ```bash
-    wget 121.41.117.246/Data/ner/cross/data.tar.gz
+    wget 121.41.117.246:8080/Data/ner/cross/data.tar.gz
     tar -xzvf data.tar.gz
     ```
 
