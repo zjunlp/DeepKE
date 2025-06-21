@@ -47,6 +47,7 @@
 - [Model Framework](#model-framework)
 - [Quick Start](#quick-start)
   - [DeepKE-LLM](#deepke-llm)
+  - [DeepKE-MCP-Tools](#deepke-mcp-tools)
   - [DeepKE](#deepke)
       - [🔧Manual Environment Configuration](#manual-environment-configuration)
       - [🐳Building With Docker Images](#building-with-docker-images)
@@ -68,6 +69,7 @@
 <br>
 
 # What's New
+* `June, 2025` We integrate the [MCP service tools](https://modelscope.cn/mcp/servers/OpenKG/deepke-mcp-tools) into DeepKE, enabling knowledge extraction through large language models (LLMs) as tool callers for lightweight models.
 * `December, 2024` We open source the [OneKE](https://github.com/zjunlp/OneKE/tree/main) knowledge extraction framework, supporting multi-agent knowledge extraction across various scenarios.
 * `April, 2024` We release a new bilingual (Chinese and English) schema-based information extraction model called [OneKE](https://huggingface.co/zjunlp/OneKE) based on Chinese-Alpaca-2-13B.
 * `Feb, 2024` We release a large-scale (0.32B tokens) high-quality bilingual (Chinese and English) Information Extraction (IE) instruction dataset named [IEPile](https://huggingface.co/datasets/zjunlp/iepie), along with two models trained with `IEPile`, [baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora) and [llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora).
@@ -141,6 +143,13 @@ pip install -r requirements.txt
 ```
 
 Please note that the `requirements.txt` file is located in the `example/llm` folder.
+
+## DeepKE-MCP-Tools
+
+We integrate the MCP (Model Calling Protocol) service tools into DeepKE, enabling knowledge extraction through large language models (LLMs) as tool callers for lightweight models.
+
+- The MCP service has been deployed and is accessible at [URL](https://modelscope.cn/mcp/servers/OpenKG/deepke-mcp-tools).
+- For local deployment, refer to the [README](https://github.com/zjunlp/DeepKE/tree/main/mcp-tools/README.md) for detailed operational procedures.
 
 ## DeepKE
 - *DeepKE* supports `pip install deepke`. <br>Take the fully supervised relation extraction for example.
@@ -686,9 +695,9 @@ Please cite our paper if you use DeepKE in your work
 
 # Contributors
 
-[Ningyu Zhang](https://person.zju.edu.cn/en/ningyu), [Haofen Wang](https://tjdi.tongji.edu.cn/TeacherDetail.do?id=4991&lang=_en), Fei Huang, Feiyu Xiong, Liankuan Tao, Xin Xu, Honghao Gui,  Zhenru Zhang, Chuanqi Tan, Qiang Chen, Xiaohan Wang, Zekun Xi, Xinrong Li, Haiyang Yu, Hongbin Ye, Shuofei Qiao, Peng Wang, Yuqi Zhu, Xin Xie, Xiang Chen, Zhoubo Li, Lei Li, Xiaozhuan Liang, Yunzhi Yao, Jing Chen, Yuqi Zhu, Shumin Deng, Wen Zhang, Guozhou Zheng, Huajun Chen
+[Ningyu Zhang](https://person.zju.edu.cn/en/ningyu), [Haofen Wang](https://tjdi.tongji.edu.cn/TeacherDetail.do?id=4991&lang=_en), Fei Huang, Feiyu Xiong, Liankuan Tao, Xin Xu, Honghao Gui,  Zhenru Zhang, Chuanqi Tan, Qiang Chen, Xiaohan Wang, Zekun Xi, Xinrong Li, Haiyang Yu, Hongbin Ye, Shuofei Qiao, Peng Wang, Yuqi Zhu, Xin Xie, Xiang Chen, Zhoubo Li, Lei Li, Xiaozhuan Liang, Yunzhi Yao, Jing Chen, Yuqi Zhu, Yujie Luo, Shumin Deng, Wen Zhang, Guozhou Zheng, Huajun Chen
 
-Community Contributors: [thredreams](https://github.com/thredreams), [eltociear](https://github.com/eltociear), Ziwen Xu, Rui Huang, Xiaolong Weng
+Community Contributors: Shuo Shen, Zhoutian Shao, Wei Hu, [thredreams](https://github.com/thredreams), [eltociear](https://github.com/eltociear), Ziwen Xu, Rui Huang, Xiaolong Weng
 
 # Other Knowledge Extraction Open-Source Projects
 
