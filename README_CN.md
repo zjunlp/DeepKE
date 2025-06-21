@@ -46,6 +46,7 @@
 - [模型架构](#模型架构)
 - [快速上手](#快速上手)
   - [DeepKE-LLM](#deepke-llm)
+  - [DeepKE-MCP-Tools](#deepke-mcp-tools)
   - [DeepKE](#deepke)
       - [🔧 手动环境部署](#-手动环境部署)
       - [🐳 基于容器部署](#-基于容器部署)
@@ -67,6 +68,8 @@
 <br>
 
 # 新版特性
+* `2025年6月` 我们将[MCP服务](https://modelscope.cn/mcp/servers/OpenKG/deepke-mcp-tools)集成到DeepKE中，实现通过大语言模型（LLMs）作为工具调用者来完成轻量模型的知识抽取。
+* `2024年12月` 我们开源了[OneKE](https://github.com/zjunlp/OneKE/tree/main)知识抽取框架，支持基于大语言模型的多智能体在不同场景下的知识抽取。
 * `2024年4月`发布中英双语大模型知识抽取框架[OneKE](http://oneke.openkg.cn/)，同时开源基于Chinese-Alpaca-2-13B全参数微调的版本。
 * `2024年2月` 发布大规模(`0.32B` tokens)**双语**(中文和英文)信息抽取(IE)指令数据集[IEPile](https://huggingface.co/datasets/zjunlp/iepie), 以及基于 `IEPile` 训练的两个模型[baichuan2-13b-iepile-lora](https://huggingface.co/zjunlp/baichuan2-13b-iepile-lora)、[llama2-13b-iepile-lora](https://huggingface.co/zjunlp/llama2-13b-iepile-lora)。
 * `2023年9月` 为基于指令的知识图谱构建任务(Instruction-based KGC)发布了一个中英双语信息抽取(IE)指令数据集 `InstructIE`, 具体参见[此处](./example/llm/README_CN.md/#数据)。
@@ -139,6 +142,13 @@ cd example/llm
 pip install -r requirements.txt
 ```
 注意！！是example/llm文件夹下的 `requirements.txt`
+
+## DeepKE-MCP-Tools
+
+我们将MCP（模型调用协议）服务工具集成到DeepKE中，实现通过大语言模型（LLMs）作为工具调用者来完成轻量模型的知识抽取。
+
+- MCP在线服务已部署在[在线平台](https://modelscope.cn/mcp/servers/OpenKG/deepke-mcp-tools)中。
+- 对于本地部署，请参考[README](https://github.com/zjunlp/DeepKE/tree/main/mcp-tools/README.md)来完成详细的步骤。
 
 ## DeepKE
 - DeepKE支持pip安装使用，下以常规关系抽取场景为例
@@ -665,9 +675,9 @@ Knowledge Extraction in Low-Resource Scenarios: Survey and Perspective \[[Survey
 
 # 项目贡献人员
 
-[张宁豫](https://person.zju.edu.cn/ningyu)、[王昊奋](https://tjdi.tongji.edu.cn/TeacherDetail.do?id=4991&lang=_cn)、黄非、熊飞宇、陶联宽、徐欣、桂鸿浩、张珍茹、谭传奇、陈强、王潇寒、习泽坤、李欣荣、余海阳、叶宏彬、乔硕斐、王鹏、朱雨琦、谢辛、陈想、黎洲波、李磊、梁孝转、姚云志、陈静、朱雨琦、邓淑敏、张文、郑国轴、陈华钧
+[张宁豫](https://person.zju.edu.cn/ningyu)、[王昊奋](https://tjdi.tongji.edu.cn/TeacherDetail.do?id=4991&lang=_cn)、黄非、熊飞宇、陶联宽、徐欣、桂鸿浩、张珍茹、谭传奇、陈强、王潇寒、习泽坤、李欣荣、余海阳、叶宏彬、乔硕斐、王鹏、朱雨琦、谢辛、陈想、黎洲波、李磊、梁孝转、姚云志、陈静、朱雨琦、罗玉洁、邓淑敏、张文、郑国轴、陈华钧
 
-开源社区贡献者: [thredreams](https://github.com/thredreams)、[eltociear](https://github.com/eltociear)、徐子文、黄睿、翁晓龙
+开源社区贡献者: 沈硕、邵洲天、胡伟、[thredreams](https://github.com/thredreams)、[eltociear](https://github.com/eltociear)、徐子文、黄睿、翁晓龙
 
 
 # 其它知识抽取开源工具
