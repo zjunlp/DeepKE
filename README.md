@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/zjunlp-deepke-badge.png)](https://mseep.ai/app/zjunlp-deepke)
+
 <p align="center">
     <a href="https://github.com/zjunlp/deepke"> <img src="pics/logo.png" width="400"/></a>
 <p>
