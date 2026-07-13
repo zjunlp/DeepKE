@@ -71,6 +71,7 @@
 <br>
 
 # What's New
+* `July, 2026` DeepKE has been selected for the CCF ODTC open source incentive program.
 * `June, 2025` We integrate the [MCP service tools](https://modelscope.cn/mcp/servers/OpenKG/deepke-mcp-tools) into DeepKE, enabling knowledge extraction through large language models (LLMs) as tool callers for lightweight models.
 * `December, 2024` We open source the [OneKE](https://github.com/zjunlp/OneKE/tree/main) knowledge extraction framework, supporting multi-agent knowledge extraction across various scenarios.
 * `April, 2024` We release a new bilingual (Chinese and English) schema-based information extraction model called [OneKE](https://huggingface.co/zjunlp/OneKE) based on Chinese-Alpaca-2-13B.
